@@ -5,6 +5,16 @@ public class Category {
     private String categoryName;
     private String description;
 
+    public Category() {
+    }
+
+    public Category(int categoryID, String categoryName, String description) {
+        this.categoryID = categoryID;
+        this.categoryName = categoryName;
+        this.description = description;
+    }
+
+    
     public int getCategoryID() {
         return categoryID;
     }
@@ -28,4 +38,10 @@ public class Category {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "Category{" + "categoryID=" + categoryID + ", categoryName=" + categoryName + ", description=" + description + '}';
+    }
+    
 }

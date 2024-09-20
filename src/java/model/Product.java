@@ -13,6 +13,7 @@ public class Product extends DBContext {
     private String productCode;
     private String productName;
     private int categoryID;
+    private String categoryName;
     private double price;
     private int quantity;
     private String description;
@@ -57,6 +58,33 @@ public class Product extends DBContext {
         this.unitID = unitID;
         this.supplierID = supplierID;
         connect();
+    }
+
+    public Product(int productID, String productCode, String productName, int categoryID, double price, int quantity, String description, Date createdDate, Date expiredDate, Date updateDate, String image, int userID, int unitID, int supplierID, String categoryName) {
+        this.productID = productID;
+        this.productCode = productCode;
+        this.productName = productName;
+        this.categoryID = categoryID;
+        this.price = price;
+        this.quantity = quantity;
+        this.description = description;
+        this.createdDate = createdDate;
+        this.expiredDate = expiredDate;
+        this.updateDate = updateDate;
+        this.image = image;
+        this.userID = userID;
+        this.unitID = unitID;
+        this.supplierID = supplierID;
+        this.categoryName = categoryName;
+        connect();
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public int getProductID() {

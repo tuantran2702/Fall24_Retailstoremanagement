@@ -91,7 +91,8 @@ public class WarehouseController extends HttpServlet {
             WarehouseDAO warehouseDAO = new WarehouseDAO();
             warehouseDAO.createWarehouse(warehouse);
             response.sendRedirect(request.getContextPath() + "/warehouse");
-        } else if (action.equals("update")) {
+        }
+        else if (action.equals("update")) {
             // Update existing warehouse
             int id = Integer.parseInt(request.getParameter("id"));
             String name = request.getParameter("name");
@@ -109,7 +110,8 @@ public class WarehouseController extends HttpServlet {
             WarehouseDAO warehouseDAO = new WarehouseDAO();
             warehouseDAO.updateWarehouse(warehouse);
             response.sendRedirect(request.getContextPath() + "/warehouse");
-        } else if (action.equals("delete")) {
+        } 
+        else if (action.equals("delete")) {
             // Delete warehouse
             int id = Integer.parseInt(request.getParameter("id"));
             WarehouseDAO warehouseDAO = new WarehouseDAO();
