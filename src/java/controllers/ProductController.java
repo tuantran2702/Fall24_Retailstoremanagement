@@ -70,7 +70,6 @@ public class ProductController extends HttpServlet {
             request.setAttribute("data", product.getListProduct());
             request.getRequestDispatcher("/ProductManager/listProduct.jsp").forward(request, response);
 
-
         } else if (action.equals("create")) {
             ProductDAO product = new ProductDAO();
             request.setAttribute("listCategory", product.GetListCategory());
@@ -79,14 +78,19 @@ public class ProductController extends HttpServlet {
             request.setAttribute("listSupplier", product.GetListSupplier());
             request.getRequestDispatcher("/ProductManager/createProduct.jsp").forward(request, response);
 //            out.print(product.GetListCategory());
-        }
-        else if (action.equals("update") && idStr != null) {
+        } else if (action.equals("update") && idStr != null) {
             int id = Integer.parseInt(idStr);
             ProductDAO product = new ProductDAO();
             Product p = product.getProductById(id);
-            request.setAttribute("getProductById", product);
+            request.setAttribute("product", p);
             request.getRequestDispatcher("/ProductManager/updateProduct.jsp").forward(request, response);
 //                        out.print(product.getProductById(id));
+        }else if (action.equals("delete") && idStr != null) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            ProductDAO product = new ProductDAO();
+            product.deleteProduct(id);
+            response.sendRedirect("product");
+
         }
 
     }
@@ -102,38 +106,66 @@ public class ProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productCode = request.getParameter("productCode");
-        String productName = request.getParameter("productName");
-        int categoryID = Integer.parseInt(request.getParameter("categoryID"));
-        double price = Double.parseDouble(request.getParameter("price"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-        String description = request.getParameter("description");
-        String image = request.getParameter("image");
-        int userID = Integer.parseInt(request.getParameter("userID"));
-        int unitID = Integer.parseInt(request.getParameter("unitID"));
-        int supplierID = Integer.parseInt(request.getParameter("supplierID"));
+        String action = request.getParameter("action");
         
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date createdDate = null, expiredDate = null, updateDate = new Date();
         
-        try {
-            createdDate = dateFormat.parse(request.getParameter("createdDate"));
-            expiredDate = dateFormat.parse(request.getParameter("expiredDate"));
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (action.equals("create")) {
+            String productCode = request.getParameter("productCode");
+            String productName = request.getParameter("productName");
+            int categoryID = Integer.parseInt(request.getParameter("categoryID"));
+            double price = Double.parseDouble(request.getParameter("price"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            String description = request.getParameter("description");
+            String image = request.getParameter("image");
+            int userID = Integer.parseInt(request.getParameter("userID"));
+            int unitID = Integer.parseInt(request.getParameter("unitID"));
+            int supplierID = Integer.parseInt(request.getParameter("supplierID"));
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date createdDate = null, expiredDate = null, updateDate = new Date();
+
+            try {
+                createdDate = dateFormat.parse(request.getParameter("createdDate"));
+                expiredDate = dateFormat.parse(request.getParameter("expiredDate"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Product product = new Product(0, productCode, productName, categoryID, price, quantity, description, createdDate, expiredDate, updateDate, image, userID, unitID, supplierID);
+            ProductDAO p = new ProductDAO();
+
+            p.createProduct(product);
+            response.sendRedirect("product");
         }
-        
+        else if (action.equals("update")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            String productCode = request.getParameter("productCode");
+            String productName = request.getParameter("productName");
+            int categoryID = Integer.parseInt(request.getParameter("categoryID"));
+            double price = Double.parseDouble(request.getParameter("price"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            String description = request.getParameter("description");
+            String image = request.getParameter("image");
+            int userID = Integer.parseInt(request.getParameter("userID"));
+            int unitID = Integer.parseInt(request.getParameter("unitID"));
+            int supplierID = Integer.parseInt(request.getParameter("supplierID"));
 
-                Product product = new Product(0, productCode, productName, categoryID, price, quantity, description, createdDate, expiredDate, updateDate, image, userID, unitID, supplierID);
-                ProductDAO p = new ProductDAO();
-                
-                p.createProduct(product);
-                response.sendRedirect("product");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date createdDate = null, expiredDate = null, updateDate = new Date();
 
+            try {
+                createdDate = dateFormat.parse(request.getParameter("createdDate"));
+                expiredDate = dateFormat.parse(request.getParameter("expiredDate"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-        
+            Product product = new Product(id, productCode, productName, categoryID, price, quantity, description, createdDate, expiredDate, updateDate, image, userID, unitID, supplierID);
+            ProductDAO p = new ProductDAO();
 
-        
+            p.updateProduct(product);
+            response.sendRedirect("product");
+        }
 
     }
 

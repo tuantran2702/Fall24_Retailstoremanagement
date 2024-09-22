@@ -154,14 +154,16 @@
                                             <td>${p.getQuantity()}</td>
                                             <td>${p.getDescription()}</td>
                                             <td>
-                                                <a href="${pageContext.request.contextPath}/product?action=update&id=${p.getProductID()}">Update</a>
-                                                <a href="${pageContext.request.contextPath}/product?action=delete&id=${p.getProductID()}" >Delete</a>
-                                                <!--                                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                                                                                        onclick="myFunction(this)"><i class="fas fa-trash-alt"></i> 
-                                                                                                </button>
-                                                                                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp" data-toggle="modal"
-                                                                                                        data-target="#ModalUP"> <a href="${pageContext.request.contextPath}/product?action=edit&id=${p.getProductID()}"></a>
-                                                                                                    <i class="fas fa-edit"></i></button>-->
+                                                <a href="${pageContext.request.contextPath}/product?action=update&id=${p.getProductID()}" class="btn btn-primary btn-sm edit" title="Sửa">
+                                                    <i class="fas fa-edit"></i></a>
+                                                <a href="${pageContext.request.contextPath}/product?action=delete&id=${p.getProductID()}" onclick="if (confirm('Are you sure you want to delete product with ID ${p.getProductID()}?')) {
+                                                                doDelete('${p.getProductID()}');
+                                                                return true;
+                                                            } else {
+                                                                return false;
+                                                            }" class="btn btn-primary btn-sm trash" title="Xóa">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
 
                                             </td>
                                         </tr>
@@ -349,31 +351,31 @@
                                     }
         </script>
         <script>
-            function deleteRow(r) {
-                var i = r.parentNode.parentNode.rowIndex;
-                document.getElementById("myTable").deleteRow(i);
-            }
-            jQuery(function () {
-                jQuery(".trash").click(function () {
-                    swal({
-                        title: "Cảnh báo",
-                        text: "Bạn có chắc chắn là muốn xóa sản phẩm này?",
-                        buttons: ["Hủy bỏ", "Đồng ý"],
-                    })
-                            .then((willDelete) => {
-                                if (willDelete) {
-                                    swal("Đã xóa thành công.!", {
-
-                                    });
-                                }
-                            });
-                });
-            });
-            oTable = $('#sampleTable').dataTable();
-            $('#all').click(function (e) {
-                $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
-                e.stopImmediatePropagation();
-            });
+//            function deleteRow(r) {
+//                var i = r.parentNode.parentNode.rowIndex;
+//                document.getElementById("myTable").deleteRow(i);
+//            }
+//            jQuery(function () {
+//                jQuery(".trash").click(function () {
+//                    swal({
+//                        title: "Cảnh báo",
+//                        text: "Bạn có chắc chắn là muốn xóa sản phẩm này?",
+//                        buttons: ["Hủy bỏ", "Đồng ý"],
+//                    })
+//                            .then((willDelete) => {
+//                                if (willDelete) {
+//                                    swal("Đã xóa thành công.!", {
+//
+//                                    });
+//                                }
+//                            });
+//                });
+//            });
+//            oTable = $('#sampleTable').dataTable();
+//            $('#all').click(function (e) {
+//                $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
+//                e.stopImmediatePropagation();
+//            });
         </script>
     </body>
 

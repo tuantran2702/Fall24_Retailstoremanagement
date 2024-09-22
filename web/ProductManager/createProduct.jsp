@@ -219,6 +219,7 @@
                                 </div>
                             </div>
                             <form action="product" method="post" class="row">
+                                <input type="hidden" name="action" value="create">
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Product Code </label>
                                     <input class="form-control" type="text" name="productCode">

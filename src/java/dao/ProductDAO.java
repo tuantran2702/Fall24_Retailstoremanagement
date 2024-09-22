@@ -22,9 +22,34 @@ import org.apache.tomcat.dbcp.dbcp2.PStmtKey;
  */
 public class ProductDAO extends DBContext {
 
-    public static void createProduct(ProductDAO productDAO) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+
+//    public boolean updateProduct(Product product) {
+//        String sql = "UPDATE Warehouse SET WarehouseName = ?, Location = ?, ManagerName = ?, ContactNumber = ? WHERE WarehouseID = ?";
+//        try {
+//            PreparedStatement stmt = connection.prepareStatement(sql);
+//            stmt.setString(1, product.getProductCode());
+//            stmt.setString(2, product.getProductName());
+//            stmt.setInt(3, product.getCategoryID());
+//            stmt.setDouble(4, product.getPrice());
+//            stmt.setInt(5, product.getQuantity());
+//            stmt.setString(6, product.getDescription());
+//            stmt.setDate(7, new java.sql.Date(product.getCreatedDate().getTime()));
+//            stmt.setDate(8, new java.sql.Date(product.getExpiredDate().getTime()));
+//            stmt.setDate(9, new java.sql.Date(product.getUpdateDate().getTime()));
+//            stmt.setString(10, product.getImage());
+//            stmt.setInt(11, product.getUserID());
+//            stmt.setInt(12, product.getUnitID());
+//            stmt.setInt(13, product.getSupplierID());
+//            stmt.setInt(14, product.getProductID());
+//
+//            return stmt.executeUpdate() > 0;
+//
+//        } catch (SQLException e) {
+//            System.out.println("insertFail:" + e.getMessage());
+////            e.printStackTrace();
+//        }
+//        return false;
+//    }
         public ArrayList<Product> getListProduct() {
         ArrayList<Product> data = new ArrayList<>();
         String sql = "select p.*,c.CategoryName from Product p join Category c on p.CategoryID=c.CategoryID";
@@ -270,11 +295,64 @@ public class ProductDAO extends DBContext {
         return null;
 
     }
-        public static void main(String[] args) {
-        System.out.println();
-        ProductDAO p =new ProductDAO();
-            System.out.println("nhap nhap");
-        System.out.println(p.getProductById(1));
+
+
+    public void updateProduct(Product product) {
+                String sql = "UPDATE Product SET ProductCode = ?,"
+                        + " ProductName = ?,"
+                        + " CategoryID = ?,"
+                        + " Price = ?,"
+                        + " Quantity = ?,"
+                        + " Description = ?,"
+                        + "CreatedDate = ?,"
+                        + " ExpiredDate = ?,"
+                        + " UpdateDate = ?,"
+                        + " Image = ?,"
+                        + " UserID = ?,"
+                        + " UnitID = ?,"
+                        + " SupplierID = ? WHERE ProductID = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, product.getProductCode());
+            stmt.setString(2, product.getProductName());
+            stmt.setInt(3, product.getCategoryID());
+            stmt.setDouble(4, product.getPrice());
+            stmt.setInt(5, product.getQuantity());
+            stmt.setString(6, product.getDescription());
+            stmt.setDate(7, new java.sql.Date(product.getCreatedDate().getTime()));
+            stmt.setDate(8, new java.sql.Date(product.getExpiredDate().getTime()));
+            stmt.setDate(9, new java.sql.Date(product.getUpdateDate().getTime()));
+            stmt.setString(10, product.getImage());
+            stmt.setInt(11, product.getUserID());
+            stmt.setInt(12, product.getUnitID());
+            stmt.setInt(13, product.getSupplierID());
+            stmt.setInt(14, product.getProductID());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("insertFail:" + e.getMessage());
+//            e.printStackTrace();
+        }
+
+    }
+//            public static void main(String[] args) {
+//        System.out.println();
+//        ProductDAO p =new ProductDAO();
+//        System.out.println(p.updateProduct(Product));
+//    }
+
+    public void deleteProduct(int id) {
+                String sql = "DELETE FROM [dbo].[Product] WHERE ProductID=?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+
+        } catch (Exception e) {
+            System.out.println("DeleteFail:" + e.getMessage());
+        }
+
     }
 
 }
