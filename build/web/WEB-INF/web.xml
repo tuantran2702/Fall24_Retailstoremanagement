@@ -4,6 +4,14 @@
         <servlet-name>LogOutServlet</servlet-name>
         <servlet-class>controllers.UserController.LogOutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserManageController</servlet-name>
+        <servlet-class>controllers.UserController.UserManageController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddUserController</servlet-name>
+        <servlet-class>controllers.UserController.AddUserController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -11,6 +19,14 @@
     <servlet-mapping>
         <servlet-name>LogOutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserManageController</servlet-name>
+        <url-pattern>/userManage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddUserController</servlet-name>
+        <url-pattern>/addUser</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
