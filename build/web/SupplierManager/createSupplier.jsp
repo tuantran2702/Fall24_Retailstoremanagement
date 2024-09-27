@@ -218,103 +218,39 @@
                                             class="fas fa-folder-plus"></i> Thêm tình trạng</a>
                                 </div>
                             </div>
-                            <form action="product" method="post" class="row">
+                            <form action="supplier" method="post" class="row">
                                 <input type="hidden" name="action" value="create">
-                                <div class="form-group col-md-3">
-                                    <label class="control-label">Product Code </label>
-                                    <input class="form-control" type="text" name="productCode">
-                                </div>
-
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Product Name </label>
-                                    <input class="form-control" type="text" name="productName">
+                                    <label class="control-label">Supplier Name</label>
+                                    <input class="form-control" type="text" name="supplierName">
                                 </div>
 
-                                <div class="form-group col-md-3 ">
-                                    <label for="exampleSelect1" class="control-label">Category </label>
-                                    <select class="form-control" id="exampleSelect1" name="categoryID">
-                                        <c:forEach var="c" items="${listCategory}">
-                                            <option value="${c.getCategoryID()}">${c.getCategoryName()}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-
-
-                                <div class="form-group  col-md-3">
-                                    <label class="control-label">Price</label>
-                                    <input class="form-control" type="number" name="price">
-                                </div>
-                                <div class="form-group  col-md-3">
-                                    <label class="control-label">Quantity</label>
-                                    <input class="form-control" type="number" name="quantity">
-                                </div>
-                                <div class="form-group  col-md-3">
-                                    <label class="control-label">Created Date</label>
-                                    <input class="form-control" type="date" name="createdDate">
-                                </div>
-                                <div class="form-group  col-md-3">
-                                    <label class="control-label">Expired Date</label>
-                                    <input class="form-control" type="date" name="expiredDate">
-                                </div>
-                                <div class="form-group  col-md-3">
-                                    <label class="control-label">Update Date</label>
-                                    <input class="form-control" type="date" name="updateDate">
-                                </div>
                                 <div class="form-group col-md-3">
-                                    <label for="exampleSelect1" class="control-label">User </label>
-                                    <select class="form-control" id="exampleSelect1" name="userID">
-                                        <c:forEach var="u" items="${listUser}">
-                                            <option value="${u.getUserID()}">${u.getFirstName()} ${u.getLastName()}</option>
-                                        </c:forEach>
-
-
-
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-3 ">
-                                    <label for="exampleSelect1" class="control-label">Unit </label>
-                                    <select class="form-control" id="exampleSelect1" name="unitID">
-                                        <c:forEach var="c" items="${listUnit}">
-                                            <option value="${c.getUnitID()}">${c.getUnitName()}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-3 ">
-                                    <label for="exampleSelect1" class="control-label">Supplier </label>
-                                    <select class="form-control" id="exampleSelect1" name="supplierID">
-                                        <c:forEach var="s" items="${listSupplier}">
-                                            <option value="${s.getSupplierID()}">${s.getSupplierName()}</option>
-                                        </c:forEach>
-                                    </select>
+                                    <label class="control-label">Contact Name</label>
+                                    <input class="form-control" type="text" name="contactName">
                                 </div>
 
-
-                                <div class="form-group col-md-12">
-                                    <label class="control-label">Image</label>
-                                    <div id="myfileupload">
-                                        <input type="file" name="image" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
-                                    </div>
-                                    <div id="thumbbox">
-                                        <img height="450" width="400" alt="Thumb image" id="thumbimage" style="display: none" />
-                                        <a class="removeimg" href="javascript:"></a>
-                                    </div>
-                                    <div id="boxchoice">
-                                        <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn ảnh</a>
-                                        <p style="clear:both"></p>
-                                    </div>
-
+                                <div class="form-group col-md-3">
+                                    <label class="control-label">Phone Number</label>
+                                    <input class="form-control" type="number" name="phoneNumber">
                                 </div>
-                                <div class="form-group col-md-12">
-                                    <label class="control-label">Description</label>
-                                    <textarea class="form-control" name="description" id="description"></textarea>
-                                    <script>CKEDITOR.replace('description');</script>
+
+                                <div class="form-group col-md-3">
+                                    <label class="control-label">Email</label>
+                                    <input class="form-control" type="email" name="email">
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <label class="control-label">Address</label>
+                                    <input class="form-control" type="text" name="address">
                                 </div>
 
                         </div>
                         <button class="btn btn-save" type="submit">Lưu lại</button>
                         <a class="btn btn-cancel" href="table-data-product.html">Hủy bỏ</a>
                         </form>
+
 
                     </div>
                     </main>
@@ -350,96 +286,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--
-                  MODAL
-                    -->
-
-
-
-                    <!--
-                    MODAL DANH MỤC
-                    -->
-                    <div class="modal fade" id="adddanhmuc" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                         data-backdrop="static" data-keyboard="false">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="form-group  col-md-12">
-                                            <span class="thong-tin-thanh-toan">
-                                                <h5>Thêm mới danh mục </h5>
-                                            </span>
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Nhập tên danh mục mới</label>
-                                            <input class="form-control" type="text" required>
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Danh mục sản phẩm hiện đang có</label>
-                                            <ul style="padding-left: 20px;">
-                                                <li>Bàn ăn</li>
-                                                <li>Bàn thông minh</li>
-                                                <li>Tủ</li>
-                                                <li>Ghế gỗ</li>
-                                                <li>Ghế sắt</li>
-                                                <li>Giường người lớn</li>
-                                                <li>Giường trẻ em</li>
-                                                <li>Bàn trang điểm</li>
-                                                <li>Giá đỡ</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <BR>
-                                    <button class="btn btn-save" type="button">Lưu lại</button>
-                                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                    <BR>
-                                </div>
-                                <div class="modal-footer">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--
-                  MODAL
-                    -->
-
-
-
-
-                    <!--
-                    MODAL TÌNH TRẠNG
-                    -->
-                    <div class="modal fade" id="addtinhtrang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                         data-backdrop="static" data-keyboard="false">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="form-group  col-md-12">
-                                            <span class="thong-tin-thanh-toan">
-                                                <h5>Thêm mới tình trạng</h5>
-                                            </span>
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Nhập tình trạng mới</label>
-                                            <input class="form-control" type="text" required>
-                                        </div>
-                                    </div>
-                                    <BR>
-                                    <button class="btn btn-save" type="button">Lưu lại</button>
-                                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                    <BR>
-                                </div>
-                                <div class="modal-footer">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--
-                  MODAL
-                    -->
 
 
 
@@ -449,24 +295,24 @@
                     <script src="js/main.js"></script>
                     <script src="js/plugins/pace.min.js"></script>
                     <script>
-                                        const inpFile = document.getElementById("inpFile");
-                                        const loadFile = document.getElementById("loadFile");
-                                        const previewContainer = document.getElementById("imagePreview");
-                                        const previewContainer = document.getElementById("imagePreview");
-                                        const previewImage = previewContainer.querySelector(".image-preview__image");
-                                        const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
-                                        inpFile.addEventListener("change", function () {
-                                            const file = this.files[0];
-                                            if (file) {
-                                                const reader = new FileReader();
-                                                previewDefaultText.style.display = "none";
-                                                previewImage.style.display = "block";
-                                                reader.addEventListener("load", function () {
-                                                    previewImage.setAttribute("src", this.result);
-                                                });
-                                                reader.readAsDataURL(file);
-                                            }
-                                        });
+            const inpFile = document.getElementById("inpFile");
+            const loadFile = document.getElementById("loadFile");
+            const previewContainer = document.getElementById("imagePreview");
+            const previewContainer = document.getElementById("imagePreview");
+            const previewImage = previewContainer.querySelector(".image-preview__image");
+            const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+            inpFile.addEventListener("change", function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    previewDefaultText.style.display = "none";
+                    previewImage.style.display = "block";
+                    reader.addEventListener("load", function () {
+                        previewImage.setAttribute("src", this.result);
+                    });
+                    reader.readAsDataURL(file);
+                }
+            });
 
                     </script>
                     </body>

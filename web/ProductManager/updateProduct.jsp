@@ -68,7 +68,7 @@
                         <span class="app-menu__label">Quản lý nhân viên</span></a></li>
                 <li><a class="app-menu__item " href="#"><i class='app-menu__icon bx bx-user-voice'></i><span
                             class="app-menu__label">Quản lý khách hàng</span></a></li>
-                <li><a class="app-menu__item active" href="table-data-product.html"><i
+                <li><a class="app-menu__item active" href="product"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
                 </li>
                 <li><a class="app-menu__item" href="table-data-oder.html"><i class='app-menu__icon bx bx-task'></i><span
@@ -201,6 +201,30 @@
                                             </div>
                                         </div>
 
+                                        <!--                                        <div class="form-group col-md-12">
+                                                                                    <label class="control-label">Image</label>
+                                                                                    <div id="myfileupload">
+                                                                                         Input to upload a new image 
+                                                                                        <input type="file" name="image" id="uploadfile" onchange="readURL(this);" value="${product.image}">
+                                                                                        <br>
+                                                                                    </div>
+                                        
+                                                                                     Display the current image if available 
+                                                                                    <div id="thumbbox">
+                                        <c:if test="${not empty product.image}">
+                                            <img height="450" width="400" alt="Thumb image" id="thumbimage" src="${pageContext.request.contextPath}/img-sanpham/${product.image}" />
+                                        </c:if>
+                                        <a class="removeimg" href="javascript:void(0);"></a>
+                                    </div>
+
+                                    <div id="boxchoice">
+                                        <a href="javascript:void(0);" class="Choicefile">
+                                            <i class="fas fa-cloud-upload-alt"></i> Chọn ảnh
+                                        </a>
+                                        <p style="clear:both"></p>
+                                    </div>
+                                </div>-->
+
                                         <div class="form-group col-md-12">
                                             <label class="control-label">Description</label>
                                             <textarea class="form-control" name="description" id="description">${product.description}</textarea>
@@ -283,6 +307,19 @@
                                                 }
         </script>
         <script>
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        // Change the image src to the newly selected file
+                        $('#thumbimage').attr('src', e.target.result);
+                    };
+
+                    reader.readAsDataURL(input.files[0]); // Read the file
+                }
+            }
+
             function deleteRow(r) {
                 var i = r.parentNode.parentNode.rowIndex;
                 document.getElementById("myTable").deleteRow(i);

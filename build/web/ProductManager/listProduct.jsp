@@ -68,7 +68,7 @@
                         <span class="app-menu__label">Quản lý nhân viên</span></a></li>
                 <li><a class="app-menu__item " href="#"><i class='app-menu__icon bx bx-user-voice'></i><span
                             class="app-menu__label">Quản lý khách hàng</span></a></li>
-                <li><a class="app-menu__item active" href="table-data-product.html"><i
+                <li><a class="app-menu__item active" href="product"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
                 </li>
                 <li><a class="app-menu__item" href="table-data-oder.html"><i class='app-menu__icon bx bx-task'></i><span
@@ -156,7 +156,7 @@
                                             <td>
                                                 <a href="${pageContext.request.contextPath}/product?action=update&id=${p.getProductID()}" class="btn btn-primary btn-sm edit" title="Sửa">
                                                     <i class="fas fa-edit"></i></a>
-                                                <a href="${pageContext.request.contextPath}/product?action=delete&id=${p.getProductID()}" onclick="if (confirm('Are you sure you want to delete product with ID ${p.getProductID()}?')) {
+                                                <a href="${pageContext.request.contextPath}/product?action=delete&id=${p.getProductID()}" onclick="if (confirm('Are you sure you want to delete product with Name: ${p.getProductName()}?')) {
                                                                 doDelete('${p.getProductID()}');
                                                                 return true;
                                                             } else {

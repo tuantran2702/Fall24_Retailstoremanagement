@@ -101,7 +101,7 @@
                             <div class="row element-button">
                                 <div class="col-sm-2">
 
-                                    <a href="${pageContext.request.contextPath}/product?action=create" class="btn btn-add btn-sm"  title="Thêm"><i class="fas fa-plus"></i>
+                                    <a href="${pageContext.request.contextPath}/supplier?action=create" class="btn btn-add btn-sm"  title="Thêm"><i class="fas fa-plus"></i>
                                         Create new product</a>
                                 </div>
                                 <div class="col-sm-2">
@@ -133,31 +133,27 @@
                             <table class="table table-hover table-bordered" id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th>Product Code</th>
-                                        <th>Product Name</th>
-                                        <th>Image</th>
-                                        <th>Category</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Description</th>
+                                        <th>Supplier Name</th>
+                                        <th>Contact Name</th>
+                                        <th>Phone Number</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach var="p" items="${data}">
+                                    <c:forEach var="s" items="${data}">
                                         <tr>
-                                            <td>${p.getProductCode()}</td>
-                                            <td>${p.getProductName()}</td>
-                                            <td><img src="<%= request.getContextPath() %>/img-sanpham/${p.getImage()}" alt="" width="100px;"></td>
-                                            <td><span class="badge bg-success">${p.getCategoryName()}</span></td>
-                                            <td>${p.getPrice()}</td>
-                                            <td>${p.getQuantity()}</td>
-                                            <td>${p.getDescription()}</td>
+                                            <td>${s.getSupplierName()}</td>
+                                            <td>${s.getContactName()}</td>
+                                            <td><span class="badge bg-success">${s.getPhoneNumber()}</span></td>
+                                            <td>${s.getEmail()}</td>
+                                            <td>${s.getAddress()}</td>
                                             <td>
-                                                <a href="${pageContext.request.contextPath}/product?action=update&id=${p.getProductID()}" class="btn btn-primary btn-sm edit" title="Sửa">
+                                                <a href="${pageContext.request.contextPath}/supplier?action=update&id=${s.getSupplierID()}" class="btn btn-primary btn-sm edit" title="Sửa">
                                                     <i class="fas fa-edit"></i></a>
-                                                <a href="${pageContext.request.contextPath}/product?action=delete&id=${p.getProductID()}" onclick="if (confirm('Are you sure you want to delete product with Name: ${p.getProductName()}?')) {
-                                                                doDelete('${p.getProductID()}');
+                                                <a href="${pageContext.request.contextPath}/supplier?action=delete&id=${s.getSupplierID()}" onclick="if (confirm('Are you sure you want to delete product with Name: ${s.getSupplierName()}?')) {
+                                                                doDelete('${s.getSupplierID()}');
                                                                 return true;
                                                             } else {
                                                                 return false;
@@ -175,123 +171,6 @@
                 </div>
             </div>
         </main>
-
-        <!--
-          MODAL
-        -->
-        <div class="modal fade" id="ModalUP" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
-             data-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="form-group  col-md-12">
-                                <span class="thong-tin-thanh-toan">
-                                    <h5>Chỉnh sửa thông tin sản phẩm cơ bản</h5>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Product Code </label>
-                                <input class="form-control" type="number" value="${getProductById.getProductCode()}">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Product Name</label>
-                                <input class="form-control" type="text" required value="Bàn ăn gỗ Theresa">
-                            </div>
-                            <div class="form-group  col-md-6">
-                                <label class="control-label">Price </label>
-                                <input class="form-control" type="number" required value="20">
-                            </div>
-                            <div class="form-group col-md-6 ">
-                                <label for="exampleSelect1" class="control-label">Category</label>
-                                <select class="form-control" id="exampleSelect1">
-                                    <option>Còn hàng</option>
-                                    <option>Hết hàng</option>
-                                    <option>Đang nhập hàng</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Quantity</label>
-                                <input class="form-control" type="text" value="5.600.000">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Created Date</label>
-                                <input class="form-control" type="date" value="5.600.000">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Expired Date</label>
-                                <input class="form-control" type="date" value="5.600.000">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Update Date</label>
-                                <input class="form-control" type="date" value="5.600.000">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="exampleSelect1" class="control-label">User</label>
-                                <select class="form-control" id="exampleSelect1">
-                                    <c:forEach var="u" items="${listUser}">
-                                        <option value="${u.getUserID()}">${u.getFirstName()} ${u.getLastName()}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="exampleSelect1" class="control-label">Unit</label>
-                                <select class="form-control" id="exampleSelect1">
-                                    <c:forEach var="c" items="${listUnit}">
-                                        <option value="${c.getUnitID()}">${c.getUnitName()}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="exampleSelect1" class="control-label">Supplier</label>
-                                <select class="form-control" id="exampleSelect1">
-                                    <c:forEach var="s" items="${listSupplier}">
-                                        <option value="${s.getSupplierID()}">${s.getSupplierName()}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label class="control-label">Image</label>
-                                <div id="myfileupload">
-                                    <input type="file" name="image" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
-                                </div>
-                                <div id="thumbbox">
-                                    <img height="450" width="400" alt="Thumb image" id="thumbimage" style="display: none" />
-                                    <a class="removeimg" href="javascript:"></a>
-                                </div>
-                                <div id="boxchoice">
-                                    <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn ảnh</a>
-                                    <p style="clear:both"></p>
-                                </div>
-
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label class="control-label">Description</label>
-                                <textarea class="form-control" name="description" id="description"></textarea>
-                                <script>CKEDITOR.replace('description');</script>
-                            </div>
-                        </div>
-                        <BR>
-                        <a href="#" style="    float: right;
-                           font-weight: 600;
-                           color: #ea0000;">Chỉnh sửa sản phẩm nâng cao</a>
-                        <BR>
-                        <BR>
-                        <button class="btn btn-save" type="button">Lưu lại</button>
-                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                        <BR>
-                    </div>
-                    <div class="modal-footer">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--
-        MODAL
-        -->
 
         <!-- Essential javascripts for application to work-->
         <script src="js/jquery-3.2.1.min.js"></script>
