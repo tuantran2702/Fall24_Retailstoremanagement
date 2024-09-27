@@ -67,7 +67,7 @@ public class Homepage extends HttpServlet {
         } else {
             // Nếu session không tồn tại hoặc chưa đăng nhập, chuyển hướng về trang đăng nhập
             request.setAttribute("errorMessage", "Vui lòng đăng nhập !");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("User/login.jsp").forward(request, response);
         }
     }
 
