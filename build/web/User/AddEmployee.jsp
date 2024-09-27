@@ -213,7 +213,10 @@
                                 </div>
 
                             </div> 
-                            <form class="row" action="addEmployee" method="POST" enctype="multipart/form-data">
+                            <c:if test="${not empty errorMessage}">
+                                <p style="color:red">${errorMessage}</p>
+                            </c:if>
+                            <form class="row" action="addUser" method="POST" enctype="multipart/form-data">
                                 <div class="form-group col-md-4">
                                     <label class="control-label">FirstName</label>
                                     <input class="form-control" type="text" name="firstName" required>
@@ -244,7 +247,7 @@
                                     <select class="form-control" id="exampleSelect1" name="role">
                                         <option>-- Chọn chức vụ --</option>
                                         <c:forEach var="role" items="${roles}">
-                                            <option>${role.roleName}</option>
+                                            <option value="${role.roleID}">${role.roleName}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
