@@ -51,7 +51,7 @@ public class UserDAO extends DBContext{
     
     public void addUser(User u){
         MaHoa mh = new MaHoa();
-        String sql = "INSERT INTO [dbo].[User] ([FirstName], [LastName], [Email], [Password], [PhoneNumber], [Address], [RoleID]) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [dbo].[User] ([FirstName], [LastName], [Email], [Password], [PhoneNumber], [Address], [RoleID], [Img]) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, u.getFirstName());

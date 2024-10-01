@@ -13,14 +13,20 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Role;
 import dao.*;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.Part;
 import java.io.File;
+import java.nio.file.Paths;
 import model.User;
+import java.sql.SQLException;
 
 /**
  *
  * @author ptrung
  */
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50)   // 50MB
 public class AddUserController extends HttpServlet {
 
     /**
@@ -76,104 +82,62 @@ public class AddUserController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private static final String SAVE_DIR = "img-sanpham";
+    private static final String UPLOAD_DIRECTORY = "img-anhthe";  // Folder where images will be stored
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Lấy dữ liệu từ form
+        // Collect form data
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         String password = request.getParameter("password");
-        String roleParam = request.getParameter("role");
+        int roleId = Integer.parseInt(request.getParameter("role"));
 
-        // Kiểm tra giá trị của role
-        int roleID = 0; // giá trị mặc định
-        String errorMessage = null;
-
-        // Validate dữ liệu nhập vào
-        if (firstName == null || firstName.isEmpty()) {
-            errorMessage = "First name is required.";
-        } else if (lastName == null || lastName.isEmpty()) {
-            errorMessage = "Last name is required.";
-        } else if (email == null || email.isEmpty()) {
-            errorMessage = "Email is required.";
-        } else if (password == null || password.isEmpty()) {
-            errorMessage = "Password is required.";
-        } else if (roleParam == null || roleParam.isEmpty()) {
-            errorMessage = "Please select a valid role.";
-        } else {
-            try {
-                roleID = Integer.parseInt(roleParam);
-            } catch (NumberFormatException e) {
-                errorMessage = "Invalid role ID.";
-            }
-        }
-
-        // Nếu có lỗi, chuyển lại về form với thông báo lỗi
-        if (errorMessage != null) {
-            request.setAttribute("errorMessage", errorMessage);
-            response.sendRedirect("addUser");
-            // request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
-            return;
-        }
-
-        // Xử lý file upload
-        String imagePath = uploadImage(request);
-
-        // Khởi tạo đối tượng User
-        User newUser = new User();
-        newUser.setFirstName(firstName);
-        newUser.setLastName(lastName);
-        newUser.setEmail(email);
-        newUser.setPhoneNumber(phone);
-        newUser.setAddress(address);
-        newUser.setPassword(password);
-        newUser.setRoleID(roleID);
-        newUser.setImg(imagePath);
-
-        // Gọi phương thức addUser để thêm nhân viên vào database
-        UserDAO userDAO = new UserDAO();
-        userDAO.addUser(newUser);
-
-        // Chuyển hướng về trang quản lý người dùng
-        response.sendRedirect("userManage");
-    }
-
-    private String uploadImage(HttpServletRequest request) throws IOException, ServletException {
-        // Lấy đường dẫn thực tế để lưu file
-        String appPath = request.getServletContext().getRealPath("");
-        String savePath = appPath + File.separator + SAVE_DIR;
-
-        // Tạo thư mục lưu ảnh nếu chưa tồn tại
-        File fileSaveDir = new File(savePath);
-        if (!fileSaveDir.exists()) {
-            fileSaveDir.mkdir();
-        }
-
-        // Lấy file upload từ form
+        // Handling image upload
         Part filePart = request.getPart("ImageUpload");
-        String fileName = extractFileName(filePart);
-        String filePath = savePath + File.separator + fileName;
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
 
-        // Ghi file vào thư mục lưu trữ
+        // Create directory if it doesn't exist
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();
+        }
+
+        // Full path to store the image
+        String filePath = uploadPath + File.separator + fileName;
         filePart.write(filePath);
 
-        // Trả về đường dẫn tương đối của file để lưu vào DB
-        return SAVE_DIR + File.separator + fileName;
-    }
+        // Store relative path in the database (not full server path)
+        String imgPath = UPLOAD_DIRECTORY + File.separator + fileName;
 
-    private String extractFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        String[] items = contentDisp.split(";");
-        for (String s : items) {
-            if (s.trim().startsWith("filename")) {
-                return s.substring(s.indexOf("=") + 2, s.length() - 1);
-            }
+        // Create a user object
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPassword(password); // Password will be hashed in the DAO layer
+        user.setPhoneNumber(phone);
+        user.setAddress(address);
+        user.setRoleID(roleId);
+        user.setImg(imgPath); // Set the image path
+
+        // Insert user into the database
+        UserDAO userDAO = new UserDAO();
+        try {
+            userDAO.addUser(user);
+            response.sendRedirect("userManage"); // Redirect on success
+
+        } catch (Exception e) {
+            // Set error message in the request
+            request.setAttribute("errorMessage", "An error occurred while adding the user. Please try again.");
+            // Forward request back to the form page
+            request.getRequestDispatcher("addUser.jsp").forward(request, response);
         }
-        return "";
+
+        
     }
 
     /**
@@ -185,5 +149,4 @@ public class AddUserController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
