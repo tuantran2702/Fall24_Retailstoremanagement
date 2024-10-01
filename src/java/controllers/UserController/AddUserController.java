@@ -86,6 +86,7 @@ public class AddUserController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        MaHoa mh = new MaHoa();
         // Collect form data
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
