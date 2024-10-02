@@ -133,6 +133,7 @@
                                 <thead>
                                     <tr>
                                         <th width="10"><input type="checkbox" id="all"></th>
+                                        <th>Img</th>
                                         <th>ID nhân viên</th>
                                         <th width="150">Họ và tên</th>
                                         <th width="170">Email</th>
@@ -146,6 +147,7 @@
                                     <c:forEach var="user" items="${requestScope.userList}">
                                         <tr>
                                             <td width="10"><input type="checkbox"></td>
+                                            <td><img src="${user.img}" alt="User Image" style="width:100px;height:100px;"></td>
                                             <td>${user.userID}</td>
                                             <td>${user.firstName} ${user.lastName}</td>
                                             <td>${user.email}</td>

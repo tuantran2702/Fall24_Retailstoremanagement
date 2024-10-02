@@ -24,5 +24,8 @@ public class DBContext {
             System.out.println("Kết nối thất bại!");
         }
     }
-    
+    public static void main(String[] args) {
+        // Tạo một đối tượng DBContext để kiểm tra kết nối
+        new DBContext();
+    }
 }
