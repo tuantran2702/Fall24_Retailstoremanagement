@@ -127,7 +127,7 @@
                                             class="fas fa-trash-alt"></i> Xóa tất cả </a>
                                 </div>
                             </div>
-                            
+
                             <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
                                    id="sampleTable">
                                 <thead>
@@ -156,9 +156,11 @@
                                             <td>${user.roleID}</td>
                                             <td>
                                                 <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                                        onclick="myFunction(this)"><i class="fas fa-trash-alt"></i></button>
-                                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp"
-                                                        data-toggle="modal" data-target="#ModalUP"><i class="fas fa-edit"></i></button>
+                                                        onclick="deleteUser(${user.userID})"><i class="fas fa-trash-alt"></i></button>
+                                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"
+                                                        data-id="${user.userID}" data-toggle="modal" data-target="#ModalUP" onclick="loadUserData(${user.userID})">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -256,6 +258,89 @@
         <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
         <script type="text/javascript">$('#sampleTable').DataTable();</script>
+        <script>
+            $('#saveChangesBtn').on('click', function () {
+                var user = {
+                    userID: $('#ModalUP input[name="userID"]').val(),
+                    firstName: $('#ModalUP input[name="firstName"]').val(),
+                    lastName: $('#ModalUP input[name="lastName"]').val(),
+                    phoneNumber: $('#ModalUP input[name="phoneNumber"]').val(),
+                    email: $('#ModalUP input[name="email"]').val(),
+                    roleID: $('#ModalUP select[name="roleID"]').val()
+                };
+
+                $.ajax({
+                    url: 'updateUser', // URL của servlet để cập nhật thông tin
+                    type: 'POST',
+                    data: user,
+                    success: function (response) {
+                        swal("Đã cập nhật thành công!", {
+                            icon: "success"
+                        }).then(() => {
+                            location.reload(); // Reload trang sau khi cập nhật
+                        });
+                    },
+                    error: function () {
+                        swal("Cập nhật thất bại!", {
+                            icon: "error"
+                        });
+                    }
+                });
+            });
+
+        </script>
+        <script>
+            function loadUserData(userID) {
+                $.ajax({
+                    url: 'getUser', // URL của servlet lấy thông tin người dùng
+                    type: 'GET',
+                    data: {id: userID},
+                    success: function (user) {
+                        // Hiển thị dữ liệu vào modal
+                        $('#ModalUP input[name="userID"]').val(user.userID);
+                        $('#ModalUP input[name="firstName"]').val(user.firstName);
+                        $('#ModalUP input[name="lastName"]').val(user.lastName);
+                        $('#ModalUP input[name="phoneNumber"]').val(user.phoneNumber);
+                        $('#ModalUP input[name="email"]').val(user.email);
+                        $('#ModalUP select[name="roleID"]').val(user.roleID);
+                    },
+                    error: function () {
+                        swal("Không thể tải dữ liệu người dùng!", {
+                            icon: "error"
+                        });
+                    }
+                });
+            }
+        </script>
+        <script>
+            function deleteUser(userID) {
+                swal({
+                    title: "Cảnh báo",
+                    text: "Bạn có chắc chắn muốn xóa nhân viên này?",
+                    buttons: ["Hủy bỏ", "Đồng ý"]
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: 'deleteUser', // URL của servlet xử lý xóa người dùng
+                            type: 'POST',
+                            data: {id: userID},
+                            success: function (response) {
+                                swal("Đã xóa thành công!", {
+                                    icon: "success"
+                                }).then(() => {
+                                    location.reload(); // Reload trang để cập nhật danh sách
+                                });
+                            },
+                            error: function () {
+                                swal("Xóa thất bại!", {
+                                    icon: "error"
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        </script>
         <script>
             function deleteRow(r) {
                 var i = r.parentNode.parentNode.rowIndex;

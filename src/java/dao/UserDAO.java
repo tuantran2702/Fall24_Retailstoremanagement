@@ -69,6 +69,27 @@ public class UserDAO extends DBContext{
         }
     }
     
+    public boolean deleteUser(int userID) {
+        String sql = "DELETE FROM [dbo].[User] WHERE UserID = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, userID);  // Gán userID vào câu lệnh SQL
+            int rowsAffected = ps.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                System.out.println("Xóa người dùng thành công!");
+                return true;
+            } else {
+                System.out.println("Không tìm thấy người dùng với ID: " + userID);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Xóa người dùng thất bại!");
+            return false;
+        }
+        return false;
+    }
+    
     public List<User> getAllUsers(){
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM [User]";

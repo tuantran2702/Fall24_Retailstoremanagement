@@ -12,6 +12,14 @@
         <servlet-name>AddUserController</servlet-name>
         <servlet-class>controllers.UserController.AddUserController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <servlet-class>controllers.UserController.DeleteUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetUserServlet</servlet-name>
+        <servlet-class>controllers.UserController.GetUserServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -27,6 +35,14 @@
     <servlet-mapping>
         <servlet-name>AddUserController</servlet-name>
         <url-pattern>/addUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <url-pattern>/deleteUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetUserServlet</servlet-name>
+        <url-pattern>/getUser</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
