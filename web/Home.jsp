@@ -68,7 +68,10 @@
 
                 <li><a class="app-menu__item" href="category"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý danh mục</span></a>
-                </li>        
+                </li>  
+                <li><a class="app-menu__item" href="customer"><i
+                            class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý khách hàng</span></a>
+                </li> 
 
                 <li><a class="app-menu__item" href="warehouse"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Quản lý kho</span></a></li>

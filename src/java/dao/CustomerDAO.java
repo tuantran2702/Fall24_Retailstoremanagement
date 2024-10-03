@@ -79,7 +79,7 @@ public class CustomerDAO extends DBContext {
     }
 
     // Update an existing customer
-    public void updateCustomer(Customer customer) {
+    public boolean updateCustomer(Customer customer) {
         String sql = "UPDATE Customer SET FirstName = ?, LastName = ?, Email = ?, PhoneNumber = ?, TotalSpent = ?, Address = ?, RankID = ? WHERE CustomerID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -87,13 +87,16 @@ public class CustomerDAO extends DBContext {
             st.setString(2, customer.getLastName());
             st.setString(3, customer.getEmail());
             st.setString(4, customer.getPhoneNumber());
-            st.setDouble(5, customer.getTotalSpent());
-            st.setString(6, customer.getAddress());
-            st.setInt(7, customer.getRankID());
-            st.setInt(8, customer.getCustomerID());
-            st.executeUpdate();
+            //st.setDouble(5, customer.getTotalSpent());
+            st.setString(5, customer.getAddress());
+            //st.setInt(7, customer.getRankID());
+            st.setInt(6, customer.getCustomerID());
+            
+            int rowsAffected = st.executeUpdate(); // Get the number of affected rows
+            return rowsAffected > 0; // Return true if any row is updated
         } catch (SQLException e) {
             e.printStackTrace();
+            return false; // Return false on error
         }
     }
 

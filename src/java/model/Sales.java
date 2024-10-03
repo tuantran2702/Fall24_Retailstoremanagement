@@ -7,6 +7,7 @@ public class Sales {
     private Date saleDate;
     private double totalAmount;
     private Integer customerID;
+    private String customerFullName;
 
     // Constructors, getters, and setters
     public Sales() {}
@@ -48,5 +49,13 @@ public class Sales {
 
     public void setCustomerID(Integer customerID) {
         this.customerID = customerID;
+    }
+    // Getter và setter cho customerFullName
+    public String getCustomerFullName() {
+        return customerFullName;
+    }
+
+    public void setCustomerFullName(String customerFullName) {
+        this.customerFullName = customerFullName;
     }
 }
