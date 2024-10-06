@@ -67,10 +67,13 @@ public class SupplierController extends HttpServlet {
         } else if (action.equals("create")) {
             SupplierDAO supplier = new SupplierDAO();
             request.getRequestDispatcher("/SupplierManager/createSupplier.jsp").forward(request, response);
-        } else if (action.equals("update")) {
+        } else if (action.equals("update") && idStr != null) {
+            int id = Integer.parseInt(idStr);
+            
             SupplierDAO supplier = new SupplierDAO();
-            request.setAttribute("data", supplier.getListsupplier());
-            request.getRequestDispatcher("/SupplierManager/listSupplier.jsp").forward(request, response);
+            Supplier s = supplier.getSupplierById(id);
+            request.setAttribute("supplier", s);         
+            request.getRequestDispatcher("/SupplierManager/updateSupplier.jsp").forward(request, response);
         }
          else if (action.equals("delete") && idStr != null) {
             int id = Integer.parseInt(request.getParameter("id"));
@@ -107,6 +110,23 @@ public class SupplierController extends HttpServlet {
                 
             
         }
+        else if (action.equals("update")) {
+            
+            int id = Integer.parseInt(request.getParameter("id"));
+            String supplierName = request.getParameter("supplierName");
+            String contactName = request.getParameter("contactName");
+            String phoneNumber = request.getParameter("phoneNumber");
+            String email = request.getParameter("email");
+            String address = request.getParameter("address");
+            
+            Supplier supplier = new Supplier(id, supplierName, contactName, phoneNumber, email, address);
+            SupplierDAO s = new SupplierDAO();
+
+            s.updateSupplier(supplier);
+            response.sendRedirect("supplier");
+        
+        }
+        
 
 
     }

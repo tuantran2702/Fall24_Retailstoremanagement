@@ -206,16 +206,16 @@
                         <div class="tile-body">
                             <div class="row element-button">
                                 <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i
-                                            class="fas fa-folder-plus"></i> Thêm nhà cung cấp</a>
+                                    <a href="${pageContext.request.contextPath}/supplier?action=create" class="btn btn-add btn-sm" ><i
+                                            class="fas fa-folder-plus"></i> Thêm supplier</a>
                                 </div>
                                 <div class="col-sm-2">
                                     <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc"><i
-                                            class="fas fa-folder-plus"></i> Thêm danh mục</a>
+                                            class="fas fa-folder-plus"></i> Thêm Category</a>
                                 </div>
                                 <div class="col-sm-2">
                                     <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang"><i
-                                            class="fas fa-folder-plus"></i> Thêm tình trạng</a>
+                                            class="fas fa-folder-plus"></i> Thêm Unit</a>
                                 </div>
                             </div>
                             <form action="product" method="post" class="row">

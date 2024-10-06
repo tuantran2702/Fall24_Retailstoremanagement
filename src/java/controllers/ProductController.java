@@ -81,6 +81,10 @@ public class ProductController extends HttpServlet {
         } else if (action.equals("update") && idStr != null) {
             int id = Integer.parseInt(idStr);
             ProductDAO product = new ProductDAO();
+            request.setAttribute("listCategory", product.GetListCategory());
+            request.setAttribute("listUser", product.GetListUser());
+            request.setAttribute("listUnit", product.GetListUnit());
+            request.setAttribute("listSupplier", product.GetListSupplier());
             Product p = product.getProductById(id);
             request.setAttribute("product", p);
             request.getRequestDispatcher("/ProductManager/updateProduct.jsp").forward(request, response);
@@ -137,6 +141,7 @@ public class ProductController extends HttpServlet {
 
             p.createProduct(product);
             response.sendRedirect("product");
+
         } else if (action.equals("update")) {
             int id = Integer.parseInt(request.getParameter("id"));
             String productCode = request.getParameter("productCode");
@@ -170,9 +175,24 @@ public class ProductController extends HttpServlet {
 
             Product product = new Product(id, productCode, productName, categoryID, price, quantity, description, createdDate, expiredDate, updateDate, image, userID, unitID, supplierID);
             ProductDAO p = new ProductDAO();
+            int importInventory = p.getInventoryQuantityByProductId(product.getProductID());
 
-            p.updateProduct(product);
-            response.sendRedirect("product");
+            // Nếu số lượng sản phẩm lớn hơn số lượng nhập
+            if (quantity > importInventory) {
+                // Gửi thông báo lỗi và chuyển về trang update
+                request.setAttribute("error", "Số lượng sản phẩm không được vượt quá số lượng Inventory." + importInventory);
+                request.setAttribute("product", product); // Gửi lại đối tượng Product với dữ liệu hiện tại
+                request.setAttribute("listCategory", p.GetListCategory());
+                request.setAttribute("listUser", p.GetListUser());
+                request.setAttribute("listUnit", p.GetListUnit());
+                request.setAttribute("listSupplier", p.GetListSupplier());
+                request.getRequestDispatcher("/ProductManager/updateProduct.jsp").forward(request, response);
+            } else {
+                // Nếu đúng điều kiện thì tạo sản phẩm
+                p.updateProduct(product);
+                response.sendRedirect("product");
+            }
+
         }
 
     }

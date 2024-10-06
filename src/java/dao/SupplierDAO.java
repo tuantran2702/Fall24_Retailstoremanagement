@@ -148,4 +148,53 @@ public void deletesupplier(int id) {
 //
 //    }
 
+    public Supplier getSupplierById(int id) {
+                String sql = "select *from Supplier where SupplierID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                String supplierName = rs.getString(2);
+                String contactName = rs.getString(3);
+                String phoneNumber = rs.getString(4);
+                String email = rs.getString(5);
+                String address = rs.getString(6);
+
+                return new Supplier(id, supplierName, contactName, phoneNumber, email, address);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void updateSupplier(Supplier supplier) {
+        
+        String sql = "UPDATE Supplier SET"
+                + " SupplierName = ?,"
+                        + " ContactName = ?,"
+                        + " PhoneNumber = ?,"
+                        + " Email = ?,"
+                        + " Address = ? WHERE SupplierID = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, supplier.getSupplierName());
+            stmt.setString(2, supplier.getContactName());
+            stmt.setString(3, supplier.getPhoneNumber());
+            stmt.setString(4, supplier.getEmail());
+            stmt.setString(5, supplier.getAddress());
+            stmt.setInt(6, supplier.getSupplierID());
+
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("insertFail:" + e.getMessage());
+//            e.printStackTrace();
+        }
+
+    }
+
+
 }

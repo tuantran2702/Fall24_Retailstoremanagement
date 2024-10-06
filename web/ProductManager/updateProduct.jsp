@@ -99,6 +99,7 @@
                     <div class="tile">
                         <h3 class="tile-title">Cập nhật kho hàng</h3>
                         <div class="tile-body">
+                            <!-- Hiển thị thông báo lỗi nếu có -->
                             <form action="product" method="post" >
                                 <input type="hidden" name="action" value="update">
                                 <div class="row">
@@ -124,18 +125,31 @@
                                             <label class="control-label">Price</label>
                                             <input class="form-control" type="number" required name="price" value="${product.price}"><br>
                                         </div>
-                                        <div class="form-group col-md-6 ">
-                                            <label for="exampleSelect1" class="control-label">Category</label>
-                                            <input class="form-control" type="text" required name="categoryID" value="${product.categoryID}"><br>
-                                            <!--                                            <select class="form-control" name="category" id="exampleSelect1">
-                                                                                            <option>Còn hàng</option>
-                                                                                            <option>Hết hàng</option>
-                                                                                            <option>Đang nhập hàng</option>
-                                                                                        </select>-->
+                                        <div class="form-group col-md-6">
+                                            <label for="categorySelect" class="control-label">Category</label>
+                                            <select class="form-control" id="categorySelect" name="categoryID" required>
+                                                <c:forEach var="c" items="${listCategory}">
+                                                    <option value="${c.categoryID}" 
+                                                            <c:if test="${c.categoryID == product.categoryID}">
+                                                                selected
+                                                            </c:if>>
+                                                        ${c.categoryName}
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
+                                        <!--                                        <div class="form-group col-md-6 ">
+                                                                                    <label for="exampleSelect1" class="control-label">Category</label>
+                                            <input class="form-control" type="text" required name="categoryID" value="${product.categoryID}"><br>
+                                        </div>-->
                                         <div class="form-group col-md-6">
                                             <label class="control-label">Quantity</label>
                                             <input class="form-control" type="text" name="quantity" value="${product.quantity}"><br>
+                                            <c:if test="${not empty error}">
+    <div style="color: red;">
+        ${error}
+    </div>
+</c:if>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label class="control-label">Created Date</label>
@@ -150,32 +164,48 @@
                                             <input class="form-control" type="date" name="updateDate" value="${product.updateDate}"><br>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="exampleSelect1" class="control-label">User</label>
-                                            <input class="form-control" type="text" required name="userID" value="${product.userID}"><br>
-                                            <!--                                            <select class="form-control" name="userID" id="exampleSelect1">
-                                            <c:forEach var="u" items="${listUser}">
-                                                <option value="${u.getUserID()}" <c:if test="${u.getUserID() == product.userID}">selected</c:if>>${u.getFirstName()} ${u.getLastName()}</option>
-                                            </c:forEach>
-                                        </select>-->
+                                            
+                                                                                        <label for="userSelect" class="control-label">User</label>
+                                            <select class="form-control" id="userSelect" name="userID" required>
+                                                <c:forEach var="s" items="${listUser}">
+                                                    <option value="${s.userID}" 
+                                                            <c:if test="${s.userID == product.userID}">
+                                                                selected
+                                                            </c:if>>
+                                                        ${s.firstName} ${s.lastName}
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
+                                            
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="exampleSelect1" class="control-label">Unit</label>
-                                            <input class="form-control" type="text" required name="unitID" value="${product.unitID}"><br>
-                                            <!--                                            <select class="form-control" name="unitID" id="exampleSelect1">
-                                            <c:forEach var="c" items="${listUnit}">
-                                                <option value="${c.getUnitID()}">${product.unitID}</option>
-                                            </c:forEach>
-                                        </select>-->
+                                            
+                                                        <label for="unitSelect" class="control-label">Unit</label>
+                                            <select class="form-control" id="unitSelect" name="unitID" required>
+                                                <c:forEach var="u" items="${listUnit}">
+                                                    <option value="${u.unitID}" 
+                                                            <c:if test="${u.unitID == product.unitID}">
+                                                                selected
+                                                            </c:if>>
+                                                        ${u.unitName} 
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="exampleSelect1" class="control-label">Supplier</label>
-                                            <input class="form-control" type="text" required name="supplierID" value="${product.supplierID}"><br>
+                                            
+                                                                                                    <label for="supplierSelect" class="control-label">Supplier</label>
+                                            <select class="form-control" id="supplierSelect" name="supplierID" required>
+                                                <c:forEach var="s" items="${listSupplier}">
+                                                    <option value="${s.supplierID}" 
+                                                            <c:if test="${s.supplierID == product.supplierID}">
+                                                                selected
+                                                            </c:if>>
+                                                        ${s.supplierName} 
+                                                    </option>
+                                                </c:forEach>
+                                            </select>
 
-                                            <!--                                            <select class="form-control" name="supplierID" id="exampleSelect1">
-                                            <c:forEach var="s" items="${listSupplier}">
-                                                <option value="${s.getSupplierID()}">${s.getSupplierName()}</option>
-                                            </c:forEach>
-                                        </select>-->
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label class="control-label">Image</label>
