@@ -216,7 +216,7 @@
                             <c:if test="${not empty errorMessage}">
                                 <p style="color:red">${errorMessage}</p>
                             </c:if>
-                            <form class="row" action="adduser" method="POST" enctype="multipart/form-data">
+                            <form class="row" action="addUser" method="POST" enctype="multipart/form-data">
                                 <div class="form-group col-md-4">
                                     <label class="control-label">FirstName</label>
                                     <input class="form-control" type="text" name="firstName" required>
@@ -251,7 +251,7 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-<!--                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-12">
                                     <label class="control-label">Ảnh 3x4 nhân viên</label>
                                     <div id="myfileupload">
                                         <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
@@ -265,7 +265,7 @@
                                         <p style="clear:both"></p>
                                     </div>
 
-                                </div>-->
+                                </div>
                                 <button class="btn btn-save" type="submit">Lưu lại</button>
                                 <a class="btn btn-cancel" href="userManage">Hủy bỏ</a>
                             </form>

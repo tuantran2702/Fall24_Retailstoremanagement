@@ -1,93 +1,87 @@
-package model;
+package com.example.retailstore.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class ReportInventory {
-    private int reportID;
-    private Date reportDate;
-    private int productID;
-    private int warehouseID;
-    private int totalQuantity;
-    private double totalStockValue;
-    private String productName;
-    private String warehouseName;
+    private Integer reportId;
+    private LocalDateTime reportDate;
+    private Integer productId;
+    private Integer warehouseId;
+    private Integer totalQuantity;
+    private Double totalStockValue;
 
-    // Constructors
+    // Default constructor
     public ReportInventory() {}
 
-    public ReportInventory(int reportID, Date reportDate, int productID, int warehouseID, int totalQuantity, double totalStockValue, String productName, String warehouseName) {
-        this.reportID = reportID;
+    // Constructor with all fields
+    public ReportInventory(Integer reportId, LocalDateTime reportDate, Integer productId, 
+                           Integer warehouseId, Integer totalQuantity, Double totalStockValue) {
+        this.reportId = reportId;
         this.reportDate = reportDate;
-        this.productID = productID;
-        this.warehouseID = warehouseID;
+        this.productId = productId;
+        this.warehouseId = warehouseId;
         this.totalQuantity = totalQuantity;
         this.totalStockValue = totalStockValue;
-        this.productName = productName;
-        this.warehouseName = warehouseName;
     }
 
     // Getters and Setters
-    public int getReportID() {
-        return reportID;
+    public Integer getReportId() {
+        return reportId;
     }
 
-    public void setReportID(int reportID) {
-        this.reportID = reportID;
+    public void setReportId(Integer reportId) {
+        this.reportId = reportId;
     }
 
-    public Date getReportDate() {
+    public LocalDateTime getReportDate() {
         return reportDate;
     }
 
-    public void setReportDate(Date reportDate) {
+    public void setReportDate(LocalDateTime reportDate) {
         this.reportDate = reportDate;
     }
 
-    public int getProductID() {
-        return productID;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
-    public int getWarehouseID() {
-        return warehouseID;
+    public Integer getWarehouseId() {
+        return warehouseId;
     }
 
-    public void setWarehouseID(int warehouseID) {
-        this.warehouseID = warehouseID;
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
     }
 
-    public int getTotalQuantity() {
+    public Integer getTotalQuantity() {
         return totalQuantity;
     }
 
-    public void setTotalQuantity(int totalQuantity) {
+    public void setTotalQuantity(Integer totalQuantity) {
         this.totalQuantity = totalQuantity;
     }
 
-    public double getTotalStockValue() {
+    public Double getTotalStockValue() {
         return totalStockValue;
     }
 
-    public void setTotalStockValue(double totalStockValue) {
+    public void setTotalStockValue(Double totalStockValue) {
         this.totalStockValue = totalStockValue;
     }
 
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getWarehouseName() {
-        return warehouseName;
-    }
-
-    public void setWarehouseName(String warehouseName) {
-        this.warehouseName = warehouseName;
+    @Override
+    public String toString() {
+        return "ReportInventory{" +
+               "reportId=" + reportId +
+               ", reportDate=" + reportDate +
+               ", productId=" + productId +
+               ", warehouseId=" + warehouseId +
+               ", totalQuantity=" + totalQuantity +
+               ", totalStockValue=" + totalStockValue +
+               '}';
     }
 }

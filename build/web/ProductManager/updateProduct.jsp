@@ -99,6 +99,7 @@
                     <div class="tile">
                         <h3 class="tile-title">Cập nhật kho hàng</h3>
                         <div class="tile-body">
+                            <!-- Hiển thị thông báo lỗi nếu có -->
                             <form action="product" method="post" >
                                 <input type="hidden" name="action" value="update">
                                 <div class="row">
@@ -144,6 +145,11 @@
                                         <div class="form-group col-md-6">
                                             <label class="control-label">Quantity</label>
                                             <input class="form-control" type="text" name="quantity" value="${product.quantity}"><br>
+                                            <c:if test="${not empty error}">
+    <div style="color: red;">
+        ${error}
+    </div>
+</c:if>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label class="control-label">Created Date</label>

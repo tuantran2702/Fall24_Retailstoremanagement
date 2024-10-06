@@ -16,11 +16,12 @@ public class User {
     private String phoneNumber;
     private String address;
     private int roleID;
+    private String img;
 
     public User() {
     }
 
-    public User(int userID, String firstName, String lastName, String email, String password, String phoneNumber, String address, int roleID) {
+    public User(int userID, String firstName, String lastName, String email, String password, String phoneNumber, String address, int roleID, String img) {
         this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,6 +30,15 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.roleID = roleID;
+        this.img = img;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
     
     
@@ -101,6 +111,6 @@ public class User {
     public String toString() {
         return "UserID: " + userID + ", Name: " + firstName + " " + lastName +
                ", Email: " + email + ", PhoneNumber: " + phoneNumber + 
-               ", Address: " + address + ", RoleId: " + roleID;
+               ", Address: " + address + ", RoleId: " + roleID + ", Img: " + img;
     }
 }

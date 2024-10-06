@@ -54,32 +54,44 @@
                 </div>
             </div>
             <hr>
-            <ul class="app-menu">
-                <li><a class="app-menu__item haha" href="phan-mem-ban-hang.html"><i class='app-menu__icon bx bx-cart-alt'></i>
+             <ul class="app-menu">
+                <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
                         <span class="app-menu__label">POS Bán Hàng</span></a></li>
-                <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
+                <li><a class="app-menu__item active" href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Bảng điều khiển</span></a></li>
-                <li><a class="app-menu__item active" href="employeeManage"><i class='app-menu__icon bx bx-id-card'></i>
-                        <span class="app-menu__label">Quản lý nhân viên</span></a></li>
-                <li><a class="app-menu__item" href="#"><i class='app-menu__icon bx bx-user-voice'></i><span
-                            class="app-menu__label">Quản lý khách hàng</span></a></li>
-                <li><a class="app-menu__item" href="table-data-product.html"><i
+                              <li><a class="app-menu__item" href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
+                              
+                                    <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
+            class="app-menu__label">Quản lý nhân viên</span></a></li>
+                            
+                            
+                               <li><a class="app-menu__item" href="product"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
                 </li>
-                <li><a class="app-menu__item" href="table-data-oder.html"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Quản lý đơn hàng</span></a></li>
-                <li><a class="app-menu__item" href="table-data-banned.html"><i class='app-menu__icon bx bx-run'></i><span
-                            class="app-menu__label">Quản lý nội bộ
-                        </span></a></li>
-                <li><a class="app-menu__item" href="table-data-money.html"><i class='app-menu__icon bx bx-dollar'></i><span
-                            class="app-menu__label">Bảng kê lương</span></a></li>
-                <li><a class="app-menu__item" href="quan-ly-bao-cao.html"><i
-                            class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
-                </li>
-                <li><a class="app-menu__item" href="page-calendar.html"><i class='app-menu__icon bx bx-calendar-check'></i><span
-                            class="app-menu__label">Lịch công tác </span></a></li>
-                <li><a class="app-menu__item" href="#"><i class='app-menu__icon bx bx-cog'></i><span class="app-menu__label">Cài
-                            đặt hệ thống</span></a></li>
+
+                <li><a class="app-menu__item " href="employee"><i class='app-menu__icon bx bx-id-card'></i> <span
+                            class="app-menu__label">Quản lý nhân viên</span></a></li>
+                            
+                            
+                            
+                            
+             
+                <li><a class="app-menu__item" href="category"><i
+                            class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý danh mục</span></a>
+                </li>        
+
+              
+
+
+
+
+                <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Quản lý  tồn kho</span></a></li>
+
+
+
+            
+            
             </ul>
         </aside>
         <main class="app-content">
@@ -127,12 +139,13 @@
                                             class="fas fa-trash-alt"></i> Xóa tất cả </a>
                                 </div>
                             </div>
-                            
+
                             <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
                                    id="sampleTable">
                                 <thead>
                                     <tr>
                                         <th width="10"><input type="checkbox" id="all"></th>
+                                        <th>Img</th>
                                         <th>ID nhân viên</th>
                                         <th width="150">Họ và tên</th>
                                         <th width="170">Email</th>
@@ -146,6 +159,7 @@
                                     <c:forEach var="user" items="${requestScope.userList}">
                                         <tr>
                                             <td width="10"><input type="checkbox"></td>
+                                            <td><img src="${user.img}" alt="User Image" style="width:100px;height:100px;"></td>
                                             <td>${user.userID}</td>
                                             <td>${user.firstName} ${user.lastName}</td>
                                             <td>${user.email}</td>
@@ -154,9 +168,11 @@
                                             <td>${user.roleID}</td>
                                             <td>
                                                 <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                                        onclick="myFunction(this)"><i class="fas fa-trash-alt"></i></button>
-                                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp"
-                                                        data-toggle="modal" data-target="#ModalUP"><i class="fas fa-edit"></i></button>
+                                                        onclick="deleteUser(${user.userID})"><i class="fas fa-trash-alt"></i></button>
+                                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"
+                                                        data-id="${user.userID}" data-toggle="modal" data-target="#ModalUP" onclick="loadUserData(${user.userID})">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -254,6 +270,89 @@
         <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
         <script type="text/javascript">$('#sampleTable').DataTable();</script>
+        <script>
+            $('#saveChangesBtn').on('click', function () {
+                var user = {
+                    userID: $('#ModalUP input[name="userID"]').val(),
+                    firstName: $('#ModalUP input[name="firstName"]').val(),
+                    lastName: $('#ModalUP input[name="lastName"]').val(),
+                    phoneNumber: $('#ModalUP input[name="phoneNumber"]').val(),
+                    email: $('#ModalUP input[name="email"]').val(),
+                    roleID: $('#ModalUP select[name="roleID"]').val()
+                };
+
+                $.ajax({
+                    url: 'updateUser', // URL của servlet để cập nhật thông tin
+                    type: 'POST',
+                    data: user,
+                    success: function (response) {
+                        swal("Đã cập nhật thành công!", {
+                            icon: "success"
+                        }).then(() => {
+                            location.reload(); // Reload trang sau khi cập nhật
+                        });
+                    },
+                    error: function () {
+                        swal("Cập nhật thất bại!", {
+                            icon: "error"
+                        });
+                    }
+                });
+            });
+
+        </script>
+        <script>
+            function loadUserData(userID) {
+                $.ajax({
+                    url: 'getUser', // URL của servlet lấy thông tin người dùng
+                    type: 'GET',
+                    data: {id: userID},
+                    success: function (user) {
+                        // Hiển thị dữ liệu vào modal
+                        $('#ModalUP input[name="userID"]').val(user.userID);
+                        $('#ModalUP input[name="firstName"]').val(user.firstName);
+                        $('#ModalUP input[name="lastName"]').val(user.lastName);
+                        $('#ModalUP input[name="phoneNumber"]').val(user.phoneNumber);
+                        $('#ModalUP input[name="email"]').val(user.email);
+                        $('#ModalUP select[name="roleID"]').val(user.roleID);
+                    },
+                    error: function () {
+                        swal("Không thể tải dữ liệu người dùng!", {
+                            icon: "error"
+                        });
+                    }
+                });
+            }
+        </script>
+        <script>
+            function deleteUser(userID) {
+                swal({
+                    title: "Cảnh báo",
+                    text: "Bạn có chắc chắn muốn xóa nhân viên này?",
+                    buttons: ["Hủy bỏ", "Đồng ý"]
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: 'deleteUser', // URL của servlet xử lý xóa người dùng
+                            type: 'POST',
+                            data: {id: userID},
+                            success: function (response) {
+                                swal("Đã xóa thành công!", {
+                                    icon: "success"
+                                }).then(() => {
+                                    location.reload(); // Reload trang để cập nhật danh sách
+                                });
+                            },
+                            error: function () {
+                                swal("Xóa thất bại!", {
+                                    icon: "error"
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        </script>
         <script>
             function deleteRow(r) {
                 var i = r.parentNode.parentNode.rowIndex;

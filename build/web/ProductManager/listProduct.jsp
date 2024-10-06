@@ -66,7 +66,8 @@
             <li><a class="app-menu__item" href="${pageContext.request.contextPath}/employee"><i class='app-menu__icon bx bx-id-card'></i>Quản lý nhân viên</a></li>
             <li><a class="app-menu__item" href="${pageContext.request.contextPath}/category"><i class='app-menu__icon bx bx-category'></i>Quản lý danh mục</a></li>
             <li><a class="app-menu__item " href="${pageContext.request.contextPath}/inventory"><i class='app-menu__icon bx bx-task'></i>Quản lý tồn kho</a></li>
-         
+                                       <li><a class="app-menu__item  " href="${pageContext.request.contextPath}/customer"><i class='app-menu__icon bx bx-task'></i>Quản lý khách hàng </a></li>
+
     </aside>
     </aside>
         <main class="app-content">
