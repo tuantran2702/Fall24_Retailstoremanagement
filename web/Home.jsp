@@ -77,7 +77,7 @@
       </li>
       <li><a class="app-menu__item" href="page-calendar.html"><i class='app-menu__icon bx bx-calendar-check'></i><span
             class="app-menu__label">Lịch công tác </span></a></li>
-      <li><a class="app-menu__item" href="#"><i class='app-menu__icon bx bx-cog'></i><span class="app-menu__label">Cài
+      <li><a class="app-menu__item" href="setting"><i class='app-menu__icon bx bx-cog'></i><span class="app-menu__label">Cài
             đặt hệ thống</span></a></li>
     </ul>
   </aside>

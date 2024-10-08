@@ -89,14 +89,14 @@ public class ForgotPassController extends HttpServlet {
         }
         
         String randomCode = generateRandomCode(6);
-        String subject = "Yêu cầu đặt lại mật khẩu";
+        String subject = "Tap Hoa SWP";
 
         // Nội dung email định dạng HTML
         String body = "<html>"
                 + "<head>"
                 + "<meta charset=\"UTF-8\">"
                 + // Đảm bảo mã hóa UTF-8
-                "<title>Tạp Hóa SWP</title>"
+                "<title>Yêu cầu đặt lại mật khẩu</title>"
                 + "</head>"
                 + "<body>"
                 + "<h2>Xin chào,</h2>"
