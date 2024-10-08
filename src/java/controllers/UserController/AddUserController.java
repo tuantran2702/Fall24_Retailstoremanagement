@@ -86,7 +86,6 @@ public class AddUserController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        MaHoa mh = new MaHoa();
         // Collect form data
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
@@ -94,25 +93,98 @@ public class AddUserController extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         String password = request.getParameter("password");
-        int roleId = Integer.parseInt(request.getParameter("role"));
 
-        // Handling image upload
-        Part filePart = request.getPart("ImageUpload");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
+        //Kiem tra Role
+        int roleId;
+        try {
+            roleId = Integer.parseInt(request.getParameter("role"));
+        } catch (Exception e) {
+            // Gửi thông báo lỗi khi người dùng không chọn chức vụ hợp lệ
+            request.setAttribute("errorMessage", "Vui lòng chọn chức vụ.");
 
-        // Create directory if it doesn't exist
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir();
+            request.setAttribute("firstname", firstName);
+            request.setAttribute("lastname", lastName);
+            request.setAttribute("email", email);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
+            request.setAttribute("pass", password);
+
+            // Truy vấn dữ liệu từ database
+            RoleDAO roleDAO = new RoleDAO();
+            List<Role> roles = roleDAO.getAllRole();
+
+            // Lưu danh sách roles vào request attribute
+            request.setAttribute("roles", roles);
+            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
+            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
+            return; // Dừng việc xử lý thêm người dùng
         }
 
-        // Full path to store the image
-        String filePath = uploadPath + File.separator + fileName;
-        filePart.write(filePath);
+        // Kiểm tra số điện thoại có hợp lệ hay không (10 số và bắt đầu bằng 0)
+        String phonePattern = "^0\\d{9}$";
+        if (!phone.matches(phonePattern)) {
+            // Nếu số điện thoại không hợp lệ, thiết lập thông báo lỗi
+            request.setAttribute("errorMessage", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại 10 số bắt đầu bằng 0.");
 
-        // Store relative path in the database (not full server path)
-        String imgPath = UPLOAD_DIRECTORY + File.separator + fileName;
+            request.setAttribute("firstname", firstName);
+            request.setAttribute("lastname", lastName);
+            request.setAttribute("email", email);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
+            request.setAttribute("pass", password);
+
+            // Truy vấn dữ liệu từ database
+            RoleDAO roleDAO = new RoleDAO();
+            List<Role> roles = roleDAO.getAllRole();
+
+            // Lưu danh sách roles vào request attribute
+            request.setAttribute("roles", roles);
+            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
+            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
+            return;  // Dừng xử lý tiếp
+        }
+        
+        ImageHandler ih = new ImageHandler();
+        String uploadFilePath = getServletContext().getRealPath("") + File.separator + "img-anhthe";
+        String imgPath = null;
+
+        // Lấy phần file tải lên
+        Part filePart = request.getPart("ImageUpload");
+        UserDAO ud = new UserDAO();
+        
+
+        // Hàm lưu ảnh
+        imgPath = ih.luuAnh(filePart, uploadFilePath);
+
+        // Nếu không có file được tải lên, giữ nguyên đường dẫn ảnh hiện tại
+        if (imgPath == null) {
+            imgPath = "img-anhthe\\default.png";
+        }
+        
+
+//        // Handling image upload
+//        String imgPath = null;
+//        Part filePart = request.getPart("ImageUpload"); // "ImageUpload" is the name attribute in the form
+//        if (filePart != null && filePart.getSize() > 0) {
+//            String applicationPath = request.getServletContext().getRealPath("");
+//            String uploadFilePath = applicationPath + File.separator + "img-anhthe"; // Directory to store the uploaded image
+//
+//            // Create directory if it doesn't exist
+//            File uploadDir = new File(uploadFilePath);
+//            if (!uploadDir.exists()) {
+//                uploadDir.mkdirs();
+//            }
+//
+//            // Extract file name and save the file
+//            String fileName = getFileName(filePart);
+//            String fullFilePath = uploadFilePath + File.separator + fileName;
+//            filePart.write(fullFilePath);
+//
+//            // Set the image path to store in the database (optional: relative path)
+//            imgPath = "img-anhthe/" + fileName;
+//        }else imgPath = "img-anhthe\\default.png";
+
+
 
         // Create a user object
         User user = new User();
@@ -135,10 +207,20 @@ public class AddUserController extends HttpServlet {
             // Set error message in the request
             request.setAttribute("errorMessage", "An error occurred while adding the user. Please try again.");
             // Forward request back to the form page
-            request.getRequestDispatcher("addUser.jsp").forward(request, response);
+            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
         }
 
-        
+    }
+// Helper method to get file name
+
+    private String getFileName(Part part) {
+        String contentDisposition = part.getHeader("content-disposition");
+        for (String token : contentDisposition.split(";")) {
+            if (token.trim().startsWith("filename")) {
+                return token.substring(token.indexOf("=") + 2, token.length() - 1);
+            }
+        }
+        return null;
     }
 
     /**

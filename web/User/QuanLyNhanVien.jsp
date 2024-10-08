@@ -5,6 +5,10 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="dao.RoleDAO" %>
+<%
+    RoleDAO roleDAO = new RoleDAO(); // Khởi tạo đối tượng RoleDAO
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,23 +49,22 @@
         </header>
         <!-- Sidebar menu-->
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-        <aside class="app-sidebar">
+      <aside class="app-sidebar">
             <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
-                                                alt="User Image">
-                <div>
-                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getEmail()}</b></p>
-                    <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
+                                                alt="User Image">      <div>
+        <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
+        <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
                 </div>
             </div>
-            <hr>
-             <ul class="app-menu">
+          
+    <ul class="app-menu">
                 <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
                         <span class="app-menu__label">POS Bán Hàng</span></a></li>
-                <li><a class="app-menu__item active" href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
+                <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Bảng điều khiển</span></a></li>
-                              <li><a class="app-menu__item" href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
+                              <li><a class="app-menu__item " href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
                               
-                                    <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
+                                    <li><a class="app-menu__item  active" href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
             class="app-menu__label">Quản lý nhân viên</span></a></li>
                             
                             
@@ -69,16 +72,13 @@
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
                 </li>
 
-                <li><a class="app-menu__item " href="employee"><i class='app-menu__icon bx bx-id-card'></i> <span
-                            class="app-menu__label">Quản lý nhân viên</span></a></li>
+                <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-id-card'></i> <span
+                            class="app-menu__label">Quản lý khách hàng </span></a></li>
                             
                             
                             
                             
-             
-                <li><a class="app-menu__item" href="category"><i
-                            class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý danh mục</span></a>
-                </li>        
+                   
 
               
 
@@ -86,13 +86,18 @@
 
 
                 <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Quản lý  tồn kho</span></a></li>
+                            class="app-menu__label">Quản lý   kho</span></a></li>
 
+   <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Thay đổi mật khẩu </span></a></li>
 
 
             
             
             </ul>
+
+
+        </aside>
         </aside>
         <main class="app-content">
             <div class="app-title">
@@ -131,9 +136,11 @@
                                     <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất Excel</a>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)"><i
-                                            class="fas fa-file-pdf"></i> Xuất PDF</a>
+                                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="xuatPDF()">
+                                        <i class="fas fa-file-pdf"></i> Xuất PDF
+                                    </a>
                                 </div>
+
                                 <div class="col-sm-2">
                                     <a class="btn btn-delete btn-sm" type="button" title="Xóa" onclick="myFunction(this)"><i
                                             class="fas fa-trash-alt"></i> Xóa tất cả </a>
@@ -155,6 +162,7 @@
                                         <th width="100">Tính năng</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     <c:forEach var="user" items="${requestScope.userList}">
                                         <tr>
@@ -167,12 +175,12 @@
                                             <td>${user.phoneNumber}</td>
                                             <td>${user.roleID}</td>
                                             <td>
-                                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                                        onclick="deleteUser(${user.userID})"><i class="fas fa-trash-alt"></i></button>
-                                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"
-                                                        data-id="${user.userID}" data-toggle="modal" data-target="#ModalUP" onclick="loadUserData(${user.userID})">
+                                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" 
+                                                        onclick="window.location.href = 'updateUser?userID=${user.userID}'">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
+                                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
+                                                        onclick="deleteUser(${user.userID})"><i class="fas fa-trash-alt"></i></button>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -184,76 +192,7 @@
             </div>
         </main>
 
-        <!--
-        MODAL
-        -->
-        <div class="modal fade" id="ModalUP" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
-             data-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
 
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="form-group  col-md-12">
-                                <span class="thong-tin-thanh-toan">
-                                    <h5>Chỉnh sửa thông tin nhân viên cơ bản</h5>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-6">
-                                <label class="control-label">ID nhân viên</label>
-                                <input class="form-control" type="text" required value="#CD2187" disabled>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Họ và tên</label>
-                                <input class="form-control" type="text" required value="Võ Trường">
-                            </div>
-                            <div class="form-group  col-md-6">
-                                <label class="control-label">Số điện thoại</label>
-                                <input class="form-control" type="number" required value="09267312388">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Địa chỉ email</label>
-                                <input class="form-control" type="text" required value="truong.vd2000@gmail.com">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label class="control-label">Ngày sinh</label>
-                                <input class="form-control" type="date" value="15/03/2000">
-                            </div>
-                            <div class="form-group  col-md-6">
-                                <label for="exampleSelect1" class="control-label">Chức vụ</label>
-                                <select class="form-control" id="exampleSelect1">
-                                    <option>Bán hàng</option>
-                                    <option>Tư vấn</option>
-                                    <option>Dịch vụ</option>
-                                    <option>Thu Ngân</option>
-                                    <option>Quản kho</option>
-                                    <option>Bảo trì</option>
-                                    <option>Kiểm hàng</option>
-                                    <option>Bảo vệ</option>
-                                    <option>Tạp vụ</option>
-                                </select>
-                            </div>
-                        </div>
-                        <BR>
-                        <a href="#" style="    float: right;
-                           font-weight: 600;
-                           color: #ea0000;">Chỉnh sửa nâng cao</a>
-                        <BR>
-                        <BR>
-                        <button class="btn btn-save" type="button">Lưu lại</button>
-                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                        <BR>
-                    </div>
-                    <div class="modal-footer">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--
-        MODAL
-        -->
 
         <!-- Essential javascripts for application to work-->
         <script src="js/jquery-3.2.1.min.js"></script>
@@ -269,7 +208,57 @@
         <!-- Data table plugin-->
         <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
+        <!-- Thêm jsPDF -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <!-- Thêm autoTable -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.10/jspdf.plugin.autotable.min.js"></script>
+        <!-- Font Awesome cho biểu tượng -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <script type="text/javascript">$('#sampleTable').DataTable();</script>
+
+        <script>
+            function xuatPDF() {
+                const {jsPDF} = window.jspdf;
+                const doc = new jsPDF();
+
+                // Tiêu đề PDF
+                doc.setFontSize(18);
+                doc.text("Danh sách nhân viên", 14, 20);
+
+                // Tạo dữ liệu cho bảng
+                const rows = [];
+                const tableHeader = ['ID', 'Tên', 'Email', 'Địa chỉ', 'Số điện thoại', 'Vai trò'];
+
+                const tableRows = document.querySelectorAll("tbody tr");
+                tableRows.forEach((row) => {
+                    const userID = row.cells[2].innerText; // userID
+                    const fullName = row.cells[3].innerText; // Tên đầy đủ
+                    const email = row.cells[4].innerText; // Email
+                    const address = row.cells[5].innerText; // Địa chỉ
+                    const phoneNumber = row.cells[6].innerText; // Số điện thoại
+                    const roleID = row.cells[7].innerText; // Vai trò
+
+                    // Thêm thông tin vào hàng bảng
+                    rows.push([userID, fullName, email, address, phoneNumber, roleID]);
+                });
+
+                // Sử dụng autoTable để tạo bảng
+                doc.autoTable({
+                    head: [tableHeader],
+                    body: rows,
+                    startY: 30, // Vị trí bắt đầu
+                    theme: 'grid', // Chủ đề của bảng
+                    headStyles: {fillColor: [22, 160, 133]}, // Màu nền tiêu đề
+                    styles: {cellWidth: 'auto', halign: 'left'}, // Định dạng các ô
+                    margin: {top: 30}
+                });
+
+                // Tải xuống tệp PDF
+                doc.save('danh_sach_nhan_vien.pdf');
+            }
+        </script>
+
+
         <script>
             $('#saveChangesBtn').on('click', function () {
                 var user = {
@@ -461,10 +450,7 @@
             // });
 
 
-            //Modal
-            $("#show-emp").on("click", function () {
-                $("#ModalUP").modal({backdrop: false, keyboard: false})
-            });
+
         </script>
     </body>
 

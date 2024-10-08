@@ -26,21 +26,21 @@
     <!-- Sidebar menu -->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
    <aside class="app-sidebar">
-        <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px" alt="User Image">
-            <div>
-                <p class="app-sidebar__user-name"><b>${sessionScope.User.getEmail()}</b></p>
-                <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
+            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
+                                                alt="User Image">      <div>
+        <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
+        <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
             </div>
         </div>
         <hr>
         <ul class="app-menu">
-            <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>POS Bán Hàng</a></li>
+            <li><a class="app-menu__item haha " href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>POS Bán Hàng</a></li>
             <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-tachometer'></i>Bảng điều khiển</a></li>
              <li><a class="app-menu__item" href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
             <li><a class="app-menu__item  " href="${pageContext.request.contextPath}/product"><i class='app-menu__icon bx bx-task'></i>Quản lý sản phẩm</a></li>
             <li><a class="app-menu__item" href="${pageContext.request.contextPath}/employee"><i class='app-menu__icon bx bx-id-card'></i>Quản lý nhân viên</a></li>
             <li><a class="app-menu__item" href="${pageContext.request.contextPath}/category"><i class='app-menu__icon bx bx-category'></i>Quản lý danh mục</a></li>
-            <li><a class="app-menu__item active" href="${pageContext.request.contextPath}/inventory"><i class='app-menu__icon bx bx-task'></i>Quản lý tồn kho</a></li>
+            <li><a class="app-menu__item active" href="${pageContext.request.contextPath}/inventory"><i class='app-menu__icon bx bx-task'></i>Quản lý  kho</a></li>
                      <li><a class="app-menu__item " href="${pageContext.request.contextPath}/customer"><i class='app-menu__icon bx bx-task'></i>Quản lý khách hàng </a></li>
 
     </aside>
@@ -58,7 +58,9 @@
                     </a>
                         
                         
-               
+                  <a href="${pageContext.request.contextPath}/import" class="btn btn-secondary" style="margin-right: 10px;">
+                        <i class="fa fa-upload"></i> Lịch sử nhập hàng 
+                    </a>
                      <a href="${pageContext.request.contextPath}/import?action=create" class="btn btn-secondary" style="margin-right: 10px;">
                         <i class="fa fa-upload"></i> Nhập Hàng
                     </a>

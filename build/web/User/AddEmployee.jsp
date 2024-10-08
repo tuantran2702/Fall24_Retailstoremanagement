@@ -164,33 +164,50 @@
                 </div>
             </div>
             <hr>
-            <ul class="app-menu">
-                <li><a class="app-menu__item haha" href="banhang"><i class='app-menu__icon bx bx-cart-alt'></i>
+            
+
+            
+    <ul class="app-menu">
+                <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
                         <span class="app-menu__label">POS Bán Hàng</span></a></li>
-                <li><a class="app-menu__item " href="index.html"><i class='app-menu__icon bx bx-tachometer'></i><span
+                <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Bảng điều khiển</span></a></li>
-                <li><a class="app-menu__item active" href="userManage"><i class='app-menu__icon bx bx-id-card'></i>
-                        <span class="app-menu__label">Quản lý nhân viên</span></a></li>
-                <li><a class="app-menu__item" href="#"><i class='app-menu__icon bx bx-user-voice'></i><span
-                            class="app-menu__label">Quản lý khách hàng</span></a></li>
-                <li><a class="app-menu__item" href="table-data-product.html"><i
+                              <li><a class="app-menu__item " href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
+                              
+                                    <li><a class="app-menu__item active " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
+            class="app-menu__label">Quản lý nhân viên</span></a></li>
+                            
+                            
+                               <li><a class="app-menu__item" href="product"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
                 </li>
-                <li><a class="app-menu__item" href="table-data-oder.html"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Quản lý đơn hàng</span></a></li>
-                <li><a class="app-menu__item" href="table-data-banned.html"><i class='app-menu__icon bx bx-run'></i><span
-                            class="app-menu__label">Quản lý nội bộ
-                        </span></a></li>
-                <li><a class="app-menu__item" href="table-data-money.html"><i class='app-menu__icon bx bx-dollar'></i><span
-                            class="app-menu__label">Bảng kê lương</span></a></li>
-                <li><a class="app-menu__item" href="quan-ly-bao-cao.html"><i
-                            class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
-                </li>
-                <li><a class="app-menu__item" href="page-calendar.html"><i class='app-menu__icon bx bx-calendar-check'></i><span
-                            class="app-menu__label">Lịch công tác </span></a></li>
-                <li><a class="app-menu__item" href="#"><i class='app-menu__icon bx bx-cog'></i><span class="app-menu__label">Cài
-                            đặt hệ thống</span></a></li>
+
+                <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-id-card'></i> <span
+                            class="app-menu__label">Quản lý khách hàng </span></a></li>
+                            
+                            
+                            
+                            
+                   
+
+              
+
+
+
+
+                <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Quản lý   kho</span></a></li>
+
+   <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Thay đổi mật khẩu </span></a></li>
+
+
+            
+            
             </ul>
+
+
+       
         </aside>
         <main class="app-content">
             <div class="app-title">
@@ -219,27 +236,27 @@
                             <form class="row" action="addUser" method="POST" enctype="multipart/form-data">
                                 <div class="form-group col-md-4">
                                     <label class="control-label">FirstName</label>
-                                    <input class="form-control" type="text" name="firstName" required>
+                                    <input class="form-control" type="text" value="<%= request.getAttribute("firstname") != null ? request.getAttribute("firstname") : "" %>" name="firstName" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">LastName</label>
-                                    <input class="form-control" type="text" name="lastName" required>
+                                    <input class="form-control" type="text" value="<%= request.getAttribute("lastname") != null ? request.getAttribute("lastname") : "" %>" name="lastName" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Email</label>
-                                    <input class="form-control" type="email" name="email" required>
+                                    <input class="form-control" type="email" value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>" name="email" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Số điện thoại</label>
-                                    <input class="form-control" type="text" name="phone" required>
+                                    <input class="form-control" type="text" value="<%= request.getAttribute("phone") != null ? request.getAttribute("phone") : "" %>" name="phone" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Address</label>
-                                    <input class="form-control" type="text" name="address">
+                                    <input class="form-control" type="text" value="<%= request.getAttribute("address") != null ? request.getAttribute("address") : "" %>" name="address">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Password</label>
-                                    <input class="form-control" id="password" type="password" name="password" required>
+                                    <input class="form-control" id="password" type="password" value="<%= request.getAttribute("pass") != null ? request.getAttribute("pass") : "" %>" name="password" required>
                                     <input type="checkbox" id="togglePassword"> Hiển thị mật khẩu
                                 </div>
                                 <div class="form-group col-md-3">

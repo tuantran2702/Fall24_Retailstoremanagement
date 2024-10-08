@@ -92,7 +92,7 @@ public class Login extends HttpServlet {
                 response.sendRedirect("homepage");
             } else {
                 // Chuyển hướng đến trang chính (nếu vai trò là người dùng thường)
-                response.sendRedirect("banhang");
+                response.sendRedirect("homepage");
             }
 
         } else {

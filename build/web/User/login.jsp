@@ -47,12 +47,14 @@
             <div class="container-login100">
                 <div class="wrap-login100">
                     <div class="login100-pic js-tilt" data-tilt>
-                        <img src="images/team.jpg" alt="IMG">
+                        
+                        <img src="images/anh321.jpg" alt="IMG"
+                             >
                     </div>
                     <!--=====TIÊU ĐỀ======-->
                     <div class="login100-form validate-form">
                         <span class="login100-form-title">
-                            <b>ĐĂNG NHẬP HỆ THỐNG POS</b>
+                            <b>ĐĂNG NHẬP HỆ THỐNG RETAILSTORE</b>
                         </span>
                         <p id="error-message">
                             <%= request.getAttribute("errorMessage") != null ? request.getAttribute("errorMessage") : "" %>
@@ -83,7 +85,7 @@
                             </div>
                             <!--=====LINK TÌM MẬT KHẨU======-->
                             <div class="text-right p-t-12">
-                                <a class="txt2" href="/forgot.html">
+                                <a class="txt2" href="forgotPass">
                                     Bạn quên mật khẩu?
                                 </a>
                             </div>

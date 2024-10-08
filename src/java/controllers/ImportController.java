@@ -28,7 +28,7 @@ public class ImportController extends HttpServlet {
 
         if (action == null) {
             request.setAttribute("data", importDAO.getListImport());
-            request.getRequestDispatcher("/ImportController/importList.jsp").forward(request, response);
+            request.getRequestDispatcher("/ImportManager/importList.jsp").forward(request, response);
         } else if (action.equals("edit") && idStr != null) {
             int id = Integer.parseInt(idStr);
             Import imp = importDAO.getImportById(id);
@@ -42,7 +42,7 @@ public class ImportController extends HttpServlet {
             request.setAttribute("inventories", inventories);
             request.setAttribute("suppliers", suppliers);
             
-            request.getRequestDispatcher("/ImportController/updateImport.jsp").forward(request, response);
+            request.getRequestDispatcher("/ImportManager/updateImport.jsp").forward(request, response);
         } else if (action.equals("create")) {
             List<Product> products = importDAO.getAllProducts();
             List<Inventory> inventories = importDAO.getAllInventories();
@@ -52,11 +52,11 @@ public class ImportController extends HttpServlet {
             request.setAttribute("inventories", inventories);
             request.setAttribute("suppliers", suppliers);
             
-            request.getRequestDispatcher("/ImportController/createImport.jsp").forward(request, response);
+            request.getRequestDispatcher("/ImportManager/createImport.jsp").forward(request, response);
         } else if (action.equals("delete") && idStr != null) {
             int id = Integer.parseInt(idStr);
             request.setAttribute("id", id);
-            request.getRequestDispatcher("/ImportController/deleteImport.jsp").forward(request, response);
+            request.getRequestDispatcher("/ImportManager/deleteImport.jsp").forward(request, response);
         }
     }
 

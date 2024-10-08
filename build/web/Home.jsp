@@ -54,7 +54,7 @@
             </div>
 
             <hr>
-            <ul class="app-menu">
+    <ul class="app-menu">
                 <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
                         <span class="app-menu__label">POS Bán Hàng</span></a></li>
                 <li><a class="app-menu__item active" href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
@@ -69,16 +69,13 @@
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
                 </li>
 
-                <li><a class="app-menu__item " href="employee"><i class='app-menu__icon bx bx-id-card'></i> <span
-                            class="app-menu__label">Quản lý nhân viên</span></a></li>
+                <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-id-card'></i> <span
+                            class="app-menu__label">Quản lý khách hàng </span></a></li>
                             
                             
                             
                             
-             
-                <li><a class="app-menu__item" href="category"><i
-                            class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý danh mục</span></a>
-                </li>        
+                   
 
               
 
@@ -86,8 +83,10 @@
 
 
                 <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Quản lý  tồn kho</span></a></li>
+                            class="app-menu__label">Quản lý   kho</span></a></li>
 
+   <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Thay đổi mật khẩu </span></a></li>
 
 
             

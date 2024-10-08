@@ -36,6 +36,17 @@ public class RoleDAO extends DBContext{
         return roles;
     }
     
+    public String getRoleByID(String id){
+        List<Role> lst = new ArrayList<>();
+        lst = getAllRole();
+        for(Role r : lst){
+            if(r.getRoleID() == Integer.parseInt(id)){
+                return r.getRoleName();
+            }
+        }
+        return "Don't have RoleID: " + id;
+    }
+    
     public static void main(String[] args) {
         RoleDAO rd = new RoleDAO();
         List<Role> rr = rd.getAllRole();

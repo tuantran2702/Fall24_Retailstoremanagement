@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 public class CustomerDAO extends DBContext {
 
-    // Get a list of all customers
+    // Get a list of all customers with RankName
     public ArrayList<Customer> getListCustomers() {
         ArrayList<Customer> data = new ArrayList<>();
-        String sql = "SELECT * FROM Customer";
+        String sql = "SELECT c.*, r.RankName FROM Customer c JOIN CustomerRank r ON c.RankID = r.RankID";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -25,8 +25,9 @@ public class CustomerDAO extends DBContext {
                 double totalSpent = rs.getDouble("TotalSpent");
                 String address = rs.getString("Address");
                 int rankID = rs.getInt("RankID");
+                String rankName = rs.getString("RankName"); // Get RankName
 
-                Customer customer = new Customer(customerID, firstName, lastName, email, phoneNumber, totalSpent, address, rankID);
+                Customer customer = new Customer(customerID, firstName, lastName, email, phoneNumber, totalSpent, address, rankID, rankName);
                 data.add(customer);
             }
         } catch (SQLException e) {
@@ -35,9 +36,9 @@ public class CustomerDAO extends DBContext {
         return data;
     }
 
-    // Get a single customer by ID
+// Get a single customer by ID with RankName
     public Customer getCustomerById(int id) {
-        String sql = "SELECT * FROM Customer WHERE CustomerID = ?";
+        String sql = "SELECT c.*, r.RankName FROM Customer c JOIN CustomerRank r ON c.RankID = r.RankID WHERE CustomerID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -51,8 +52,9 @@ public class CustomerDAO extends DBContext {
                 double totalSpent = rs.getDouble("TotalSpent");
                 String address = rs.getString("Address");
                 int rankID = rs.getInt("RankID");
+                String rankName = rs.getString("RankName"); // Get RankName
 
-                return new Customer(customerID, firstName, lastName, email, phoneNumber, totalSpent, address, rankID);
+                return new Customer(customerID, firstName, lastName, email, phoneNumber, totalSpent, address, rankID, rankName);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -79,21 +81,24 @@ public class CustomerDAO extends DBContext {
     }
 
     // Update an existing customer
-    public void updateCustomer(Customer customer) {
-        String sql = "UPDATE Customer SET FirstName = ?, LastName = ?, Email = ?, PhoneNumber = ?, TotalSpent = ?, Address = ?, RankID = ? WHERE CustomerID = ?";
+    public boolean updateCustomer(Customer customer) {
+        String sql = "UPDATE Customer SET FirstName = ?, LastName = ?, Email = ?, PhoneNumber = ?, Address = ? WHERE CustomerID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, customer.getFirstName());
             st.setString(2, customer.getLastName());
             st.setString(3, customer.getEmail());
             st.setString(4, customer.getPhoneNumber());
-            st.setDouble(5, customer.getTotalSpent());
-            st.setString(6, customer.getAddress());
-            st.setInt(7, customer.getRankID());
-            st.setInt(8, customer.getCustomerID());
-            st.executeUpdate();
+            //st.setDouble(5, customer.getTotalSpent());
+            st.setString(5, customer.getAddress());
+            //st.setInt(7, customer.getRankID());
+            st.setInt(6, customer.getCustomerID());
+
+            int rowsAffected = st.executeUpdate(); // Get the number of affected rows
+            return rowsAffected > 0; // Return true if any row is updated
         } catch (SQLException e) {
             e.printStackTrace();
+            return false; // Return false on error
         }
     }
 

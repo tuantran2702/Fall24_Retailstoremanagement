@@ -28,7 +28,7 @@ public class InventoryController extends HttpServlet {
 
         if (action == null) {
             request.setAttribute("data", inventoryDAO.getListInventory());
-            request.getRequestDispatcher("/InventoryController/inventoryList.jsp").forward(request, response);
+            request.getRequestDispatcher("/InventoryManager/inventoryList.jsp").forward(request, response);
         } else if ("edit".equals(action) && idStr != null) {
             int id = Integer.parseInt(idStr);
             Inventory inventory = inventoryDAO.getInventoryById(id);
@@ -40,17 +40,17 @@ public class InventoryController extends HttpServlet {
             request.setAttribute("products", products);
             request.setAttribute("warehouses", warehouses);
             
-            request.getRequestDispatcher("/InventoryController/updateInventory.jsp").forward(request, response);
+            request.getRequestDispatcher("/InventoryManager/updateInventory.jsp").forward(request, response);
         } else if ("create".equals(action)) {
             List<Product> products = inventoryDAO.getAllProducts();
             List<Warehouse> warehouses = inventoryDAO.getAllWarehouses();
             request.setAttribute("products", products);
             request.setAttribute("warehouses", warehouses);
-            request.getRequestDispatcher("/InventoryController/createInventory.jsp").forward(request, response);
+            request.getRequestDispatcher("/InventoryManager/createInventory.jsp").forward(request, response);
         } else if ("delete".equals(action) && idStr != null) {
             int id = Integer.parseInt(idStr);
             request.setAttribute("id", id);
-            request.getRequestDispatcher("/InventoryController/deleteInventory.jsp").forward(request, response);
+            request.getRequestDispatcher("/InventoryManager/deleteInventory.jsp").forward(request, response);
         }
     }
 
@@ -90,7 +90,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         } catch (NumberFormatException e) {
             // Xử lý nếu có lỗi khi chuyển đổi chuỗi thành số
             request.setAttribute("errorMessage", "Invalid input. Please ensure all fields are filled correctly.");
-            request.getRequestDispatcher("/InventoryController/updateInventory.jsp").forward(request, response);
+            request.getRequestDispatcher("/InventoryManager/updateInventory.jsp").forward(request, response);
         }
     } else if ("delete".equals(action)) {
         int id = Integer.parseInt(request.getParameter("id"));

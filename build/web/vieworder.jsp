@@ -136,30 +136,54 @@
         <!-- Sidebar menu -->
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
         <aside class="app-sidebar">
-            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px" alt="User Image">
-                <div>
-                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getEmail()}</b></p>
+            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
+                                                alt="User Image">      <div>
+                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
                     <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
                 </div>
             </div>
 
             <hr>
             <ul class="app-menu">
-                <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>POS Bán Hàng</a></li>
-                <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-tachometer'></i>Bảng điều khiển</a></li>
-                <li><a class="app-menu__item" href="${pageContext.request.contextPath}/employee"><i class='app-menu__icon bx bx-id-card'></i>Quản lý nhân viên</a></li>
-                <li><a class="app-menu__item " href="${pageContext.request.contextPath}/category"><i class='app-menu__icon bx bx-category'></i>Quản lý danh mục</a></li>
-                <li><a class="app-menu__item" href="${pageContext.request.contextPath}/warehouse"><i class='app-menu__icon bx bx-task'></i>Quản lý kho</a></li>
+                <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
+                        <span class="app-menu__label">POS Bán Hàng</span></a></li>
+                <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
+                            class="app-menu__label">Bảng điều khiển</span></a></li>
                 <li><a class="app-menu__item active" href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
-                <li><a class="app-menu__item " href="${pageContext.request.contextPath}/inventory"><i class='app-menu__icon bx bx-task'></i>Quản lý tồn kho</a></li
-                <li><a class="app-menu__item " href="${pageContext.request.contextPath}/import"><i class='app-menu__icon bx bx-task'></i>Quản lý nhập hàng </a></li>
 
-                <li><a class="app-menu__item" href="${pageContext.request.contextPath}/warehouseList.jsp"><i class='app-menu__icon bx bx-run'></i>Quản lý nội bộ</a></li>
-                <li><a class="app-menu__item" href="${pageContext.request.contextPath}/table-data-money.html"><i class='app-menu__icon bx bx-dollar'></i>Bảng kê lương</a></li>
-                <li><a class="app-menu__item" href="${pageContext.request.contextPath}/quan-ly-bao-cao.html"><i class='app-menu__icon bx bx-pie-chart-alt-2'></i>Báo cáo doanh thu</a></li>
-                <li><a class="app-menu__item" href="${pageContext.request.contextPath}/page-calendar.html"><i class='app-menu__icon bx bx-calendar-check'></i>Lịch công tác</a></li>
-                <li><a class="app-menu__item" href="${pageContext.request.contextPath}/#"><i class='app-menu__icon bx bx-cog'></i>Cài đặt hệ thống</a></li>
+                <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
+                            class="app-menu__label">Quản lý nhân viên</span></a></li>
+
+
+                <li><a class="app-menu__item" href="product"><i
+                            class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
+                </li>
+
+                <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-id-card'></i> <span
+                            class="app-menu__label">Quản lý khách hàng </span></a></li>
+
+
+
+
+
+
+
+
+
+
+
+                <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Quản lý   kho</span></a></li>
+
+                <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Thay đổi mật khẩu </span></a></li>
+
+
+
+
             </ul>
+
+
         </aside>
 
         <main class="app-content">
