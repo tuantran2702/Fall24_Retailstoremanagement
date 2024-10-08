@@ -164,19 +164,19 @@
                                 <p style="color:red">${errorMessage}</p>
                             </c:if>
                             <form class="row" action="setting" method="POST">
-                                <div class="form-group col-md-12" style="width: 100%">
+                                <div class="form-group col-md-12" >
                                     <label class="control-label">Old Password</label>
                                     <input class="form-control" id="oldPassword" type="password" value="<%= request.getAttribute("pass") != null ? request.getAttribute("pass") : "" %>" name="oldPassword" required>
                                     <input type="checkbox" id="toggleOldPassword"> Hiển thị mật khẩu
                                 </div>
 
-                                <div class="form-group col-md-12" style="width: 100%">
+                                <div class="form-group col-md-12">
                                     <label class="control-label">New Password</label>
                                     <input class="form-control" id="newPassword" type="password" value="<%= request.getAttribute("pass") != null ? request.getAttribute("pass") : "" %>" name="newPassword" required>
                                     <input type="checkbox" id="toggleNewPassword"> Hiển thị mật khẩu
                                 </div>
 
-                                <div class="form-group col-md-12" style="width: 100%">
+                                <div class="form-group col-md-12">
                                     <label class="control-label">Confirm New Password</label>
                                     <input class="form-control" id="confirmNewPassword" type="password" value="<%= request.getAttribute("pass") != null ? request.getAttribute("pass") : "" %>" name="confirmNewPassword" required>
                                     <input type="checkbox" id="toggleConfirmNewPassword"> Hiển thị mật khẩu

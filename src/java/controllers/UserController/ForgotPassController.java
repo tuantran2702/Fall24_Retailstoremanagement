@@ -95,16 +95,26 @@ public class ForgotPassController extends HttpServlet {
         String body = "<html>"
                 + "<head>"
                 + "<meta charset=\"UTF-8\">"
-                + // Đảm bảo mã hóa UTF-8
-                "<title>Yêu cầu đặt lại mật khẩu</title>"
+                + "<title>Yêu cầu đặt lại mật khẩu</title>"
+                + "<style>"
+                + "body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }"
+                + "h2 { color: #333; }"
+                + "p { font-size: 16px; color: #555; }"
+                + ".container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }"
+                + ".code { font-weight: bold; color: #4CAF50; font-size: 20px; }"
+                + ".footer { margin-top: 20px; font-size: 14px; color: #777; }"
+                + "</style>"
                 + "</head>"
                 + "<body>"
+                + "<div class='container'>"
                 + "<h2>Xin chào,</h2>"
-                + "<p>Mật khẩu đặt lại của bạn là: <strong>" + randomCode + "</strong></p>"
+                + "<p>Mật khẩu đặt lại của bạn là: <span class='code'>" + randomCode + "</span></p>"
                 + "<p>Vui lòng sử dụng mật khẩu này để đăng nhập vào tài khoản của bạn.</p>"
-                + "<p>Trân trọng,<br>Đội ngũ hỗ trợ</p>"
+                + "<p class='footer'>Trân trọng,<br>Đội ngũ hỗ trợ</p>"
+                + "</div>"
                 + "</body>"
                 + "</html>";
+
 
         SendEmail se = new SendEmail();
         boolean result = se.sendEmail(email, subject, body);
