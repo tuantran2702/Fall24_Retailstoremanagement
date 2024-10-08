@@ -7,13 +7,21 @@
 <head>
     <title>Customer Rank List | Quản lý cấp bậc khách hàng</title>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Main CSS-->
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/doc/css/main.css">
+        <!--        <link rel="stylesheet" type="text/css" href="css/main.css">-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+        <!-- or -->
+        <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
-    <!-- Main CSS -->
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/doc/css/main.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- Font-icon css-->
+        <link rel="stylesheet" type="text/css"
+              href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 </head>
 
 <body class="app sidebar-mini rtl">
@@ -38,19 +46,13 @@
         
         <hr>
         <ul class="app-menu">
-            <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>POS Bán Hàng</a></li>
-            <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-tachometer'></i>Bảng điều khiển</a></li>
-            <li><a class="app-menu__item" href="${pageContext.request.contextPath}/employee"><i class='app-menu__icon bx bx-id-card'></i>Quản lý nhân viên</a></li>
-            <li><a class="app-menu__item" href="${pageContext.request.contextPath}/category"><i class='app-menu__icon bx bx-category'></i>Quản lý danh mục</a></li>
-            <li><a class="app-menu__item active" href="${pageContext.request.contextPath}/customer-rank"><i class='app-menu__icon bx bx-star'></i>Quản lý cấp bậc khách hàng</a></li>
-            <li><a class="app-menu__item" href="${pageContext.request.contextPath}/warehouse"><i class='app-menu__icon bx bx-task'></i>Quản lý kho</a></li>
-            <li><a class="app-menu__item" href="${pageContext.request.contextPath}/inventory"><i class='app-menu__icon bx bx-task'></i>Quản lý tồn kho</a></li>
-            <li><a class="app-menu__item" href="${pageContext.request.contextPath}/import"><i class='app-menu__icon bx bx-task'></i>Quản lý nhập hàng</a></li>
-            <li><a class="app-menu__item" href="${pageContext.request.contextPath}/warehouseList.jsp"><i class='app-menu__icon bx bx-run'></i>Quản lý nội bộ</a></li>
-            <li><a class="app-menu__item" href="${pageContext.request.contextPath}/table-data-money.html"><i class='app-menu__icon bx bx-dollar'></i>Bảng kê lương</a></li>
-            <li><a class="app-menu__item" href="${pageContext.request.contextPath}/quan-ly-bao-cao.html"><i class='app-menu__icon bx bx-pie-chart-alt-2'></i>Báo cáo doanh thu</a></li>
-            <li><a class="app-menu__item" href="${pageContext.request.contextPath}/page-calendar.html"><i class='app-menu__icon bx bx-calendar-check'></i>Lịch công tác</a></li>
-            <li><a class="app-menu__item" href="${pageContext.request.contextPath}/#"><i class='app-menu__icon bx bx-cog'></i>Cài đặt hệ thống</a></li>
+            <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
+                    <span class="app-menu__label">Trang chủ</span></a></li>                            
+
+            <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-id-card'></i> <span
+                        class="app-menu__label">Danh sách khách hàng</span></a></li>            
+
+
         </ul>
     </aside>
 
@@ -87,8 +89,8 @@
                                         <td>${rank.minimumSpent}</td>
                                         <td>${rank.description}</td>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/customerRank?action=edit&id=${rank.rankID}">Edit</a>
-                                            <a href="${pageContext.request.contextPath}/customerRank?action=delete&id=${rank.rankID}">Delete</a>
+                                            <a href="${pageContext.request.contextPath}/customerRank?action=edit&id=${rank.rankID}" class="btn btn-primary btn-sm edit" title="Sửa"><i class="fas fa-edit"></i></a>
+                                            <a href="${pageContext.request.contextPath}/customerRank?action=delete&id=${rank.rankID}" class="btn btn-primary btn-sm trash" title="Xóa"><i class="fas fa-trash-alt"></i></a>
                                         </td>
                                     </tr>
                                 </c:forEach>

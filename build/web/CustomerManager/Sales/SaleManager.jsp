@@ -36,15 +36,15 @@
                 <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
             </div>
         </div>
-        
+                    
+
         <hr>
         <ul class="app-menu">
-            <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>POS Bán Hàng</a></li>
-            <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-tachometer'></i>Bảng điều khiển</a></li>
-            <li><a class="app-menu__item" href="${pageContext.request.contextPath}/employee"><i class='app-menu__icon bx bx-id-card'></i>Quản lý nhân viên</a></li>
-            <li><a class="app-menu__item" href="${pageContext.request.contextPath}/category"><i class='app-menu__icon bx bx-category'></i>Quản lý danh mục</a></li>
-            <li><a class="app-menu__item" href="${pageContext.request.contextPath}/customer"><i class='app-menu__icon bx bx-user'></i>Quản lý khách hàng</a></li>
-            <li><a class="app-menu__item active" href="${pageContext.request.contextPath}/sales"><i class='app-menu__icon bx bx-dollar'></i>Quản lý bán hàng</a></li>
+            <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-home'></i>
+                    <span class="app-menu__label">Trang chủ</span></a></li>                            
+
+            <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-user'></i> <span
+                        class="app-menu__label">Danh sách khách hàng</span></a></li>            
         </ul>
     </aside>
 
@@ -89,7 +89,7 @@
                                     <th>Ngày bán hàng</th>
                                     <th>Tổng tiền</th>
                                     <th>Tên khách hàng</th>
-                                    <th>Actions</th>
+<!--                                    <th>Actions</th>-->
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,10 +99,10 @@
                                         <td>${sale.saleDate}</td>
                                         <td>${sale.totalAmount}</td>
                                         <td>${sale.customerFullName}</td>
-                                        <td>
+<!--                                        <td>
                                             <a href="${pageContext.request.contextPath}/sales?action=edit&id=${sale.saleID}">Edit</a>
                                             <a href="${pageContext.request.contextPath}/sales?action=delete&id=${sale.saleID}">Delete</a>
-                                        </td>
+                                        </td>-->
                                     </tr>
                                 </c:forEach>
                             </tbody>
