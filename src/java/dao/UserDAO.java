@@ -48,6 +48,24 @@ public class UserDAO extends DBContext {
         }
         return user;  // Trả về đối tượng User nếu đăng nhập đúng, ngược lại trả về null
     }
+    
+    public boolean updatePassword(User user, String newpass) {
+        String sql = "UPDATE [dbo].[User]\n"
+                + "   SET [Password] = ?\n"
+                + " WHERE [UserID] = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            // Set các giá trị từ đối tượng User vào PreparedStatement
+            ps.setString(1, newpass);
+            ps.setInt(2, user.getUserID());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public boolean updateUser(User user) {
         String sql = "UPDATE [dbo].[User]\n"
@@ -168,6 +186,17 @@ public class UserDAO extends DBContext {
             e.printStackTrace();
         }
         return users;
+    }
+    
+    public User getUserByEmail(String email) {
+        UserDAO ud = new UserDAO();
+        List<User> lst = ud.getAllUsers();
+        for (User user : lst) {
+            if(user.getEmail().equals(email)){
+                return user;
+            }
+        }
+        return null;
     }
 
     public static void main(String[] args) {

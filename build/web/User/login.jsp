@@ -83,7 +83,7 @@
                             </div>
                             <!--=====LINK TÌM MẬT KHẨU======-->
                             <div class="text-right p-t-12">
-                                <a class="txt2" href="/forgot.html">
+                                <a class="txt2" href="forgotPass">
                                     Bạn quên mật khẩu?
                                 </a>
                             </div>
