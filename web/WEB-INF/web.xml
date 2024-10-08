@@ -17,8 +17,8 @@
         <servlet-class>controllers.UserController.DeleteUserServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GetUserServlet</servlet-name>
-        <servlet-class>controllers.UserController.GetUserServlet</servlet-class>
+        <servlet-name>UpdateUserController</servlet-name>
+        <servlet-class>controllers.UserController.UpdateUserController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
@@ -41,8 +41,8 @@
         <url-pattern>/deleteUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>GetUserServlet</servlet-name>
-        <url-pattern>/getUser</url-pattern>
+        <servlet-name>UpdateUserController</servlet-name>
+        <url-pattern>/updateUser</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

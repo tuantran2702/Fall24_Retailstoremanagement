@@ -219,27 +219,27 @@
                             <form class="row" action="addUser" method="POST" enctype="multipart/form-data">
                                 <div class="form-group col-md-4">
                                     <label class="control-label">FirstName</label>
-                                    <input class="form-control" type="text" name="firstName" required>
+                                    <input class="form-control" type="text" value="<%= request.getAttribute("firstname") != null ? request.getAttribute("firstname") : "" %>" name="firstName" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">LastName</label>
-                                    <input class="form-control" type="text" name="lastName" required>
+                                    <input class="form-control" type="text" value="<%= request.getAttribute("lastname") != null ? request.getAttribute("lastname") : "" %>" name="lastName" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Email</label>
-                                    <input class="form-control" type="email" name="email" required>
+                                    <input class="form-control" type="email" value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>" name="email" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Số điện thoại</label>
-                                    <input class="form-control" type="text" name="phone" required>
+                                    <input class="form-control" type="text" value="<%= request.getAttribute("phone") != null ? request.getAttribute("phone") : "" %>" name="phone" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Address</label>
-                                    <input class="form-control" type="text" name="address">
+                                    <input class="form-control" type="text" value="<%= request.getAttribute("address") != null ? request.getAttribute("address") : "" %>" name="address">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Password</label>
-                                    <input class="form-control" id="password" type="password" name="password" required>
+                                    <input class="form-control" id="password" type="password" value="<%= request.getAttribute("pass") != null ? request.getAttribute("pass") : "" %>" name="password" required>
                                     <input type="checkbox" id="togglePassword"> Hiển thị mật khẩu
                                 </div>
                                 <div class="form-group col-md-3">
