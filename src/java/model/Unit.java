@@ -10,6 +10,16 @@ public class Unit {
     private int unitID;
     private String unitName;
 
+    public Unit() {
+    }
+
+    public Unit(int unitID, String unitName) {
+        this.unitID = unitID;
+        this.unitName = unitName;
+    }
+    
+    
+
     public int getUnitID() {
         return unitID;
     }
@@ -25,4 +35,10 @@ public class Unit {
     public void setUnitName(String unitName) {
         this.unitName = unitName;
     }
+
+    @Override
+    public String toString() {
+        return "Unit{" + "unitID=" + unitID + ", unitName=" + unitName + '}';
+    }
+    
 }

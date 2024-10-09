@@ -78,20 +78,44 @@ public class WarehouseDAO extends DBContext {
         }
     }
 
- public void deleteWarehouse(int id) {
-    String sql = "DELETE FROM Warehouse WHERE WarehouseID = ?";
-    try {
-        PreparedStatement st = connection.prepareStatement(sql);
-        st.setInt(1, id);
-        int affectedRows = st.executeUpdate(); // Số lượng dòng bị ảnh hưởng
-        if (affectedRows > 0) {
-            System.out.println("Xóa thành công kho hàng với ID: " + id);
-        } else {
-            System.out.println("Không tìm thấy kho hàng với ID: " + id);
+    public void deleteWarehouse(int id) {
+        String sql = "DELETE FROM Warehouse WHERE WarehouseID = ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            int affectedRows = st.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Xóa thành công kho hàng với ID: " + id);
+            } else {
+                System.out.println("Không tìm thấy kho hàng với ID: " + id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
-}
 
+    public ArrayList<Warehouse> searchWarehouses(String searchTerm) {
+        ArrayList<Warehouse> data = new ArrayList<>();
+        String sql = "SELECT * FROM Warehouse WHERE WarehouseName LIKE ? OR Location LIKE ? OR ManagerName LIKE ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            String searchPattern = "%" + searchTerm + "%";
+            st.setString(1, searchPattern);
+            st.setString(2, searchPattern);
+            st.setString(3, searchPattern);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int warehouseID = rs.getInt("WarehouseID");
+                String warehouseName = rs.getString("WarehouseName");
+                String location = rs.getString("Location");
+                String managerName = rs.getString("ManagerName");
+                String contactNumber = rs.getString("ContactNumber");
+
+                data.add(new Warehouse(warehouseID, warehouseName, location, managerName, contactNumber));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
 }
