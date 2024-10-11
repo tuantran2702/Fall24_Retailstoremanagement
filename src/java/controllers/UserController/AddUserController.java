@@ -143,7 +143,7 @@ public class AddUserController extends HttpServlet {
             request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
             return;  // Dừng xử lý tiếp
         }
-        
+
         ImageHandler ih = new ImageHandler();
         String uploadFilePath = getServletContext().getRealPath("") + File.separator + "img-anhthe";
         String imgPath = null;
@@ -151,16 +151,31 @@ public class AddUserController extends HttpServlet {
         // Lấy phần file tải lên
         Part filePart = request.getPart("ImageUpload");
         UserDAO ud = new UserDAO();
-        
 
-        // Hàm lưu ảnh
-        imgPath = ih.luuAnh(filePart, uploadFilePath);
+        if (filePart != null && ih.kiemTraFileAnh(filePart)) {
+            imgPath = ih.luuAnh(filePart, uploadFilePath);
+        } else if (!ih.kiemTraFileAnh(filePart)) {
+            request.setAttribute("errorMessage", "File ảnh không hợp lệ");
+            request.setAttribute("firstname", firstName);
+            request.setAttribute("lastname", lastName);
+            request.setAttribute("email", email);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
+            request.setAttribute("pass", password);
 
-        // Nếu không có file được tải lên, giữ nguyên đường dẫn ảnh hiện tại
-        if (imgPath == null) {
+            // Truy vấn dữ liệu từ database
+            RoleDAO roleDAO = new RoleDAO();
+            List<Role> roles = roleDAO.getAllRole();
+
+            // Lưu danh sách roles vào request attribute
+            request.setAttribute("roles", roles);
+            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
+            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
+        } else {
+            // Nếu không phải là file ảnh, trả về lỗi hoặc dùng ảnh mặc định
             imgPath = "img-anhthe\\default.png";
+            // Có thể thông báo lỗi cho người dùng tại đây
         }
-        
 
 //        // Handling image upload
 //        String imgPath = null;
@@ -183,9 +198,6 @@ public class AddUserController extends HttpServlet {
 //            // Set the image path to store in the database (optional: relative path)
 //            imgPath = "img-anhthe/" + fileName;
 //        }else imgPath = "img-anhthe\\default.png";
-
-
-
         // Create a user object
         User user = new User();
         user.setFirstName(firstName);
