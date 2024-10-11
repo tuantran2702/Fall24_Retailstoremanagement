@@ -153,7 +153,7 @@
                                             <td>${user.email}</td>
                                             <td>${user.address}</td>
                                             <td>${user.phoneNumber}</td>
-                                            <td>${user.roleID}</td>
+                                            <td>${roleMap[user.roleID]}</td>
                                             <td>
                                                 <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" 
                                                         onclick="window.location.href = 'updateUser?userID=${user.userID}'">

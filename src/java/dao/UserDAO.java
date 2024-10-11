@@ -48,7 +48,7 @@ public class UserDAO extends DBContext {
         }
         return user;  // Trả về đối tượng User nếu đăng nhập đúng, ngược lại trả về null
     }
-    
+
     public boolean updatePassword(User user, String newpass) {
         String sql = "UPDATE [dbo].[User]\n"
                 + "   SET [Password] = ?\n"
@@ -117,7 +117,6 @@ public class UserDAO extends DBContext {
                 st.setString(6, u.getAddress());
                 st.setInt(7, u.getRoleID());
                 st.setString(8, u.getImg());
-                
 
                 st.executeUpdate();
             } else {
@@ -188,35 +187,53 @@ public class UserDAO extends DBContext {
         return users;
     }
     
+   
+
+
     public User getUserByEmail(String email) {
-        UserDAO ud = new UserDAO();
-        List<User> lst = ud.getAllUsers();
-        for (User user : lst) {
-            if(user.getEmail().equals(email)){
-                return user;
+        User user = null;  // Khởi tạo user là null, sau này nếu tìm thấy sẽ tạo đối tượng mới
+        String sql = "SELECT * FROM [User] WHERE Email = ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, email);  // Gán giá trị email vào câu truy vấn
+
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {  // Nếu có bản ghi được tìm thấy
+                user = new User();
+                user.setUserID(rs.getInt("UserID"));
+                user.setFirstName(rs.getString("FirstName"));
+                user.setLastName(rs.getString("LastName"));
+                user.setEmail(rs.getString("Email"));
+                user.setPhoneNumber(rs.getString("PhoneNumber"));
+                user.setAddress(rs.getString("Address"));
+                user.setRoleID(rs.getInt("RoleID"));
+                user.setImg(rs.getString("Img"));
+                // Thêm các thuộc tính khác nếu cần thiết
             }
+        } catch (Exception e) {
+            e.printStackTrace();  // In lỗi nếu có
         }
-        return null;
+        return user;  // Trả về đối tượng user, nếu không tìm thấy sẽ trả về null
     }
 
     public static void main(String[] args) {
         UserDAO ud = new UserDAO();
-        
-        User u = ud.getUserById(37);
-        System.out.println(u);
 
+        User u = ud.getUserByEmail("trungpt1503@gmail.com");
+        System.out.println(u);
 //        List<User> lst = ud.getAllUsers();
 //        for (User user : lst) {
 //            System.out.println(user); // In thông tin người dùng ra console
 //        }
-
     }
 
     public User getUserById(int id) {
         UserDAO ud = new UserDAO();
         List<User> lst = ud.getAllUsers();
         for (User user : lst) {
-            if(user.getUserID() == id){
+            if (user.getUserID() == id) {
                 return user;
             }
         }

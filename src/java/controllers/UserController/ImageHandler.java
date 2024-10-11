@@ -53,15 +53,5 @@ public class ImageHandler {
         return null;
     }
 
-    // Hàm validate file ảnh
-    public boolean kiemTraFileAnh(Part filePart) {
-        String contentType = filePart.getContentType();
-        long fileSize = filePart.getSize();
-
-        // Danh sách các loại file ảnh hợp lệ
-        List<String> dinhDangAnhHopLe = Arrays.asList("image/jpeg", "image/png", "image/gif");
-
-        // Kiểm tra nếu file có kích thước lớn hơn 0 và là file ảnh hợp lệ
-        return fileSize > 0 && dinhDangAnhHopLe.contains(contentType);
-    }
+    
 }

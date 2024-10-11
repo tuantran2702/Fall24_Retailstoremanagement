@@ -60,7 +60,8 @@ public class RolesServlet extends HttpServlet {
             throws ServletException, IOException {
         RoleDAO rd = new RoleDAO();
         List<Role> roles = rd.getAllRole();
-        processRequest(request, response);
+        request.setAttribute("roleList", roles);
+        request.getRequestDispatcher("Role/Role.jsp").forward(request, response);
     }
 
     /**

@@ -5,10 +5,8 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="dao.RoleDAO" %>
-<%
-    RoleDAO roleDAO = new RoleDAO(); // Khởi tạo đối tượng RoleDAO
-%>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -95,7 +93,7 @@
                             <div class="row element-button">
                                 <div class="col-sm-2">
 
-                                    <a class="btn btn-add btn-sm" href="addUser" title="Thêm"><i class="fas fa-plus"></i>
+                                    <a class="btn btn-add btn-sm" href="addRole" title="Thêm"><i class="fas fa-plus"></i>
                                         Tạo mới Phân Quyền</a>
                                 </div>
 
@@ -118,36 +116,28 @@
                                    id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th width="10"><input type="checkbox" id="all"></th>
-                                        <th>Img</th>
-                                        <th>ID nhân viên</th>
-                                        <th width="150">Họ và tên</th>
-                                        <th width="170">Email</th>
-                                        <th width="170">Địa chỉ</th>
-                                        <th>Số điện thoại</th>
-                                        <th>Chức vụ</th>
+                                        <th width="10">RoleID</th>
+                                        <th width="180">Role Name</th>
+                                        <th>Description</th>
                                         <th width="100">Tính năng</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    <c:forEach var="user" items="${requestScope.userList}">
+                                    <c:forEach var="r" items="${requestScope.roleList}">
                                         <tr>
-                                            <td width="10"><input type="checkbox"></td>
-                                            <td><img src="${user.img}" alt="User Image" style="width:100px;height:100px;"></td>
-                                            <td>${user.userID}</td>
-                                            <td>${user.firstName} ${user.lastName}</td>
-                                            <td>${user.email}</td>
-                                            <td>${user.address}</td>
-                                            <td>${user.phoneNumber}</td>
-                                            <td>${user.roleID}</td>
+                                            <td>${r.roleID}</td>
+                                            <td>${r.roleName}</td>
+                                            <td>${r.description}</td>
                                             <td>
                                                 <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" 
-                                                        onclick="window.location.href = 'updateUser?userID=${user.userID}'">
+                                                        onclick="loadRoleData(${r.roleID}); $('#ModalUP').modal('show');">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
-                                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                                        onclick="deleteUser(${user.userID})"><i class="fas fa-trash-alt"></i></button>
+                                                <button class="btn btn-danger btn-sm trash" type="button" title="Xóa"
+                                                        onclick="deleteRole(${r.roleID})">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -158,6 +148,41 @@
                 </div>
             </div>
         </main>
+
+        <!-- Modal -->
+        <div class="modal fade" id="ModalUP" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalLabel">Cập nhật thông tin vai trò</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="roleForm">
+                            <div class="form-group">
+                                <label for="roleID">Role ID</label>
+                                <input type="text" class="form-control" name="roleID" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="roleName">Tên vai trò</label>
+                                <input type="text" class="form-control" name="roleName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Mô tả</label>
+                                <textarea class="form-control" name="description" required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary" onclick="updateRole()">Cập nhật</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
 
 
@@ -258,27 +283,25 @@
 
         </script>
         <script>
-            function loadUserData(userID) {
+            function loadRoleData(roleID) {
                 $.ajax({
-                    url: 'getUser', // URL của servlet lấy thông tin người dùng
+                    url: 'getRole', // URL của servlet để lấy thông tin vai trò
                     type: 'GET',
-                    data: {id: userID},
-                    success: function (user) {
+                    data: {id: roleID},
+                    success: function (role) {
                         // Hiển thị dữ liệu vào modal
-                        $('#ModalUP input[name="userID"]').val(user.userID);
-                        $('#ModalUP input[name="firstName"]').val(user.firstName);
-                        $('#ModalUP input[name="lastName"]').val(user.lastName);
-                        $('#ModalUP input[name="phoneNumber"]').val(user.phoneNumber);
-                        $('#ModalUP input[name="email"]').val(user.email);
-                        $('#ModalUP select[name="roleID"]').val(user.roleID);
+                        $('#ModalUP input[name="roleID"]').val(role.roleID);
+                        $('#ModalUP input[name="roleName"]').val(role.roleName);
+                        $('#ModalUP textarea[name="description"]').val(role.description);
                     },
                     error: function () {
-                        swal("Không thể tải dữ liệu người dùng!", {
+                        swal("Không thể tải dữ liệu vai trò!", {
                             icon: "error"
                         });
                     }
                 });
             }
+
         </script>
         <script>
             function deleteUser(userID) {
@@ -310,32 +333,27 @@
             }
         </script>
         <script>
-            function deleteRow(r) {
-                var i = r.parentNode.parentNode.rowIndex;
-                document.getElementById("myTable").deleteRow(i);
-            }
-            jQuery(function () {
-                jQuery(".trash").click(function () {
-                    swal({
-                        title: "Cảnh báo",
-
-                        text: "Bạn có chắc chắn là muốn xóa nhân viên này?",
-                        buttons: ["Hủy bỏ", "Đồng ý"],
-                    })
-                            .then((willDelete) => {
-                                if (willDelete) {
-                                    swal("Đã xóa thành công.!", {
-
-                                    });
-                                }
-                            });
+            function updateRole() {
+                var formData = $('#roleForm').serialize(); // Lấy dữ liệu từ form
+                $.ajax({
+                    url: 'updateRole', // URL của servlet cập nhật vai trò
+                    type: 'POST',
+                    data: formData,
+                    success: function () {
+                        swal("Cập nhật thành công!", {
+                            icon: "success"
+                        }).then(() => {
+                            location.reload(); // Tải lại trang để cập nhật danh sách
+                        });
+                    },
+                    error: function () {
+                        swal("Không thể cập nhật vai trò!", {
+                            icon: "error"
+                        });
+                    }
                 });
-            });
-            oTable = $('#sampleTable').dataTable();
-            $('#all').click(function (e) {
-                $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
-                e.stopImmediatePropagation();
-            });
+            }
+
 
             //EXCEL
             // $(document).ready(function () {

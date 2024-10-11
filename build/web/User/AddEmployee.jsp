@@ -200,11 +200,6 @@
                                     <input class="form-control" type="text" value="<%= request.getAttribute("address") != null ? request.getAttribute("address") : "" %>" name="address">
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label class="control-label">Password</label>
-                                    <input class="form-control" id="password" type="password" value="<%= request.getAttribute("pass") != null ? request.getAttribute("pass") : "" %>" name="password" required>
-                                    <input type="checkbox" id="togglePassword"> Hiển thị mật khẩu
-                                </div>
-                                <div class="form-group col-md-3">
                                     <label for="exampleSelect1" class="control-label">Chức vụ</label>
                                     <select class="form-control" id="exampleSelect1" name="role">
                                         <option>-- Chọn chức vụ --</option>
@@ -241,39 +236,7 @@
                     </main>
 
 
-                    <!--
-                    MODAL
-                    -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                         data-backdrop="static" data-keyboard="false">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="form-group  col-md-12">
-                                            <span class="thong-tin-thanh-toan">
-                                                <h5>Tạo chức vụ mới</h5>
-                                            </span>
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Nhập tên chức vụ mới</label>
-                                            <input class="form-control" type="text" required>
-                                        </div>
-                                    </div>
-                                    <BR>
-                                    <button class="btn btn-save" type="button">Lưu lại</button>
-                                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                    <BR>
-                                </div>
-                                <div class="modal-footer">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--
-                    MODAL
-                    -->
+                    
 
 
                     <!-- Essential javascripts for application to work-->
@@ -283,18 +246,7 @@
                     <script src="js/main.js"></script>
                     <!-- The javascript plugin to display page loading on top-->
                     <script src="js/plugins/pace.min.js"></script>
-                    <script>
-                                            const togglePassword = document.getElementById('togglePassword');
-                                            const passwordInput = document.getElementById('password');
-
-                                            togglePassword.addEventListener('change', function () {
-                                                if (this.checked) {
-                                                    passwordInput.type = 'text';  // Hiện mật khẩu
-                                                } else {
-                                                    passwordInput.type = 'password';  // Ẩn mật khẩu
-                                                }
-                                            });
-                    </script>
+                    
 
                     <script>
                         // Hàm kiểm tra file hợp lệ

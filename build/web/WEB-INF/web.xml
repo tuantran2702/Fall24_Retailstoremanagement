@@ -108,6 +108,14 @@
         <servlet-name>RolesServlet</servlet-name>
         <servlet-class>controllers.RoleControllers.RolesServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <servlet-class>controllers.UserController.DeleteUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <url-pattern>/deleteUser</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -206,7 +214,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SettingController</servlet-name>
-        <url-pattern>/settingController</url-pattern>
+        <url-pattern>/setting</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UpdateUserController</servlet-name>
@@ -219,6 +227,10 @@
     <servlet-mapping>
         <servlet-name>RolesServlet</servlet-name>
         <url-pattern>/roles</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddRoleServlet</servlet-name>
+        <url-pattern>/addRole</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
@@ -234,6 +246,10 @@
     <servlet>
         <servlet-name>Homepage</servlet-name>
         <servlet-class>controllers.Homepage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddRoleServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.AddRoleServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductController</servlet-name>

@@ -92,7 +92,9 @@ public class AddUserController extends HttpServlet {
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
-        String password = request.getParameter("password");
+
+        SendEmail se = new SendEmail();
+        String password = se.generateRandomCode(6);
 
         //Kiem tra Role
         int roleId;
@@ -107,7 +109,6 @@ public class AddUserController extends HttpServlet {
             request.setAttribute("email", email);
             request.setAttribute("phone", phone);
             request.setAttribute("address", address);
-            request.setAttribute("pass", password);
 
             // Truy vấn dữ liệu từ database
             RoleDAO roleDAO = new RoleDAO();
@@ -118,6 +119,29 @@ public class AddUserController extends HttpServlet {
             // Chuyển tiếp yêu cầu về lại trang thêm người dùng
             request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
             return; // Dừng việc xử lý thêm người dùng
+        }
+        
+        //Kiem Tra Email
+        UserDAO ud = new UserDAO();
+        User checkEmail = ud.getUserByEmail(email);
+        if(checkEmail != null){
+            request.setAttribute("errorMessage", "Email already exists");
+
+            request.setAttribute("firstname", firstName);
+            request.setAttribute("lastname", lastName);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
+            request.setAttribute("role", roleId);
+
+            // Truy vấn dữ liệu từ database
+            RoleDAO roleDAO = new RoleDAO();
+            List<Role> roles = roleDAO.getAllRole();
+
+            // Lưu danh sách roles vào request attribute
+            request.setAttribute("roles", roles);
+            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
+            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
+            return;  // Dừng xử lý tiếp
         }
 
         // Kiểm tra số điện thoại có hợp lệ hay không (10 số và bắt đầu bằng 0)
@@ -131,7 +155,7 @@ public class AddUserController extends HttpServlet {
             request.setAttribute("email", email);
             request.setAttribute("phone", phone);
             request.setAttribute("address", address);
-            request.setAttribute("pass", password);
+            request.setAttribute("role", roleId);
 
             // Truy vấn dữ liệu từ database
             RoleDAO roleDAO = new RoleDAO();
@@ -144,60 +168,25 @@ public class AddUserController extends HttpServlet {
             return;  // Dừng xử lý tiếp
         }
 
+        
+        //Img
         ImageHandler ih = new ImageHandler();
         String uploadFilePath = getServletContext().getRealPath("") + File.separator + "img-anhthe";
         String imgPath = null;
 
         // Lấy phần file tải lên
         Part filePart = request.getPart("ImageUpload");
-        UserDAO ud = new UserDAO();
+        
 
-        if (filePart != null && ih.kiemTraFileAnh(filePart)) {
+        if (filePart != null) {
             imgPath = ih.luuAnh(filePart, uploadFilePath);
-        } else if (!ih.kiemTraFileAnh(filePart)) {
-            request.setAttribute("errorMessage", "File ảnh không hợp lệ");
-            request.setAttribute("firstname", firstName);
-            request.setAttribute("lastname", lastName);
-            request.setAttribute("email", email);
-            request.setAttribute("phone", phone);
-            request.setAttribute("address", address);
-            request.setAttribute("pass", password);
-
-            // Truy vấn dữ liệu từ database
-            RoleDAO roleDAO = new RoleDAO();
-            List<Role> roles = roleDAO.getAllRole();
-
-            // Lưu danh sách roles vào request attribute
-            request.setAttribute("roles", roles);
-            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
-            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
         } else {
-            // Nếu không phải là file ảnh, trả về lỗi hoặc dùng ảnh mặc định
+            
             imgPath = "img-anhthe\\default.png";
-            // Có thể thông báo lỗi cho người dùng tại đây
+            
         }
-
-//        // Handling image upload
-//        String imgPath = null;
-//        Part filePart = request.getPart("ImageUpload"); // "ImageUpload" is the name attribute in the form
-//        if (filePart != null && filePart.getSize() > 0) {
-//            String applicationPath = request.getServletContext().getRealPath("");
-//            String uploadFilePath = applicationPath + File.separator + "img-anhthe"; // Directory to store the uploaded image
-//
-//            // Create directory if it doesn't exist
-//            File uploadDir = new File(uploadFilePath);
-//            if (!uploadDir.exists()) {
-//                uploadDir.mkdirs();
-//            }
-//
-//            // Extract file name and save the file
-//            String fileName = getFileName(filePart);
-//            String fullFilePath = uploadFilePath + File.separator + fileName;
-//            filePart.write(fullFilePath);
-//
-//            // Set the image path to store in the database (optional: relative path)
-//            imgPath = "img-anhthe/" + fileName;
-//        }else imgPath = "img-anhthe\\default.png";
+        MaHoa mh = new MaHoa();
+//      
         // Create a user object
         User user = new User();
         user.setFirstName(firstName);
@@ -210,9 +199,10 @@ public class AddUserController extends HttpServlet {
         user.setImg(imgPath); // Set the image path
 
         // Insert user into the database
-        UserDAO userDAO = new UserDAO();
+        ;
         try {
-            userDAO.addUser(user);
+            ud.addUser(user);
+            se.sendEmailWelcome(email, password);
             response.sendRedirect("userManage"); // Redirect on success
 
         } catch (Exception e) {
@@ -223,17 +213,8 @@ public class AddUserController extends HttpServlet {
         }
 
     }
-// Helper method to get file name
 
-    private String getFileName(Part part) {
-        String contentDisposition = part.getHeader("content-disposition");
-        for (String token : contentDisposition.split(";")) {
-            if (token.trim().startsWith("filename")) {
-                return token.substring(token.indexOf("=") + 2, token.length() - 1);
-            }
-        }
-        return null;
-    }
+
 
     /**
      * Returns a short description of the servlet.

@@ -4,6 +4,7 @@
  */
 package controllers.UserController;
 
+import dao.RoleDAO;
 import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,7 +12,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.util.*;
+import model.Role;
 import model.User;
 
 /**
@@ -37,7 +39,7 @@ public class UserManageController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UserManageController</title>");            
+            out.println("<title>Servlet UserManageController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet UserManageController at " + request.getContextPath() + "</h1>");
@@ -56,10 +58,25 @@ public class UserManageController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         UserDAO ud = new UserDAO();
+        RoleDAO rd = new RoleDAO();
+        
+        // Lấy danh sách tất cả người dùng
         List<User> users = ud.getAllUsers();
+
+        // Tạo một map để lưu roleID và roleName
+        Map<Integer, String> roleMap = new HashMap<>();
+
+        // Lấy danh sách các vai trò (role) và lưu vào map
+        List<Role> roles = rd.getAllRole();
+        for (Role role : roles) {
+            roleMap.put(role.getRoleID(), role.getRoleName());
+        }
+
+        // Truyền danh sách người dùng và map role vào request
+        request.setAttribute("roleMap", roleMap);  // Truyền roleMap vào JSP
         request.setAttribute("userList", users);
         request.getRequestDispatcher("User/QuanLyNhanVien.jsp").forward(request, response);
     }
@@ -76,7 +93,7 @@ public class UserManageController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-       
+
     }
 
     /**

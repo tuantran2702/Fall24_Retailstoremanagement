@@ -157,8 +157,8 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item">Danh sách nhân viên</li>
-                    <li class="breadcrumb-item"><a href="#">Thêm nhân viên</a></li>
+                    <li class="breadcrumb-item">List Role</li>
+                    <li class="breadcrumb-item"><a href="#">Add New Role</a></li>
                 </ul>
             </div>
             <div class="row">
@@ -166,68 +166,22 @@
 
                     <div class="tile">
 
-                        <h3 class="tile-title">Tạo mới nhân viên</h3>
+                        <h3 class="tile-title">Add New Role</h3>
                         <div class="tile-body">
-                            <div class="row element-button">
-                                <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><b><i
-                                                class="fas fa-folder-plus"></i> Tạo chức vụ mới</b></a>
-                                </div>
-
-                            </div> 
                             <c:if test="${not empty errorMessage}">
                                 <p style="color:red">${errorMessage}</p>
                             </c:if>
-                            <form class="row" action="addUser" method="POST" enctype="multipart/form-data">
-                                <div class="form-group col-md-4">
-                                    <label class="control-label">FirstName</label>
-                                    <input class="form-control" type="text" value="<%= request.getAttribute("firstname") != null ? request.getAttribute("firstname") : "" %>" name="firstName" required>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label class="control-label">LastName</label>
-                                    <input class="form-control" type="text" value="<%= request.getAttribute("lastname") != null ? request.getAttribute("lastname") : "" %>" name="lastName" required>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label class="control-label">Email</label>
-                                    <input class="form-control" type="email" value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>" name="email" required>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label class="control-label">Số điện thoại</label>
-                                    <input class="form-control" type="text" value="<%= request.getAttribute("phone") != null ? request.getAttribute("phone") : "" %>" name="phone" required>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label class="control-label">Address</label>
-                                    <input class="form-control" type="text" value="<%= request.getAttribute("address") != null ? request.getAttribute("address") : "" %>" name="address">
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="exampleSelect1" class="control-label">Chức vụ</label>
-                                    <select class="form-control" id="exampleSelect1" name="role">
-                                        <option>-- Chọn chức vụ --</option>
-                                        <c:forEach var="role" items="${roles}">
-                                            <option value="${role.roleID}">${role.roleName}</option>
-                                        </c:forEach>
-                                    </select>
+                            <form class="row" action="addRole" method="POST">
+                                <div class="form-group col-md-12">
+                                    <label class="control-label">Role Name</label>
+                                    <input class="form-control" type="text" value="<%= request.getAttribute("firstname") != null ? request.getAttribute("firstname") : "" %>" name="roleName" required>
                                 </div>
                                 <div class="form-group col-md-12">
-                                    
-                                    <label class="control-label">Ảnh 3x4 nhân viên</label>
-                                    <p id="error-message" class="error" style="color: red"></p> <!-- Thông báo lỗi -->
-                                    <div id="myfileupload">
-                                        <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
-                                    </div>
-
-                                    <div id="thumbbox">
-                                        <img height="300" width="300" alt="Thumb image" id="thumbimage" style="display: none" />
-                                        <a class="removeimg" href="javascript:" onclick="removeImage()"></a>
-                                    </div>
-
-                                    <div id="boxchoice">
-                                        <a href="javascript:" class="Choicefile"><i class='bx bx-upload'></i> Chọn file</a>
-                                        <p style="clear:both"></p>
-                                    </div>
+                                    <label class="control-label">Description</label>
+                                    <input class="form-control" type="text" value="<%= request.getAttribute("lastname") != null ? request.getAttribute("lastname") : "" %>" name="description" required>
                                 </div>
                                 <button class="btn btn-save" type="submit">Lưu lại</button>
-                                <a class="btn btn-cancel" href="userManage">Hủy bỏ</a>
+                                <a class="btn btn-cancel" href="roles">Hủy bỏ</a>
                             </form>
 
                         </div>
@@ -248,72 +202,7 @@
                     <script src="js/plugins/pace.min.js"></script>
                     
 
-                    <script>
-                        // Hàm kiểm tra file hợp lệ
-                        function validateFile(file) {
-                            const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
-                            const maxFileSize = 2 * 1024 * 1024; // 2MB giới hạn kích thước
-
-                            // Kiểm tra loại file và kích thước file
-                            if (!validImageTypes.includes(file.type)) {
-                                return "Chỉ cho phép file ảnh (JPEG, PNG, GIF).";
-                            }
-                            if (file.size > maxFileSize) {
-                                return "Kích thước ảnh phải nhỏ hơn 2MB.";
-                            }
-                            return null;
-                        }
-
-                        // Hàm hiển thị ảnh xem trước và validate file
-                        function readURL(input) {
-                            if (input.files && input.files[0]) { // Sử dụng cho Firefox - Chrome
-                                const file = input.files[0];
-                                const error = validateFile(file);
-
-                                if (error) {
-                                    // Hiển thị thông báo lỗi và reset input nếu file không hợp lệ
-                                    $("#error-message").text(error);
-                                    input.value = ""; // Reset input file
-                                    $("#thumbimage").hide();
-                                    $(".removeimg").hide();
-                                    $(".Choicefile").css('background', '#14142B').css('cursor', 'pointer');
-                                    $(".filename").text("");
-                                    return;
-                                }
-
-                                // Nếu hợp lệ, hiển thị ảnh xem trước
-                                const reader = new FileReader();
-                                reader.onload = function (e) {
-                                    $("#thumbimage").attr('src', e.target.result).show();
-                                    $(".removeimg").show();
-                                    $(".Choicefile").css('background', '#14142B').css('cursor', 'default');
-                                    $(".filename").text(input.files[0].name); // Hiển thị tên file
-                                }
-                                reader.readAsDataURL(file);
-                                $("#error-message").text(""); // Xóa thông báo lỗi
-                            } else { // Sử dụng cho IE
-                                $("#thumbimage").attr('src', input.value).show();
-                            }
-                        }
-
-                        $(document).ready(function () {
-                            $(".Choicefile").bind('click', function () {
-                                $("#uploadfile").click();
-                            });
-                            $(".removeimg").click(function () {
-                                $("#thumbimage").attr('src', '').hide();
-                                $("#myfileupload").html('<input type="file" id="uploadfile" onchange="readURL(this);" />');
-                                $(".removeimg").hide();
-                                $(".Choicefile").bind('click', function () {
-                                    $("#uploadfile").click();
-                                });
-                                $('.Choicefile').css('background', '#14142B').css('cursor', 'pointer');
-                                $(".filename").text("");
-                                $("#error-message").text(""); // Reset thông báo lỗi
-                            });
-                        });
-                    </script>
-
+                    
 
                     </body>
 
