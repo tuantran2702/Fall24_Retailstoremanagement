@@ -36,31 +36,9 @@ public class RoleDAO extends DBContext {
         }
         return roles;
     }
-    
+
     public boolean addRole(String roleName, String description) {
-    String sql = "INSERT INTO [Role] (RoleName, Description) VALUES (?, ?)";
-    
-    try {
-        PreparedStatement st = connection.prepareStatement(sql);
-        
-        // Gán giá trị cho các tham số trong câu lệnh SQL
-        st.setString(1, roleName);
-        st.setString(2, description);
-        
-        // Thực thi câu lệnh thêm và kiểm tra số dòng bị ảnh hưởng
-        int rowsInserted = st.executeUpdate();
-        
-        // Nếu có ít nhất 1 dòng bị thêm thì trả về true, nghĩa là thêm thành công
-        return rowsInserted > 0;
-    } catch (Exception e) {
-        e.printStackTrace();
-        return false;  // Trả về false nếu xảy ra lỗi
-    }
-}
-
-
-    public boolean updateRole(int id, String roleName, String description) {
-        String sql = "UPDATE [Role] SET RoleName = ?, Description = ? WHERE RoleID = ?";
+        String sql = "INSERT INTO [dbo].[Role] ([RoleName], [Description]) VALUES (?, ?)";
 
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -68,7 +46,28 @@ public class RoleDAO extends DBContext {
             // Gán giá trị cho các tham số trong câu lệnh SQL
             st.setString(1, roleName);
             st.setString(2, description);
-            st.setInt(3, id);
+
+            // Thực thi câu lệnh thêm và kiểm tra số dòng bị ảnh hưởng
+            int rowsInserted = st.executeUpdate();
+
+            // Nếu có ít nhất 1 dòng bị thêm thì trả về true, nghĩa là thêm thành công
+            return rowsInserted > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;  // Trả về false nếu xảy ra lỗi
+        }
+    }
+
+    public boolean updateRole(Role r) {
+        String sql = "UPDATE [Role] SET RoleName = ?, Description = ? WHERE RoleID = ?";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+
+            // Gán giá trị cho các tham số trong câu lệnh SQL
+            st.setString(1, r.getRoleName());
+            st.setString(2, r.getDescription());
+            st.setInt(3, r.getRoleID());
 
             // Thực thi câu lệnh cập nhật và kiểm tra số dòng bị ảnh hưởng
             int rowsUpdated = st.executeUpdate();
@@ -99,6 +98,26 @@ public class RoleDAO extends DBContext {
             e.printStackTrace();
             return false;  // Trả về false nếu xảy ra lỗi
         }
+    }
+
+    public Role getRoleByID(int roleID) {
+        Role role = null;
+        try {
+            String sql = "SELECT * FROM Role WHERE roleID = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, roleID);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                role = new Role();
+                role.setRoleID(rs.getInt(1));
+                role.setRoleName(rs.getString(2));
+                role.setDescription(rs.getString(3));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return role;
     }
 
     public static void main(String[] args) {

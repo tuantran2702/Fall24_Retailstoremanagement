@@ -28,74 +28,26 @@
 
     <body class="app sidebar-mini rtl">
         <style>
-            .Choicefile {
-                display: block;
-                background: #14142B;
-                border: 1px solid #fff;
-                color: #fff;
-                width: 150px;
-                text-align: center;
-                text-decoration: none;
-                cursor: pointer;
-                padding: 5px 0px;
-                border-radius: 5px;
-                font-weight: 500;
+            .input-group {
+                width: 50%; /* Đặt chiều rộng của input group thành 50% */
+                
+            }
+
+            .input-group-text {
+                cursor: pointer; /* Thêm con trỏ khi di chuột lên icon */
+            }
+
+            /* Ẩn icon khi không cần thiết */
+            .toggle-password {
+                display: flex;
                 align-items: center;
-                justify-content: center;
             }
 
-            .Choicefile:hover {
-                text-decoration: none;
-                color: white;
+            /* Tùy chỉnh icon mắt */
+            .toggle-password i {
+                font-size: 1.2rem; /* Kích thước icon */
             }
 
-            #uploadfile,
-            .removeimg {
-                display: none;
-            }
-
-            #thumbbox {
-                position: relative;
-                width: 100%;
-                margin-bottom: 20px;
-            }
-
-            .removeimg {
-                height: 25px;
-                position: absolute;
-                background-repeat: no-repeat;
-                top: 5px;
-                left: 5px;
-                background-size: 25px;
-                width: 25px;
-                /* border: 3px solid red; */
-                border-radius: 50%;
-
-            }
-
-            .removeimg::before {
-                -webkit-box-sizing: border-box;
-                box-sizing: border-box;
-                content: '';
-                border: 1px solid red;
-                background: red;
-                text-align: center;
-                display: block;
-                margin-top: 11px;
-                transform: rotate(45deg);
-            }
-
-            .removeimg::after {
-                /* color: #FFF; */
-                /* background-color: #DC403B; */
-                content: '';
-                background: red;
-                border: 1px solid red;
-                text-align: center;
-                display: block;
-                transform: rotate(-45deg);
-                margin-top: -2px;
-            }
         </style>
         <!-- Navbar-->
         <header class="app-header">
@@ -114,10 +66,10 @@
         <!-- Sidebar menu-->
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
         <aside class="app-sidebar">
-            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="${sessionScope.User.getEmail()}" width="50px"
+            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="${sessionScope.User.getImg()}" width="50px"
                                                 alt="User Image">
                 <div>
-                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getEmail()}</b></p>
+                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
                     <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
                 </div>
             </div>
@@ -164,22 +116,40 @@
                                 <p style="color:red">${errorMessage}</p>
                             </c:if>
                             <form class="row" action="setting" method="POST">
-                                <div class="form-group col-md-12" >
+                                <div class="form-group col-md-12">
                                     <label class="control-label">Old Password</label>
-                                    <input class="form-control" id="oldPassword" type="password" value="<%= request.getAttribute("pass") != null ? request.getAttribute("pass") : "" %>" name="oldPassword" required>
-                                    <input type="checkbox" id="toggleOldPassword"> Hiển thị mật khẩu
+                                    <div class="input-group">
+                                        <input class="form-control" id="oldPassword" type="password" name="oldPassword" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text toggle-password" id="toggleOldPassword">
+                                                <i class="fas fa-eye"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-12">
                                     <label class="control-label">New Password</label>
-                                    <input class="form-control" id="newPassword" type="password" value="<%= request.getAttribute("pass") != null ? request.getAttribute("pass") : "" %>" name="newPassword" required>
-                                    <input type="checkbox" id="toggleNewPassword"> Hiển thị mật khẩu
+                                    <div class="input-group">
+                                        <input class="form-control" id="newPassword" type="password" name="newPassword" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text toggle-password" id="toggleNewPassword">
+                                                <i class="fas fa-eye"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-12">
                                     <label class="control-label">Confirm New Password</label>
-                                    <input class="form-control" id="confirmNewPassword" type="password" value="<%= request.getAttribute("pass") != null ? request.getAttribute("pass") : "" %>" name="confirmNewPassword" required>
-                                    <input type="checkbox" id="toggleConfirmNewPassword"> Hiển thị mật khẩu
+                                    <div class="input-group">
+                                        <input class="form-control" id="confirmNewPassword" type="password" name="confirmNewPassword" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text toggle-password" id="toggleConfirmNewPassword">
+                                                <i class="fas fa-eye"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-md-12">
@@ -187,7 +157,6 @@
                                     <a class="btn btn-cancel" href="userManage">Hủy bỏ</a>
                                 </div>
                             </form>
-
 
                         </div>
                     </div>
@@ -207,32 +176,15 @@
     <!-- The javascript plugin to display page loading on top-->
     <script src="js/plugins/pace.min.js"></script>
     <script>
-        document.getElementById('toggleOldPassword').addEventListener('click', function () {
-            const oldPassword = document.getElementById('oldPassword');
-            if (this.checked) {
-                oldPassword.type = 'text';
-            } else {
-                oldPassword.type = 'password';
-            }
+        document.querySelectorAll('.toggle-password').forEach(item => {
+            item.addEventListener('click', function () {
+                const input = this.parentElement.previousElementSibling;
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye-slash'); // Đổi icon
+            });
         });
 
-        document.getElementById('toggleNewPassword').addEventListener('click', function () {
-            const newPassword = document.getElementById('newPassword');
-            if (this.checked) {
-                newPassword.type = 'text';
-            } else {
-                newPassword.type = 'password';
-            }
-        });
-
-        document.getElementById('toggleConfirmNewPassword').addEventListener('click', function () {
-            const confirmNewPassword = document.getElementById('confirmNewPassword');
-            if (this.checked) {
-                confirmNewPassword.type = 'text';
-            } else {
-                confirmNewPassword.type = 'password';
-            }
-        });
     </script>
 
 

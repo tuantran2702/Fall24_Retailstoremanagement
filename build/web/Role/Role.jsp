@@ -48,7 +48,7 @@
         <!-- Sidebar menu-->
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
         <aside class="app-sidebar">
-            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
+            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="${sessionScope.User.getImg()}" width="50px"
                                                 alt="User Image">
                 <div>
                     <p class="app-sidebar__user-name"><b>${sessionScope.User.getEmail()}</b></p>
@@ -57,7 +57,7 @@
             </div>
             <hr>
             <ul class="app-menu">
-                <li><a class="app-menu__item haha" href="phan-mem-ban-hang.html"><i class='app-menu__icon bx bx-cart-alt'></i>
+                <li><a class="app-menu__item haha" href="order"><i class='app-menu__icon bx bx-cart-alt'></i>
                         <span class="app-menu__label">POS Bán Hàng</span></a></li>
                 <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Bảng điều khiển</span></a></li>
@@ -80,7 +80,7 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><a href="#"><b>Danh sách Phân Quyền</b></a></li>
+                    <li class="breadcrumb-item active"><a href="roles"><b>Danh sách Phân Quyền</b></a></li>
                 </ul>
                 <div id="clock"></div>
             </div>
@@ -95,20 +95,6 @@
 
                                     <a class="btn btn-add btn-sm" href="addRole" title="Thêm"><i class="fas fa-plus"></i>
                                         Tạo mới Phân Quyền</a>
-                                </div>
-
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()"><i
-                                            class="fas fa-print"></i> In dữ liệu</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
-                                            class="fas fa-copy"></i> Sao chép</a>
-                                </div>
-
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm" type="button" title="Xóa" onclick="myFunction(this)"><i
-                                            class="fas fa-trash-alt"></i> Xóa tất cả </a>
                                 </div>
                             </div>
 
@@ -130,10 +116,13 @@
                                             <td>${r.roleName}</td>
                                             <td>${r.description}</td>
                                             <td>
+                                                <!-- Nút Sửa -->
                                                 <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" 
                                                         onclick="loadRoleData(${r.roleID}); $('#ModalUP').modal('show');">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
+
+                                                <!-- Nút Xóa -->
                                                 <button class="btn btn-danger btn-sm trash" type="button" title="Xóa"
                                                         onclick="deleteRole(${r.roleID})">
                                                     <i class="fas fa-trash-alt"></i>
@@ -141,6 +130,7 @@
                                             </td>
                                         </tr>
                                     </c:forEach>
+
                                 </tbody>
                             </table>
                         </div>
@@ -190,7 +180,6 @@
         <script src="js/jquery-3.2.1.min.js"></script>
         <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="src/jquery.table2excel.js"></script>
         <script src="js/main.js"></script>
         <!-- The javascript plugin to display page loading on top-->
@@ -250,42 +239,11 @@
             }
         </script>
 
-
         <script>
-            $('#saveChangesBtn').on('click', function () {
-                var user = {
-                    userID: $('#ModalUP input[name="userID"]').val(),
-                    firstName: $('#ModalUP input[name="firstName"]').val(),
-                    lastName: $('#ModalUP input[name="lastName"]').val(),
-                    phoneNumber: $('#ModalUP input[name="phoneNumber"]').val(),
-                    email: $('#ModalUP input[name="email"]').val(),
-                    roleID: $('#ModalUP select[name="roleID"]').val()
-                };
-
-                $.ajax({
-                    url: 'updateUser', // URL của servlet để cập nhật thông tin
-                    type: 'POST',
-                    data: user,
-                    success: function (response) {
-                        swal("Đã cập nhật thành công!", {
-                            icon: "success"
-                        }).then(() => {
-                            location.reload(); // Reload trang sau khi cập nhật
-                        });
-                    },
-                    error: function () {
-                        swal("Cập nhật thất bại!", {
-                            icon: "error"
-                        });
-                    }
-                });
-            });
-
-        </script>
-        <script>
+            // Hàm tải dữ liệu vai trò vào modal
             function loadRoleData(roleID) {
                 $.ajax({
-                    url: 'getRole', // URL của servlet để lấy thông tin vai trò
+                    url: 'getRole', // URL servlet để lấy dữ liệu vai trò
                     type: 'GET',
                     data: {id: roleID},
                     success: function (role) {
@@ -302,19 +260,38 @@
                 });
             }
 
-        </script>
-        <script>
-            function deleteUser(userID) {
+
+            // Hàm cập nhật vai trò
+            function updateRole() {
+                var formData = $('#roleForm').serialize(); // Lấy dữ liệu từ form
+                $.ajax({
+                    url: 'getRole', // URL servlet để cập nhật vai trò
+                    type: 'POST',
+                    data: formData,
+                    success: function () {
+                        swal("Cập nhật thành công!", {icon: "success"}).then(() => {
+                            location.reload(); // Tải lại trang để cập nhật danh sách
+                        });
+                    },
+                    error: function () {
+                        swal("Không thể cập nhật vai trò!", {icon: "error"});
+                    }
+                });
+            }
+       
+            //Ham Xoa Role
+            function deleteRole(roleID) {
                 swal({
                     title: "Cảnh báo",
-                    text: "Bạn có chắc chắn muốn xóa nhân viên này?",
-                    buttons: ["Hủy bỏ", "Đồng ý"]
+                    text: "Bạn có chắc chắn muốn xóa vai trò này?",
+                    buttons: ["Hủy bỏ", "Đồng ý"],
+                    dangerMode: true
                 }).then((willDelete) => {
                     if (willDelete) {
                         $.ajax({
-                            url: 'deleteUser', // URL của servlet xử lý xóa người dùng
+                            url: 'deleteRole', // URL servlet xử lý xóa vai trò
                             type: 'POST',
-                            data: {id: userID},
+                            data: {id: roleID},
                             success: function (response) {
                                 swal("Đã xóa thành công!", {
                                     icon: "success"
@@ -331,28 +308,11 @@
                     }
                 });
             }
+
+
         </script>
         <script>
-            function updateRole() {
-                var formData = $('#roleForm').serialize(); // Lấy dữ liệu từ form
-                $.ajax({
-                    url: 'updateRole', // URL của servlet cập nhật vai trò
-                    type: 'POST',
-                    data: formData,
-                    success: function () {
-                        swal("Cập nhật thành công!", {
-                            icon: "success"
-                        }).then(() => {
-                            location.reload(); // Tải lại trang để cập nhật danh sách
-                        });
-                    },
-                    error: function () {
-                        swal("Không thể cập nhật vai trò!", {
-                            icon: "error"
-                        });
-                    }
-                });
-            }
+
 
 
             //EXCEL
@@ -407,33 +367,8 @@
                     return i;
                 }
             }
-            //In dữ liệu
-            var myApp = new function () {
-                this.printTable = function () {
-                    var tab = document.getElementById('sampleTable');
-                    var win = window.open('', '', 'height=700,width=700');
-                    win.document.write(tab.outerHTML);
-                    win.document.close();
-                    win.print();
-                }
-            }
-            //     //Sao chép dữ liệu
-            //     var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
-
-            // copyTextareaBtn.addEventListener('click', function(event) {
-            //   var copyTextarea = document.querySelector('.js-copytextarea');
-            //   copyTextarea.focus();
-            //   copyTextarea.select();
-
-            //   try {
-            //     var successful = document.execCommand('copy');
-            //     var msg = successful ? 'successful' : 'unsuccessful';
-            //     console.log('Copying text command was ' + msg);
-            //   } catch (err) {
-            //     console.log('Oops, unable to copy');
-            //   }
-            // });
-
+            
+            
 
 
         </script>

@@ -87,11 +87,11 @@ public class AddUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Collect form data
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
+        String firstName = request.getParameter("firstName").trim();
+        String lastName = request.getParameter("lastName").trim();
+        String email = request.getParameter("email").trim();
+        String phone = request.getParameter("phone").trim();
+        String address = request.getParameter("address").trim();
 
         SendEmail se = new SendEmail();
         String password = se.generateRandomCode(6);
@@ -171,7 +171,7 @@ public class AddUserController extends HttpServlet {
         
         //Img
         ImageHandler ih = new ImageHandler();
-        String uploadFilePath = getServletContext().getRealPath("") + File.separator + "img-anhthe";
+        String uploadFilePath = "E:\\Fall24\\SWP391\\Clone-Git\\Fall24_Retailstoremanagement-Clone\\web\\img-anhthe";
         String imgPath = null;
 
         // Lấy phần file tải lên
@@ -180,10 +180,9 @@ public class AddUserController extends HttpServlet {
 
         if (filePart != null) {
             imgPath = ih.luuAnh(filePart, uploadFilePath);
-        } else {
-            
+        } 
+        if (imgPath == null){
             imgPath = "img-anhthe\\default.png";
-            
         }
         MaHoa mh = new MaHoa();
 //      

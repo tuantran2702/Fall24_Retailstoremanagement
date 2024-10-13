@@ -73,18 +73,27 @@ public class SettingController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Lấy thông tin từ form
-        String oldPassword = request.getParameter("oldPassword");
-        String newPassword = request.getParameter("newPassword");
-        String confirmNewPassword = request.getParameter("confirmNewPassword");
+        String oldPassword = request.getParameter("oldPassword").trim();
+        String newPassword = request.getParameter("newPassword").trim();
+        String confirmNewPassword = request.getParameter("confirmNewPassword").trim();
 
         HttpSession session = request.getSession();
         MaHoa mh = new MaHoa();
+        UserDAO ud = new UserDAO();
+        
         User u = (User) session.getAttribute("User"); // Giả sử password hiện tại lưu trong session
-
+        User user = ud.getUserById(u.getUserID());
+        
+        if(user == null){
+            // Chuyển hướng người dùng sau khi thay đổi mật khẩu khong thành công
+            request.setAttribute("errorMessage", "Khong tim thay User");
+            request.getRequestDispatcher("User/Setting.jsp").forward(request, response);
+        }
+        
         // Kiểm tra mật khẩu hiện tại và các điều kiện của mật khẩu mới
         String errorMessage = null;
 
-        if (!mh.md5Hash(oldPassword).equals(u.getPassword())) {
+        if (!mh.md5Hash(oldPassword).equals(user.getPassword())) {
             errorMessage = "Mật khẩu cũ không đúng!";
         } else if (!newPassword.equals(confirmNewPassword)) {
             errorMessage = "Mật khẩu mới không khớp!";
@@ -97,15 +106,14 @@ public class SettingController extends HttpServlet {
             request.getRequestDispatcher("User/Setting.jsp").forward(request, response);
         } else {
             // Lưu mật khẩu mới (cập nhật vào cơ sở dữ liệu hoặc session)
-            UserDAO ud = new UserDAO();
             boolean flag = ud.updatePassword(u, mh.md5Hash(newPassword));
             if(flag){
                 // Chuyển hướng người dùng sau khi thay đổi mật khẩu thành công
             request.setAttribute("errorMessage", "Cap nhat Mat Khau Thanh Cong");
             request.getRequestDispatcher("User/Setting.jsp").forward(request, response);
             }else{
-                // Chuyển hướng người dùng sau khi thay đổi mật khẩu thành công
-            request.setAttribute("errorMessage", "Cap nhat Mat Khau Khong Cong");
+                // Chuyển hướng người dùng sau khi thay đổi mật khẩu khong thành công
+            request.setAttribute("errorMessage", "Cap nhat Mat Khau Khong Thanh Cong");
             request.getRequestDispatcher("User/Setting.jsp").forward(request, response);
             }
 

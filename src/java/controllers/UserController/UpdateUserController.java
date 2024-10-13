@@ -98,6 +98,9 @@ public class UpdateUserController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        UserDAO ud = new UserDAO();
+        ImageHandler ih = new ImageHandler();
+        
         // Collect updated user data from the form
         int userID = Integer.parseInt(request.getParameter("userID"));
         String firstName = request.getParameter("firstName");
@@ -106,14 +109,14 @@ public class UpdateUserController extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         int roleID = Integer.parseInt(request.getParameter("role"));
-
-        ImageHandler ih = new ImageHandler();
+        
+        
         String uploadFilePath = "E:\\Fall24\\SWP391\\Clone-Git\\Fall24_Retailstoremanagement-Clone\\web\\img-anhthe";
         String imgPath = null;
 
         // Lấy phần file tải lên
         Part filePart = request.getPart("ImageUpload");
-        UserDAO ud = new UserDAO();
+        
         User u = ud.getUserById(userID);  // Lấy thông tin người dùng từ DB
 
         // Hàm lưu ảnh
@@ -123,6 +126,33 @@ public class UpdateUserController extends HttpServlet {
         if (imgPath == null) {
             imgPath = u.getImg();
         }
+        
+        
+        //Kiem tra Email
+        User checkedUser = ud.getUserByEmail(email);
+        if(checkedUser != null){
+            request.setAttribute("errorMessage", "Email already exits");
+
+            request.setAttribute("firstname", firstName);
+            request.setAttribute("lastname", lastName);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
+            request.setAttribute("role", roleID);
+            
+
+            // Truy vấn dữ liệu từ database
+            RoleDAO roleDAO = new RoleDAO();
+            List<Role> roles = roleDAO.getAllRole();
+
+            // Lưu danh sách roles vào request attribute
+            request.setAttribute("roles", roles);
+            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
+            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
+            return;  // Dừng xử lý tiếp
+        }
+
+        
+        
 
 // Proceed with further logic (e.g., update user data with imgPath)
         // Update user object

@@ -22,7 +22,7 @@ public class ImageHandler {
         if (filePart != null && filePart.getSize() > 0) {
             // Lấy tên file
             String tenFile = getFileName(filePart);
-            duongDanAnh = "img-anhthe/" + tenFile;
+            duongDanAnh = "img-anhthe\\" + tenFile;
 
             // Tạo đường dẫn đầy đủ để lưu file
             File thuMucLuu = new File(duongDanLuuAnh + File.separator + tenFile);

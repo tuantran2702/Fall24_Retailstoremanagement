@@ -19,13 +19,14 @@ import model.User;
 public class UserDAO extends DBContext {
 
     public User checkLogin(String email, String password) {
+        MaHoa mh = new MaHoa();
         User user = null;
         String sql = "SELECT * FROM [User] WHERE Email = ? AND Password = ?";
         try {
             // Chuẩn bị truy vấn
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, email);      // Gán giá trị email vào câu lệnh SQL
-            st.setString(2, password);   // Gán giá trị password vào câu lệnh SQL
+            st.setString(2, mh.md5Hash(password));   // Gán giá trị password vào câu lệnh SQL
 
             // Thực thi truy vấn
             ResultSet rs = st.executeQuery();
