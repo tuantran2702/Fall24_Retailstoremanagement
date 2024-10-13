@@ -122,7 +122,7 @@
             <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
                                                 alt="User Image">
                 <div>
-                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getEmail()}</b></p>
+                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
                     <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
                 </div>
             </div>
@@ -215,10 +215,11 @@
                                     </div>
 
                                     <div id="thumbbox">
-                                        <img height="300" width="300" alt="Thumb image" id="thumbimage"
+                                        <img height="300" width="300" alt="Thumb image" id="thumbimage" 
                                              src="<%= ((User) request.getAttribute("user")).getImg() != null ? ((User) request.getAttribute("user")).getImg() : "" %>"
                                              style="<%= ((User) request.getAttribute("user")).getImg() != null ? "display: block;" : "display: none;" %>" />
-                                        <a class="removeimg" href="javascript:" onclick="removeImage()"></a>
+                                        <a class="removeimg" href="javascript:" onclick="removeImage()"
+                                           style="<%= ((User) request.getAttribute("user")).getImg() != null ? "display: block;" : "display: none;" %>"></a>
                                     </div>
 
                                     <div id="boxchoice">

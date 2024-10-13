@@ -5,6 +5,7 @@
 --%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="model.User" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -181,30 +182,35 @@
                             <form class="row" action="addUser" method="POST" enctype="multipart/form-data">
                                 <div class="form-group col-md-4">
                                     <label class="control-label">FirstName</label>
-                                    <input class="form-control" type="text" value="<%= request.getAttribute("firstname") != null ? request.getAttribute("firstname") : "" %>" name="firstName" required>
+                                    <input class="form-control" type="text" value="<%= ((User) request.getAttribute("user")).getFirstName() != null ? ((User) request.getAttribute("user")).getFirstName() : "" %>" name="firstName" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">LastName</label>
-                                    <input class="form-control" type="text" value="<%= request.getAttribute("lastname") != null ? request.getAttribute("lastname") : "" %>" name="lastName" required>
+                                    <input class="form-control" type="text" value="<%= ((User) request.getAttribute("user")).getLastName() != null ? ((User) request.getAttribute("user")).getLastName() : "" %>" name="lastName" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Email</label>
-                                    <input class="form-control" type="email" value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>" name="email" required>
+                                    <input class="form-control" type="email" value="<%= ((User) request.getAttribute("user")).getEmail() != null ? ((User) request.getAttribute("user")).getEmail() : "" %>" name="email" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Số điện thoại</label>
-                                    <input class="form-control" type="text" value="<%= request.getAttribute("phone") != null ? request.getAttribute("phone") : "" %>" name="phone" required>
+                                    <input class="form-control" type="text" value="<%= ((User) request.getAttribute("user")).getPhoneNumber() != null ? ((User) request.getAttribute("user")).getPhoneNumber() : "" %>" name="phone" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Address</label>
-                                    <input class="form-control" type="text" value="<%= request.getAttribute("address") != null ? request.getAttribute("address") : "" %>" name="address">
+                                    <input class="form-control" type="text" value="<%= ((User) request.getAttribute("user")).getAddress() != null ? ((User) request.getAttribute("user")).getAddress() : "" %>" name="address">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="exampleSelect1" class="control-label">Chức vụ</label>
                                     <select class="form-control" id="exampleSelect1" name="role">
                                         <option>-- Chọn chức vụ --</option>
                                         <c:forEach var="role" items="${roles}">
-                                            <option value="${role.roleID}">${role.roleName}</option>
+                                            <option value="${role.roleID}" 
+                                                    <c:if test="${role.roleID == user.roleID}">
+                                                        selected="selected"
+                                                    </c:if>>
+                                                ${role.roleName}
+                                            </option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -217,7 +223,9 @@
                                     </div>
 
                                     <div id="thumbbox">
-                                        <img height="300" width="300" alt="Thumb image" id="thumbimage" style="display: none" />
+                                        <img height="300" width="300" alt="Thumb image" id="thumbimage" 
+                                             src="<%= ((User) request.getAttribute("user")).getImg() != null ? ((User) request.getAttribute("user")).getImg() : "" %>"
+                                             style="<%= ((User) request.getAttribute("user")).getImg() != null ? "display: block;" : "display: none;" %>"/>
                                         <a class="removeimg" href="javascript:" onclick="removeImage()"></a>
                                     </div>
 
