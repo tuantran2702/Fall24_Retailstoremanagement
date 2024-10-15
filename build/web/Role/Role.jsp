@@ -118,7 +118,7 @@
                                             <td>
                                                 <!-- Nút Sửa -->
                                                 <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" 
-                                                        onclick="loadRoleData(${r.roleID}); $('#ModalUP').modal('show');">
+                                                        onclick="loadRoleData('${r.roleID}'); $('#updateRoleModal').modal('show');">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
 
@@ -139,36 +139,53 @@
             </div>
         </main>
 
+
         <!-- Modal -->
-        <div class="modal fade" id="ModalUP" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal fade" id="updateRoleModal" tabindex="-1" role="dialog" aria-labelledby="updateRoleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="ModalLabel">Cập nhật thông tin vai trò</h5>
+                        <h5 class="modal-title" id="updateRoleModalLabel">Update Role</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <form id="roleForm">
+
+                    <!-- Form cập nhật role -->
+                    <form id="updateRoleForm" method="POST">
+                        <div class="modal-body">
+                            <!-- Tên vai trò -->
+                            <input name="roleID" value="${role.roleID}"> <!-- Đảm bảo roleID có giá trị đúng -->
                             <div class="form-group">
-                                <label for="roleID">Role ID</label>
-                                <input type="text" class="form-control" name="roleID" readonly>
+                                <label for="roleName">Role Name</label>
+                                <input type="text" class="form-control" id="roleName" name="roleName" value="${role.roleName}" required>
                             </div>
+
+                            <!-- Mô tả vai trò -->
                             <div class="form-group">
-                                <label for="roleName">Tên vai trò</label>
-                                <input type="text" class="form-control" name="roleName" required>
+                                <label for="description">Description</label>
+                                <input type="text" class="form-control" id="description" name="description" value="${role.description}" required>
                             </div>
+
+                            <!-- Danh sách quyền (permissions) -->
                             <div class="form-group">
-                                <label for="description">Mô tả</label>
-                                <textarea class="form-control" name="description" required></textarea>
+                                <label for="permissions">Permissions</label>
+                                <div class="checkbox-group">
+                                    <c:forEach var="permission" items="${permissions}">
+                                        <label>
+                                            <input type="checkbox" name="permissions" value="${permission}" <c:if test="${role.hasPermission(permission)}">checked</c:if>> ${permission}
+                                            </label><br>
+                                    </c:forEach>
+                                </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-primary" onclick="updateRole()">Cập nhật</button>
-                    </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -243,42 +260,76 @@
             // Hàm tải dữ liệu vai trò vào modal
             function loadRoleData(roleID) {
                 $.ajax({
-                    url: 'getRole', // URL servlet để lấy dữ liệu vai trò
+                    url: 'getRole', // URL của servlet để lấy dữ liệu vai trò
                     type: 'GET',
                     data: {id: roleID},
                     success: function (role) {
-                        // Hiển thị dữ liệu vào modal
-                        $('#ModalUP input[name="roleID"]').val(role.roleID);
-                        $('#ModalUP input[name="roleName"]').val(role.roleName);
-                        $('#ModalUP textarea[name="description"]').val(role.description);
+                        if (role) {
+                            // Hiển thị dữ liệu vai trò vào form modal
+                            $('#updateRoleForm input[name="roleName"]').val(role.roleName);
+                            $('#updateRoleForm input[name="description"]').val(role.description);
+                            $('#updateRoleForm input[name="roleID"]').val(role.roleID); // Hidden field
+                            // Hiển thị các quyền hạn trong modal
+                            $('.checkbox-group').empty();
+                            $.each(role.allPermissions, function (index, permission) {
+                                // Kiểm tra xem quyền hạn này có nằm trong danh sách assignedPermissions hay không
+                                var checked = role.assignedPermissions.includes(String(permission.id)) ? 'checked' : '';
+
+                                // Tạo checkbox cho mỗi quyền hạn
+                                $('.checkbox-group').append(
+                                        '<div class="form-check">' +
+                                        '<input class="form-check-input" type="checkbox" name="permissions" value="' + permission.id + '" ' + checked + '>' +
+                                        '<label class="form-check-label">' + permission.permissionName + '</label>' +
+                                        '</div>'
+                                        );
+                            });
+
+
+                        }
                     },
                     error: function () {
-                        swal("Không thể tải dữ liệu vai trò!", {
-                            icon: "error"
-                        });
+                        swal("Không thể tải dữ liệu vai trò!", {icon: "error"});
                     }
                 });
             }
+
+
+
 
 
             // Hàm cập nhật vai trò
-            function updateRole() {
-                var formData = $('#roleForm').serialize(); // Lấy dữ liệu từ form
-                $.ajax({
-                    url: 'getRole', // URL servlet để cập nhật vai trò
-                    type: 'POST',
-                    data: formData,
-                    success: function () {
-                        swal("Cập nhật thành công!", {icon: "success"}).then(() => {
-                            location.reload(); // Tải lại trang để cập nhật danh sách
-                        });
-                    },
-                    error: function () {
-                        swal("Không thể cập nhật vai trò!", {icon: "error"});
-                    }
+            $(document).ready(function () {
+                $('#updateRoleForm').submit(function (e) {
+                    e.preventDefault(); // Ngăn submit mặc định
+
+                    var formData = $(this).serialize(); // Lấy dữ liệu từ form
+
+                    $.ajax({
+                        url: 'getRole',
+                        type: 'POST',
+                        data: formData,
+                        success: function (response) {
+                            // Không cần JSON.parse() vì response đã là đối tượng JavaScript
+                            console.log("Response from server:", response);
+
+                            if (response.status === "success") {
+                                swal(response.message, {icon: "success"}).then(() => {
+                                    location.reload(); // Reload lại trang sau khi cập nhật thành công
+                                });
+                            } else {
+                                swal(response.message, {icon: "error"});
+                            }
+                        },
+                        error: function () {
+                            swal("Không thể cập nhật vai trò!", {icon: "error"});
+                        }
+                    });
+
                 });
-            }
-       
+            });
+
+
+
             //Ham Xoa Role
             function deleteRole(roleID) {
                 swal({
@@ -367,8 +418,8 @@
                     return i;
                 }
             }
-            
-            
+
+
 
 
         </script>

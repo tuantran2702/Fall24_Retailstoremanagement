@@ -100,6 +100,101 @@
                 transform: rotate(-45deg);
                 margin-top: -2px;
             }
+
+            /* Căn chỉnh form container */
+            .form-container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f9f9f9;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Style cho các tiêu đề label */
+            .control-label {
+                font-weight: bold;
+                margin-bottom: 10px;
+                display: block;
+                color: #333;
+            }
+
+            /* Style cho các input */
+            .form-control {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 15px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 14px;
+            }
+
+            /* Checkbox group - Căn chỉnh checkbox */
+            .checkbox-group {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px; /* Khoảng cách giữa các checkbox */
+            }
+
+            .checkbox-group label {
+                display: flex;
+                align-items: center; /* Căn giữa checkbox với văn bản */
+                width: 45%; /* Chia mỗi cột chiếm 45% không gian */
+                margin-bottom: 10px; /* Khoảng cách giữa các dòng */
+            }
+
+
+            .checkbox-group input[type="checkbox"] {
+                margin-right: 10px; /* Khoảng cách giữa checkbox và văn bản */
+                transform: scale(1.2); /* Tăng kích thước của checkbox (tùy chọn) */
+            }
+
+            /* Nút lưu lại và hủy bỏ */
+            .btn {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .btn-save {
+                background-color: #28a745;
+                color: white;
+                margin-right: 10px;
+            }
+
+            .btn-save:hover {
+                background-color: #218838;
+            }
+
+            .btn-cancel {
+                background-color: #dc3545;
+                color: white;
+            }
+
+            .btn-cancel:hover {
+                background-color: #c82333;
+            }
+
+            /* Đảm bảo responsive */
+            @media (max-width: 768px) {
+                .form-container {
+                    width: 100%;
+                    padding: 15px;
+                }
+
+                .checkbox-group {
+                    gap: 10px;
+                }
+
+                .btn {
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+            }
+
         </style>
         <!-- Navbar-->
         <header class="app-header">
@@ -157,7 +252,7 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item">List Role</li>
+                    <li class="breadcrumb-item"><a href="roles">List Role</a></li>
                     <li class="breadcrumb-item"><a href="#">Add New Role</a></li>
                 </ul>
             </div>
@@ -171,18 +266,35 @@
                             <c:if test="${not empty errorMessage}">
                                 <p style="color:red">${errorMessage}</p>
                             </c:if>
-                            <form class="row" action="addRole" method="POST">
+                            <form class="form-container row" action="addRole" method="POST">
                                 <div class="form-group col-md-12">
                                     <label class="control-label">Role Name</label>
-                                    <input class="form-control" type="text" value="<%= request.getAttribute("firstname") != null ? request.getAttribute("firstname") : "" %>" name="roleName" required>
+                                    <input class="form-control" type="text" value="<%= request.getAttribute("roleName") != null ? request.getAttribute("roleName") : "" %>" name="roleName" required>
                                 </div>
+
                                 <div class="form-group col-md-12">
                                     <label class="control-label">Description</label>
-                                    <input class="form-control" type="text" value="<%= request.getAttribute("lastname") != null ? request.getAttribute("lastname") : "" %>" name="description" required>
+                                    <input class="form-control" type="text" value="<%= request.getAttribute("description") != null ? request.getAttribute("description") : "" %>" name="description" required>
                                 </div>
-                                <button class="btn btn-save" type="submit">Lưu lại</button>
-                                <a class="btn btn-cancel" href="roles">Hủy bỏ</a>
+
+                                <div class="form-group col-md-12">
+                                    <label class="control-label">Permissions</label>
+                                    <div class="checkbox-group">
+                                        <c:forEach var="permission" items="${permissions}">
+                                            <label>
+                                                <!-- Hiển thị checkbox với value là permissionID và tên quyền hạn -->
+                                                <input type="checkbox" name="permissions" value="${permission.id}"> ${permission.permissionName}
+                                            </label><br>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <button class="btn btn-save" type="submit">Lưu lại</button>
+                                    <a class="btn btn-cancel" href="roles">Hủy bỏ</a>
+                                </div>
                             </form>
+
 
                         </div>
                     </div>
@@ -190,7 +302,7 @@
                     </main>
 
 
-                    
+
 
 
                     <!-- Essential javascripts for application to work-->
@@ -200,9 +312,9 @@
                     <script src="js/main.js"></script>
                     <!-- The javascript plugin to display page loading on top-->
                     <script src="js/plugins/pace.min.js"></script>
-                    
 
-                    
+
+
 
                     </body>
 

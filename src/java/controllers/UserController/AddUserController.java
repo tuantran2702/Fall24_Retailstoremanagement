@@ -69,6 +69,8 @@ public class AddUserController extends HttpServlet {
             throws ServletException, IOException {
         RoleDAO rd = new RoleDAO();
         List<Role> roles = rd.getAllRole();
+        User user = new User(); // Khởi tạo một đối tượng User mới
+        request.setAttribute("user", user);
         request.setAttribute("roles", roles);
         request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
 
@@ -107,8 +109,8 @@ public class AddUserController extends HttpServlet {
         if (filePart != null && filePart.getSize() > 0) {
             // Lưu ảnh vào thư mục và lấy đường dẫn ảnh
             imgPath = ih.luuAnh(filePart, uploadFilePath);
-        } 
-        
+        }
+
         //Tao 1 User de kiem tra
         User addedUser = new User();
         addedUser.setFirstName(firstName);
@@ -118,8 +120,7 @@ public class AddUserController extends HttpServlet {
         addedUser.setPhoneNumber(phone);
         addedUser.setAddress(address);
         addedUser.setImg(imgPath); // Set the image path
-        
-        
+
         //Kiem tra Role
         int roleId;
         try {
@@ -130,7 +131,6 @@ public class AddUserController extends HttpServlet {
             request.setAttribute("errorMessage", "Vui lòng chọn chức vụ.");
 
             request.setAttribute("user", addedUser);
-            
 
             // Truy vấn dữ liệu từ database
             RoleDAO roleDAO = new RoleDAO();

@@ -2,10 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controllers.RoleControllers;
 
 import dao.PermissionsDAO;
-import dao.RoleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,7 +17,7 @@ import model.Permissions;
  *
  * @author ptrung
  */
-public class AddRoleServlet extends HttpServlet {
+public class PermissionsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +36,10 @@ public class AddRoleServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddRoleServlet</title>");
+            out.println("<title>Servlet PermissionsServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddRoleServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PermissionsServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,14 +57,16 @@ public class AddRoleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Sử dụng DAO để lấy danh sách quyền
+
+        // Sử dụng DAO để lấy danh sách quyền hạn từ cơ sở dữ liệu
         PermissionsDAO permissionsDAO = new PermissionsDAO();
-        List<Permissions> permissions = permissionsDAO.getAllPermissions();
+        List<Permissions> permissionList = permissionsDAO.getAllPermissions();
 
         // Gửi danh sách quyền đến trang JSP
-        request.setAttribute("permissions", permissions);
-
-        request.getRequestDispatcher("Role/AddRole.jsp").forward(request, response);
+        request.setAttribute("permissionList", permissionList);
+        
+        // Chuyển hướng đến trang JSP hiển thị bảng quyền hạn
+        request.getRequestDispatcher("Role/Permissions.jsp").forward(request, response);
     }
 
     /**
@@ -80,42 +80,7 @@ public class AddRoleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // Lấy dữ liệu từ form
-        String roleName = request.getParameter("roleName");
-        String description = request.getParameter("description");
-        String[] permissions = request.getParameterValues("permissions"); // Lấy danh sách quyền hạn được chọn
-
-        // Kiểm tra nếu các giá trị không rỗng
-        if (roleName == null || roleName.isEmpty() || description == null || description.isEmpty()) {
-            // Nếu có lỗi, đặt thông báo lỗi và quay lại trang form
-            request.setAttribute("errorMessage", "Các trường Role Name và Description không được để trống.");
-
-            // Gửi danh sách quyền đến trang JSP
-            request.setAttribute("permissions", permissions);
-            request.getRequestDispatcher("Role/AddRole.jsp").forward(request, response);
-            return;
-        }
-
-        // Tạo đối tượng RoleDAO để tương tác với DB
-        RoleDAO rd = new RoleDAO();
-
-        // Thêm vai trò vào cơ sở dữ liệu
-        boolean addSuccess = rd.addRole(roleName, description, permissions);
-
-        // Nếu thêm vai trò thành công, chuyển hướng đến trang danh sách vai trò
-        if (addSuccess) {
-            response.sendRedirect("roles");
-        } else {
-            // Nếu thêm vai trò thất bại, quay lại trang form với thông báo lỗi
-            // Gửi danh sách quyền đến trang JSP
-            // Sử dụng DAO để lấy danh sách quyền
-            PermissionsDAO permissionsDAO = new PermissionsDAO();
-            List<Permissions> psm = permissionsDAO.getAllPermissions();
-            request.setAttribute("permissions", psm);
-            request.setAttribute("errorMessage", "Thêm vai trò thất bại. Vui lòng thử lại.");
-            request.getRequestDispatcher("Role/AddRole.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**

@@ -5,6 +5,7 @@
 package controllers.RoleControllers;
 
 import com.google.gson.Gson;
+import dao.PermissionsDAO;
 import dao.RoleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +13,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.security.Permission;
+import java.util.*;
+import model.Permissions;
 import model.Role;
 
 /**
@@ -65,9 +69,24 @@ public class GetRoleServlet extends HttpServlet {
         RoleDAO roleDAO = new RoleDAO();
         Role role = roleDAO.getRoleByID(Integer.parseInt(roleID));
 
-        // Chuyển đổi đối tượng Role thành JSON và trả về cho client
+        // Lấy tất cả các quyền hạn
+        PermissionsDAO pd = new PermissionsDAO();
+        List<Permissions> allPermissions = pd.getAllPermissions();
+
+        // Lấy các quyền hạn đã được gán cho vai trò này
+        List<String> assignedPermissions = pd.getAssignedPermissionsForRole(Integer.parseInt(roleID));
+
+        // Tạo đối tượng JSON trả về cho phía client
+        Map<String, Object> roleData = new HashMap<>();
+        roleData.put("roleID", role.getRoleID());
+        roleData.put("roleName", role.getRoleName());
+        roleData.put("description", role.getDescription());
+        roleData.put("allPermissions", allPermissions); // Tất cả các quyền hạn
+        roleData.put("assignedPermissions", assignedPermissions); // Quyền hạn đã gán
+
+        // Chuyển đổi đối tượng roleData thành JSON và trả về cho client
         Gson gson = new Gson();
-        String json = gson.toJson(role);
+        String json = gson.toJson(roleData);
         response.setContentType("application/json");
         response.getWriter().write(json);
     }
@@ -83,26 +102,43 @@ public class GetRoleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Thu thập dữ liệu từ form
-        int roleID = Integer.parseInt(request.getParameter("roleID"));
+
+        // Lấy dữ liệu từ form
+        String roleID = request.getParameter("roleID");
         String roleName = request.getParameter("roleName");
         String description = request.getParameter("description");
+        String[] permissions = request.getParameterValues("permissions"); // Lấy danh sách quyền hạn
 
-        // Tạo đối tượng Role mới và gán giá trị
-        Role role = new Role();
-        role.setRoleID(roleID);
-        role.setRoleName(roleName);
-        role.setDescription(description);
+        // Kiểm tra nếu các giá trị không rỗng
+        if (roleName == null || roleName.isEmpty() || description == null || description.isEmpty()) {
+            // Nếu có lỗi, đặt thông báo lỗi và quay lại trang form
+            response.setContentType("application/json");
+            response.getWriter().write("{\"status\":\"error\",\"message\":\"Role Name và Description không được để trống\"}");
+            return;
+        }
 
-        // Cập nhật vai trò trong cơ sở dữ liệu
+        // Tạo đối tượng RoleDAO để tương tác với DB
         RoleDAO roleDAO = new RoleDAO();
-        boolean success = roleDAO.updateRole(role);
+        PermissionsDAO permissionsDAO = new PermissionsDAO();
 
-        // Kiểm tra xem cập nhật có thành công không
-        if (success) {
-            response.setStatus(HttpServletResponse.SC_OK); // Trả về mã thành công
+        // Cập nhật vai trò
+        Role r = roleDAO.getRoleByID(Integer.parseInt(roleID));
+        if (r == null) {
+            response.setContentType("application/json");
+            response.getWriter().write("{\"status\":\"error\",\"message\":\"Không tìm thấy vai trò\"}");
+            return;
+        }
+        r.setRoleName(roleName);
+        r.setDescription(description);
+        boolean updateSuccess = roleDAO.updateRole(r, permissions);
+
+        // Kiểm tra xem việc cập nhật có thành công không
+        if (updateSuccess) {
+            response.setContentType("application/json");
+            response.getWriter().write("{\"status\":\"success\",\"message\":\"Cập nhật thành công!\"}");
         } else {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Trả về mã lỗi
+            response.setContentType("application/json");
+            response.getWriter().write("{\"status\":\"error\",\"message\":\"Không thể cập nhật vai trò\"}");
         }
     }
 

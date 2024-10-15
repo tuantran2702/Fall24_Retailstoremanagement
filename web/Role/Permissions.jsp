@@ -1,8 +1,9 @@
 <%-- 
-    Document   : QuanLyNhanVien
-    Created on : 19 Sep 2024, 11:13:20 am
+    Document   : Permissions
+    Created on : 16 Oct 2024, 12:56:53 am
     Author     : ptrung
 --%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -80,7 +81,7 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><a href="roles"><b>Danh sách Phân Quyền</b></a></li>
+                    <li class="breadcrumb-item active"><a href="roles"><b>Permissions List</b></a></li>
                 </ul>
                 <div id="clock"></div>
             </div>
@@ -93,46 +94,43 @@
                             <div class="row element-button">
                                 <div class="col-sm-2">
 
-                                    <a class="btn btn-add btn-sm" href="addRole" title="Thêm"><i class="fas fa-plus"></i>
-                                        Tạo mới Phân Quyền</a>
+                                    <a class="btn btn-add btn-sm" href="addPermission" title="Thêm"><i class="fas fa-plus"></i>
+                                        Add New Permission</a>
                                 </div>
                             </div>
 
-                            <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
-                                   id="sampleTable">
+                            <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0" id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th width="10">RoleID</th>
-                                        <th width="180">Role Name</th>
-                                        <th>Description</th>
+                                        <th width="10">Permission ID</th>
+                                        <th width="180">Permission Name</th>
                                         <th width="100">Tính năng</th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
-                                    <c:forEach var="r" items="${requestScope.roleList}">
+                                    <!-- Sử dụng JSTL để lặp qua danh sách quyền hạn -->
+                                    <c:forEach var="permission" items="${permissionList}">
                                         <tr>
-                                            <td>${r.roleID}</td>
-                                            <td>${r.roleName}</td>
-                                            <td>${r.description}</td>
+                                            <td>${permission.id}</td>
+                                            <td>${permission.permissionName}</td>
                                             <td>
                                                 <!-- Nút Sửa -->
                                                 <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" 
-                                                        onclick="loadRoleData('${r.roleID}'); $('#updateRoleModal').modal('show');">
+                                                        onclick="loadPermissionData('${permission.id}'); $('#updatePermissionModal').modal('show');">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
 
                                                 <!-- Nút Xóa -->
                                                 <button class="btn btn-danger btn-sm trash" type="button" title="Xóa"
-                                                        onclick="deleteRole(${r.roleID})">
+                                                        onclick="deletePermission(${permission.id})">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </td>
                                         </tr>
                                     </c:forEach>
-
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>
