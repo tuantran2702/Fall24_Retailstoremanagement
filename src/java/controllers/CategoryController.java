@@ -46,7 +46,7 @@ public class CategoryController extends HttpServlet {
             // Display list of categories
             CategoryDAO categoryDAO = new CategoryDAO();
             request.setAttribute("data", categoryDAO.getListCategory());
-            request.getRequestDispatcher("/category/CategoryManager.jsp").forward(request, response);
+            request.getRequestDispatcher("/CategoryManager/listCategory.jsp").forward(request, response);
         } else if (action.equals("edit") && idStr != null) {
             // Edit category
             int id = Integer.parseInt(idStr);
@@ -103,6 +103,18 @@ public class CategoryController extends HttpServlet {
             categoryDAO.deleteCategory(id);
             response.sendRedirect(request.getContextPath() + "/category");
         }
+        else if ("createCategoryName".equals(action)) {
+            // Lấy giá trị của categoryName từ form
+            String categoryName = request.getParameter("categoryName");
+
+            // Thực hiện thêm Category vào database (giả sử có một service hoặc DAO xử lý)
+            CategoryDAO categoryDAO = new CategoryDAO();
+            categoryDAO.addCategoryName(new Category(categoryName));
+
+            // Chuyển hướng sau khi thêm thành công
+            response.sendRedirect("product?action=create");
+        }
+        
     }
 
     @Override

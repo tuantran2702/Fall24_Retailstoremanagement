@@ -126,6 +126,17 @@ public class SupplierController extends HttpServlet {
             response.sendRedirect("supplier");
         
         }
+        else if ("createSupplierName".equals(action)) {
+            // Lấy giá trị của categoryName từ form
+            String supplierName  = request.getParameter("supplierName");
+
+            // Thực hiện thêm Category vào database (giả sử có một service hoặc DAO xử lý)
+            SupplierDAO supplierDAO = new SupplierDAO();
+            supplierDAO.addSupplierName(new Supplier(supplierName));
+
+            // Chuyển hướng sau khi thêm thành công
+            response.sendRedirect("product?action=create");
+        }
         
 
 

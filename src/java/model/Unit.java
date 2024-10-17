@@ -17,6 +17,11 @@ public class Unit {
         this.unitID = unitID;
         this.unitName = unitName;
     }
+
+    public Unit(String unitName) {
+        this.unitName = unitName;
+    }
+    
     
     
 

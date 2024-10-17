@@ -155,39 +155,39 @@
         </header>
         <!-- Sidebar menu-->
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-           <aside class="app-sidebar">
+        <aside class="app-sidebar">
             <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
                                                 alt="User Image">      <div>
-        <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
-        <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
-      </div>
+                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
+                    <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
+                </div>
             </div>
 
             <hr>
-    <ul class="app-menu">
+            <ul class="app-menu">
                 <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
                         <span class="app-menu__label">POS Bán Hàng</span></a></li>
                 <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Bảng điều khiển</span></a></li>
-                              <li><a class="app-menu__item " href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
-                              
-                                    <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
-            class="app-menu__label">Quản lý nhân viên</span></a></li>
-                            
-                            
-                               <li><a class="app-menu__item active" href="product"><i
+                <li><a class="app-menu__item " href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
+
+                <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
+                            class="app-menu__label">Quản lý nhân viên</span></a></li>
+
+
+                <li><a class="app-menu__item active" href="product"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
                 </li>
 
                 <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-id-card'></i> <span
                             class="app-menu__label">Quản lý khách hàng </span></a></li>
-                            
-                            
-                            
-                            
-                   
 
-              
+
+
+
+
+
+
 
 
 
@@ -195,12 +195,12 @@
                 <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Quản lý   kho</span></a></li>
 
-   <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
+                <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Thay đổi mật khẩu </span></a></li>
 
 
-            
-            
+
+
             </ul>
 
 
@@ -219,7 +219,7 @@
                         <div class="tile-body">
                             <div class="row element-button">
                                 <div class="col-sm-2">
-                                    <a href="${pageContext.request.contextPath}/supplier?action=create" class="btn btn-add btn-sm" ><i
+                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i
                                             class="fas fa-folder-plus"></i> Thêm supplier</a>
                                 </div>
                                 <div class="col-sm-2">
@@ -234,15 +234,18 @@
                             <form action="product" method="post" class="row">
                                 <input type="hidden" name="action" value="create">
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Product Code </label>
-                                    <input class="form-control" type="text" name="productCode">
+                                    <label class="control-label">Product Code</label>
+                                    <input class="form-control" type="text" name="productCode" id="productCode" oninput="validateProductCode();">
+                                    <small id="error-message-code" style="color: red;"></small>
                                 </div>
-
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Product Name </label>
-                                    <input class="form-control" type="text" name="productName">
+                                    <label class="control-label">Product Name</label>
+                                    <input class="form-control" type="text" name="productName" id="productName" oninput="validateProductName();">
+                                    <small id="error-message-name" style="color: red;"></small>
                                 </div>
+
+
 
                                 <div class="form-group col-md-3 ">
                                     <label for="exampleSelect1" class="control-label">Category </label>
@@ -254,23 +257,28 @@
                                 </div>
 
 
-                                <div class="form-group  col-md-3">
+                                <div class="form-group col-md-3">
                                     <label class="control-label">Price</label>
-                                    <input class="form-control" type="number" name="price">
+                                    <input class="form-control" type="number" name="price" id="price" oninput="validatePrice();">
+                                    <small id="error-message-price" style="color: red;"></small> <!-- Thêm thông báo lỗi cho giá -->
                                 </div>
-                                <div class="form-group  col-md-3">
+
+                                <div class="form-group col-md-3">
                                     <label class="control-label">Quantity</label>
-                                    <input class="form-control" type="number" name="quantity">
+                                    <input class="form-control" type="number" name="quantity" id="quantity" oninput="validateQuantity();">
+                                    <small id="error-message-quantity" style="color: red;"></small> <!-- Thay đổi ID thông báo lỗi -->
                                 </div>
-                                <div class="form-group  col-md-3">
+                                <div class="form-group col-md-3">
                                     <label class="control-label">Created Date</label>
                                     <input class="form-control" type="date" name="createdDate">
                                 </div>
-                                <div class="form-group  col-md-3">
+
+                                <div class="form-group col-md-3">
                                     <label class="control-label">Expired Date</label>
                                     <input class="form-control" type="date" name="expiredDate">
                                 </div>
-                                <div class="form-group  col-md-3">
+
+                                <div class="form-group col-md-3">
                                     <label class="control-label">Update Date</label>
                                     <input class="form-control" type="date" name="updateDate">
                                 </div>
@@ -306,23 +314,25 @@
                                 <div class="form-group col-md-12">
                                     <label class="control-label">Image</label>
                                     <div id="myfileupload">
-                                        <input type="file" name="image" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
+                                        <input type="file" name="image" id="uploadfile" accept="image/*" onchange="readURL(this);" />
+                                        <small id="error-message-image" style="color: red;"></small> <!-- Thêm thông báo lỗi cho hình ảnh -->
                                     </div>
                                     <div id="thumbbox">
                                         <img height="450" width="400" alt="Thumb image" id="thumbimage" style="display: none" />
-                                        <a class="removeimg" href="javascript:"></a>
+                                        <a class="removeimg" href="javascript:;" onclick="removeImage();">Remove Image</a> <!-- Thêm sự kiện để xóa ảnh -->
                                     </div>
                                     <div id="boxchoice">
-                                        <a href="javascript:" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn ảnh</a>
+                                        <a href="javascript:;" class="Choicefile"><i class="fas fa-cloud-upload-alt"></i> Chọn ảnh</a>
                                         <p style="clear:both"></p>
                                     </div>
-
                                 </div>
+
                                 <div class="form-group col-md-12">
                                     <label class="control-label">Description</label>
                                     <textarea class="form-control" name="description" id="description"></textarea>
                                     <script>CKEDITOR.replace('description');</script>
                                 </div>
+
 
                         </div>
                         <button class="btn btn-save" type="submit">Lưu lại</button>
@@ -334,35 +344,48 @@
 
 
                     <!--
-                    MODAL CHỨC VỤ 
+                    MODAL supplier 
                     -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                         data-backdrop="static" data-keyboard="false">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
+                    <form action="supplier" method="post" id="addSupplierForm">
+                        <input type="hidden" name="action" value="createSupplierName">
 
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="form-group  col-md-12">
-                                            <span class="thong-tin-thanh-toan">
-                                                <h5>Thêm mới nhà cung cấp</h5>
-                                            </span>
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                             data-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group  col-md-12">
+                                                <span class="thong-tin-thanh-toan">
+                                                    <h5>Thêm mới nhà cung cấp</h5>
+                                                </span>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Nhập tên Supplier</label>
+                                                <input class="form-control" type="text" name="supplierName" required>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Danh mục Supplier hiện đang có</label>
+                                                <ul style="padding-left: 20px;">
+                                                    <!-- Lặp qua danh sách category -->
+                                                    <c:forEach var="supplier" items="${listSupplier}">
+                                                        <li>${supplier.supplierName}</li>
+                                                        </c:forEach>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Nhập tên chức vụ mới</label>
-                                            <input class="form-control" type="text" required>
-                                        </div>
+                                        <BR>
+                                        <button class="btn btn-save" type="submit">Lưu lại</button>
+                                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                        <BR>
                                     </div>
-                                    <BR>
-                                    <button class="btn btn-save" type="button">Lưu lại</button>
-                                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                    <BR>
-                                </div>
-                                <div class="modal-footer">
+                                    <div class="modal-footer">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                     <!--
                   MODAL
                     -->
@@ -370,49 +393,47 @@
 
 
                     <!--
-                    MODAL DANH MỤC
+                    MODAL category
                     -->
-                    <div class="modal fade" id="adddanhmuc" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                         data-backdrop="static" data-keyboard="false">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
+                    <form action="category" method="post" id="addCategoryForm">
+                        <input type="hidden" name="action" value="createCategoryName">
+                        <div class="modal fade" id="adddanhmuc" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                             data-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
 
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="form-group  col-md-12">
-                                            <span class="thong-tin-thanh-toan">
-                                                <h5>Thêm mới danh mục </h5>
-                                            </span>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group  col-md-12">
+                                                <span class="thong-tin-thanh-toan">
+                                                    <h5>Thêm mới danh mục </h5>
+                                                </span>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Nhập tên Category</label>
+                                                <input class="form-control" type="text" name="categoryName" required>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Danh mục sản phẩm hiện đang có</label>
+                                                <ul style="padding-left: 20px;">
+                                                    <!-- Lặp qua danh sách category -->
+                                                    <c:forEach var="category" items="${listCategory}">
+                                                        <li>${category.categoryName}</li>
+                                                        </c:forEach>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Nhập tên danh mục mới</label>
-                                            <input class="form-control" type="text" required>
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Danh mục sản phẩm hiện đang có</label>
-                                            <ul style="padding-left: 20px;">
-                                                <li>Bàn ăn</li>
-                                                <li>Bàn thông minh</li>
-                                                <li>Tủ</li>
-                                                <li>Ghế gỗ</li>
-                                                <li>Ghế sắt</li>
-                                                <li>Giường người lớn</li>
-                                                <li>Giường trẻ em</li>
-                                                <li>Bàn trang điểm</li>
-                                                <li>Giá đỡ</li>
-                                            </ul>
-                                        </div>
+                                        <BR>
+                                        <button class="btn btn-save" type="submit">Lưu lại</button>
+                                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                        <BR>
                                     </div>
-                                    <BR>
-                                    <button class="btn btn-save" type="button">Lưu lại</button>
-                                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                    <BR>
-                                </div>
-                                <div class="modal-footer">
+                                    <div class="modal-footer">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                     <!--
                   MODAL
                     -->
@@ -423,33 +444,45 @@
                     <!--
                     MODAL TÌNH TRẠNG
                     -->
-                    <div class="modal fade" id="addtinhtrang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                         data-backdrop="static" data-keyboard="false">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
+                    <form action="unit" method="post" id="addUnitForm">
+                        <input type="hidden" name="action" value="createUnitName">
+                        <div class="modal fade" id="addtinhtrang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                             data-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
 
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="form-group  col-md-12">
-                                            <span class="thong-tin-thanh-toan">
-                                                <h5>Thêm mới tình trạng</h5>
-                                            </span>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group  col-md-12">
+                                                <span class="thong-tin-thanh-toan">
+                                                    <h5>Thêm mới đơn vị </h5>
+                                                </span>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Nhập tên Unit</label>
+                                                <input class="form-control" type="text" name="unitName" required>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Danh mục Unit hiện đang có</label>
+                                                <ul style="padding-left: 20px;">
+                                                    <!-- Lặp qua danh sách category -->
+                                                    <c:forEach var="unit" items="${listUnit}">
+                                                        <li>${unit.unitName}</li>
+                                                        </c:forEach>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Nhập tình trạng mới</label>
-                                            <input class="form-control" type="text" required>
-                                        </div>
+                                        <BR>
+                                        <button class="btn btn-save" type="submit">Lưu lại</button>
+                                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                        <BR>
                                     </div>
-                                    <BR>
-                                    <button class="btn btn-save" type="button">Lưu lại</button>
-                                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                    <BR>
-                                </div>
-                                <div class="modal-footer">
+                                    <div class="modal-footer">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                     <!--
                   MODAL
                     -->
@@ -461,27 +494,127 @@
                     <script src="js/bootstrap.min.js"></script>
                     <script src="js/main.js"></script>
                     <script src="js/plugins/pace.min.js"></script>
+
+
                     <script>
-                                        const inpFile = document.getElementById("inpFile");
-                                        const loadFile = document.getElementById("loadFile");
-                                        const previewContainer = document.getElementById("imagePreview");
-                                        const previewContainer = document.getElementById("imagePreview");
-                                        const previewImage = previewContainer.querySelector(".image-preview__image");
-                                        const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
-                                        inpFile.addEventListener("change", function () {
-                                            const file = this.files[0];
-                                            if (file) {
+                                        function validateProductCode() {
+                                            const productCodeInput = document.getElementById('productCode');
+                                            const errorMessageCode = document.getElementById('error-message-code');
+                                            const productCodeValue = productCodeInput.value;
+
+                                            const regex = /^[A-Z0-9]{3,10}$/;
+
+                                            if (!regex.test(productCodeValue)) {
+                                                errorMessageCode.textContent = 'Please enter a valid product code (3-10 uppercase letters and numbers).';
+                                            } else {
+                                                errorMessageCode.textContent = '';
+                                            }
+                                        }
+
+                                        function validateProductName() {
+                                            const productNameInput = document.getElementById('productName');
+                                            const errorMessageName = document.getElementById('error-message-name');
+                                            const productNameValue = productNameInput.value.trim();
+
+                                            if (productNameValue.length < 3 || productNameValue.length > 50) {
+                                                errorMessageName.textContent = 'Please enter a valid product name (3-50 characters).';
+                                            } else if (!/^[a-zA-Z0-9\s]+$/.test(productNameValue)) {
+                                                errorMessageName.textContent = 'Product name can only contain letters, numbers, and spaces.';
+                                            } else {
+                                                errorMessageName.textContent = '';
+                                            }
+                                        }
+
+                                        function validatePrice() {
+                                            const priceInput = document.getElementById('price');
+                                            const errorMessagePrice = document.getElementById('error-message-price');
+                                            const priceValue = priceInput.value;
+
+                                            if (priceValue <= 0) {
+                                                errorMessagePrice.textContent = 'Please enter a valid price (greater than 0).';
+                                            } else {
+                                                errorMessagePrice.textContent = '';
+                                            }
+                                        }
+
+                                        function validateQuantity() {
+                                            const quantityInput = document.getElementById('quantity');
+                                            const errorMessageQuantity = document.getElementById('error-message-quantity');
+                                            const quantityValue = quantityInput.value;
+
+                                            if (quantityValue < 1) {
+                                                errorMessageQuantity.textContent = 'Please enter a valid quantity (1 or more).';
+                                            } else {
+                                                errorMessageQuantity.textContent = '';
+                                            }
+                                        }
+                                        function readURL(input) {
+                                            const errorMessageImage = document.getElementById('error-message-image');
+                                            const thumbImage = document.getElementById('thumbimage');
+
+                                            // Kiểm tra nếu có tệp được chọn
+                                            if (input.files && input.files[0]) {
+                                                const file = input.files[0];
+                                                const fileType = file.type;
+                                                const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"]; // Các định dạng hình ảnh hợp lệ
+
+                                                // Kiểm tra loại tệp
+                                                if (!validImageTypes.includes(fileType)) {
+                                                    errorMessageImage.textContent = 'Please select a valid image file (JPEG, PNG, GIF, WEBP).';
+                                                    thumbImage.style.display = 'none'; // Ẩn ảnh thumbnail
+                                                    return;
+                                                } else {
+                                                    errorMessageImage.textContent = ''; // Xóa thông báo lỗi nếu hợp lệ
+                                                }
+
+                                                // Hiển thị ảnh thumbnail
                                                 const reader = new FileReader();
-                                                previewDefaultText.style.display = "none";
-                                                previewImage.style.display = "block";
-                                                reader.addEventListener("load", function () {
-                                                    previewImage.setAttribute("src", this.result);
-                                                });
+                                                reader.onload = function (e) {
+                                                    thumbImage.src = e.target.result;
+                                                    thumbImage.style.display = 'block'; // Hiển thị ảnh thumbnail
+                                                };
                                                 reader.readAsDataURL(file);
                                             }
-                                        });
+                                        }
+
+                                        function removeImage() {
+                                            const thumbImage = document.getElementById('thumbimage');
+                                            const uploadfile = document.getElementById('uploadfile');
+                                            const errorMessageImage = document.getElementById('error-message-image');
+
+                                            uploadfile.value = ''; // Đặt lại giá trị của input file
+                                            thumbImage.src = ''; // Đặt lại src của ảnh thumbnail
+                                            thumbImage.style.display = 'none'; // Ẩn ảnh thumbnail
+                                            errorMessageImage.textContent = ''; // Xóa thông báo lỗi
+                                        }
+
+
+
+
 
                     </script>
+
+                    <!--                    <script>
+                                            const inpFile = document.getElementById("inpFile");
+                                            const loadFile = document.getElementById("loadFile");
+                                            const previewContainer = document.getElementById("imagePreview");
+                                            const previewContainer = document.getElementById("imagePreview");
+                                            const previewImage = previewContainer.querySelector(".image-preview__image");
+                                            const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+                                            inpFile.addEventListener("change", function () {
+                                                const file = this.files[0];
+                                                if (file) {
+                                                    const reader = new FileReader();
+                                                    previewDefaultText.style.display = "none";
+                                                    previewImage.style.display = "block";
+                                                    reader.addEventListener("load", function () {
+                                                        previewImage.setAttribute("src", this.result);
+                                                    });
+                                                    reader.readAsDataURL(file);
+                                                }
+                                            });
+                    
+                                        </script>-->
                     </body>
 
                     </html>

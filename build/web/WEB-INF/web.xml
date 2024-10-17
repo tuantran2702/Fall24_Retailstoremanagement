@@ -104,6 +104,10 @@
         <servlet-name>SalesController</servlet-name>
         <servlet-class>controllers.SalesController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UnitController</servlet-name>
+        <servlet-class>controllers.UnitController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -211,6 +215,10 @@
     <servlet-mapping>
         <servlet-name>SalesController</servlet-name>
         <url-pattern>/sales</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UnitController</servlet-name>
+        <url-pattern>/unit</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

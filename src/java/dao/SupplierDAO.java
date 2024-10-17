@@ -196,5 +196,18 @@ public void deletesupplier(int id) {
 
     }
 
+    public void addSupplierName(Supplier supplier) {
+        String sql = "INSERT INTO Supplier (SupplierName) VALUES (?)";
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, supplier.getSupplierName());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }
