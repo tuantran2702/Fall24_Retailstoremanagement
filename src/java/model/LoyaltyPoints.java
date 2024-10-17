@@ -9,7 +9,7 @@ public class LoyaltyPoints {
     private int pointsRedeemed;
     private Date transactionDate;
     private String description;
-
+    private String customerName; 
     // Constructors, getters, and setters
     public LoyaltyPoints() {}
 
@@ -68,5 +68,12 @@ public class LoyaltyPoints {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }
