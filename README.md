@@ -1,1 +1,0 @@
-# Fall24_Retailstoremanagement
