@@ -53,5 +53,18 @@ public class ImageHandler {
         return null;
     }
 
-    
+    // Hàm để lấy đường dẫn tuyệt đối từ đường dẫn tương đối
+    public static String getAbsolutePath(String relativePath) {
+        File file = new File(relativePath);
+        return file.getAbsolutePath(); // Trả về đường dẫn tuyệt đối
+    }
+
+    public static void main(String[] args) {
+        // Ví dụ sử dụng hàm getAbsolutePath
+        String relativePath = "web/img-anhthe";
+        String absolutePath = getAbsolutePath(relativePath);
+        
+        // In ra đường dẫn tuyệt đối
+        System.out.println("Absolute Path: " + absolutePath);
+    }
 }

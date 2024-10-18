@@ -171,7 +171,7 @@
                         <div class="tile-body">
                             <div class="row element-button">
                                 <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><b><i
+                                    <a class="btn btn-add btn-sm" href="addRole"><b><i
                                                 class="fas fa-folder-plus"></i> Tạo chức vụ mới</b></a>
                                 </div>
 

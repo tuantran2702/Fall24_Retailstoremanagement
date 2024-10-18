@@ -92,15 +92,13 @@ public class UpdateUserController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         UserDAO ud = new UserDAO();
         ImageHandler ih = new ImageHandler();
-        
+
         // Collect updated user data from the form
         int userID = Integer.parseInt(request.getParameter("userID"));
         String firstName = request.getParameter("firstName");
@@ -109,33 +107,31 @@ public class UpdateUserController extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         int roleID = Integer.parseInt(request.getParameter("role"));
-        
-        
+
+        User u = ud.getUserById(userID);  // Lấy thông tin người dùng từ DB
+
         String uploadFilePath = "E:\\Fall24\\SWP391\\Clone-Git\\Fall24_Retailstoremanagement-Clone\\web\\img-anhthe";
         String imgPath = null;
 
         // Lấy phần file tải lên
         Part filePart = request.getPart("ImageUpload");
-        
-        User u = ud.getUserById(userID);  // Lấy thông tin người dùng từ DB
 
-        // Hàm lưu ảnh
-        imgPath = ih.luuAnh(filePart, uploadFilePath);
+        if (filePart != null) {
+            // Hàm lưu ảnh
+            imgPath = ih.luuAnh(filePart, uploadFilePath);
+        }
 
         // Nếu không có file được tải lên, giữ nguyên đường dẫn ảnh hiện tại
         if (imgPath == null) {
             imgPath = u.getImg();
         }
-        
-        
+
         //Kiem tra Email
         User checkedUser = ud.getUserByEmail(email);
-        if(checkedUser != null){
+        if (checkedUser != null && checkedUser.getUserID() != userID) {
             request.setAttribute("errorMessage", "Email already exits");
 
-            
             request.setAttribute("user", u);
-            
 
             // Truy vấn dữ liệu từ database
             RoleDAO roleDAO = new RoleDAO();
@@ -147,7 +143,7 @@ public class UpdateUserController extends HttpServlet {
             request.getRequestDispatcher("User/EditEmployee.jsp").forward(request, response);
             return;  // Dừng xử lý tiếp
         }
-        
+
         //Kiem tra Role
         int roleId;
         try {
@@ -168,7 +164,7 @@ public class UpdateUserController extends HttpServlet {
             request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
             return; // Dừng việc xử lý thêm người dùng
         }
-        
+
         // Kiểm tra số điện thoại có hợp lệ hay không (10 số và bắt đầu bằng 0)
         String phonePattern = "^0\\d{9}$";
         if (!phone.matches(phonePattern)) {
@@ -189,9 +185,6 @@ public class UpdateUserController extends HttpServlet {
             return;  // Dừng xử lý tiếp
         }
 
-        
-        
-
 // Proceed with further logic (e.g., update user data with imgPath)
         // Update user object
         User user = new User();
@@ -211,8 +204,6 @@ public class UpdateUserController extends HttpServlet {
         // Redirect back to the user management page
         response.sendRedirect("userManage");
     }
-
-    
 
     /**
      * Returns a short description of the servlet.

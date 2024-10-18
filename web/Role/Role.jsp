@@ -17,6 +17,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Main CSS-->
         <link rel="stylesheet" type="text/css" href="doc/css/main.css">
+        <link rel="stylesheet" type="text/css" href="css/main_2.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
         <!-- or -->
         <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
@@ -29,6 +30,58 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 
     </head>
+    <style>
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Tạo 2 cột với chiều rộng bằng nhau */
+            gap: 10px; /* Khoảng cách giữa các checkbox */
+        }
+
+        .checkbox-group label {
+            display: inline-block;
+            margin-bottom: 10px; /* Tùy chỉnh khoảng cách giữa các nhãn */
+        }
+
+        .tile-title {
+            margin-top: 10px;
+            font-size: 24px; /* Kích thước chữ */
+            font-weight: bold; /* Chữ đậm */
+            color: #333; /* Màu chữ */
+            text-align: center; /* Canh giữa chữ */
+            text-transform: uppercase; /* Chuyển đổi chữ thường thành chữ in hoa */
+            border-bottom: 2px solid #007bff; /* Đường gạch dưới */
+        }
+        /* Nút lưu lại và hủy bỏ */
+            .btnn {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .btn-save {
+                background-color: #28a745;
+                color: white;
+                margin-right: 10px;
+            }
+
+            .btn-save:hover {
+                background-color: #218838;
+            }
+
+            .btn-cancel {
+                background-color: #dc3545;
+                color: white;
+            }
+
+            .btn-cancel:hover {
+                background-color: #c82333;
+            }
+
+
+    </style>
 
     <body onload="time()" class="app sidebar-mini rtl">
         <!-- Navbar-->
@@ -144,18 +197,15 @@
         <div class="modal fade" id="updateRoleModal" tabindex="-1" role="dialog" aria-labelledby="updateRoleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="updateRoleModalLabel">Update Role</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+
+                    <h3 class="tile-title">Update Role</h3>
+
 
                     <!-- Form cập nhật role -->
                     <form id="updateRoleForm" method="POST">
                         <div class="modal-body">
                             <!-- Tên vai trò -->
-                            <input name="roleID" value="${role.roleID}"> <!-- Đảm bảo roleID có giá trị đúng -->
+                            <input name="roleID" value="${role.roleID}" style="display: none"> <!-- Đảm bảo roleID có giá trị đúng -->
                             <div class="form-group">
                                 <label for="roleName">Role Name</label>
                                 <input type="text" class="form-control" id="roleName" name="roleName" value="${role.roleName}" required>
@@ -173,22 +223,26 @@
                                 <div class="checkbox-group">
                                     <c:forEach var="permission" items="${permissions}">
                                         <label>
-                                            <input type="checkbox" name="permissions" value="${permission}" <c:if test="${role.hasPermission(permission)}">checked</c:if>> ${permission}
-                                            </label><br>
+                                            <input type="checkbox" name="permissions" value="${permission}" <c:if test="${role.hasPermission(permission)}">checked</c:if>> 
+                                            ${permission}
+                                        </label><br>
                                     </c:forEach>
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="button" class="btnn btn-cancel" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btnn btn-save">Update</button>
                         </div>
                     </form>
 
                 </div>
             </div>
         </div>
+
+
 
 
 

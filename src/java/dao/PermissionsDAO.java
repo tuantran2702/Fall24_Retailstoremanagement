@@ -16,31 +16,31 @@ import model.Role;
  * @author ptrung
  */
 public class PermissionsDAO extends DBContext{
-    public List<String> getPermissions() {
-        
-        List<String> permissions = new ArrayList<>();
-        
-        String sql = "SELECT permission_name FROM [Permissions]";
-
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()) {
-                permissions.add(rs.getString(2));
-            }
-            
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return permissions;
-    }
+//    public List<String> getPermissionsName() {
+//        
+//        List<String> permissions = new ArrayList<>();
+//        
+//        String sql = "SELECT PermissionName FROM [Permissions]";
+//
+//        try {
+//            PreparedStatement st = connection.prepareStatement(sql);
+//            ResultSet rs = st.executeQuery();
+//
+//            while (rs.next()) {
+//                permissions.add(rs.getString(2));
+//            }
+//            
+//            
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return permissions;
+//    }
     
     // Lấy tất cả các quyền hạn
     public List<Permissions> getAllPermissions() {
         List<Permissions> permissions = new ArrayList<>();
-        String sql = "SELECT id, permission_name FROM Permissions";
+        String sql = "SELECT * FROM Permissions";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
@@ -56,11 +56,24 @@ public class PermissionsDAO extends DBContext{
         }
         return permissions;
     }
+    
+    public boolean addPermission(String permissionName) {
+        String sql = "INSERT INTO [dbo].[Permissions] ([PermissionName]) VALUES (?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, permissionName);
+            st.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     // Lấy các quyền hạn đã gán cho vai trò
     public List<String> getAssignedPermissionsForRole(int roleID) {
         List<String> assignedPermissions = new ArrayList<>();
-        String sql = "SELECT permission_id FROM RolePermissions WHERE role_id = ?";
+        String sql = "SELECT Permission_id FROM RolePermissions WHERE Role_id = ?";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, roleID);
@@ -75,7 +88,7 @@ public class PermissionsDAO extends DBContext{
     }
     
     public void clearPermissionsForRole(int roleID) {
-        String sql = "DELETE FROM [dbo].[RolePermissions] WHERE role_id = ?";
+        String sql = "DELETE FROM [dbo].[RolePermissions] WHERE Role_id = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, roleID);
@@ -86,7 +99,7 @@ public class PermissionsDAO extends DBContext{
     }
 
     public void assignPermissionToRole(int roleID, int permissionID) {
-        String sql = "INSERT INTO [dbo].[RolePermissions] (role_id, permission_id) VALUES (?, ?)";
+        String sql = "INSERT INTO [dbo].[RolePermissions] (Role_id, Permission_id) VALUES (?, ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, roleID);
@@ -99,10 +112,12 @@ public class PermissionsDAO extends DBContext{
     
     public static void main(String[] args) {
         PermissionsDAO pd = new PermissionsDAO();
+        pd.addPermission("BILL-MANAGE");
         List<Permissions> lst = pd.getAllPermissions();
-        List<String> lstlst = pd.getAssignedPermissionsForRole(1);
-        for (String p : lstlst){
-            System.out.println(p);
+        for(Permissions s : lst){
+            System.out.println(s.getPermissionName());
         }
+            
+        
     }
 }
