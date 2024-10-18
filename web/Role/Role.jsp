@@ -52,33 +52,33 @@
             border-bottom: 2px solid #007bff; /* Đường gạch dưới */
         }
         /* Nút lưu lại và hủy bỏ */
-            .btnn {
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                font-size: 14px;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-            }
+        .btnn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-            .btn-save {
-                background-color: #28a745;
-                color: white;
-                margin-right: 10px;
-            }
+        .btn-save {
+            background-color: #28a745;
+            color: white;
+            margin-right: 10px;
+        }
 
-            .btn-save:hover {
-                background-color: #218838;
-            }
+        .btn-save:hover {
+            background-color: #218838;
+        }
 
-            .btn-cancel {
-                background-color: #dc3545;
-                color: white;
-            }
+        .btn-cancel {
+            background-color: #dc3545;
+            color: white;
+        }
 
-            .btn-cancel:hover {
-                background-color: #c82333;
-            }
+        .btn-cancel:hover {
+            background-color: #c82333;
+        }
 
 
     </style>
@@ -99,37 +99,10 @@
             </ul>
         </header>
         <!-- Sidebar menu-->
-        <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-        <aside class="app-sidebar">
-            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="${sessionScope.User.getImg()}" width="50px"
-                                                alt="User Image">
-                <div>
-                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getEmail()}</b></p>
-                    <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
-                </div>
-            </div>
-            <hr>
-            <ul class="app-menu">
-                <li><a class="app-menu__item haha" href="order"><i class='app-menu__icon bx bx-cart-alt'></i>
-                        <span class="app-menu__label">POS Bán Hàng</span></a></li>
-                <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
-                            class="app-menu__label">Bảng điều khiển</span></a></li>
-                <li><a class="app-menu__item active" href="userManage"><i class='app-menu__icon bx bx-id-card'></i>
-                        <span class="app-menu__label">Quản lý nhân viên</span></a></li>
-                <li><a class="app-menu__item" href="#"><i class='app-menu__icon bx bx-user-voice'></i><span
-                            class="app-menu__label">Quản lý khách hàng</span></a></li>
-                <li><a class="app-menu__item" href="table-data-product.html"><i
-                            class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
-                </li>
-                <li><a class="app-menu__item" href="table-data-oder.html"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Quản lý đơn hàng</span></a></li>
-                <li><a class="app-menu__item" href="table-data-banned.html"><i class='app-menu__icon bx bx-run'></i><span
-                            class="app-menu__label">Quản lý nội bộ
-                        </span></a></li>
-                <li><a class="app-menu__item" href="#"><i class='app-menu__icon bx bx-cog'></i><span class="app-menu__label">Cài
-                            đặt hệ thống</span></a></li>
-            </ul>
-        </aside>
+        <!-- Include menu -->
+        <jsp:include page="/menu.jsp" />
+
+
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
@@ -197,39 +170,31 @@
         <div class="modal fade" id="updateRoleModal" tabindex="-1" role="dialog" aria-labelledby="updateRoleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-
                     <h3 class="tile-title">Update Role</h3>
-
 
                     <!-- Form cập nhật role -->
                     <form id="updateRoleForm" method="POST">
                         <div class="modal-body">
                             <!-- Tên vai trò -->
-                            <input name="roleID" value="${role.roleID}" style="display: none"> <!-- Đảm bảo roleID có giá trị đúng -->
+                            <input name="roleID" value="" style="display: none"> <!-- Hidden field để giữ roleID -->
                             <div class="form-group">
                                 <label for="roleName">Role Name</label>
-                                <input type="text" class="form-control" id="roleName" name="roleName" value="${role.roleName}" required>
+                                <input type="text" class="form-control" id="roleName" name="roleName" value="" required>
                             </div>
 
                             <!-- Mô tả vai trò -->
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <input type="text" class="form-control" id="description" name="description" value="${role.description}" required>
+                                <input type="text" class="form-control" id="description" name="description" value="" required>
                             </div>
 
                             <!-- Danh sách quyền (permissions) -->
                             <div class="form-group">
                                 <label for="permissions">Permissions</label>
                                 <div class="checkbox-group">
-                                    <c:forEach var="permission" items="${permissions}">
-                                        <label>
-                                            <input type="checkbox" name="permissions" value="${permission}" <c:if test="${role.hasPermission(permission)}">checked</c:if>> 
-                                            ${permission}
-                                        </label><br>
-                                    </c:forEach>
+                                    <!-- Danh sách checkbox sẽ được thêm qua JavaScript -->
                                 </div>
                             </div>
-
                         </div>
 
                         <div class="modal-footer">
@@ -237,10 +202,10 @@
                             <button type="submit" class="btnn btn-save">Update</button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
+
 
 
 
@@ -327,7 +292,7 @@
                             $('.checkbox-group').empty();
                             $.each(role.allPermissions, function (index, permission) {
                                 // Kiểm tra xem quyền hạn này có nằm trong danh sách assignedPermissions hay không
-                                var checked = role.assignedPermissions.includes(String(permission.id)) ? 'checked' : '';
+                                var checked = role.assignedPermissions.includes(String(permission.permissionName)) ? 'checked' : '';
 
                                 // Tạo checkbox cho mỗi quyền hạn
                                 $('.checkbox-group').append(

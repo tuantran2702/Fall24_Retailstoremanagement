@@ -15,7 +15,7 @@ import model.Role;
  *
  * @author ptrung
  */
-public class PermissionsDAO extends DBContext{
+public class PermissionsDAO extends DBContext {
 //    public List<String> getPermissionsName() {
 //        
 //        List<String> permissions = new ArrayList<>();
@@ -36,15 +36,14 @@ public class PermissionsDAO extends DBContext{
 //        }
 //        return permissions;
 //    }
-    
+
     // Lấy tất cả các quyền hạn
     public List<Permissions> getAllPermissions() {
         List<Permissions> permissions = new ArrayList<>();
         String sql = "SELECT * FROM Permissions";
-        
-        try (PreparedStatement stmt = connection.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-             
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
                 Permissions permission = new Permissions();
                 permission.setId(rs.getInt(1));
@@ -56,7 +55,7 @@ public class PermissionsDAO extends DBContext{
         }
         return permissions;
     }
-    
+
     public boolean addPermission(String permissionName) {
         String sql = "INSERT INTO [dbo].[Permissions] ([PermissionName]) VALUES (?)";
         try {
@@ -73,8 +72,11 @@ public class PermissionsDAO extends DBContext{
     // Lấy các quyền hạn đã gán cho vai trò
     public List<String> getAssignedPermissionsForRole(int roleID) {
         List<String> assignedPermissions = new ArrayList<>();
-        String sql = "SELECT Permission_id FROM RolePermissions WHERE Role_id = ?";
-        
+        //String sql = "SELECT Permission_id FROM RolePermissions WHERE Role_id = ?";
+        String sql = "SELECT p.PermissionName\n"
+                + "FROM RolePermissions rp\n"
+                + "JOIN Permissions p ON rp.Permission_id = p.PermissionID\n"
+                + "WHERE rp.Role_id = ?;";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, roleID);
             ResultSet rs = stmt.executeQuery();
@@ -86,7 +88,7 @@ public class PermissionsDAO extends DBContext{
         }
         return assignedPermissions;
     }
-    
+
     public void clearPermissionsForRole(int roleID) {
         String sql = "DELETE FROM [dbo].[RolePermissions] WHERE Role_id = ?";
         try {
@@ -109,15 +111,16 @@ public class PermissionsDAO extends DBContext{
             e.printStackTrace();
         }
     }
-    
+
     public static void main(String[] args) {
         PermissionsDAO pd = new PermissionsDAO();
-        pd.addPermission("BILL-MANAGE");
         List<Permissions> lst = pd.getAllPermissions();
-        for(Permissions s : lst){
-            System.out.println(s.getPermissionName());
-        }
-            
         
+        List<String> lstlst = pd.getAssignedPermissionsForRole(1);
+        for (Permissions p : lst){
+            System.out.println(p);
+        }
+        
+
     }
 }
