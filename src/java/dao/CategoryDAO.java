@@ -76,23 +76,28 @@ public class CategoryDAO extends DBContext {
 
     // Xóa Category theo ID
     public void deleteCategory(int id) {
-        String sql = "DELETE FROM Category WHERE CategoryID = ?";
+        // Cập nhật bảng Product, đặt SupplierID về NULL cho các sản phẩm có SupplierID là nhà cung cấp đang bị xóa
+        String updateProductSql = "UPDATE [dbo].[Product] SET CategoryID = NULL WHERE CategoryID = ?";
+
+        String deleteCategorySql = "DELETE FROM Category WHERE CategoryID = ?";
         try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, id);
-            int affectedRows = st.executeUpdate(); // Số lượng dòng bị ảnh hưởng
-            if (affectedRows > 0) {
-                System.out.println("Xóa thành công danh mục với ID: " + id);
-            } else {
-                System.out.println("Không tìm thấy danh mục với ID: " + id);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            // Bắt đầu cập nhật bảng Product
+            PreparedStatement updateProductSt = connection.prepareStatement(updateProductSql);
+            updateProductSt.setInt(1, id);
+            updateProductSt.executeUpdate();
+
+            // Sau đó xóa nhà cung cấp
+            PreparedStatement deleteCategorySt = connection.prepareStatement(deleteCategorySql);
+            deleteCategorySt.setInt(1, id);
+            deleteCategorySt.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("DeleteFail:" + e.getMessage());
         }
     }
 
     public void addCategoryName(Category category) {
-                String sql = "INSERT INTO Category (CategoryName) VALUES (?)";
+        String sql = "INSERT INTO Category (CategoryName) VALUES (?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, category.getCategoryName());

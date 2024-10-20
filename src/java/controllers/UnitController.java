@@ -57,13 +57,31 @@ public class UnitController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                String action = request.getParameter("action");
+        String action = request.getParameter("action");
         String idStr = request.getParameter("id");
         if (action == null) {
             UnitDAO unit = new UnitDAO();
             request.setAttribute("data", unit.getListunit());
             request.getRequestDispatcher("/UnitManager/listUnit.jsp").forward(request, response);
 
+        } 
+        else if (action.equals("create")) {
+            UnitDAO unit = new UnitDAO();
+            request.getRequestDispatcher("/UnitManager/createUnit.jsp").forward(request, response);
+        } 
+        else if (action.equals("update") && idStr != null) {
+            int id = Integer.parseInt(idStr);
+
+            UnitDAO unit = new UnitDAO();
+            Unit u = unit.getUnitById(id);
+            request.setAttribute("unit", u);
+            request.getRequestDispatcher("/UnitManager/updateUnit.jsp").forward(request, response);
+        } 
+        else if (action.equals("delete") && idStr != null) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            UnitDAO unit = new UnitDAO();
+            unit.deleteUnit(id);
+            response.sendRedirect("unit");
         }
 
     }
@@ -79,8 +97,31 @@ public class UnitController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
         String action = request.getParameter("action");
-        if ("createUnitName".equals(action)) {
+        if (action.equals("create")) {
+            String unitName = request.getParameter("unitName");
+
+            Unit unit = new Unit(0, unitName);
+            UnitDAO u = new UnitDAO();
+            u.createUnit(unit);
+            response.sendRedirect("unit");
+
+        } else if (action.equals("update")) {
+
+            int id = Integer.parseInt(request.getParameter("id"));
+            String unitName = request.getParameter("unitName");
+
+            Unit unit = new Unit(id, unitName);
+            UnitDAO u = new UnitDAO();
+            
+            
+            
+
+            u.updateUnit(unit);
+            response.sendRedirect("unit");
+
+        } else if ("createUnitName".equals(action)) {
             // Lấy giá trị của categoryName từ form
             String unitName = request.getParameter("unitName");
 

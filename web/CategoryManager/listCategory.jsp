@@ -114,8 +114,8 @@
                             <div class="row element-button">
                                 <div class="col-sm-2">
 
-                                    <a href="${pageContext.request.contextPath}/supplier?action=create" class="btn btn-add btn-sm"  title="Thêm"><i class="fas fa-plus"></i>
-                                        Create new Supplier</a>
+                                    <a href="${pageContext.request.contextPath}/category?action=create" class="btn btn-add btn-sm"  title="Thêm"><i class="fas fa-plus"></i>
+                                        Create new Category</a>
                                 </div>
                                 <div class="col-sm-2">
                                     <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập" onclick="myFunction(this)"><i
@@ -159,7 +159,7 @@
                                             <td><span class="badge bg-success">${c.getCategoryName()}</span></td>
                                             <td>${c.getDescription()}</td>
                                             <td>
-                                                <a href="${pageContext.request.contextPath}/supplier?action=update&id=${c.getCategoryID()}" class="btn btn-primary btn-sm edit" title="Sửa">
+                                                <a href="${pageContext.request.contextPath}/category?action=update&id=${c.getCategoryID()}" class="btn btn-primary btn-sm edit" title="Sửa">
                                                     <i class="fas fa-edit"></i></a>
                                                 <a href="${pageContext.request.contextPath}/category?action=delete&id=${c.getCategoryID()}" onclick="if (confirm('Are you sure you want to delete product with Name: ${c.getCategoryName()}?')) {
                                                                 doDelete('${c.getCategoryID()}');
