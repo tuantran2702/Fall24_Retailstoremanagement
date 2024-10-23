@@ -11,6 +11,7 @@ package controllers.UserController;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
+import java.util.Random;
 
 public class SendEmail {
 
@@ -67,5 +68,81 @@ public class SendEmail {
             e.printStackTrace(); // In stack trace ra console để giúp việc debug dễ dàng hơn
             return false;
         }
+    }
+    
+    public boolean sendEmailForgot(String to, String randomCode){
+        String subject = "Tap Hoa SWP";
+
+        // Nội dung email định dạng HTML
+        String body = "<html>"
+                + "<head>"
+                + "<meta charset=\"UTF-8\">"
+                + "<title>Yêu cầu đặt lại mật khẩu</title>"
+                + "<style>"
+                + "body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }"
+                + "h2 { color: #333; }"
+                + "p { font-size: 16px; color: #555; }"
+                + ".container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }"
+                + ".code { font-weight: bold; color: #4CAF50; font-size: 20px; }"
+                + ".footer { margin-top: 20px; font-size: 14px; color: #777; }"
+                + "</style>"
+                + "</head>"
+                + "<body>"
+                + "<div class='container'>"
+                + "<h2>Xin chào,</h2>"
+                + "<p>Mật khẩu đặt lại của bạn là: <span class='code'>" + randomCode + "</span></p>"
+                + "<p>Vui lòng sử dụng mật khẩu này để đăng nhập vào tài khoản của bạn.</p>"
+                + "<p class='footer'>Trân trọng,<br>Đội ngũ hỗ trợ</p>"
+                + "</div>"
+                + "</body>"
+                + "</html>";
+
+
+        
+        boolean result = sendEmail(to, subject, body);
+        return result;
+    }
+    
+    public boolean sendEmailWelcome(String to, String newPass){
+        String subject = "Tap Hoa SWP";
+
+        // Nội dung email định dạng HTML
+        String body = "<html>"
+                + "<head>"
+                + "<meta charset=\"UTF-8\">"
+                + "<title>Chào mừng bạn đến với hệ thống</title>"
+                + "<style>"
+                + "body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }"
+                + "h2 { color: #333; }"
+                + "p { font-size: 16px; color: #555; }"
+                + ".container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }"
+                + ".code { font-weight: bold; color: #4CAF50; font-size: 20px; }"
+                + ".footer { margin-top: 20px; font-size: 14px; color: #777; }"
+                + "</style>"
+                + "</head>"
+                + "<body>"
+                + "<div class='container'>"
+                + "<h2>Xin chào,</h2>"
+                + "<p>Mật khẩu mặc định của bạn là: <span class='code'>" + newPass + "</span></p>"
+                + "<p>Vui lòng sử dụng mật khẩu này để đăng nhập vào tài khoản của bạn và đổi mật khẩu mới.</p>"
+                + "<p class='footer'>Trân trọng,<br>Đội ngũ hỗ trợ</p>"
+                + "</div>"
+                + "</body>"
+                + "</html>";
+
+
+        
+        boolean result = sendEmail(to, subject, body);
+        return result;
+    }
+    
+    public String generateRandomCode(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuilder result = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            result.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return result.toString();
     }
 }

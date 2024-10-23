@@ -116,6 +116,26 @@
         <servlet-name>UnitController</servlet-name>
         <servlet-class>controllers.UnitController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddRoleServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.AddRoleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteRoleServlet</servlet-name>
+        <servlet-class>DeleteRoleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetRoleServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.GetRoleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RolesServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.RolesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PermissionsServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.PermissionsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -235,6 +255,26 @@
     <servlet-mapping>
         <servlet-name>UnitController</servlet-name>
         <url-pattern>/unit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddRoleServlet</servlet-name>
+        <url-pattern>/addRole</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteRoleServlet</servlet-name>
+        <url-pattern>/deleteRole</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetRoleServlet</servlet-name>
+        <url-pattern>/getRole</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RolesServlet</servlet-name>
+        <url-pattern>/roles</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PermissionsServlet</servlet-name>
+        <url-pattern>/permissions</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

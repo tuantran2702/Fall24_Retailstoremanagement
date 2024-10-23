@@ -4,6 +4,7 @@
  */
 package controllers;
 
+import dao.PermissionsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 import model.User;
 
 /**
@@ -58,18 +60,28 @@ public class Homepage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Lấy session hiện tại nếu tồn tại, nếu không thì trả về null
         HttpSession session = request.getSession(false);
 
-        // Kiểm tra xem session có tồn tại và đã đăng nhập chưa (userEmail không null)
         if (session != null && session.getAttribute("User") != null) {
-            request.getRequestDispatcher("Home.jsp").forward(request, response);  // Chuyển đến trang home.jsp
+            // Giả sử User là một đối tượng có thuộc tính roleID
+            User currentUser = (User) session.getAttribute("User");
+            int roleID = currentUser.getRoleID();
+
+            // Lấy danh sách các quyền mà roleID được gán
+            PermissionsDAO pd = new PermissionsDAO();
+            List<String> assignedPermissions = pd.getAssignedPermissionsForRole(roleID);
+
+            // Lưu danh sách quyền vào session
+            session.setAttribute("assignedPermissions", assignedPermissions);
+
+            // Chuyển đến trang Home
+            request.getRequestDispatcher("Home.jsp").forward(request, response);
         } else {
-            // Nếu session không tồn tại hoặc chưa đăng nhập, chuyển hướng về trang đăng nhập
             request.setAttribute("errorMessage", "Vui lòng đăng nhập !");
             request.getRequestDispatcher("User/login.jsp").forward(request, response);
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

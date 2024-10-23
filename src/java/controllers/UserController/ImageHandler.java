@@ -11,7 +11,8 @@ package controllers.UserController;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
-
+import java.util.Arrays;
+import java.util.List;
 
 public class ImageHandler {
 
@@ -21,7 +22,7 @@ public class ImageHandler {
         if (filePart != null && filePart.getSize() > 0) {
             // Lấy tên file
             String tenFile = getFileName(filePart);
-            duongDanAnh = "img-anhthe/" + tenFile;
+            duongDanAnh = "img-anhthe\\" + tenFile;
 
             // Tạo đường dẫn đầy đủ để lưu file
             File thuMucLuu = new File(duongDanLuuAnh + File.separator + tenFile);
@@ -50,5 +51,20 @@ public class ImageHandler {
             }
         }
         return null;
+    }
+
+    // Hàm để lấy đường dẫn tuyệt đối từ đường dẫn tương đối
+    public static String getAbsolutePath(String relativePath) {
+        File file = new File(relativePath);
+        return file.getAbsolutePath(); // Trả về đường dẫn tuyệt đối
+    }
+
+    public static void main(String[] args) {
+        // Ví dụ sử dụng hàm getAbsolutePath
+        String relativePath = "web/img-anhthe";
+        String absolutePath = getAbsolutePath(relativePath);
+        
+        // In ra đường dẫn tuyệt đối
+        System.out.println("Absolute Path: " + absolutePath);
     }
 }

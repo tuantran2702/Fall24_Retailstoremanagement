@@ -2,23 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controllers.EmployeeControllers;
+package controllers.RoleControllers;
 
-import dao.UserDAO;
+import dao.RoleDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.User;
 
 /**
  *
  * @author ptrung
  */
-public class EmployeeManageControllerr extends HttpServlet {
+public class DeleteRoleServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +35,10 @@ public class EmployeeManageControllerr extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet EmployeeManageController</title>");            
+            out.println("<title>Servlet DeleteRoleServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet EmployeeManageController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteRoleServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,12 +54,9 @@ public class EmployeeManageControllerr extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserDAO ud = new UserDAO();
-        List<User> users = ud.getAllUsers();
-        request.setAttribute("userList", users);
-        request.getRequestDispatcher("QuanLyNhanVien.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -75,7 +70,22 @@ public class EmployeeManageControllerr extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        // Lấy roleID từ yêu cầu (request)
+        int roleID = Integer.parseInt(request.getParameter("id"));
+        
+        // Gọi phương thức deleteRole từ RoleDAO để xóa role
+        RoleDAO roleDAO = new RoleDAO();
+        boolean success = roleDAO.deleteRole(roleID);
+        
+        // Kiểm tra kết quả và trả về phản hồi
+        if (success) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write("Role deleted successfully");
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("Failed to delete role");
+        }
     }
 
     /**

@@ -69,6 +69,8 @@ public class AddUserController extends HttpServlet {
             throws ServletException, IOException {
         RoleDAO rd = new RoleDAO();
         List<Role> roles = rd.getAllRole();
+        User user = new User(); // Khởi tạo một đối tượng User mới
+        request.setAttribute("user", user);
         request.setAttribute("roles", roles);
         request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
 
@@ -87,27 +89,48 @@ public class AddUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Collect form data
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
-        String password = request.getParameter("password");
+        String firstName = request.getParameter("firstName").trim();
+        String lastName = request.getParameter("lastName").trim();
+        String email = request.getParameter("email").trim();
+        String phone = request.getParameter("phone").trim();
+        String address = request.getParameter("address").trim();
+
+        SendEmail se = new SendEmail();
+        String password = se.generateRandomCode(6);
+
+        //Img
+        ImageHandler ih = new ImageHandler();
+        String uploadFilePath = "E:\\Fall24\\SWP391\\Clone-Git\\Fall24_Retailstoremanagement-Clone\\web\\img-anhthe";
+        String imgPath = "img-anhthe\\default.png";
+
+        // Lấy phần file tải lên
+        Part filePart = request.getPart("ImageUpload");
+
+        if (filePart != null && filePart.getSize() > 0) {
+            // Lưu ảnh vào thư mục và lấy đường dẫn ảnh
+            imgPath = ih.luuAnh(filePart, uploadFilePath);
+        }
+
+        //Tao 1 User de kiem tra
+        User addedUser = new User();
+        addedUser.setFirstName(firstName);
+        addedUser.setLastName(lastName);
+        addedUser.setEmail(email);
+        addedUser.setPassword(password); // Password will be hashed in the DAO layer
+        addedUser.setPhoneNumber(phone);
+        addedUser.setAddress(address);
+        addedUser.setImg(imgPath); // Set the image path
 
         //Kiem tra Role
         int roleId;
         try {
             roleId = Integer.parseInt(request.getParameter("role"));
+            addedUser.setRoleID(roleId);
         } catch (Exception e) {
             // Gửi thông báo lỗi khi người dùng không chọn chức vụ hợp lệ
             request.setAttribute("errorMessage", "Vui lòng chọn chức vụ.");
 
-            request.setAttribute("firstname", firstName);
-            request.setAttribute("lastname", lastName);
-            request.setAttribute("email", email);
-            request.setAttribute("phone", phone);
-            request.setAttribute("address", address);
-            request.setAttribute("pass", password);
+            request.setAttribute("user", addedUser);
 
             // Truy vấn dữ liệu từ database
             RoleDAO roleDAO = new RoleDAO();
@@ -120,18 +143,14 @@ public class AddUserController extends HttpServlet {
             return; // Dừng việc xử lý thêm người dùng
         }
 
-        // Kiểm tra số điện thoại có hợp lệ hay không (10 số và bắt đầu bằng 0)
-        String phonePattern = "^0\\d{9}$";
-        if (!phone.matches(phonePattern)) {
-            // Nếu số điện thoại không hợp lệ, thiết lập thông báo lỗi
-            request.setAttribute("errorMessage", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại 10 số bắt đầu bằng 0.");
+        //Kiem Tra Email
+        UserDAO ud = new UserDAO();
+        User checkEmail = ud.getUserByEmail(addedUser.getEmail());
+        if (checkEmail != null) {
+            request.setAttribute("errorMessage", "Email already exists");
 
-            request.setAttribute("firstname", firstName);
-            request.setAttribute("lastname", lastName);
-            request.setAttribute("email", email);
-            request.setAttribute("phone", phone);
-            request.setAttribute("address", address);
-            request.setAttribute("pass", password);
+            addedUser.setEmail("");
+            request.setAttribute("user", addedUser);
 
             // Truy vấn dữ liệu từ database
             RoleDAO roleDAO = new RoleDAO();
@@ -143,64 +162,42 @@ public class AddUserController extends HttpServlet {
             request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
             return;  // Dừng xử lý tiếp
         }
-        
-        ImageHandler ih = new ImageHandler();
-        String uploadFilePath = getServletContext().getRealPath("") + File.separator + "img-anhthe";
-        String imgPath = null;
 
-        // Lấy phần file tải lên
-        Part filePart = request.getPart("ImageUpload");
-        UserDAO ud = new UserDAO();
-        
+        // Kiểm tra số điện thoại có hợp lệ hay không (10 số và bắt đầu bằng 0)
+        String phonePattern = "^0\\d{9}$";
+        if (!phone.matches(phonePattern)) {
+            // Nếu số điện thoại không hợp lệ, thiết lập thông báo lỗi
+            request.setAttribute("errorMessage", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại 10 số bắt đầu bằng 0.");
 
-        // Hàm lưu ảnh
-        imgPath = ih.luuAnh(filePart, uploadFilePath);
+            request.setAttribute("user", addedUser);
 
-        // Nếu không có file được tải lên, giữ nguyên đường dẫn ảnh hiện tại
-        if (imgPath == null) {
-            imgPath = "img-anhthe\\default.png";
+            // Truy vấn dữ liệu từ database
+            RoleDAO roleDAO = new RoleDAO();
+            List<Role> roles = roleDAO.getAllRole();
+
+            // Lưu danh sách roles vào request attribute
+            request.setAttribute("roles", roles);
+            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
+            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
+            return;  // Dừng xử lý tiếp
         }
-        
-
-//        // Handling image upload
-//        String imgPath = null;
-//        Part filePart = request.getPart("ImageUpload"); // "ImageUpload" is the name attribute in the form
-//        if (filePart != null && filePart.getSize() > 0) {
-//            String applicationPath = request.getServletContext().getRealPath("");
-//            String uploadFilePath = applicationPath + File.separator + "img-anhthe"; // Directory to store the uploaded image
-//
-//            // Create directory if it doesn't exist
-//            File uploadDir = new File(uploadFilePath);
-//            if (!uploadDir.exists()) {
-//                uploadDir.mkdirs();
-//            }
-//
-//            // Extract file name and save the file
-//            String fileName = getFileName(filePart);
-//            String fullFilePath = uploadFilePath + File.separator + fileName;
-//            filePart.write(fullFilePath);
-//
-//            // Set the image path to store in the database (optional: relative path)
-//            imgPath = "img-anhthe/" + fileName;
-//        }else imgPath = "img-anhthe\\default.png";
-
-
-
+//      
         // Create a user object
         User user = new User();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPassword(password); // Password will be hashed in the DAO layer
-        user.setPhoneNumber(phone);
-        user.setAddress(address);
-        user.setRoleID(roleId);
-        user.setImg(imgPath); // Set the image path
+        user.setFirstName(addedUser.getFirstName());
+        user.setLastName(addedUser.getLastName());
+        user.setEmail(addedUser.getEmail());
+        user.setPassword(addedUser.getPassword()); // Password will be hashed in the DAO layer
+        user.setPhoneNumber(addedUser.getPhoneNumber());
+        user.setAddress(addedUser.getAddress());
+        user.setRoleID(addedUser.getRoleID());
+        user.setImg(addedUser.getImg()); // Set the image path
 
         // Insert user into the database
-        UserDAO userDAO = new UserDAO();
+        ;
         try {
-            userDAO.addUser(user);
+            ud.addUser(user);
+            se.sendEmailWelcome(email, password);
             response.sendRedirect("userManage"); // Redirect on success
 
         } catch (Exception e) {
@@ -210,17 +207,6 @@ public class AddUserController extends HttpServlet {
             request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
         }
 
-    }
-// Helper method to get file name
-
-    private String getFileName(Part part) {
-        String contentDisposition = part.getHeader("content-disposition");
-        for (String token : contentDisposition.split(";")) {
-            if (token.trim().startsWith("filename")) {
-                return token.substring(token.indexOf("=") + 2, token.length() - 1);
-            }
-        }
-        return null;
     }
 
     /**

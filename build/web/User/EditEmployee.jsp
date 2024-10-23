@@ -27,45 +27,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-        <script>
 
-            function readURL(input, thumbimage) {
-                if (input.files && input.files[0]) { //Sử dụng  cho Firefox - chrome
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $("#thumbimage").attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(input.files[0]);
-                } else { // Sử dụng cho IE
-                    $("#thumbimage").attr('src', input.value);
 
-                }
-                $("#thumbimage").show();
-                $('.filename').text($("#uploadfile").val());
-                $('.Choicefile').css('background', '#14142B');
-                $('.Choicefile').css('cursor', 'default');
-                $(".removeimg").show();
-                $(".Choicefile").unbind('click');
-
-            }
-            $(document).ready(function () {
-                $(".Choicefile").bind('click', function () {
-                    $("#uploadfile").click();
-
-                });
-                $(".removeimg").click(function () {
-                    $("#thumbimage").attr('src', '').hide();
-                    $("#myfileupload").html('<input type="file" id="uploadfile"  onchange="readURL(this);" />');
-                    $(".removeimg").hide();
-                    $(".Choicefile").bind('click', function () {
-                        $("#uploadfile").click();
-                    });
-                    $('.Choicefile').css('background', '#14142B');
-                    $('.Choicefile').css('cursor', 'pointer');
-                    $(".filename").text("");
-                });
-            })
-        </script>
     </head>
 
     <body class="app sidebar-mini rtl">
@@ -154,30 +117,10 @@
             </ul>
         </header>
         <!-- Sidebar menu-->
-        <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-        <aside class="app-sidebar">
-            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
-                                                alt="User Image">
-                <div>
-                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getEmail()}</b></p>
-                    <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
-                </div>
-            </div>
-            <hr>
-            <ul class="app-menu">
-                <li><a class="app-menu__item haha" href="banhang"><i class='app-menu__icon bx bx-cart-alt'></i>
-                        <span class="app-menu__label">POS Bán Hàng</span></a></li>
-                <li><a class="app-menu__item active" href="userManage"><i class='app-menu__icon bx bx-id-card'></i>
-                        <span class="app-menu__label">Quản lý nhân viên</span></a></li>
-                <li><a class="app-menu__item" href="#"><i class='app-menu__icon bx bx-user-voice'></i><span
-                            class="app-menu__label">Quản lý khách hàng</span></a></li>
-
-                <li><a class="app-menu__item" href="page-calendar.html"><i class='app-menu__icon bx bx-calendar-check'></i><span
-                            class="app-menu__label">Lịch công tác </span></a></li>
-                <li><a class="app-menu__item" href="#"><i class='app-menu__icon bx bx-cog'></i><span class="app-menu__label">Cài
-                            đặt hệ thống</span></a></li>
-            </ul>
-        </aside>
+        <!-- Include menu -->
+        <jsp:include page="/menu.jsp" />
+        
+        
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
@@ -244,23 +187,27 @@
 
 
                                 <div class="form-group col-md-12">
+
                                     <label class="control-label">Ảnh 3x4 nhân viên</label>
+                                    <p id="error-message" class="error" style="color: red"></p> <!-- Thông báo lỗi -->
                                     <div id="myfileupload">
                                         <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
                                     </div>
+
                                     <div id="thumbbox">
-                                        <img height="300" width="300" alt="Thumb image" id="thumbimage"
+                                        <img height="300" width="300" alt="Thumb image" id="thumbimage" 
                                              src="<%= ((User) request.getAttribute("user")).getImg() != null ? ((User) request.getAttribute("user")).getImg() : "" %>"
                                              style="<%= ((User) request.getAttribute("user")).getImg() != null ? "display: block;" : "display: none;" %>" />
-                                        <a class="removeimg" href="javascript:"></a>
+                                        <a class="removeimg" href="javascript:" onclick="removeImage()"
+                                           style="<%= ((User) request.getAttribute("user")).getImg() != null ? "display: block;" : "display: none;" %>"></a>
                                     </div>
 
                                     <div id="boxchoice">
-                                        <a href="javascript:" class="Choicefile"><i class='bx bx-upload'></i></a>
+                                        <a href="javascript:" class="Choicefile"><i class='bx bx-upload'></i> Chọn file</a>
                                         <p style="clear:both"></p>
                                     </div>
-
                                 </div>
+
                                 <button class="btn btn-save" type="submit">Lưu lại</button>
                                 <a class="btn btn-cancel" href="userManage">Hủy bỏ</a>
                             </form>
@@ -271,39 +218,7 @@
                     </main>
 
 
-                    <!--
-                    MODAL
-                    -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                         data-backdrop="static" data-keyboard="false">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
 
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="form-group  col-md-12">
-                                            <span class="thong-tin-thanh-toan">
-                                                <h5>Tạo chức vụ mới</h5>
-                                            </span>
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Nhập tên chức vụ mới</label>
-                                            <input class="form-control" type="text" required>
-                                        </div>
-                                    </div>
-                                    <BR>
-                                    <button class="btn btn-save" type="button">Lưu lại</button>
-                                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                    <BR>
-                                </div>
-                                <div class="modal-footer">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--
-                    MODAL
-                    -->
 
 
                     <!-- Essential javascripts for application to work-->
@@ -313,22 +228,76 @@
                     <script src="js/main.js"></script>
                     <!-- The javascript plugin to display page loading on top-->
                     <script src="js/plugins/pace.min.js"></script>
-                    <script>
-                                            const togglePassword = document.getElementById('togglePassword');
-                                            const passwordInput = document.getElementById('password');
 
-                                            togglePassword.addEventListener('change', function () {
-                                                if (this.checked) {
-                                                    passwordInput.type = 'text';  // Hiện mật khẩu
-                                                } else {
-                                                    passwordInput.type = 'password';  // Ẩn mật khẩu
+                    <script>
+                                            // Hàm kiểm tra file hợp lệ
+                                            function validateFile(file) {
+                                                const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+                                                const maxFileSize = 2 * 1024 * 1024; // 2MB giới hạn kích thước
+
+                                                // Kiểm tra loại file và kích thước file
+                                                if (!validImageTypes.includes(file.type)) {
+                                                    return "Chỉ cho phép file ảnh (JPEG, PNG, GIF).";
                                                 }
+                                                if (file.size > maxFileSize) {
+                                                    return "Kích thước ảnh phải nhỏ hơn 2MB.";
+                                                }
+                                                return null;
+                                            }
+
+                                            // Hàm hiển thị ảnh xem trước và validate file
+                                            function readURL(input) {
+                                                if (input.files && input.files[0]) { // Sử dụng cho Firefox - Chrome
+                                                    const file = input.files[0];
+                                                    const error = validateFile(file);
+
+                                                    if (error) {
+                                                        // Hiển thị thông báo lỗi và reset input nếu file không hợp lệ
+                                                        $("#error-message").text(error);
+                                                        input.value = ""; // Reset input file
+                                                        $("#thumbimage").hide();
+                                                        $(".removeimg").hide();
+                                                        $(".Choicefile").css('background', '#14142B').css('cursor', 'pointer');
+                                                        $(".filename").text("");
+                                                        return;
+                                                    }
+
+                                                    // Nếu hợp lệ, hiển thị ảnh xem trước
+                                                    const reader = new FileReader();
+                                                    reader.onload = function (e) {
+                                                        $("#thumbimage").attr('src', e.target.result).show();
+                                                        $(".removeimg").show();
+                                                        $(".Choicefile").css('background', '#14142B').css('cursor', 'default');
+                                                        $(".filename").text(input.files[0].name); // Hiển thị tên file
+                                                    }
+                                                    reader.readAsDataURL(file);
+                                                    $("#error-message").text(""); // Xóa thông báo lỗi
+                                                } else { // Sử dụng cho IE
+                                                    $("#thumbimage").attr('src', input.value).show();
+                                                }
+                                            }
+
+                                            $(document).ready(function () {
+                                                $(".Choicefile").bind('click', function () {
+                                                    $("#uploadfile").click();
+                                                });
+                                                $(".removeimg").click(function () {
+                                                    $("#thumbimage").attr('src', '').hide();
+                                                    $("#myfileupload").html('<input type="file" id="uploadfile" onchange="readURL(this);" />');
+                                                    $(".removeimg").hide();
+                                                    $(".Choicefile").bind('click', function () {
+                                                        $("#uploadfile").click();
+                                                    });
+                                                    $('.Choicefile').css('background', '#14142B').css('cursor', 'pointer');
+                                                    $(".filename").text("");
+                                                    $("#error-message").text(""); // Reset thông báo lỗi
+                                                });
                                             });
                     </script>
 
 
 
-
                     </body>
+
 
                     </html>

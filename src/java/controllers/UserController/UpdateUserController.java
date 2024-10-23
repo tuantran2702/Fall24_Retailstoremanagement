@@ -92,12 +92,13 @@ public class UpdateUserController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
+        UserDAO ud = new UserDAO();
+        ImageHandler ih = new ImageHandler();
+
         // Collect updated user data from the form
         int userID = Integer.parseInt(request.getParameter("userID"));
         String firstName = request.getParameter("firstName");
@@ -107,21 +108,81 @@ public class UpdateUserController extends HttpServlet {
         String address = request.getParameter("address");
         int roleID = Integer.parseInt(request.getParameter("role"));
 
-        ImageHandler ih = new ImageHandler();
+        User u = ud.getUserById(userID);  // Lấy thông tin người dùng từ DB
+
         String uploadFilePath = "E:\\Fall24\\SWP391\\Clone-Git\\Fall24_Retailstoremanagement-Clone\\web\\img-anhthe";
         String imgPath = null;
 
         // Lấy phần file tải lên
         Part filePart = request.getPart("ImageUpload");
-        UserDAO ud = new UserDAO();
-        User u = ud.getUserById(userID);  // Lấy thông tin người dùng từ DB
 
-        // Hàm lưu ảnh
-        imgPath = ih.luuAnh(filePart, uploadFilePath);
+        if (filePart != null) {
+            // Hàm lưu ảnh
+            imgPath = ih.luuAnh(filePart, uploadFilePath);
+        }
 
         // Nếu không có file được tải lên, giữ nguyên đường dẫn ảnh hiện tại
         if (imgPath == null) {
             imgPath = u.getImg();
+        }
+
+        //Kiem tra Email
+        User checkedUser = ud.getUserByEmail(email);
+        if (checkedUser != null && checkedUser.getUserID() != userID) {
+            request.setAttribute("errorMessage", "Email already exits");
+
+            request.setAttribute("user", u);
+
+            // Truy vấn dữ liệu từ database
+            RoleDAO roleDAO = new RoleDAO();
+            List<Role> roles = roleDAO.getAllRole();
+
+            // Lưu danh sách roles vào request attribute
+            request.setAttribute("roles", roles);
+            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
+            request.getRequestDispatcher("User/EditEmployee.jsp").forward(request, response);
+            return;  // Dừng xử lý tiếp
+        }
+
+        //Kiem tra Role
+        int roleId;
+        try {
+            roleId = Integer.parseInt(request.getParameter("role"));
+        } catch (Exception e) {
+            // Gửi thông báo lỗi khi người dùng không chọn chức vụ hợp lệ
+            request.setAttribute("errorMessage", "Vui lòng chọn chức vụ.");
+
+            request.setAttribute("user", u);
+
+            // Truy vấn dữ liệu từ database
+            RoleDAO roleDAO = new RoleDAO();
+            List<Role> roles = roleDAO.getAllRole();
+
+            // Lưu danh sách roles vào request attribute
+            request.setAttribute("roles", roles);
+            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
+            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
+            return; // Dừng việc xử lý thêm người dùng
+        }
+
+        // Kiểm tra số điện thoại có hợp lệ hay không (10 số và bắt đầu bằng 0)
+        String phonePattern = "^0\\d{9}$";
+        if (!phone.matches(phonePattern)) {
+            // Nếu số điện thoại không hợp lệ, thiết lập thông báo lỗi
+            request.setAttribute("errorMessage", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại 10 số bắt đầu bằng 0.");
+
+            u.setPhoneNumber("");
+            request.setAttribute("user", u);
+
+            // Truy vấn dữ liệu từ database
+            RoleDAO roleDAO = new RoleDAO();
+            List<Role> roles = roleDAO.getAllRole();
+
+            // Lưu danh sách roles vào request attribute
+            request.setAttribute("roles", roles);
+            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
+            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
+            return;  // Dừng xử lý tiếp
         }
 
 // Proceed with further logic (e.g., update user data with imgPath)
@@ -143,8 +204,6 @@ public class UpdateUserController extends HttpServlet {
         // Redirect back to the user management page
         response.sendRedirect("userManage");
     }
-
-    
 
     /**
      * Returns a short description of the servlet.
