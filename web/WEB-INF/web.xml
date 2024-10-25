@@ -64,10 +64,7 @@
         <servlet-name>AddUserController</servlet-name>
         <servlet-class>controllers.UserController.AddUserController</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>GetUserServlet</servlet-name>
-        <servlet-class>controllers.UserController.GetUserServlet</servlet-class>
-    </servlet>
+    
     <servlet>
         <servlet-name>LogOutServlet</servlet-name>
         <servlet-class>controllers.UserController.LogOutServlet</servlet-class>
@@ -216,10 +213,7 @@
         <servlet-name>AddUserController</servlet-name>
         <url-pattern>/addUser</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GetUserServlet</servlet-name>
-        <url-pattern>/getUser</url-pattern>
-    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>LogOutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>

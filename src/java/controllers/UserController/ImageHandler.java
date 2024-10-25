@@ -22,7 +22,7 @@ public class ImageHandler {
         if (filePart != null && filePart.getSize() > 0) {
             // Lấy tên file
             String tenFile = getFileName(filePart);
-            duongDanAnh = "img-anhthe\\" + tenFile;
+            duongDanAnh = "web\\img-anhthe\\" + tenFile;
 
             // Tạo đường dẫn đầy đủ để lưu file
             File thuMucLuu = new File(duongDanLuuAnh + File.separator + tenFile);
@@ -60,11 +60,12 @@ public class ImageHandler {
     }
 
     public static void main(String[] args) {
-        // Ví dụ sử dụng hàm getAbsolutePath
-        String relativePath = "web/img-anhthe";
-        String absolutePath = getAbsolutePath(relativePath);
-        
+        String duongDanAnh = "img-anhthe" ;
+
+        // Tạo đường dẫn đầy đủ để lưu file
+        File thuMucLuu = new File(duongDanAnh + File.separator );
+
         // In ra đường dẫn tuyệt đối
-        System.out.println("Absolute Path: " + absolutePath);
+        System.out.println("Absolute Path: " + thuMucLuu.getAbsolutePath());
     }
 }
