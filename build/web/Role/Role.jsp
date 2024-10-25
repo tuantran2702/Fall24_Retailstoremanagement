@@ -233,47 +233,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <script type="text/javascript">$('#sampleTable').DataTable();</script>
 
-        <script>
-            function xuatPDF() {
-                const {jsPDF} = window.jspdf;
-                const doc = new jsPDF();
-
-                // Tiêu đề PDF
-                doc.setFontSize(18);
-                doc.text("Danh sách nhân viên", 14, 20);
-
-                // Tạo dữ liệu cho bảng
-                const rows = [];
-                const tableHeader = ['ID', 'Tên', 'Email', 'Địa chỉ', 'Số điện thoại', 'Vai trò'];
-
-                const tableRows = document.querySelectorAll("tbody tr");
-                tableRows.forEach((row) => {
-                    const userID = row.cells[2].innerText; // userID
-                    const fullName = row.cells[3].innerText; // Tên đầy đủ
-                    const email = row.cells[4].innerText; // Email
-                    const address = row.cells[5].innerText; // Địa chỉ
-                    const phoneNumber = row.cells[6].innerText; // Số điện thoại
-                    const roleID = row.cells[7].innerText; // Vai trò
-
-                    // Thêm thông tin vào hàng bảng
-                    rows.push([userID, fullName, email, address, phoneNumber, roleID]);
-                });
-
-                // Sử dụng autoTable để tạo bảng
-                doc.autoTable({
-                    head: [tableHeader],
-                    body: rows,
-                    startY: 30, // Vị trí bắt đầu
-                    theme: 'grid', // Chủ đề của bảng
-                    headStyles: {fillColor: [22, 160, 133]}, // Màu nền tiêu đề
-                    styles: {cellWidth: 'auto', halign: 'left'}, // Định dạng các ô
-                    margin: {top: 30}
-                });
-
-                // Tải xuống tệp PDF
-                doc.save('danh_sach_nhan_vien.pdf');
-            }
-        </script>
+        
 
         <script>
             // Hàm tải dữ liệu vai trò vào modal
@@ -383,18 +343,6 @@
         </script>
         <script>
 
-
-
-            //EXCEL
-            // $(document).ready(function () {
-            //   $('#').DataTable({
-
-            //     dom: 'Bfrtip',
-            //     "buttons": [
-            //       'excel'
-            //     ]
-            //   });
-            // });
 
 
             //Thời Gian

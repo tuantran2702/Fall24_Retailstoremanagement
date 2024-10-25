@@ -58,6 +58,11 @@ public class RolesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getSession().getAttribute("User") == null) {
+            response.sendRedirect("404.jsp");
+            return;
+        }
+        
         RoleDAO rd = new RoleDAO();
         List<Role> roles = rd.getAllRole();
         request.setAttribute("roleList", roles);

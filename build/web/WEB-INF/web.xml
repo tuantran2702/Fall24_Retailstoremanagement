@@ -136,6 +136,18 @@
         <servlet-name>PermissionsServlet</servlet-name>
         <servlet-class>controllers.RoleControllers.PermissionsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetPermissionServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.GetPermissionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddPermissionServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.AddPermissionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeletePermissionServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.DeletePermissionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -275,6 +287,18 @@
     <servlet-mapping>
         <servlet-name>PermissionsServlet</servlet-name>
         <url-pattern>/permissions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetPermissionServlet</servlet-name>
+        <url-pattern>/getPermission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddPermissionServlet</servlet-name>
+        <url-pattern>/addPermission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeletePermissionServlet</servlet-name>
+        <url-pattern>/deletePermission</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
