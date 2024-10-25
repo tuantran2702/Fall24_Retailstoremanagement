@@ -4,11 +4,13 @@
  */
 package dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import model.Category;
 import model.Product;
 import model.Supplier;
@@ -21,6 +23,40 @@ import org.apache.tomcat.dbcp.dbcp2.PStmtKey;
  * @author admin
  */
 public class ProductDAO extends DBContext {
+
+    public  List<Product> getAllProducts() {
+        List<Product> products = new ArrayList<>();
+        String sql = "select p.*,c.CategoryName from Product p join Category c on p.CategoryID=c.CategoryID";
+        try {
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int productID = rs.getInt(1);
+                String productCode = rs.getString(2);
+                String productName = rs.getString(3);
+                int categoryID = rs.getInt(4);
+                double price = rs.getDouble(5);
+                int quantity = rs.getInt(6);
+                String description = rs.getString(7);
+                Date createdDate = rs.getDate(8);
+                Date expiredDate = rs.getDate(9);
+                Date updateDate = rs.getDate(10);
+                String image = rs.getString(11);
+                int userID = rs.getInt(12);
+                int unitID = rs.getInt(13);
+                int supplierID = rs.getInt(14);
+                String categoryName = rs.getString(15);
+
+                products.add(new Product(productID, productCode, productName, categoryID, price, quantity, description, createdDate, expiredDate, updateDate, image, userID, unitID, supplierID, categoryName));
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return products;
+
+    }
 
 //    public boolean updateProduct(Product product) {
 //        String sql = "UPDATE Warehouse SET WarehouseName = ?, Location = ?, ManagerName = ?, ContactNumber = ? WHERE WarehouseID = ?";
