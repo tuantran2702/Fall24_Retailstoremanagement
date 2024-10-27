@@ -98,12 +98,11 @@ public class AddUserController extends HttpServlet {
 
         SendEmail se = new SendEmail();
         String password = se.generateRandomCode(6);
-        
 
         // Xử lý ảnh tải lên
         ImageHandler ih = new ImageHandler();
-        String uploadFilePath = getServletContext().getRealPath("/") + "img-anhthe";
-        String imgPath = "img-anhthe\\default.png"; // Đường dẫn mặc định nếu không có file upload
+        String uploadFilePath = getServletContext().getRealPath("/") + "web/img-anhthe"; // Đường dẫn tương đối
+        String imgPath = "web/img-anhthe/default.png"; // Đường dẫn mặc định nếu không có file upload
 
         // Lấy phần file tải lên từ request
         Part filePart = request.getPart("ImageUpload");
@@ -112,7 +111,6 @@ public class AddUserController extends HttpServlet {
             // Lưu ảnh vào thư mục upload và lấy đường dẫn ảnh
             imgPath = ih.luuAnh(filePart, uploadFilePath);
         }
-        
 
         //Tao 1 User de kiem tra
         User addedUser = new User();
@@ -194,7 +192,7 @@ public class AddUserController extends HttpServlet {
             request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
             return;  // Dừng xử lý tiếp
         }
-      
+
         // Create a user object
         User user = new User();
 
