@@ -6,12 +6,14 @@
 package controllers;
 
 import dao.ImportDAO;
+import dao.PermissionsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.User;
 
 /**
  *
@@ -54,6 +56,21 @@ public class CheckProductInInventoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        //Xử lí Phân Quyền
+        String END_POINT = "PRODUCT-MANAGE";
+        if (request.getSession().getAttribute("User") != null) {
+            PermissionsDAO pd = new PermissionsDAO();
+            User u = (User) request.getSession().getAttribute("User");
+            if (!pd.isAccess(u, END_POINT)) {
+                response.sendRedirect("404.jsp");
+                return;
+            }
+        } else {
+            response.sendRedirect("404.jsp");
+            return;
+        }
+        
         int inventoryID = Integer.parseInt(request.getParameter("inventoryID"));
         int productID = Integer.parseInt(request.getParameter("productID"));
         ImportDAO importDAO = new ImportDAO();

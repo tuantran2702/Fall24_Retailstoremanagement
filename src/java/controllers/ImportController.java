@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.ImportDAO;
+import dao.PermissionsDAO;
 import model.Import;
 import model.Inventory;
 import model.Product;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import model.User;
 
 public class ImportController extends HttpServlet {
     
@@ -22,6 +24,21 @@ public class ImportController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        //Xử lí Phân Quyền
+        String END_POINT = "INVENTORY-MANAGE";
+        if (request.getSession().getAttribute("User") != null) {
+            PermissionsDAO pd = new PermissionsDAO();
+            User u = (User) request.getSession().getAttribute("User");
+            if (!pd.isAccess(u, END_POINT)) {
+                response.sendRedirect("404.jsp");
+                return;
+            }
+        } else {
+            response.sendRedirect("404.jsp");
+            return;
+        }
+        
         String action = request.getParameter("action");
         String idStr = request.getParameter("id");
         ImportDAO importDAO = new ImportDAO();

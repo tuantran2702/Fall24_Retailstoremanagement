@@ -1,5 +1,6 @@
 package controllers;
 
+import dao.PermissionsDAO;
 import java.io.PrintWriter;
 import dao.WarehouseDAO;
 import model.Warehouse;
@@ -9,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.User;
 
 public class WarehouseControllerr extends HttpServlet {
 
@@ -30,6 +32,21 @@ public class WarehouseControllerr extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        
+        //Xử lí Phân Quyền
+        String END_POINT = "INVENTORY-MANAGE";
+        if (request.getSession().getAttribute("User") != null) {
+            PermissionsDAO pd = new PermissionsDAO();
+            User u = (User) request.getSession().getAttribute("User");
+            if (!pd.isAccess(u, END_POINT)) {
+                response.sendRedirect("404.jsp");
+                return;
+            }
+        } else {
+            response.sendRedirect("404.jsp");
+            return;
+        }
+        
         String action = request.getParameter("action");
         String idStr = request.getParameter("id");
         String search = request.getParameter("search");
