@@ -101,8 +101,8 @@ public class AddUserController extends HttpServlet {
 
         // Xử lý ảnh tải lên
         ImageHandler ih = new ImageHandler();
-        String uploadFilePath = getServletContext().getRealPath("/") + "web/img-anhthe"; // Đường dẫn tương đối
-        String imgPath = "web/img-anhthe/default.png"; // Đường dẫn mặc định nếu không có file upload
+        String uploadFilePath = getServletContext().getRealPath("/") + "img-anhthe"; // Đường dẫn tương đối
+        String imgPath = "img-anhthe/default.png"; // Đường dẫn mặc định nếu không có file upload
 
         // Lấy phần file tải lên từ request
         Part filePart = request.getPart("ImageUpload");

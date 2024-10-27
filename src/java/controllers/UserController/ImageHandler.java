@@ -22,22 +22,21 @@ public class ImageHandler {
         if (filePart != null && filePart.getSize() > 0) {
             // Lấy tên file
             String tenFile = getFileName(filePart);
-            duongDanAnh = "web\\img-anhthe\\" + tenFile;
+            duongDanAnh = "img-anhthe/" + tenFile;
 
             // Tạo đường dẫn đầy đủ để lưu file
-            File thuMucLuu = new File(duongDanLuuAnh + File.separator + tenFile);
+            File thuMucLuu = new File(duongDanLuuAnh);
 
             // Kiểm tra xem thư mục đã tồn tại chưa, nếu chưa thì tạo mới
-            if (!thuMucLuu.getParentFile().exists()) {
-                thuMucLuu.getParentFile().mkdirs();
+            if (!thuMucLuu.exists()) {
+                thuMucLuu.mkdirs();
             }
 
             // Ghi file vào đĩa
             try {
-                filePart.write(thuMucLuu.getAbsolutePath());
+                filePart.write(thuMucLuu.getAbsolutePath() + File.separator + tenFile);
             } catch (IOException e) {
                 e.printStackTrace();  // Ghi log lỗi để kiểm tra
-                // Xử lý lỗi khi ghi file
             }
         }
         return duongDanAnh; // Trả về đường dẫn ảnh đã lưu
@@ -60,10 +59,10 @@ public class ImageHandler {
     }
 
     public static void main(String[] args) {
-        String duongDanAnh = "img-anhthe" ;
+        String duongDanAnh = "img-anhthe";
 
         // Tạo đường dẫn đầy đủ để lưu file
-        File thuMucLuu = new File(duongDanAnh + File.separator );
+        File thuMucLuu = new File(duongDanAnh + File.separator);
 
         // In ra đường dẫn tuyệt đối
         System.out.println("Absolute Path: " + thuMucLuu.getAbsolutePath());
