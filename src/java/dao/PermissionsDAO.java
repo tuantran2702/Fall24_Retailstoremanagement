@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Permissions;
 import model.Role;
+import model.User;
 
 /**
  *
@@ -138,6 +139,14 @@ public class PermissionsDAO extends DBContext {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public boolean isAccess(User u, String s){
+        List<String> lst = getAssignedPermissionsForRole(u.getRoleID());
+        if(lst.contains(s)){
+            return true;
+        }
+        return false;
     }
 
     public static void main(String[] args) {
