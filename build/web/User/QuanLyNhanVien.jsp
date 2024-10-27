@@ -211,60 +211,7 @@
         </script>
 
 
-        <script>
-            $('#saveChangesBtn').on('click', function () {
-                var user = {
-                    userID: $('#ModalUP input[name="userID"]').val(),
-                    firstName: $('#ModalUP input[name="firstName"]').val(),
-                    lastName: $('#ModalUP input[name="lastName"]').val(),
-                    phoneNumber: $('#ModalUP input[name="phoneNumber"]').val(),
-                    email: $('#ModalUP input[name="email"]').val(),
-                    roleID: $('#ModalUP select[name="roleID"]').val()
-                };
-
-                $.ajax({
-                    url: 'updateUser', // URL của servlet để cập nhật thông tin
-                    type: 'POST',
-                    data: user,
-                    success: function (response) {
-                        swal("Đã cập nhật thành công!", {
-                            icon: "success"
-                        }).then(() => {
-                            location.reload(); // Reload trang sau khi cập nhật
-                        });
-                    },
-                    error: function () {
-                        swal("Cập nhật thất bại!", {
-                            icon: "error"
-                        });
-                    }
-                });
-            });
-
-        </script>
-        <script>
-            function loadUserData(userID) {
-                $.ajax({
-                    url: 'getUser', // URL của servlet lấy thông tin người dùng
-                    type: 'GET',
-                    data: {id: userID},
-                    success: function (user) {
-                        // Hiển thị dữ liệu vào modal
-                        $('#ModalUP input[name="userID"]').val(user.userID);
-                        $('#ModalUP input[name="firstName"]').val(user.firstName);
-                        $('#ModalUP input[name="lastName"]').val(user.lastName);
-                        $('#ModalUP input[name="phoneNumber"]').val(user.phoneNumber);
-                        $('#ModalUP input[name="email"]').val(user.email);
-                        $('#ModalUP select[name="roleID"]').val(user.roleID);
-                    },
-                    error: function () {
-                        swal("Không thể tải dữ liệu người dùng!", {
-                            icon: "error"
-                        });
-                    }
-                });
-            }
-        </script>
+        
         <script>
             function deleteUser(userID) {
                 swal({

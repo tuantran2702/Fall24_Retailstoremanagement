@@ -110,7 +110,6 @@ public class UpdateUserController extends HttpServlet {
 
         User u = ud.getUserById(userID);  // Lấy thông tin người dùng từ DB
 
-        String uploadFilePath = "E:\\Fall24\\SWP391\\Clone-Git\\Fall24_Retailstoremanagement-Clone\\web\\img-anhthe";
         String imgPath = null;
 
         // Lấy phần file tải lên
@@ -118,7 +117,7 @@ public class UpdateUserController extends HttpServlet {
 
         if (filePart != null) {
             // Hàm lưu ảnh
-            imgPath = ih.luuAnh(filePart, uploadFilePath);
+            imgPath = ih.luuAnh(filePart, getServletContext());
         }
 
         // Nếu không có file được tải lên, giữ nguyên đường dẫn ảnh hiện tại

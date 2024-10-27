@@ -4,7 +4,6 @@
  */
 package controllers.UserController;
 
-import static controllers.UserController.ImageHandler.getAbsolutePath;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -85,8 +84,6 @@ public class AddUserController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private static final String UPLOAD_DIRECTORY = "web/img-anhthe";
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Collect form data
@@ -101,16 +98,12 @@ public class AddUserController extends HttpServlet {
 
         // Xử lý ảnh tải lên
         ImageHandler ih = new ImageHandler();
-        String uploadFilePath = getServletContext().getRealPath("/") + "img-anhthe"; // Đường dẫn tương đối
-        String imgPath = "img-anhthe/default.png"; // Đường dẫn mặc định nếu không có file upload
+        String imgPath = null;
 
         // Lấy phần file tải lên từ request
         Part filePart = request.getPart("ImageUpload");
-
-        if (filePart != null && filePart.getSize() > 0) {
-            // Lưu ảnh vào thư mục upload và lấy đường dẫn ảnh
-            imgPath = ih.luuAnh(filePart, uploadFilePath);
-        }
+        // Lưu ảnh vào thư mục upload và lấy đường dẫn ảnh
+        imgPath = ih.luuAnh(filePart, getServletContext());
 
         //Tao 1 User de kiem tra
         User addedUser = new User();
@@ -135,7 +128,7 @@ public class AddUserController extends HttpServlet {
         try {
             roleId = Integer.parseInt(request.getParameter("role"));
             addedUser.setRoleID(roleId);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             // Gửi thông báo lỗi khi người dùng không chọn chức vụ hợp lệ
             request.setAttribute("errorMessage", "Vui lòng chọn chức vụ.");
 
@@ -206,13 +199,12 @@ public class AddUserController extends HttpServlet {
         user.setImg(addedUser.getImg()); // Set the image path
 
         // Insert user into the database
-        ;
         try {
             ud.addUser(user);
             se.sendEmailWelcome(email, password);
             response.sendRedirect("userManage"); // Redirect on success
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             // Set error message in the request
             request.setAttribute("errorMessage", "An error occurred while adding the user. Please try again.");
             // Forward request back to the form page

@@ -64,7 +64,6 @@
         <servlet-name>AddUserController</servlet-name>
         <servlet-class>controllers.UserController.AddUserController</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>LogOutServlet</servlet-name>
         <servlet-class>controllers.UserController.LogOutServlet</servlet-class>
@@ -145,6 +144,10 @@
         <servlet-name>DeletePermissionServlet</servlet-name>
         <servlet-class>controllers.RoleControllers.DeletePermissionServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TestServle</servlet-name>
+        <servlet-class>controllers.UserController.TestServle</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -213,7 +216,6 @@
         <servlet-name>AddUserController</servlet-name>
         <url-pattern>/addUser</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>LogOutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
@@ -293,6 +295,10 @@
     <servlet-mapping>
         <servlet-name>DeletePermissionServlet</servlet-name>
         <url-pattern>/deletePermission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TestServle</servlet-name>
+        <url-pattern>/test</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

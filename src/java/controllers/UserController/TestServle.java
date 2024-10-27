@@ -4,24 +4,25 @@
  */
 package controllers.UserController;
 
-import dao.RoleDAO;
-import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.*;
-import java.util.Map;
-import model.Role;
-import model.User;
+import jakarta.servlet.http.Part;
 
 /**
  *
  * @author ptrung
  */
-public class UserManageController extends HttpServlet {
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024,  // 1 MB
+    maxFileSize = 10 * 1024 * 1024,   // 10 MB
+    maxRequestSize = 50 * 1024 * 1024 // 50 MB
+)
+public class TestServle extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +41,10 @@ public class UserManageController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UserManageController</title>");
+            out.println("<title>Servlet TestServle</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet UserManageController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet TestServle at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,22 +62,7 @@ public class UserManageController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        UserDAO ud = new UserDAO();
-        List<User> users = ud.getAllUsers();
-
-        RoleDAO rd = new RoleDAO();
-        List<Role> roles = rd.getAllRole();
-
-        // Tạo roleMap để ánh xạ roleID với tên chức vụ
-        Map<Integer, String> roleMap = new HashMap<>();
-        for (Role role : roles) {
-            roleMap.put(role.getRoleID(), role.getRoleName());
-        }
-
-        // Đặt roleMap và userList vào request scope
-        request.setAttribute("userList", users);
-        request.setAttribute("roleMap", roleMap);
-        request.getRequestDispatcher("User/QuanLyNhanVien.jsp").forward(request, response);
+        request.getRequestDispatcher("test.jsp").forward(request, response);
     }
 
     /**
@@ -88,10 +74,27 @@ public class UserManageController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get the file part from the request
+        Part filePart = request.getPart("imageFile");
 
+        ImageHandler imageHandler = new ImageHandler();
+        String imagePath;
+
+        try {
+            // Save the uploaded file using ImageHandler
+            imagePath = imageHandler.luuAnh(filePart, getServletContext());
+
+            // Display a success message with the image path
+            request.setAttribute("message", "Image uploaded successfully to: " + imagePath);
+            request.setAttribute("imagePath", imagePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            request.setAttribute("message", "Failed to upload image: " + e.getMessage());
+        }
+
+        // Forward the request back to a JSP to show the message
+        request.getRequestDispatcher("result.jsp").forward(request, response);
     }
 
     /**
