@@ -80,7 +80,7 @@ public class UpdateUserController extends HttpServlet {
             response.sendRedirect("404.jsp");
             return;
         }
-        
+
         // Get the userID from the request
         String userID = request.getParameter("userID");
 
@@ -112,7 +112,6 @@ public class UpdateUserController extends HttpServlet {
             throws ServletException, IOException {
 
         UserDAO ud = new UserDAO();
-        ImageHandler ih = new ImageHandler();
 
         // Collect updated user data from the form
         int userID = Integer.parseInt(request.getParameter("userID"));
@@ -124,20 +123,15 @@ public class UpdateUserController extends HttpServlet {
         int roleID = Integer.parseInt(request.getParameter("role"));
 
         User u = ud.getUserById(userID);  // Lấy thông tin người dùng từ DB
+        String imgPath = u.getImg();
 
-        String imgPath = null;
+        // Xử lý ảnh tải lên
+        ImageHandler ih = new ImageHandler();
 
-        // Lấy phần file tải lên
+        // Lấy phần file tải lên từ request
         Part filePart = request.getPart("ImageUpload");
-
-        if (filePart != null) {
-            // Hàm lưu ảnh
+        if (filePart != null && filePart.getSize() > 0) {
             imgPath = ih.luuAnh(filePart, getServletContext());
-        }
-
-        // Nếu không có file được tải lên, giữ nguyên đường dẫn ảnh hiện tại
-        if (imgPath == null) {
-            imgPath = u.getImg();
         }
 
         //Kiem tra Email

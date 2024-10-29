@@ -119,8 +119,8 @@
         <!-- Sidebar menu-->
         <!-- Include menu -->
         <jsp:include page="/menu.jsp" />
-        
-        
+
+
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
@@ -187,26 +187,24 @@
 
 
                                 <div class="form-group col-md-12">
-
                                     <label class="control-label">Ảnh 3x4 nhân viên</label>
-                                    <p id="error-message" class="error" style="color: red"></p> <!-- Thông báo lỗi -->
+                                    <p id="error-message" class="error" style="color: red"></p>
                                     <div id="myfileupload">
-                                        <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
+                                        <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" style="display: none;" />
                                     </div>
 
                                     <div id="thumbbox">
-                                        <img height="300" width="300" alt="Thumb image" id="thumbimage" 
-                                             src="<%= ((User) request.getAttribute("user")).getImg() != null ? ((User) request.getAttribute("user")).getImg() : "" %>"
-                                             style="<%= ((User) request.getAttribute("user")).getImg() != null ? "display: block;" : "display: none;" %>" />
-                                        <a class="removeimg" href="javascript:" onclick="removeImage()"
-                                           style="<%= ((User) request.getAttribute("user")).getImg() != null ? "display: block;" : "display: none;" %>"></a>
+                                        <img id="thumbimage" alt="Thumb image" src="<%= ((User) request.getAttribute("user")).getImg() != null ? ((User) request.getAttribute("user")).getImg() : "" %>" 
+                                             style="<%= ((User) request.getAttribute("user")).getImg() != null ? "display: block;" : "display: none;" %>" width="300" height="300"/>
+                                        <a href="javascript:void(0);" class="removeimg" onclick="removeImage()" style="<%= ((User) request.getAttribute("user")).getImg() != null ? "display: block;" : "display: none;" %>">X</a>
                                     </div>
 
                                     <div id="boxchoice">
-                                        <a href="javascript:" class="Choicefile"><i class='bx bx-upload'></i> Chọn file</a>
+                                        <a href="javascript:void(0);" class="Choicefile"><i class='bx bx-upload'></i> Chọn file</a>
                                         <p style="clear:both"></p>
                                     </div>
                                 </div>
+
 
                                 <button class="btn btn-save" type="submit">Lưu lại</button>
                                 <a class="btn btn-cancel" href="userManage">Hủy bỏ</a>
@@ -246,53 +244,45 @@
                                             }
 
                                             // Hàm hiển thị ảnh xem trước và validate file
+                                            $(document).ready(function () {
+                                                $(".Choicefile").click(function () {
+                                                    $("#uploadfile").click();
+                                                });
+
+                                                $(".removeimg").click(removeImage);
+                                            });
+
                                             function readURL(input) {
-                                                if (input.files && input.files[0]) { // Sử dụng cho Firefox - Chrome
+                                                if (input.files && input.files[0]) {
                                                     const file = input.files[0];
                                                     const error = validateFile(file);
 
                                                     if (error) {
-                                                        // Hiển thị thông báo lỗi và reset input nếu file không hợp lệ
                                                         $("#error-message").text(error);
-                                                        input.value = ""; // Reset input file
+                                                        input.value = ""; // Reset input file nếu lỗi
                                                         $("#thumbimage").hide();
                                                         $(".removeimg").hide();
-                                                        $(".Choicefile").css('background', '#14142B').css('cursor', 'pointer');
-                                                        $(".filename").text("");
                                                         return;
                                                     }
 
-                                                    // Nếu hợp lệ, hiển thị ảnh xem trước
                                                     const reader = new FileReader();
                                                     reader.onload = function (e) {
                                                         $("#thumbimage").attr('src', e.target.result).show();
                                                         $(".removeimg").show();
-                                                        $(".Choicefile").css('background', '#14142B').css('cursor', 'default');
-                                                        $(".filename").text(input.files[0].name); // Hiển thị tên file
-                                                    }
+                                                        $("#error-message").text(""); // Xóa lỗi
+                                                    };
                                                     reader.readAsDataURL(file);
-                                                    $("#error-message").text(""); // Xóa thông báo lỗi
-                                                } else { // Sử dụng cho IE
-                                                    $("#thumbimage").attr('src', input.value).show();
                                                 }
                                             }
 
-                                            $(document).ready(function () {
-                                                $(".Choicefile").bind('click', function () {
-                                                    $("#uploadfile").click();
-                                                });
-                                                $(".removeimg").click(function () {
-                                                    $("#thumbimage").attr('src', '').hide();
-                                                    $("#myfileupload").html('<input type="file" id="uploadfile" onchange="readURL(this);" />');
-                                                    $(".removeimg").hide();
-                                                    $(".Choicefile").bind('click', function () {
-                                                        $("#uploadfile").click();
-                                                    });
-                                                    $('.Choicefile').css('background', '#14142B').css('cursor', 'pointer');
-                                                    $(".filename").text("");
-                                                    $("#error-message").text(""); // Reset thông báo lỗi
-                                                });
-                                            });
+                                            function removeImage() {
+                                                $("#thumbimage").attr("src", "").hide();
+                                                $(".removeimg").hide();
+                                                $("#uploadfile").val("");
+                                                $(".Choicefile").css('background', '#14142B').css('cursor', 'pointer');
+                                            }
+
+
                     </script>
 
 
