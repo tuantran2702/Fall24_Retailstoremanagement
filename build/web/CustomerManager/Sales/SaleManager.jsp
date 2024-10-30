@@ -74,28 +74,30 @@
                         <div class="tile-body">
                             <div class="row element-button">
 <!--                                <div class="col-sm-2">
-
-                                    <a class="btn btn-add btn-sm" href="${pageContext.request.contextPath}/customer?action=create" title="Thêm"><i class="fas fa-plus"></i>
-                                        Tạo mới khách hàng</a>
+                                    <a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/customer?action=create" title="Thêm">
+                                        <i class="fas fa-user-plus"></i> Tạo mới thứ bậc
+                                    </a>
                                 </div>-->
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm nhap-tu-file" type="button"  title="Nhập" href="customerRank"><i
-                                            class="fas fa-file-upload"></i> Quản lý thứ bậc</a>
-                                </div>
-
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file" type="button" title="In" href="sales"><i
-                                            class="fas fa-print"></i> Sales</a>
+                                    <a class="btn btn-warning btn-sm nhap-tu-file" type="button" title="Nhập" href="customer">
+                                        <i class="fas fa-users"></i> Quản lý khách hàng
+                                    </a>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" href="loyalty"><i
-                                            class="fas fa-copy"></i> Quản lý điểm thưởng</a>
+                                    <a class="btn btn-warning btn-sm nhap-tu-file" type="button" title="Nhập" href="customerRank">
+                                        <i class="fas fa-trophy"></i> Quản lý thứ bậc
+                                    </a>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" href="order"><i
-                                            class="fas fa-copy"></i> Order</a>
+                                    <a class="btn btn-success btn-sm print-file js-textareacopybtn" type="button" href="loyalty">
+                                        <i class="fas fa-gift"></i> Quản lý điểm thưởng
+                                    </a>
                                 </div>
-
+                                <div class="col-sm-2">
+                                    <a class="btn btn-danger btn-sm print-file js-textareacopybtn" type="button" href="order">
+                                        <i class="fas fa-shopping-cart"></i> Order
+                                    </a>
+                                </div>
                             </div>
                             <table>
                                 <thead>

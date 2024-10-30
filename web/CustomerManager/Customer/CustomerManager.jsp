@@ -69,29 +69,32 @@
                         <div class="tile-body">
                             <div class="row element-button">
                                 <div class="col-sm-2">
-
-                                    <a class="btn btn-add btn-sm" href="${pageContext.request.contextPath}/customer?action=create" title="Thêm"><i class="fas fa-plus"></i>
-                                        Tạo mới khách hàng</a>
+                                    <a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/customer?action=create" title="Thêm">
+                                        <i class="fas fa-user-plus"></i> Tạo mới khách hàng
+                                    </a>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm nhap-tu-file" type="button"  title="Nhập" href="customerRank"><i
-                                            class="fas fa-file-upload"></i> Quản lý thứ bậc</a>
-                                </div>
-
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file" type="button" title="In" href="sales"><i
-                                            class="fas fa-print"></i> Sales</a>
+                                    <a class="btn btn-warning btn-sm nhap-tu-file" type="button" title="Nhập" href="customerRank">
+                                        <i class="fas fa-trophy"></i> Quản lý thứ bậc
+                                    </a>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" href="loyalty"><i
-                                            class="fas fa-copy"></i> Quản lý điểm thưởng</a>
+                                    <a class="btn btn-info btn-sm print-file" type="button" title="In" href="sales">
+                                        <i class="fas fa-chart-line"></i> Sales
+                                    </a>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" href="order"><i
-                                            class="fas fa-copy"></i> Order</a>
+                                    <a class="btn btn-success btn-sm print-file js-textareacopybtn" type="button" href="loyalty">
+                                        <i class="fas fa-gift"></i> Quản lý điểm thưởng
+                                    </a>
                                 </div>
-
+                                <div class="col-sm-2">
+                                    <a class="btn btn-danger btn-sm print-file js-textareacopybtn" type="button" href="order">
+                                        <i class="fas fa-shopping-cart"></i> Order
+                                    </a>
+                                </div>
                             </div>
+
                             <table class="table table-hover table-bordered" id="sampleTable">
                                 <thead>
                                     <tr>
@@ -148,47 +151,47 @@
 
         <!-- Essential javascripts for application to work -->
         <script type="text/javascript">
-                                    $('#sampleTable').DataTable();
-                                    //Thời Gian
-                                    function time() {
-                                        var today = new Date();
-                                        var weekday = new Array(7);
-                                        weekday[0] = "Chủ Nhật";
-                                        weekday[1] = "Thứ Hai";
-                                        weekday[2] = "Thứ Ba";
-                                        weekday[3] = "Thứ Tư";
-                                        weekday[4] = "Thứ Năm";
-                                        weekday[5] = "Thứ Sáu";
-                                        weekday[6] = "Thứ Bảy";
-                                        var day = weekday[today.getDay()];
-                                        var dd = today.getDate();
-                                        var mm = today.getMonth() + 1;
-                                        var yyyy = today.getFullYear();
-                                        var h = today.getHours();
-                                        var m = today.getMinutes();
-                                        var s = today.getSeconds();
-                                        m = checkTime(m);
-                                        s = checkTime(s);
-                                        nowTime = h + " giờ " + m + " phút " + s + " giây";
-                                        if (dd < 10) {
-                                            dd = '0' + dd
-                                        }
-                                        if (mm < 10) {
-                                            mm = '0' + mm
-                                        }
-                                        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
-                                        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
-                                                '</span>';
-                                        document.getElementById("clock").innerHTML = tmp;
-                                        clocktime = setTimeout("time()", "1000", "Javascript");
+            $('#sampleTable').DataTable();
+            //Thời Gian
+            function time() {
+                var today = new Date();
+                var weekday = new Array(7);
+                weekday[0] = "Chủ Nhật";
+                weekday[1] = "Thứ Hai";
+                weekday[2] = "Thứ Ba";
+                weekday[3] = "Thứ Tư";
+                weekday[4] = "Thứ Năm";
+                weekday[5] = "Thứ Sáu";
+                weekday[6] = "Thứ Bảy";
+                var day = weekday[today.getDay()];
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1;
+                var yyyy = today.getFullYear();
+                var h = today.getHours();
+                var m = today.getMinutes();
+                var s = today.getSeconds();
+                m = checkTime(m);
+                s = checkTime(s);
+                nowTime = h + " giờ " + m + " phút " + s + " giây";
+                if (dd < 10) {
+                    dd = '0' + dd
+                }
+                if (mm < 10) {
+                    mm = '0' + mm
+                }
+                today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+                tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+                        '</span>';
+                document.getElementById("clock").innerHTML = tmp;
+                clocktime = setTimeout("time()", "1000", "Javascript");
 
-                                        function checkTime(i) {
-                                            if (i < 10) {
-                                                i = "0" + i;
-                                            }
-                                            return i;
-                                        }
-                                    }
+                function checkTime(i) {
+                    if (i < 10) {
+                        i = "0" + i;
+                    }
+                    return i;
+                }
+            }
         </script>
         <script src="js/jquery-3.2.1.min.js"></script>
         <script src="js/popper.min.js"></script>
