@@ -103,8 +103,7 @@
                                    id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th width="10"><input type="checkbox" id="all"></th>
-                                        <th>Img</th>
+                                        <th width="100">Img</th>
                                         <th>ID nhân viên</th>
                                         <th width="150">Họ và tên</th>
                                         <th width="170">Email</th>
@@ -118,8 +117,7 @@
                                 <tbody>
                                     <c:forEach var="user" items="${requestScope.userList}">
                                         <tr>
-                                            <td width="10"><input type="checkbox"></td>
-                                            <td><img src="${user.img}" alt="User Image" style="width:100px;height:100px;"></td>
+                                            <td width="100"><img src="${user.img}" alt="User Image" style="width:100px;height:100px;"></td>
                                             <td>${user.userID}</td>
                                             <td>${user.firstName} ${user.lastName}</td>
                                             <td>${user.email}</td>
@@ -242,32 +240,7 @@
             }
         </script>
         <script>
-            function deleteRow(r) {
-                var i = r.parentNode.parentNode.rowIndex;
-                document.getElementById("myTable").deleteRow(i);
-            }
-            jQuery(function () {
-                jQuery(".trash").click(function () {
-                    swal({
-                        title: "Cảnh báo",
-
-                        text: "Bạn có chắc chắn là muốn xóa nhân viên này?",
-                        buttons: ["Hủy bỏ", "Đồng ý"],
-                    })
-                            .then((willDelete) => {
-                                if (willDelete) {
-                                    swal("Đã xóa thành công.!", {
-
-                                    });
-                                }
-                            });
-                });
-            });
-            oTable = $('#sampleTable').dataTable();
-            $('#all').click(function (e) {
-                $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
-                e.stopImmediatePropagation();
-            });
+            
 
             //EXCEL
             // $(document).ready(function () {

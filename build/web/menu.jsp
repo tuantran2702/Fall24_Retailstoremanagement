@@ -28,7 +28,7 @@
 
         <c:if test="${permissions != null}">
 
-            <c:if test="${permissions.contains('ORDER')}">
+            <c:if test="${permissions.contains('ORDER-MANAGE')}">
                 <li><a class="app-menu__item haha" href="order"><i class='app-menu__icon bx bx-cart-alt'></i>
                         <span class="app-menu__label">POS Bán Hàng</span></a></li>
                     </c:if>
@@ -59,7 +59,8 @@
                 <li><a class="app-menu__item " href="cashbook"><i class='app-menu__icon bx bx-dollar'></i><span
                             class="app-menu__label">Quản lý sổ quỹ</span></a></li>
                         </c:if>
-                        <c:if test="${permissions.contains('INVENTORY-MANAGE')}">
+
+            <c:if test="${permissions.contains('INVENTORY-MANAGE')}">
 
                 <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Quản lý   kho</span></a></li>

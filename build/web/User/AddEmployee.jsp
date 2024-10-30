@@ -55,8 +55,8 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item">Danh sách nhân viên</li>
-                    <li class="breadcrumb-item"><a href="#">Thêm nhân viên</a></li>
+                    <li class="breadcrumb-item"><a href="userManage">Danh sách nhân viên</a></li>
+                    <li class="breadcrumb-item"><a href="addUser">Thêm nhân viên</a></li>
                 </ul>
             </div>
             <div class="row">
