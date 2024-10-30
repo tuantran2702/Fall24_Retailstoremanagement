@@ -3,14 +3,13 @@ package controllers;
 import dao.CustomerDAO;
 import dao.CustomerRankDAO;
 import model.Customer;
+import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 @WebServlet(name = "CustomerController", urlPatterns = {"/customer"})
 public class CustomerController extends HttpServlet {
@@ -59,7 +58,7 @@ public class CustomerController extends HttpServlet {
         CustomerDAO customerDAO = new CustomerDAO();
 
         if (action.equals("create")) {
-            // Create a new customer
+            // Tạo mới khách hàng
             String firstName = request.getParameter("firstName");
             String lastName = request.getParameter("lastName");
             String email = request.getParameter("email");
@@ -72,8 +71,8 @@ public class CustomerController extends HttpServlet {
             customer.setEmail(email);
             customer.setPhoneNumber(phoneNumber);
             customer.setAddress(address);
-            customer.setRankID(1); // Default RankID
-            customer.setTotalSpent(0.0); // Default TotalSpent
+            customer.setRankID(1); // Thiết lập RankID mặc định là 1
+            customer.setTotalSpent(0.0); // Thiết lập TotalSpent mặc định là 0
 
             customerDAO.createCustomer(customer);
             response.sendRedirect(request.getContextPath() + "/customer");
@@ -85,8 +84,9 @@ public class CustomerController extends HttpServlet {
             String email = request.getParameter("email");
             String phoneNumber = request.getParameter("phoneNumber");
             String address = request.getParameter("address");
-            //double totalSpent = Double.parseDouble(request.getParameter("totalSpent"));
-            //int rankID = Integer.parseInt(request.getParameter("rankID"));
+
+//            double totalSpent = Double.parseDouble(request.getParameter("totalSpent"));
+//            int rankID = Integer.parseInt(request.getParameter("rankID"));
 
             Customer customer = new Customer();
             customer.setCustomerID(id);
@@ -95,15 +95,11 @@ public class CustomerController extends HttpServlet {
             customer.setEmail(email);
             customer.setPhoneNumber(phoneNumber);
             customer.setAddress(address);
-            //customer.setTotalSpent(totalSpent);
-            //customer.setRankID(rankID);
+//            customer.setTotalSpent(totalSpent);
+//            customer.setRankID(rankID);
 
-            boolean isUpdated = customerDAO.updateCustomer(customer);
-            if (isUpdated) {
-                response.sendRedirect(request.getContextPath() + "/customer?message=UpdateSuccess");
-            } else {
-                response.sendRedirect(request.getContextPath() + "/customer?message=UpdateFailed");
-            }
+            customerDAO.updateCustomer(customer);
+            response.sendRedirect(request.getContextPath() + "/customer");
         } else if (action.equals("delete")) {
             // Delete customer
             int id = Integer.parseInt(request.getParameter("id"));

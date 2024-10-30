@@ -4,10 +4,10 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head>     <script src=http://127.0.0.1:59490/S81></script>
     <title>Customer Rank List | Quản lý cấp bậc khách hàng</title>
     <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Main CSS-->
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/doc/css/main.css">
@@ -34,27 +34,7 @@
     </header>
 
     <!-- Sidebar menu -->
-    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-    <aside class="app-sidebar">
-        <div class="app-sidebar__user">
-            <img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px" alt="User Image">
-            <div>
-                <p class="app-sidebar__user-name"><b>${sessionScope.User.getEmail()}</b></p>
-                <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
-            </div>
-        </div>
-        
-        <hr>
-        <ul class="app-menu">
-            <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
-                    <span class="app-menu__label">Trang chủ</span></a></li>                            
-
-            <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-id-card'></i> <span
-                        class="app-menu__label">Danh sách khách hàng</span></a></li>            
-
-
-        </ul>
-    </aside>
+    <jsp:include page="/menu.jsp" />
 
     <main class="app-content">
         <div class="app-title">
@@ -71,6 +51,31 @@
                 <div class="tile">
                     <h3 class="tile-title">Danh sách cấp bậc khách hàng</h3>
                     <div class="tile-body">
+                        <div class="row element-button">
+                                <div class="col-sm-2">
+
+                                    <a class="btn btn-add btn-sm" href="${pageContext.request.contextPath}/customer?action=create" title="Thêm"><i class="fas fa-plus"></i>
+                                        Tạo mới khách hàng</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-delete btn-sm nhap-tu-file" type="button"  title="Nhập" href="customerRank"><i
+                                            class="fas fa-file-upload"></i> Quản lý thứ bậc</a>
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <a class="btn btn-delete btn-sm print-file" type="button" title="In" href="sales"><i
+                                            class="fas fa-print"></i> Sales</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" href="loyalty"><i
+                                            class="fas fa-copy"></i> Quản lý điểm thưởng</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" href="order"><i
+                                            class="fas fa-copy"></i> Order</a>
+                                </div>
+
+                            </div>
                         <table>
                             <thead>
                                 <tr>

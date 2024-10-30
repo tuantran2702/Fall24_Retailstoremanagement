@@ -90,4 +90,16 @@ public class CategoryDAO extends DBContext {
             e.printStackTrace();
         }
     }
+
+    public void addCategoryName(Category category) {
+                String sql = "INSERT INTO Category (CategoryName) VALUES (?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, category.getCategoryName());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

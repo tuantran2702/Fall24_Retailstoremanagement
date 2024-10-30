@@ -1,32 +1,22 @@
 package controllers;
 
-import java.io.PrintWriter;
 import dao.ImportDAO;
 import model.Import;
+import model.Inventory;
+import model.Product;
+import model.Supplier;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.util.Date;
+import java.util.List;
 
 public class ImportController extends HttpServlet {
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ImportController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ImportController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
     }
 
     @Override
@@ -34,82 +24,101 @@ public class ImportController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String idStr = request.getParameter("id");
-        String search = request.getParameter("search");
-
         ImportDAO importDAO = new ImportDAO();
-        ArrayList<Import> imports;
 
-        // Tìm kiếm
-        if (search != null && !search.isEmpty()) {
-            imports = importDAO.searchImports(search);
-        } else {
-            imports = importDAO.getListImport();
-        }
-
-        // Điều hướng dựa trên action
         if (action == null) {
-            request.setAttribute("data", imports);
-            request.getRequestDispatcher("/ImportController/importList.jsp").forward(request, response);
-        } else if ("edit".equals(action) && idStr != null) {
+            request.setAttribute("data", importDAO.getListImport());
+            request.getRequestDispatcher("/ImportManager/importList.jsp").forward(request, response);
+        } else if (action.equals("edit") && idStr != null) {
             int id = Integer.parseInt(idStr);
-            Import importItem = importDAO.getImportById(id);
-            request.setAttribute("importEntry", importItem);
-            request.getRequestDispatcher("/ImportController/updateImport.jsp").forward(request, response);
-        } else if ("create".equals(action)) {
-            request.getRequestDispatcher("/ImportController/createImport.jsp").forward(request, response);
-        } else if ("delete".equals(action) && idStr != null) {
+            Import imp = importDAO.getImportById(id);
+            request.setAttribute("importt", imp);
+            
+            List<Product> products = importDAO.getAllProducts();
+            List<Inventory> inventories = importDAO.getAllInventories();
+            List<Supplier> suppliers = importDAO.getAllSuppliers();
+            
+            request.setAttribute("products", products);
+            request.setAttribute("inventories", inventories);
+            request.setAttribute("suppliers", suppliers);
+            
+            request.getRequestDispatcher("/ImportManager/updateImport.jsp").forward(request, response);
+        } else if (action.equals("create")) {
+            List<Product> products = importDAO.getAllProducts();
+            List<Inventory> inventories = importDAO.getAllInventories();
+            List<Supplier> suppliers = importDAO.getAllSuppliers();
+            
+            request.setAttribute("products", products);
+            request.setAttribute("inventories", inventories);
+            request.setAttribute("suppliers", suppliers);
+            
+            request.getRequestDispatcher("/ImportManager/createImport.jsp").forward(request, response);
+        } else if (action.equals("delete") && idStr != null) {
             int id = Integer.parseInt(idStr);
             request.setAttribute("id", id);
-            request.getRequestDispatcher("/ImportController/deleteImport.jsp").forward(request, response);
-        } else {
-            // Xử lý trường hợp action không hợp lệ
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Action không hợp lệ");
+            request.getRequestDispatcher("/ImportManager/deleteImport.jsp").forward(request, response);
         }
     }
 
-    @Override
+
+@Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        ImportDAO importDAO = new ImportDAO();
 
-        try {
-            ImportDAO importDAO = new ImportDAO();
-            if ("create".equals(action)) {
-                // Tạo mới
-                createOrUpdateImport(request, importDAO, null);
-                response.sendRedirect(request.getContextPath() + "/import");
-            } else if ("update".equals(action)) {
-                // Cập nhật
-                int id = Integer.parseInt(request.getParameter("id"));
-                createOrUpdateImport(request, importDAO, id);
-                response.sendRedirect(request.getContextPath() + "/import");
-            } else if ("delete".equals(action)) {
-                int id = Integer.parseInt(request.getParameter("id"));
-                importDAO.deleteImport(id);
-                response.sendRedirect(request.getContextPath() + "/import");
+        if (action.equals("create")) {
+            int productID = Integer.parseInt(request.getParameter("productID"));
+            int inventoryID = Integer.parseInt(request.getParameter("inventoryID"));
+            
+            if (!importDAO.isInventoryExist(inventoryID)) {
+                request.setAttribute("error", "Inventory ID does not exist");
+                doGet(request, response);
+                return;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Có lỗi xảy ra: " + e.getMessage());
-        }
-    }
+            
+            if (!importDAO.isProductInInventory(productID, inventoryID)) {
+                request.setAttribute("error", "Product does not exist in this inventory");
+                doGet(request, response);
+                return;
+            }
+            
+            String productName = importDAO.getProductNameById(productID);
+            
+            Date importDate = Date.valueOf(request.getParameter("importDate"));
+            double unitCost = Double.parseDouble(request.getParameter("unitCost"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            String supplierName = request.getParameter("supplierName");
+            
+            // Calculate totalCost
+            double totalCost = unitCost * quantity;
 
-    private void createOrUpdateImport(HttpServletRequest request, ImportDAO importDAO, Integer id) {
-        int productID = Integer.parseInt(request.getParameter("productID"));
-        int inventoryID = Integer.parseInt(request.getParameter("inventoryID"));
-        Date importDate = new Date(request.getParameter("importDate"));
-        double unitCost = Double.parseDouble(request.getParameter("unitCost"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-        double totalCost = unitCost * quantity;
-        String supplierName = request.getParameter("supplierName");
-        String productName = request.getParameter("productName");
+Import imp = new Import(0, productID, productName, inventoryID, importDate, unitCost, quantity, totalCost, supplierName);
+            importDAO.createImport(imp);
+            
+            request.setAttribute("success", "Import created successfully for product: " + productName);
+            doGet(request, response);
+        
+        } else if (action.equals("update")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            int productID = Integer.parseInt(request.getParameter("productID"));
+             String productName = request.getParameter("productName");
+            int inventoryID = Integer.parseInt(request.getParameter("inventoryID"));
+            Date importDate = Date.valueOf(request.getParameter("importDate"));
+            double unitCost = Double.parseDouble(request.getParameter("unitCost"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            String supplierName = request.getParameter("supplierName");
 
-        Import importItem = new Import(id, productID, inventoryID, importDate, unitCost, quantity, totalCost, supplierName, productName);
+            // Calculate totalCost
+            double totalCost = unitCost * quantity;
 
-        if (id == null) {
-            importDAO.createImport(importItem);
-        } else {
-            importDAO.updateImport(importItem);
+Import imp = new Import(id, productID, productName, inventoryID, importDate, unitCost, quantity, totalCost, supplierName);
+            importDAO.updateImport(imp);
+            response.sendRedirect(request.getContextPath() + "/import");
+        } else if (action.equals("delete")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            importDAO.deleteImport(id);
+            response.sendRedirect(request.getContextPath() + "/import");
         }
     }
 }

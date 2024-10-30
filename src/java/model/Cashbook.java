@@ -1,27 +1,32 @@
 package model;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.math.BigDecimal;
 
 public class Cashbook {
     private int transactionID;
-    private Date transactionDate;
+    private Timestamp transactionDate;
     private String description;
-    private double amount;
-    private String transactionType; // "Thu" or "Chi"
-    private double balance;
+    private BigDecimal amount;
+    private String transactionType;
+    private BigDecimal balance;
+    private BigDecimal initialBalance; // Thuộc tính mới
     private Integer orderID;
     private Integer importID;
 
-    // Constructors, getters, and setters
-    public Cashbook() {}
+    public Cashbook() {
+    }
 
-    public Cashbook(int transactionID, Date transactionDate, String description, double amount, String transactionType, double balance, Integer orderID, Integer importID) {
+    public Cashbook(int transactionID, Timestamp transactionDate, String description, 
+                   BigDecimal amount, String transactionType, BigDecimal balance, 
+                   BigDecimal initialBalance, Integer orderID, Integer importID) {
         this.transactionID = transactionID;
         this.transactionDate = transactionDate;
         this.description = description;
         this.amount = amount;
         this.transactionType = transactionType;
         this.balance = balance;
+        this.initialBalance = initialBalance; // Gán giá trị cho thuộc tính mới
         this.orderID = orderID;
         this.importID = importID;
     }
@@ -34,11 +39,11 @@ public class Cashbook {
         this.transactionID = transactionID;
     }
 
-    public Date getTransactionDate() {
+    public Timestamp getTransactionDate() {
         return transactionDate;
     }
 
-    public void setTransactionDate(Date transactionDate) {
+    public void setTransactionDate(Timestamp transactionDate) {
         this.transactionDate = transactionDate;
     }
 
@@ -50,11 +55,11 @@ public class Cashbook {
         this.description = description;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -66,12 +71,20 @@ public class Cashbook {
         this.transactionType = transactionType;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+
+    public BigDecimal getInitialBalance() {
+        return initialBalance;
+    }
+
+    public void setInitialBalance(BigDecimal initialBalance) {
+        this.initialBalance = initialBalance;
     }
 
     public Integer getOrderID() {

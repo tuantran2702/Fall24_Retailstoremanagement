@@ -17,32 +17,124 @@
         <servlet-class>controllers.EmployeeControllers.EmployeeManageControllerr</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Logout</servlet-name>
-        <servlet-class>controllers.LoginControllers.Logout</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Login</servlet-name>
-        <servlet-class>controllers.LoginControllers.Login</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ImportController</servlet-name>
         <servlet-class>controllers.ImportController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>NewServlet</servlet-name>
-        <servlet-class>controllers.NewServlet</servlet-class>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-class>controllers.CartServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>controllers.OrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProcessServlet</servlet-name>
+        <servlet-class>controllers.ProcessServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <servlet-class>controllers.CheckoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckProductInInventoryServlet</servlet-name>
+        <servlet-class>controllers.CheckProductInInventoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderHistoryServlet</servlet-name>
+        <servlet-class>controllers.OrderHistoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewOrderHistoryServlet</servlet-name>
+        <servlet-class>controllers.ViewOrderHistoryServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CustomerController</servlet-name>
         <servlet-class>controllers.CustomerController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CustomerRankController</servlet-name>
+        <servlet-class>controllers.CustomerRankController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SupplierController</servlet-name>
+        <servlet-class>controllers.SupplierController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddUserController</servlet-name>
+        <servlet-class>controllers.UserController.AddUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetUserServlet</servlet-name>
+        <servlet-class>controllers.UserController.GetUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogOutServlet</servlet-name>
+        <servlet-class>controllers.UserController.LogOutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>controllers.UserController.Login</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserManageController</servlet-name>
+        <servlet-class>controllers.UserController.UserManageController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ForgotPassController</servlet-name>
+        <servlet-class>controllers.UserController.ForgotPassController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ImageHandler</servlet-name>
+        <servlet-class>controllers.UserController.ImageHandler</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SendEmail</servlet-name>
+        <servlet-class>controllers.UserController.SendEmail</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SettingController</servlet-name>
+        <servlet-class>controllers.UserController.SettingController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateUserController</servlet-name>
+        <servlet-class>controllers.UserController.UpdateUserController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>SalesController</servlet-name>
         <servlet-class>controllers.SalesController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>CashbookController</servlet-name>
+        <servlet-class>controllers.CashbookController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LoyaltyPointsController</servlet-name>
         <servlet-class>controllers.LoyaltyPointsController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UnitController</servlet-name>
+        <servlet-class>controllers.UnitController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddRoleServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.AddRoleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteRoleServlet</servlet-name>
+        <servlet-class>DeleteRoleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetRoleServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.GetRoleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RolesServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.RolesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PermissionsServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.PermissionsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
@@ -65,7 +157,59 @@
         <url-pattern>/employee</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Logout</servlet-name>
+        <servlet-name>ImportController</servlet-name>
+        <url-pattern>/import</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartServlet</servlet-name>
+        <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProcessServlet</servlet-name>
+        <url-pattern>/process</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <url-pattern>/checkout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckProductInInventoryServlet</servlet-name>
+        <url-pattern>/checkProductInInventory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderHistoryServlet</servlet-name>
+        <url-pattern>/orderhistory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewOrderHistoryServlet</servlet-name>
+        <url-pattern>/vieworderhistory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerController</servlet-name>
+        <url-pattern>/customer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerRankController</servlet-name>
+        <url-pattern>/customerRank</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SupplierController</servlet-name>
+        <url-pattern>/supplier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddUserController</servlet-name>
+        <url-pattern>/addUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetUserServlet</servlet-name>
+        <url-pattern>/getUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogOutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
@@ -73,24 +217,64 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ImportController</servlet-name>
-        <url-pattern>/import</url-pattern>
+        <servlet-name>UserManageController</servlet-name>
+        <url-pattern>/userManage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>NewServlet</servlet-name>
-        <url-pattern>/NewServlet</url-pattern>
+        <servlet-name>ForgotPassController</servlet-name>
+        <url-pattern>/forgotPass</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CustomerController</servlet-name>
-        <url-pattern>/customer</url-pattern>
+        <servlet-name>ImageHandler</servlet-name>
+        <url-pattern>/imageHandler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendEmail</servlet-name>
+        <url-pattern>/sendEmail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SettingController</servlet-name>
+        <url-pattern>/settingController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateUserController</servlet-name>
+        <url-pattern>/updateUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SalesController</servlet-name>
         <url-pattern>/sales</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>CashbookController</servlet-name>
+        <url-pattern>/cashbook</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>LoyaltyPointsController</servlet-name>
         <url-pattern>/loyalty</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UnitController</servlet-name>
+        <url-pattern>/unit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddRoleServlet</servlet-name>
+        <url-pattern>/addRole</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteRoleServlet</servlet-name>
+        <url-pattern>/deleteRole</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetRoleServlet</servlet-name>
+        <url-pattern>/getRole</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RolesServlet</servlet-name>
+        <url-pattern>/roles</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PermissionsServlet</servlet-name>
+        <url-pattern>/permissions</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
