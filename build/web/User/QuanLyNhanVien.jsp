@@ -49,8 +49,8 @@
         <!-- Sidebar menu-->
         <!-- Include menu -->
         <jsp:include page="/menu.jsp" />
-        
-        
+
+
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
@@ -209,13 +209,16 @@
         </script>
 
 
-        
+
         <script>
             function deleteUser(userID) {
                 swal({
                     title: "Cảnh báo",
                     text: "Bạn có chắc chắn muốn xóa nhân viên này?",
-                    buttons: ["Hủy bỏ", "Đồng ý"]
+                    buttons: {
+                        cancel: "Hủy bỏ",
+                        confirm: "Đồng ý"
+                    }
                 }).then((willDelete) => {
                     if (willDelete) {
                         $.ajax({
@@ -226,7 +229,7 @@
                                 swal("Đã xóa thành công!", {
                                     icon: "success"
                                 }).then(() => {
-                                    location.reload(); // Reload trang để cập nhật danh sách
+                                    location.reload(); // Tải lại trang để cập nhật danh sách
                                 });
                             },
                             error: function () {
@@ -239,8 +242,9 @@
                 });
             }
         </script>
+
         <script>
-            
+
 
             //EXCEL
             // $(document).ready(function () {

@@ -118,6 +118,7 @@
                                                 <th class="so--luong">Tên sản phẩm</th>
                                                 <th class="so--luong">Số lượng</th>
                                                 <th class="so--luong">Giá bán</th>
+                                                <th class="so--luong">Discount</th>
                                                 <th class="so--luong text-center"></th>
                                             </tr>
                                         </thead>
@@ -134,6 +135,7 @@
                                                             <a href="process?num=1&productID=${i.product.productID}">+</a>
                                                         </td>
                                                         <td>${i.product.price}</td>
+                                                        <td>10</td>
                                                         <c:if test="${not empty o.items}">
                                                             <td>
                                                                 <form action="process" method="post">

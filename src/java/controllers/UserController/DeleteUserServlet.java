@@ -65,9 +65,11 @@ public class DeleteUserServlet extends HttpServlet {
             User u = (User) request.getSession().getAttribute("User");
             if (!pd.isAccess(u, END_POINT)) {
                 response.sendRedirect("404.jsp");
+                return;
             }
         } else {
             response.sendRedirect("404.jsp");
+            return;
         }
     }
 
@@ -93,10 +95,8 @@ public class DeleteUserServlet extends HttpServlet {
         
         if (success) {
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write("Delete User successfully");
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("Failed to delete User");
         }
     }
 

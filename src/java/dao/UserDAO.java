@@ -234,7 +234,7 @@ public class UserDAO extends DBContext {
         UserDAO ud = new UserDAO();
 
         
-        System.out.println(ud.deleteUser(1));
+        System.out.println(ud.deleteUser(1078));
 //        List<User> lst = ud.getAllUsers();
 //        for (User user : lst) {
 //            System.out.println(user); // In thông tin người dùng ra console
