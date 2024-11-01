@@ -152,6 +152,10 @@
         <servlet-name>TestServle</servlet-name>
         <servlet-class>controllers.UserController.TestServle</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DiscountServlet</servlet-name>
+        <servlet-class>controllers.DiscountControllers.DiscountServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -307,6 +311,10 @@
     <servlet-mapping>
         <servlet-name>TestServle</servlet-name>
         <url-pattern>/test</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DiscountServlet</servlet-name>
+        <url-pattern>/discount</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

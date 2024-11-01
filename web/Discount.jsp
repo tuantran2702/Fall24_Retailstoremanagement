@@ -119,8 +119,8 @@
                             <div class="row element-button">
                                 <div class="col-sm-2">
 
-                                    <a class="btn btn-add btn-sm" href="addRole" title="Thêm"><i class="fas fa-plus"></i>
-                                        Tạo mới Phân Quyền</a>
+                                    <a class="btn btn-add btn-sm" href="addDiscount" title="Thêm"><i class="fas fa-plus"></i>
+                                        Add Discount</a>
                                 </div>
                             </div>
 
@@ -128,19 +128,27 @@
                                    id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th width="10">RoleID</th>
-                                        <th width="180">Role Name</th>
+                                        <th width="auto">Discount ID</th>
+                                        <th width="180">Discount Name</th>
+                                        <th>Product</th>
+                                        <th>Discount Percent</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
                                         <th>Description</th>
                                         <th width="100">Tính năng</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    <c:forEach var="r" items="${requestScope.roleList}">
+                                    <c:forEach var="d" items="${requestScope.discountList}">
                                         <tr>
-                                            <td>${r.roleID}</td>
-                                            <td>${r.roleName}</td>
-                                            <td>${r.description}</td>
+                                            <td>${d.discountID}</td>
+                                            <td>${d.discountName}</td>
+                                            <td>${d.productID}</td>
+                                            <td>${d.discountPercent}</td>
+                                            <td>${d.startDate}</td>
+                                            <td>${d.endDate}</td>
+                                            <td>${d.description}</td>
                                             <td>
                                                 <!-- Nút Sửa -->
                                                 <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" 
