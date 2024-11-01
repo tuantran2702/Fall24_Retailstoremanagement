@@ -156,6 +156,10 @@
         <servlet-name>DiscountServlet</servlet-name>
         <servlet-class>controllers.DiscountControllers.DiscountServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetDiscountServlet</servlet-name>
+        <servlet-class>controllers.DiscountControllers.GetDiscountServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -315,6 +319,10 @@
     <servlet-mapping>
         <servlet-name>DiscountServlet</servlet-name>
         <url-pattern>/discount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetDiscountServlet</servlet-name>
+        <url-pattern>/getDiscount</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

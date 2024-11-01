@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import model.Category;
 import model.Product;
 import model.Supplier;
@@ -80,6 +82,25 @@ public class ProductDAO extends DBContext {
         }
         return data;
 
+    }
+    
+    // Giả sử đây là code trong DAO hoặc trong servlet để lấy danh sách sản phẩm
+    public Map<Integer, String> getProductMapFromDB() {
+        Map<Integer, String> productMap = new HashMap<>();
+        try {
+            String sql = "SELECT ProductID, ProductName FROM Product";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                int productID = rs.getInt("ProductID");
+                String productName = rs.getString("ProductName");
+                productMap.put(productID, productName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return productMap;
     }
 
 //    public ArrayList<Product> getListProduct() {

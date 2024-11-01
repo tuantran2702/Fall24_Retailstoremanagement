@@ -4,6 +4,7 @@
  */
 package controllers.DiscountControllers;
 
+import com.google.gson.Gson;
 import dao.DiscountDAO;
 import dao.ProductDAO;
 import java.io.IOException;
@@ -12,17 +13,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import model.Discount;
-import model.*;
 
 /**
  *
  * @author ptrung
  */
-public class DiscountServlet extends HttpServlet {
+public class GetDiscountServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +39,10 @@ public class DiscountServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DiscountServlet</title>");            
+            out.println("<title>Servlet GetDiscountServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DiscountServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet GetDiscountServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,21 +57,24 @@ public class DiscountServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private DiscountDAO discountService = new DiscountDAO(); // Assuming a service layer
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DiscountDAO dd = new DiscountDAO();
-        List<Discount> discountList = dd.getAllDiscounts();
-        
-        ProductDAO pd = new ProductDAO();
-        List<Product> productList = pd.getListProduct();
-        
-        // Tạo roleMap để ánh xạ roleID với tên chức vụ
-        Map<Integer, String> productMap = pd.getProductMapFromDB();
-        
-        request.setAttribute("productMap", productMap);
-        request.setAttribute("discountList", discountList);
-        request.getRequestDispatcher("Discount.jsp").forward(request, response);
+        String action = request.getParameter("action");
+        if ("getDiscount".equals(action)) {
+            int discountID = Integer.parseInt(request.getParameter("discountID"));
+            Discount discount = discountService.getDiscountByID(discountID);
+            // Tạo roleMap để ánh xạ roleID với tên chức vụ
+            ProductDAO pd = new ProductDAO();
+            Map<Integer, String> productMap = pd.getProductMapFromDB();
+
+            response.setContentType("application/json");
+            PrintWriter out = response.getWriter();
+            out.print(new Gson().toJson(discount));
+            out.flush();
+        }
     }
 
     /**

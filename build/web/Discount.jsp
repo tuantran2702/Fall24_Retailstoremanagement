@@ -5,6 +5,11 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.util.Map" %>
+<%@ page import="dao.ProductDAO" %>
+<%@ page import="com.google.gson.Gson" %>
+
+
 
 
 <!DOCTYPE html>
@@ -144,23 +149,24 @@
                                         <tr>
                                             <td>${d.discountID}</td>
                                             <td>${d.discountName}</td>
-                                            <td>${d.productID}</td>
+                                            <td>${productMap[d.productID]}</td>
                                             <td>${d.discountPercent}</td>
                                             <td>${d.startDate}</td>
                                             <td>${d.endDate}</td>
                                             <td>${d.description}</td>
                                             <td>
-                                                <!-- Nút Sửa -->
-                                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" 
-                                                        onclick="loadRoleData('${r.roleID}'); $('#updateRoleModal').modal('show');">
+                                                <!-- Edit Button -->
+                                                <button class="btn btn-primary btn-sm edit" type="button" title="Edit" 
+                                                        onclick="loadDiscountData('${d.discountID}'); $('#updateDiscountModal').modal('show');">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
 
-                                                <!-- Nút Xóa -->
-                                                <button class="btn btn-danger btn-sm trash" type="button" title="Xóa"
-                                                        onclick="deleteRole(${r.roleID})">
+                                                <!-- Delete Button -->
+                                                <button class="btn btn-danger btn-sm trash" type="button" title="Delete"
+                                                        onclick="deleteDiscount(${d.discountID})">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
+
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -174,49 +180,65 @@
         </main>
 
 
-        <!-- Modal -->
-        <div class="modal fade" id="updateRoleModal" tabindex="-1" role="dialog" aria-labelledby="updateRoleModalLabel" aria-hidden="true">
+        <!-- Update Discount Modal -->
+        <div class="modal fade" id="updateDiscountModal" tabindex="-1" role="dialog" aria-labelledby="updateDiscountModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <h3 class="tile-title">Update Role</h3>
+                    <h3 class="tile-title">Update Discount</h3>
 
-                    <!-- Form cập nhật role -->
-                    <form id="updateRoleForm" method="POST">
+                    <!-- Update Discount Form -->
+                    <form id="updateDiscountForm" method="POST">
                         <div class="modal-body">
-                            <!-- Tên vai trò -->
-                            <input name="roleID" value="" style="display: none"> <!-- Hidden field để giữ roleID -->
+                            <!-- Hidden field to hold discountID -->
+                            <input name="discountID" value="" type="hidden"> 
+
+                            <!-- Discount Name -->
                             <div class="form-group">
-                                <label for="roleName">Role Name</label>
-                                <input type="text" class="form-control" id="roleName" name="roleName" value="" required>
+                                <label for="discountName">Discount Name</label>
+                                <input type="text" class="form-control" id="discountName" name="discountName" value="" required>
                             </div>
 
-                            <!-- Mô tả vai trò -->
+                            <!-- Product -->
+                            <div class="form-group">
+                                <label for="productID">Product</label>
+                                <select class="form-control" id="productID" name="productID" required>
+                                    <!-- Options populated dynamically with JavaScript or backend data -->
+                                </select>
+                            </div>
+
+                            <!-- Discount Percent -->
+                            <div class="form-group">
+                                <label for="discountPercent">Discount Percent</label>
+                                <input type="number" class="form-control" id="discountPercent" name="discountPercent" value="" min="0" max="100" required>
+                            </div>
+
+                            <!-- Start Date -->
+                            <div class="form-group">
+                                <label for="startDate">Start Date</label>
+                                <input type="date" class="form-control" id="startDate" name="startDate" value="" required>
+                            </div>
+
+                            <!-- End Date -->
+                            <div class="form-group">
+                                <label for="endDate">End Date</label>
+                                <input type="date" class="form-control" id="endDate" name="endDate" value="" required>
+                            </div>
+
+                            <!-- Description -->
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <input type="text" class="form-control" id="description" name="description" value="" required>
-                            </div>
-
-                            <!-- Danh sách quyền (permissions) -->
-                            <div class="form-group">
-                                <label for="permissions">Permissions</label>
-                                <div class="checkbox-group">
-                                    <!-- Danh sách checkbox sẽ được thêm qua JavaScript -->
-                                </div>
+                                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                             </div>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btnn btn-cancel" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btnn btn-save">Update</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-
-
-
-
 
 
 
@@ -241,111 +263,89 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <script type="text/javascript">$('#sampleTable').DataTable();</script>
 
-        
+        <%
+            // Lấy dữ liệu từ database và gắn vào attribute request
+            Map<Integer, String> productMapFromDB = new ProductDAO().getProductMapFromDB();
+            request.setAttribute("productMap", productMapFromDB);
+        %>
 
         <script>
-            // Hàm tải dữ liệu vai trò vào modal
-            function loadRoleData(roleID) {
-                $.ajax({
-                    url: 'getRole', // URL của servlet để lấy dữ liệu vai trò
-                    type: 'GET',
-                    data: {id: roleID},
-                    success: function (role) {
-                        if (role) {
-                            // Hiển thị dữ liệu vai trò vào form modal
-                            $('#updateRoleForm input[name="roleName"]').val(role.roleName);
-                            $('#updateRoleForm input[name="description"]').val(role.description);
-                            $('#updateRoleForm input[name="roleID"]').val(role.roleID); // Hidden field
-                            // Hiển thị các quyền hạn trong modal
-                            $('.checkbox-group').empty();
-                            $.each(role.allPermissions, function (index, permission) {
-                                // Kiểm tra xem quyền hạn này có nằm trong danh sách assignedPermissions hay không
-                                var checked = role.assignedPermissions.includes(String(permission.permissionName)) ? 'checked' : '';
+            // Giả sử productMap có sẵn dưới dạng một đối tượng JavaScript (có thể được đưa từ JSP hoặc qua API)
+            let productMap = <%= new Gson().toJson(request.getAttribute("productMap")) %>;
 
-                                // Tạo checkbox cho mỗi quyền hạn
-                                $('.checkbox-group').append(
-                                        '<div class="form-check">' +
-                                        '<input class="form-check-input" type="checkbox" name="permissions" value="' + permission.id + '" ' + checked + '>' +
-                                        '<label class="form-check-label">' + permission.permissionName + '</label>' +
-                                        '</div>'
-                                        );
+// Hàm để nạp danh sách sản phẩm vào dropdown
+            function populateProductDropdown() {
+                let productSelect = $('#productID');
+                productSelect.empty(); // Xóa các lựa chọn hiện có
+                $.each(productMap, function (productID, productName) {
+                    productSelect.append(new Option(productName, productID));
+                });
+            }
+
+            // Load discount data into the modal
+            // Trước tiên, nạp danh sách sản phẩm
+            populateProductDropdown();
+            // Hàm chuyển đổi định dạng ngày từ DD/MM/YYYY sang YYYY-MM-DD
+            function formatDateToMMDDYYYY(dateStr) {
+                if (dateStr.includes("/")) {
+                    // Giả sử ngày đang ở dạng yyyy/mm/dd
+                    let parts = dateStr.split("/");
+                    return `${parts[1]}/${parts[2]}/${parts[0]}`; // Định dạng lại thành mm/dd/yyyy
+                            }
+                            return dateStr; // Trả về chuỗi ban đầu nếu không ở định dạng yyyy/mm/dd
+                        }
+
+                        function loadDiscountData(discountID) {
+                            $.ajax({
+                                url: 'getDiscount',
+                                type: 'GET',
+                                data: {action: 'getDiscount', discountID: discountID},
+                                success: function (response) {
+                                    $('#updateDiscountModal').find('input[name="discountID"]').val(response.discountID);
+                                    $('#updateDiscountModal').find('input[name="discountName"]').val(response.discountName);
+                                    $('#updateDiscountModal').find('select[name="productID"]').val(response.productID);
+                                    $('#updateDiscountModal').find('input[name="discountPercent"]').val(response.discountPercent);
+
+                                    // Định dạng ngày thành YYYY-MM-DD
+                                    let startDate = formatDateToMMDDYYYY("2023/11/12");
+                                    let endDate = formatDateToMMDDYYYY(response.endDate);
+
+                                    $('#updateDiscountModal').find('input[name="startDate"]').val("08/11/2003");
+                                    $('#updateDiscountModal').find('input[name="endDate"]').val(endDate);
+
+                                    $('#updateDiscountModal').find('textarea[name="description"]').val(response.description);
+                                },
+                                error: function (error) {
+                                    console.error('Error loading discount data:', error);
+                                    alert('Failed to load discount data.');
+                                }
                             });
-
-
                         }
-                    },
-                    error: function () {
-                        swal("Không thể tải dữ liệu vai trò!", {icon: "error"});
-                    }
-                });
-            }
 
 
-
-
-
-            // Hàm cập nhật vai trò
-            $(document).ready(function () {
-                $('#updateRoleForm').submit(function (e) {
-                    e.preventDefault(); // Ngăn submit mặc định
-
-                    var formData = $(this).serialize(); // Lấy dữ liệu từ form
-
-                    $.ajax({
-                        url: 'getRole',
-                        type: 'POST',
-                        data: formData,
-                        success: function (response) {
-                            // Không cần JSON.parse() vì response đã là đối tượng JavaScript
-                            console.log("Response from server:", response);
-
-                            if (response.status === "success") {
-                                swal(response.message, {icon: "success"}).then(() => {
-                                    location.reload(); // Reload lại trang sau khi cập nhật thành công
-                                });
-                            } else {
-                                swal(response.message, {icon: "error"});
-                            }
-                        },
-                        error: function () {
-                            swal("Không thể cập nhật vai trò!", {icon: "error"});
-                        }
-                    });
-
-                });
-            });
-
-
-
-            //Ham Xoa Role
-            function deleteRole(roleID) {
-                swal({
-                    title: "Cảnh báo",
-                    text: "Bạn có chắc chắn muốn xóa vai trò này?",
-                    buttons: ["Hủy bỏ", "Đồng ý"],
-                    dangerMode: true
-                }).then((willDelete) => {
-                    if (willDelete) {
-                        $.ajax({
-                            url: 'deleteRole', // URL servlet xử lý xóa vai trò
-                            type: 'POST',
-                            data: {id: roleID},
-                            success: function (response) {
-                                swal("Đã xóa thành công!", {
-                                    icon: "success"
-                                }).then(() => {
-                                    location.reload(); // Reload trang để cập nhật danh sách
-                                });
-                            },
-                            error: function () {
-                                swal("Xóa thất bại!", {
-                                    icon: "error"
+                        // Delete discount function
+                        function deleteDiscount(discountID) {
+                            if (confirm("Are you sure you want to delete this discount?")) {
+                                $.ajax({
+                                    url: 'DiscountServlet',
+                                    type: 'POST',
+                                    data: {action: 'deleteDiscount', discountID: discountID},
+                                    success: function (response) {
+                                        if (response.success) {
+                                            alert('Discount deleted successfully.');
+                                            location.reload(); // Reload page to reflect changes
+                                        } else {
+                                            alert('Failed to delete discount.');
+                                        }
+                                    },
+                                    error: function (error) {
+                                        console.error('Error deleting discount:', error);
+                                        alert('Failed to delete discount.');
+                                    }
                                 });
                             }
-                        });
-                    }
-                });
-            }
+                        }
+
 
 
         </script>
