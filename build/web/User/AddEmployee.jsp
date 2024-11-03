@@ -119,8 +119,8 @@
         <!-- Sidebar menu-->
         <!-- Include menu -->
         <jsp:include page="/menu.jsp" />
-        
-        
+
+
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
@@ -181,7 +181,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-12">
-                                    
+
                                     <label class="control-label">Ảnh 3x4 nhân viên</label>
                                     <p id="error-message" class="error" style="color: red"></p> <!-- Thông báo lỗi -->
                                     <div id="myfileupload">
@@ -210,7 +210,7 @@
                     </main>
 
 
-                    
+
 
 
                     <!-- Essential javascripts for application to work-->
@@ -220,73 +220,89 @@
                     <script src="js/main.js"></script>
                     <!-- The javascript plugin to display page loading on top-->
                     <script src="js/plugins/pace.min.js"></script>
-                    
+
 
                     <script>
-                        // Hàm kiểm tra file hợp lệ
-                        function validateFile(file) {
-                            const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
-                            const maxFileSize = 2 * 1024 * 1024; // 2MB giới hạn kích thước
+                                            // Các hằng số cấu hình
+                                            const VALID_IMAGE_TYPES = ["image/jpeg", "image/png", "image/gif"];
+                                            const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
-                            // Kiểm tra loại file và kích thước file
-                            if (!validImageTypes.includes(file.type)) {
-                                return "Chỉ cho phép file ảnh (JPEG, PNG, GIF).";
-                            }
-                            if (file.size > maxFileSize) {
-                                return "Kích thước ảnh phải nhỏ hơn 2MB.";
-                            }
-                            return null;
-                        }
+                                            // Hàm kiểm tra file hợp lệ
+                                            function validateFile(file) {
+                                                if (!VALID_IMAGE_TYPES.includes(file.type)) {
+                                                    return "Chỉ cho phép file ảnh (JPEG, PNG, GIF).";
+                                                }
+                                                if (file.size > MAX_FILE_SIZE) {
+                                                    return "Kích thước ảnh phải nhỏ hơn 2MB.";
+                                                }
+                                                return null;
+                                            }
 
-                        // Hàm hiển thị ảnh xem trước và validate file
-                        function readURL(input) {
-                            if (input.files && input.files[0]) { // Sử dụng cho Firefox - Chrome
-                                const file = input.files[0];
-                                const error = validateFile(file);
+                                            // Hàm xử lý xem trước ảnh và validate file
+                                            function handleFileInput(input) {
+                                                const file = input.files[0];
+                                                const error = file ? validateFile(file) : "Vui lòng chọn một file.";
 
-                                if (error) {
-                                    // Hiển thị thông báo lỗi và reset input nếu file không hợp lệ
-                                    $("#error-message").text(error);
-                                    input.value = ""; // Reset input file
-                                    $("#thumbimage").hide();
-                                    $(".removeimg").hide();
-                                    $(".Choicefile").css('background', '#14142B').css('cursor', 'pointer');
-                                    $(".filename").text("");
-                                    return;
-                                }
+                                                if (error) {
+                                                    displayError(error);
+                                                    resetFileInput(input);
+                                                    return;
+                                                }
 
-                                // Nếu hợp lệ, hiển thị ảnh xem trước
-                                const reader = new FileReader();
-                                reader.onload = function (e) {
-                                    $("#thumbimage").attr('src', e.target.result).show();
-                                    $(".removeimg").show();
-                                    $(".Choicefile").css('background', '#14142B').css('cursor', 'default');
-                                    $(".filename").text(input.files[0].name); // Hiển thị tên file
-                                }
-                                reader.readAsDataURL(file);
-                                $("#error-message").text(""); // Xóa thông báo lỗi
-                            } else { // Sử dụng cho IE
-                                $("#thumbimage").attr('src', input.value).show();
-                            }
-                        }
+                                                displayImagePreview(file);
+                                                clearError();
+                                            }
 
-                        $(document).ready(function () {
-                            $(".Choicefile").bind('click', function () {
-                                $("#uploadfile").click();
-                            });
-                            $(".removeimg").click(function () {
-                                $("#thumbimage").attr('src', '').hide();
-                                $("#myfileupload").html('<input type="file" id="uploadfile" onchange="readURL(this);" />');
-                                $(".removeimg").hide();
-                                $(".Choicefile").bind('click', function () {
-                                    $("#uploadfile").click();
-                                });
-                                $('.Choicefile').css('background', '#14142B').css('cursor', 'pointer');
-                                $(".filename").text("");
-                                $("#error-message").text(""); // Reset thông báo lỗi
-                            });
-                        });
+                                            // Hiển thị ảnh xem trước
+                                            function displayImagePreview(file) {
+                                                const reader = new FileReader();
+                                                reader.onload = function (e) {
+                                                    $("#thumbimage").attr('src', e.target.result).show();
+                                                    $(".removeimg").show();
+                                                    $(".Choicefile").css('background', '#14142B').css('cursor', 'default');
+                                                    $(".filename").text(file.name);
+                                                };
+                                                reader.readAsDataURL(file);
+                                            }
+
+                                            // Hiển thị thông báo lỗi
+                                            function displayError(message) {
+                                                $("#error-message").text(message);
+                                            }
+
+                                            // Xóa thông báo lỗi
+                                            function clearError() {
+                                                $("#error-message").text("");
+                                            }
+
+                                            // Reset input file
+                                            function resetFileInput(input) {
+                                                input.value = ""; // Reset input file
+                                                $("#thumbimage").hide();
+                                                $(".removeimg").hide();
+                                                $(".Choicefile").css('background', '#14142B').css('cursor', 'pointer');
+                                                $(".filename").text("");
+                                            }
+
+                                            $(document).ready(function () {
+                                                // Gán sự kiện click để mở file dialog
+                                                $(".Choicefile").on('click', function () {
+                                                    $("#uploadfile").click();
+                                                });
+
+                                                // Xử lý khi file thay đổi
+                                                $("#uploadfile").on("change", function () {
+                                                    handleFileInput(this);
+                                                });
+
+                                                // Xử lý khi nhấn nút xóa ảnh
+                                                $(".removeimg").on("click", function () {
+                                                    resetFileInput($("#uploadfile")[0]);
+                                                    clearError();
+                                                });
+                                            });
                     </script>
+
 
 
                     </body>

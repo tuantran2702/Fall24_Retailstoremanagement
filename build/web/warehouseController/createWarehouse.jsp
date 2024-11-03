@@ -36,7 +36,7 @@
         </div>
         <hr>
         <ul class="app-menu">
-            <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>POS Bán Hàng</a></li>
+            <li><a class="app-menu__item" href="phan-mem-ban-hang.html"><i class='app-menu__icon bx bx-cart-alt'></i>POS Bán Hàng</a></li>
             <li><a class="app-menu__item active" href="${pageContext.request.contextPath}/warehouse"><i class='app-menu__icon bx bx-task'></i>Quản lý kho</a></li>
 
         </ul>

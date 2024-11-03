@@ -84,7 +84,7 @@ public class AddUserController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private static final String UPLOAD_DIRECTORY = "img-anhthe";  // Folder where images will be stored
+      // Folder where images will be stored
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -98,17 +98,18 @@ public class AddUserController extends HttpServlet {
         SendEmail se = new SendEmail();
         String password = se.generateRandomCode(6);
 
-        //Img
+         // Lấy thư mục gốc của ứng dụng từ ServletContext
+        String rootDirectory = getServletContext().getRealPath("/");
+        
         ImageHandler ih = new ImageHandler();
-        String uploadFilePath = "E:\\Fall24\\SWP391\\Clone-Git\\Fall24_Retailstoremanagement-Clone\\web\\img-anhthe";
-        String imgPath = "img-anhthe\\default.png";
+        String imgPath = ImageHandler.UPLOAD_DIRECTORY + "/default.png";
 
         // Lấy phần file tải lên
         Part filePart = request.getPart("ImageUpload");
 
         if (filePart != null && filePart.getSize() > 0) {
             // Lưu ảnh vào thư mục và lấy đường dẫn ảnh
-            imgPath = ih.luuAnh(filePart, uploadFilePath);
+            imgPath = ih.luuAnh(filePart, rootDirectory);
         }
 
         //Tao 1 User de kiem tra
