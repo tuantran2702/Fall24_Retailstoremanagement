@@ -140,11 +140,84 @@ public class UserDAO extends DBContext {
     }
 
     public boolean deleteUser(int userID) {
-        String sql = "DELETE FROM [dbo].[User] WHERE UserID = ?";
+        // SQL để xóa order detail liên quan đến sản phẩm của người dùng
+        String deleteOrderDetailsSql = "DELETE FROM [dbo].[OrderDetail] WHERE ProductID IN (SELECT ProductID FROM [dbo].[Product] WHERE UserID = ?)";
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setInt(1, userID);  // Gán userID vào câu lệnh SQL
-            int rowsAffected = ps.executeUpdate();
+        // SQL để xóa cashbook liên quan đến import của sản phẩm
+        String deleteCashbookSql = "DELETE FROM [dbo].[Cashbook] WHERE ImportID IN (SELECT ImportID FROM [dbo].[Import] WHERE ProductID IN (SELECT ProductID FROM [dbo].[Product] WHERE UserID = ?))";
+
+        // SQL để xóa voucher liên quan đến discount của sản phẩm
+        String deleteVouchersSql = "DELETE FROM [dbo].[Voucher] WHERE DiscountID IN (SELECT DiscountID FROM [dbo].[Discount] WHERE ProductID IN (SELECT ProductID FROM [dbo].[Product] WHERE UserID = ?))";
+
+        // SQL để xóa import liên quan đến sản phẩm của người dùng
+        String deleteImportsSql = "DELETE FROM [dbo].[Import] WHERE ProductID IN (SELECT ProductID FROM [dbo].[Product] WHERE UserID = ?)";
+
+        // SQL để xóa discount liên quan đến sản phẩm của người dùng
+        String deleteDiscountsSql = "DELETE FROM [dbo].[Discount] WHERE ProductID IN (SELECT ProductID FROM [dbo].[Product] WHERE UserID = ?)";
+
+        // SQL để xóa inventory liên quan đến sản phẩm của người dùng
+        String deleteInventorySql = "DELETE FROM [dbo].[Inventory] WHERE ProductID IN (SELECT ProductID FROM [dbo].[Product] WHERE UserID = ?)";
+
+        // SQL để xóa sản phẩm liên quan đến người dùng
+        String deleteProductsSql = "DELETE FROM [dbo].[Product] WHERE UserID = ?";
+
+        // SQL để xóa người dùng
+        String deleteUserSql = "DELETE FROM [dbo].[User] WHERE UserID = ?";
+
+        String deleteReportInventorySql = "DELETE FROM [dbo].[ReportInventory] WHERE ProductID IN (SELECT ProductID FROM [dbo].[Product] WHERE UserID = ?)";
+
+        try (PreparedStatement deleteOrderDetailsPs = connection.prepareStatement(deleteOrderDetailsSql); PreparedStatement deleteCashbookPs = connection.prepareStatement(deleteCashbookSql); PreparedStatement deleteVouchersPs = connection.prepareStatement(deleteVouchersSql); PreparedStatement deleteImportsPs = connection.prepareStatement(deleteImportsSql); PreparedStatement deleteDiscountsPs = connection.prepareStatement(deleteDiscountsSql); PreparedStatement deleteInventoryPs = connection.prepareStatement(deleteInventorySql); PreparedStatement deleteProductsPs = connection.prepareStatement(deleteProductsSql); PreparedStatement deleteUserPs = connection.prepareStatement(deleteUserSql); PreparedStatement deleteReportInventoryPs = connection.prepareStatement(deleteReportInventorySql)) {
+
+            // Bắt đầu giao dịch
+            connection.setAutoCommit(false);
+
+            // Xóa report inventory liên quan đến sản phẩm của người dùng
+            deleteReportInventoryPs.setInt(1, userID);
+            int reportInventoryDeleted = deleteReportInventoryPs.executeUpdate();
+            System.out.println("Report inventory đã xóa: " + reportInventoryDeleted);
+
+            // Xóa order detail liên quan đến sản phẩm của người dùng
+            deleteOrderDetailsPs.setInt(1, userID);
+            int orderDetailsDeleted = deleteOrderDetailsPs.executeUpdate();
+            System.out.println("Order details đã xóa: " + orderDetailsDeleted);
+
+            // Xóa cashbook liên quan đến import của sản phẩm
+            deleteCashbookPs.setInt(1, userID);
+            int cashbookDeleted = deleteCashbookPs.executeUpdate();
+            System.out.println("Cashbook đã xóa: " + cashbookDeleted);
+
+            // Xóa voucher liên quan đến discount của sản phẩm
+            deleteVouchersPs.setInt(1, userID);
+            int vouchersDeleted = deleteVouchersPs.executeUpdate();
+            System.out.println("Voucher đã xóa: " + vouchersDeleted);
+
+            // Xóa import liên quan đến sản phẩm của người dùng
+            deleteImportsPs.setInt(1, userID);
+            int importsDeleted = deleteImportsPs.executeUpdate();
+            System.out.println("Import đã xóa: " + importsDeleted);
+
+            // Xóa discount liên quan đến sản phẩm đã xóa
+            deleteDiscountsPs.setInt(1, userID);
+            int discountsDeleted = deleteDiscountsPs.executeUpdate();
+            System.out.println("Discount đã xóa: " + discountsDeleted);
+
+            // Xóa inventory liên quan đến sản phẩm
+            deleteInventoryPs.setInt(1, userID);
+            int inventoryDeleted = deleteInventoryPs.executeUpdate();
+            System.out.println("Inventory đã xóa: " + inventoryDeleted);
+
+            // Xóa sản phẩm liên quan đến người dùng
+            deleteProductsPs.setInt(1, userID);
+            int productsDeleted = deleteProductsPs.executeUpdate();
+            System.out.println("Sản phẩm đã xóa: " + productsDeleted);
+
+            // Xóa người dùng
+            deleteUserPs.setInt(1, userID);
+            int rowsAffected = deleteUserPs.executeUpdate();
+            System.out.println("Người dùng đã xóa: " + rowsAffected);
+
+            // Cam kết giao dịch
+            connection.commit();
 
             if (rowsAffected > 0) {
                 System.out.println("Xóa người dùng thành công!");
@@ -155,7 +228,12 @@ public class UserDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Xóa người dùng thất bại!");
-            return false;
+            // Nếu có lỗi, hoàn tác giao dịch
+            try {
+                connection.rollback();
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
         }
         return false;
     }
@@ -187,9 +265,6 @@ public class UserDAO extends DBContext {
         }
         return users;
     }
-    
-   
-
 
     public User getUserByEmail(String email) {
         User user = null;  // Khởi tạo user là null, sau này nếu tìm thấy sẽ tạo đối tượng mới
@@ -222,12 +297,7 @@ public class UserDAO extends DBContext {
     public static void main(String[] args) {
         UserDAO ud = new UserDAO();
 
-        User u = ud.getUserByEmail("trungpt1503@gmail.com");
-        System.out.println(u);
-//        List<User> lst = ud.getAllUsers();
-//        for (User user : lst) {
-//            System.out.println(user); // In thông tin người dùng ra console
-//        }
+        ud.deleteUser(1);
     }
 
     public User getUserById(int id) {

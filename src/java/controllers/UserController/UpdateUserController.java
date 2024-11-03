@@ -112,7 +112,6 @@ public class UpdateUserController extends HttpServlet {
 
         // Lấy thư mục gốc của ứng dụng từ ServletContext
         String rootDirectory = getServletContext().getRealPath("/");
-        String uploadFilePath = rootDirectory + "img-anhthe";
         String imgPath = null;
 
         // Lấy phần file tải lên
@@ -120,7 +119,7 @@ public class UpdateUserController extends HttpServlet {
 
         if (filePart != null && filePart.getSize() > 0) {
             // Hàm lưu ảnh
-            imgPath = ih.luuAnh(filePart, uploadFilePath);
+            imgPath = ih.luuAnh(filePart, rootDirectory);
         }
 
         // Nếu không có file được tải lên, giữ nguyên đường dẫn ảnh hiện tại từ đối tượng 'u'

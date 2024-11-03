@@ -119,8 +119,8 @@
         <!-- Sidebar menu-->
         <!-- Include menu -->
         <jsp:include page="/menu.jsp" />
-        
-        
+
+
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
@@ -234,66 +234,69 @@
                                             function validateFile(file) {
                                                 const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
                                                 const maxFileSize = 2 * 1024 * 1024; // 2MB giới hạn kích thước
-
-                                                // Kiểm tra loại file và kích thước file
-                                                if (!validImageTypes.includes(file.type)) {
+                                                if (!validImageTypes.includes(file.type))
                                                     return "Chỉ cho phép file ảnh (JPEG, PNG, GIF).";
-                                                }
-                                                if (file.size > maxFileSize) {
+                                                if (file.size > maxFileSize)
                                                     return "Kích thước ảnh phải nhỏ hơn 2MB.";
-                                                }
                                                 return null;
                                             }
 
-                                            // Hàm hiển thị ảnh xem trước và validate file
+                                            // Hàm hiển thị ảnh xem trước và kiểm tra file
                                             function readURL(input) {
-                                                if (input.files && input.files[0]) { // Sử dụng cho Firefox - Chrome
-                                                    const file = input.files[0];
-                                                    const error = validateFile(file);
+                                                const file = input.files?.[0];
+                                                if (!file)
+                                                    return;
 
-                                                    if (error) {
-                                                        // Hiển thị thông báo lỗi và reset input nếu file không hợp lệ
-                                                        $("#error-message").text(error);
-                                                        input.value = ""; // Reset input file
-                                                        $("#thumbimage").hide();
-                                                        $(".removeimg").hide();
-                                                        $(".Choicefile").css('background', '#14142B').css('cursor', 'pointer');
-                                                        $(".filename").text("");
-                                                        return;
-                                                    }
-
-                                                    // Nếu hợp lệ, hiển thị ảnh xem trước
-                                                    const reader = new FileReader();
-                                                    reader.onload = function (e) {
-                                                        $("#thumbimage").attr('src', e.target.result).show();
-                                                        $(".removeimg").show();
-                                                        $(".Choicefile").css('background', '#14142B').css('cursor', 'default');
-                                                        $(".filename").text(input.files[0].name); // Hiển thị tên file
-                                                    }
-                                                    reader.readAsDataURL(file);
-                                                    $("#error-message").text(""); // Xóa thông báo lỗi
-                                                } else { // Sử dụng cho IE
-                                                    $("#thumbimage").attr('src', input.value).show();
+                                                const error = validateFile(file);
+                                                if (error) {
+                                                    displayError(error);
+                                                    resetFileInput(input);
+                                                    return;
                                                 }
+
+                                                // Hiển thị ảnh xem trước
+                                                const reader = new FileReader();
+                                                reader.onload = e => {
+                                                    $("#thumbimage").attr('src', e.target.result).show();
+                                                    $(".removeimg").show();
+                                                    updateChoiceFileStyle(false);
+                                                    $(".filename").text(file.name);
+                                                    $("#error-message").text("");
+                                                };
+                                                reader.readAsDataURL(file);
+                                            }
+
+                                            function displayError(message) {
+                                                $("#error-message").text(message);
+                                            }
+
+                                            function resetFileInput(input) {
+                                                input.value = "";
+                                                $("#thumbimage").hide();
+                                                $(".removeimg").hide();
+                                                updateChoiceFileStyle(true);
+                                                $(".filename").text("");
+                                            }
+
+                                            function updateChoiceFileStyle(isReset) {
+                                                const style = isReset ? {background: '#14142B', cursor: 'pointer'} : {background: '#14142B', cursor: 'default'};
+                                                $(".Choicefile").css(style);
                                             }
 
                                             $(document).ready(function () {
-                                                $(".Choicefile").bind('click', function () {
-                                                    $("#uploadfile").click();
-                                                });
-                                                $(".removeimg").click(function () {
-                                                    $("#thumbimage").attr('src', '').hide();
+                                                $(".Choicefile").on('click', () => $("#uploadfile").click());
+
+                                                $(".removeimg").on('click', function () {
+                                                    $("#thumbimage").hide().attr('src', '');
                                                     $("#myfileupload").html('<input type="file" id="uploadfile" onchange="readURL(this);" />');
                                                     $(".removeimg").hide();
-                                                    $(".Choicefile").bind('click', function () {
-                                                        $("#uploadfile").click();
-                                                    });
-                                                    $('.Choicefile').css('background', '#14142B').css('cursor', 'pointer');
+                                                    updateChoiceFileStyle(true);
                                                     $(".filename").text("");
-                                                    $("#error-message").text(""); // Reset thông báo lỗi
+                                                    $("#error-message").text("");
                                                 });
                                             });
                     </script>
+
 
 
 
