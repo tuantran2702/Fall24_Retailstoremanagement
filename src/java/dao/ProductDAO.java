@@ -216,26 +216,23 @@ public class ProductDAO extends DBContext {
     }
 
     public ArrayList<User> GetListUser() {
-        ArrayList<User> data = new ArrayList<>();
+                ArrayList<User> data = new ArrayList<>();
         String sql = "select * from [dbo].[User]";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                int userID=rs.getInt(1);
-                String firstName =rs.getString(2);
-                String lastName=rs.getString(3);
-                String email=rs.getString(4);
-                String password=rs.getString(5);
-                String phoneNumber=rs.getString(6);
-                String address=rs.getString(7);
-                String img=rs.getString(8);
-                int roleID =rs.getInt(9);
-                
-                data.add(new User(userID, firstName, lastName, email, password, phoneNumber, address, roleID, img));
-                        
-                            
+                int userID = rs.getInt(1);
+                String firstName = rs.getString(2);
+                String lastName = rs.getString(3);
+                String email = rs.getString(4);
+                String password = rs.getString(5);
+                String phoneNumber = rs.getString(6);
+                String address = rs.getString(7);
+                int roleID = rs.getInt(8);
+                String img = rs.getString(9);
 
+                data.add(new User(userID, firstName, lastName, email, password, phoneNumber, address, roleID, img));
 
             }
 
@@ -243,6 +240,33 @@ public class ProductDAO extends DBContext {
             e.printStackTrace();
         }
         return data;
+//        ArrayList<User> data = new ArrayList<>();
+//        String sql = "select * from [dbo].[User]";
+//        try {
+//            PreparedStatement st = connection.prepareStatement(sql);
+//            ResultSet rs = st.executeQuery();
+//            while (rs.next()) {
+//                int userID=rs.getInt(1);
+//                String firstName =rs.getString(2);
+//                String lastName=rs.getString(3);
+//                String email=rs.getString(4);
+//                String password=rs.getString(5);
+//                String phoneNumber=rs.getString(6);
+//                String address=rs.getString(7);
+//                String img=rs.getString(8);
+//                int roleID =rs.getInt(9);
+//                
+//                data.add(new User(userID, firstName, lastName, email, password, phoneNumber, address, roleID, img));
+                        
+                            
+
+
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return data;
         
 
     }

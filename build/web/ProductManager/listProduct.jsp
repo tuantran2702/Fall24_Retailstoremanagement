@@ -104,7 +104,7 @@
     <main class="app-content">
         <div class="app-title">
             <ul class="app-breadcrumb breadcrumb side">
-                <li class="breadcrumb-item active"><a href="#"><b>Product</b></a></li>  
+                <li class="breadcrumb-item active"><a href="#"><b>Sản phẩm</b></a></li>  
             </ul>
             <div id="clock"></div>
         </div>
@@ -116,20 +116,20 @@
                             <div class="col-sm-2">
 
                                 <a href="${pageContext.request.contextPath}/product?action=create" class="btn btn-add btn-sm"  title="Thêm"><i class="fas fa-plus"></i>
-                                    Create new product</a>
+                                    Tạo mới sản phẩm</a>
                             </div>
                             <div class="col-sm-2">
                                 <a href="${pageContext.request.contextPath}/supplier" class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập" onclick="myFunction(this)"><i
-                                        class="fas fa-file-upload"></i> Supplier</a>
+                                        class="fas fa-file-upload"></i> Nhà cung cấp</a>
                             </div>
 
                             <div class="col-sm-2">
                                 <a href="${pageContext.request.contextPath}/category" class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()"><i
-                                        class="fas fa-print"></i> Category</a>
+                                        class="fas fa-print"></i> Danh mục</a>
                             </div>
                             <div class="col-sm-2">
                                 <a href="${pageContext.request.contextPath}/unit" class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
-                                        class="fas fa-copy"></i> Unit</a>
+                                        class="fas fa-copy"></i> Đơn vị</a>
                             </div>
 
                             <div class="col-sm-2">
@@ -141,22 +141,18 @@
                                 <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)"><i
                                         class="fas fa-file-pdf"></i> Xuất PDF</a>
                             </div>
-                            <div class="col-sm-2">
-                                <a class="btn btn-delete btn-sm" type="button" title="Xóa" onclick="myFunction(this)"><i
-                                        class="fas fa-trash-alt"></i> Xóa tất cả </a>
-                            </div>
                         </div>
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th>Product Code</th>
-                                    <th>Product Name</th>
-                                    <th>Image</th>
-                                    <th>Category</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Description</th>
-                                    <th>Action</th>
+                                    <th>Mã sản phẩm</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Danh mục</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Sự miêu tả</th>
+                                    <th>Hoạt động</th>
                                 </tr>
                             </thead>
                             <tbody>
