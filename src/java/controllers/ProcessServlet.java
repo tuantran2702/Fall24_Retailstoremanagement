@@ -5,7 +5,6 @@
 package controllers;
 
 import dao.OrderDAO;
-import dao.PermissionsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -17,7 +16,6 @@ import java.util.List;
 import model.Cart;
 import model.Item;
 import model.Product;
-import model.User;
 
 /**
  *
@@ -63,21 +61,6 @@ public class ProcessServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        //Xử lí Phân Quyền
-        String END_POINT = "ORDER-MANAGE";
-        if (request.getSession().getAttribute("User") != null) {
-            PermissionsDAO pd = new PermissionsDAO();
-            User u = (User) request.getSession().getAttribute("User");
-            if (!pd.isAccess(u, END_POINT)) {
-                response.sendRedirect("404.jsp");
-                return;
-            }
-        } else {
-            response.sendRedirect("404.jsp");
-            return;
-        }
-        
         HttpSession session = request.getSession(true);
         OrderDAO dao = new OrderDAO();
         Cart cart;

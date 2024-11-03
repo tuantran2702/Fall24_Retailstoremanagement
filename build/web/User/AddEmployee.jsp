@@ -32,7 +32,76 @@
     </head>
 
     <body class="app sidebar-mini rtl">
-        
+        <style>
+            .Choicefile {
+                display: block;
+                background: #14142B;
+                border: 1px solid #fff;
+                color: #fff;
+                width: 150px;
+                text-align: center;
+                text-decoration: none;
+                cursor: pointer;
+                padding: 5px 0px;
+                border-radius: 5px;
+                font-weight: 500;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .Choicefile:hover {
+                text-decoration: none;
+                color: white;
+            }
+
+            #uploadfile,
+            .removeimg {
+                display: none;
+            }
+
+            #thumbbox {
+                position: relative;
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .removeimg {
+                height: 25px;
+                position: absolute;
+                background-repeat: no-repeat;
+                top: 5px;
+                left: 5px;
+                background-size: 25px;
+                width: 25px;
+                /* border: 3px solid red; */
+                border-radius: 50%;
+
+            }
+
+            .removeimg::before {
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                content: '';
+                border: 1px solid red;
+                background: red;
+                text-align: center;
+                display: block;
+                margin-top: 11px;
+                transform: rotate(45deg);
+            }
+
+            .removeimg::after {
+                /* color: #FFF; */
+                /* background-color: #DC403B; */
+                content: '';
+                background: red;
+                border: 1px solid red;
+                text-align: center;
+                display: block;
+                transform: rotate(-45deg);
+                margin-top: -2px;
+            }
+        </style>
         <!-- Navbar-->
         <header class="app-header">
             <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
@@ -50,13 +119,13 @@
         <!-- Sidebar menu-->
         <!-- Include menu -->
         <jsp:include page="/menu.jsp" />
-
-
+        
+        
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item"><a href="userManage">Danh sách nhân viên</a></li>
-                    <li class="breadcrumb-item"><a href="addUser">Thêm nhân viên</a></li>
+                    <li class="breadcrumb-item">Danh sách nhân viên</li>
+                    <li class="breadcrumb-item"><a href="#">Thêm nhân viên</a></li>
                 </ul>
             </div>
             <div class="row">
@@ -111,10 +180,26 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-                                
-                                <!-- Include phần upload ảnh từ Img.jsp -->
-                                <jsp:include page="Img.jsp" />
-                                
+                                <div class="form-group col-md-12">
+                                    
+                                    <label class="control-label">Ảnh 3x4 nhân viên</label>
+                                    <p id="error-message" class="error" style="color: red"></p> <!-- Thông báo lỗi -->
+                                    <div id="myfileupload">
+                                        <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
+                                    </div>
+
+                                    <div id="thumbbox">
+                                        <img height="300" width="300" alt="Thumb image" id="thumbimage" 
+                                             src="<%= ((User) request.getAttribute("user")).getImg() != null ? ((User) request.getAttribute("user")).getImg() : "" %>"
+                                             style="<%= ((User) request.getAttribute("user")).getImg() != null ? "display: block;" : "display: none;" %>"/>
+                                        <a class="removeimg" href="javascript:" onclick="removeImage()"></a>
+                                    </div>
+
+                                    <div id="boxchoice">
+                                        <a href="javascript:" class="Choicefile"><i class='bx bx-upload'></i> Chọn file</a>
+                                        <p style="clear:both"></p>
+                                    </div>
+                                </div>
                                 <button class="btn btn-save" type="submit">Lưu lại</button>
                                 <a class="btn btn-cancel" href="userManage">Hủy bỏ</a>
                             </form>
@@ -125,7 +210,7 @@
                     </main>
 
 
-
+                    
 
 
                     <!-- Essential javascripts for application to work-->
@@ -135,6 +220,73 @@
                     <script src="js/main.js"></script>
                     <!-- The javascript plugin to display page loading on top-->
                     <script src="js/plugins/pace.min.js"></script>
+                    
+
+                    <script>
+                        // Hàm kiểm tra file hợp lệ
+                        function validateFile(file) {
+                            const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+                            const maxFileSize = 2 * 1024 * 1024; // 2MB giới hạn kích thước
+
+                            // Kiểm tra loại file và kích thước file
+                            if (!validImageTypes.includes(file.type)) {
+                                return "Chỉ cho phép file ảnh (JPEG, PNG, GIF).";
+                            }
+                            if (file.size > maxFileSize) {
+                                return "Kích thước ảnh phải nhỏ hơn 2MB.";
+                            }
+                            return null;
+                        }
+
+                        // Hàm hiển thị ảnh xem trước và validate file
+                        function readURL(input) {
+                            if (input.files && input.files[0]) { // Sử dụng cho Firefox - Chrome
+                                const file = input.files[0];
+                                const error = validateFile(file);
+
+                                if (error) {
+                                    // Hiển thị thông báo lỗi và reset input nếu file không hợp lệ
+                                    $("#error-message").text(error);
+                                    input.value = ""; // Reset input file
+                                    $("#thumbimage").hide();
+                                    $(".removeimg").hide();
+                                    $(".Choicefile").css('background', '#14142B').css('cursor', 'pointer');
+                                    $(".filename").text("");
+                                    return;
+                                }
+
+                                // Nếu hợp lệ, hiển thị ảnh xem trước
+                                const reader = new FileReader();
+                                reader.onload = function (e) {
+                                    $("#thumbimage").attr('src', e.target.result).show();
+                                    $(".removeimg").show();
+                                    $(".Choicefile").css('background', '#14142B').css('cursor', 'default');
+                                    $(".filename").text(input.files[0].name); // Hiển thị tên file
+                                }
+                                reader.readAsDataURL(file);
+                                $("#error-message").text(""); // Xóa thông báo lỗi
+                            } else { // Sử dụng cho IE
+                                $("#thumbimage").attr('src', input.value).show();
+                            }
+                        }
+
+                        $(document).ready(function () {
+                            $(".Choicefile").bind('click', function () {
+                                $("#uploadfile").click();
+                            });
+                            $(".removeimg").click(function () {
+                                $("#thumbimage").attr('src', '').hide();
+                                $("#myfileupload").html('<input type="file" id="uploadfile" onchange="readURL(this);" />');
+                                $(".removeimg").hide();
+                                $(".Choicefile").bind('click', function () {
+                                    $("#uploadfile").click();
+                                });
+                                $('.Choicefile').css('background', '#14142B').css('cursor', 'pointer');
+                                $(".filename").text("");
+                                $("#error-message").text(""); // Reset thông báo lỗi
+                            });
+                        });
+                    </script>
 
 
                     </body>

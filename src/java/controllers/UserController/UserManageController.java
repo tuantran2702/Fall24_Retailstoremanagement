@@ -4,8 +4,6 @@
  */
 package controllers.UserController;
 
-import dao.PermissionsDAO;
-import dao.RoleDAO;
 import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,9 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.*;
-import java.util.Map;
-import model.Role;
+import java.util.List;
 import model.User;
 
 /**
@@ -41,7 +37,7 @@ public class UserManageController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet UserManageController</title>");
+            out.println("<title>Servlet UserManageController</title>");            
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet UserManageController at " + request.getContextPath() + "</h1>");
@@ -60,38 +56,11 @@ public class UserManageController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        
-        //Xử lí Phân Quyền
-        String END_POINT = "USER-MANAGE";
-        if (request.getSession().getAttribute("User") != null) {
-            PermissionsDAO pd = new PermissionsDAO();
-            User u = (User) request.getSession().getAttribute("User");
-            if (!pd.isAccess(u, END_POINT)) {
-                response.sendRedirect("404.jsp");
-                return;
-            }
-        } else {
-            response.sendRedirect("404.jsp");
-            return;
-        }
-        
         UserDAO ud = new UserDAO();
         List<User> users = ud.getAllUsers();
-
-        RoleDAO rd = new RoleDAO();
-        List<Role> roles = rd.getAllRole();
-
-        // Tạo roleMap để ánh xạ roleID với tên chức vụ
-        Map<Integer, String> roleMap = new HashMap<>();
-        for (Role role : roles) {
-            roleMap.put(role.getRoleID(), role.getRoleName());
-        }
-
-        // Đặt roleMap và userList vào request scope
         request.setAttribute("userList", users);
-        request.setAttribute("roleMap", roleMap);
         request.getRequestDispatcher("User/QuanLyNhanVien.jsp").forward(request, response);
     }
 
@@ -107,7 +76,7 @@ public class UserManageController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-
+       
     }
 
     /**

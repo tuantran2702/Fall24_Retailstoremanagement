@@ -4,7 +4,6 @@
  */
 package controllers.UserController;
 
-import dao.PermissionsDAO;
 import dao.RoleDAO;
 import dao.UserDAO;
 import java.io.IOException;
@@ -67,20 +66,6 @@ public class UpdateUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //Xử lí Phân Quyền
-        String END_POINT = "USER-MANAGE";
-        if (request.getSession().getAttribute("User") != null) {
-            PermissionsDAO pd = new PermissionsDAO();
-            User u = (User) request.getSession().getAttribute("User");
-            if (!pd.isAccess(u, END_POINT)) {
-                response.sendRedirect("404.jsp");
-                return;
-            }
-        } else {
-            response.sendRedirect("404.jsp");
-            return;
-        }
-
         // Get the userID from the request
         String userID = request.getParameter("userID");
 
@@ -112,6 +97,7 @@ public class UpdateUserController extends HttpServlet {
             throws ServletException, IOException {
 
         UserDAO ud = new UserDAO();
+        ImageHandler ih = new ImageHandler();
 
         // Collect updated user data from the form
         int userID = Integer.parseInt(request.getParameter("userID"));
@@ -123,15 +109,21 @@ public class UpdateUserController extends HttpServlet {
         int roleID = Integer.parseInt(request.getParameter("role"));
 
         User u = ud.getUserById(userID);  // Lấy thông tin người dùng từ DB
-        String imgPath = u.getImg();
 
-        // Xử lý ảnh tải lên
-        ImageHandler ih = new ImageHandler();
+        String uploadFilePath = "E:\\Fall24\\SWP391\\Clone-Git\\Fall24_Retailstoremanagement-Clone\\web\\img-anhthe";
+        String imgPath = null;
 
-        // Lấy phần file tải lên từ request
+        // Lấy phần file tải lên
         Part filePart = request.getPart("ImageUpload");
-        if (filePart != null && filePart.getSize() > 0) {
-            imgPath = ih.luuAnh(filePart, getServletContext());
+
+        if (filePart != null) {
+            // Hàm lưu ảnh
+            imgPath = ih.luuAnh(filePart, uploadFilePath);
+        }
+
+        // Nếu không có file được tải lên, giữ nguyên đường dẫn ảnh hiện tại
+        if (imgPath == null) {
+            imgPath = u.getImg();
         }
 
         //Kiem tra Email

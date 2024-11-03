@@ -1,7 +1,6 @@
 package controllers;
 
 import dao.CashbookDAO;
-import dao.PermissionsDAO;
 import model.Cashbook;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -15,7 +14,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.annotation.WebServlet;
-import model.User;
 
 @WebServlet(name = "CashbookController", urlPatterns = {"/cashbook"})
 public class CashbookController extends HttpServlet {
@@ -23,21 +21,6 @@ public class CashbookController extends HttpServlet {
 @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        //Xử lí Phân Quyền
-        String END_POINT = "CASHBOOK-MANAGE";
-        if (request.getSession().getAttribute("User") != null) {
-            PermissionsDAO pd = new PermissionsDAO();
-            User u = (User) request.getSession().getAttribute("User");
-            if (!pd.isAccess(u, END_POINT)) {
-                response.sendRedirect("404.jsp");
-                return;
-            }
-        } else {
-            response.sendRedirect("404.jsp");
-            return;
-        }
-        
         request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         String idStr = request.getParameter("id");

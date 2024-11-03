@@ -55,6 +55,8 @@
             <a href="${pageContext.request.contextPath}/import?action=create" class="btn btn-primary" style="float: right;">
                 <i class="fa fa-plus"></i> Thêm nhập hàng
             </a>
+                
+                
         </div>
 
         <div class="row">
@@ -65,7 +67,7 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th>Mã kho</th>
+                                
                                     <th>Tên sản phẩm </th>
                                     
                                     
@@ -80,7 +82,7 @@
                             <tbody>
                                 <c:forEach var="imp" items="${data}">
                                     <tr>
-                                        <td>${imp.inventoryID}</td>
+                                       
                                         <td>${imp.productName}</td>
                                        
                                        

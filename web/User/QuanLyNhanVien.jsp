@@ -49,8 +49,8 @@
         <!-- Sidebar menu-->
         <!-- Include menu -->
         <jsp:include page="/menu.jsp" />
-
-
+        
+        
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
@@ -103,7 +103,8 @@
                                    id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th width="100">Img</th>
+                                        <th width="10"><input type="checkbox" id="all"></th>
+                                        <th>Img</th>
                                         <th>ID nhân viên</th>
                                         <th width="150">Họ và tên</th>
                                         <th width="170">Email</th>
@@ -117,7 +118,8 @@
                                 <tbody>
                                     <c:forEach var="user" items="${requestScope.userList}">
                                         <tr>
-                                            <td width="100"><img src="${user.img}" alt="User Image" style="width:100px;height:100px;"></td>
+                                            <td width="10"><input type="checkbox"></td>
+                                            <td><img src="${user.img}" alt="User Image" style="width:100px;height:100px;"></td>
                                             <td>${user.userID}</td>
                                             <td>${user.firstName} ${user.lastName}</td>
                                             <td>${user.email}</td>
@@ -209,16 +211,66 @@
         </script>
 
 
+        <script>
+            $('#saveChangesBtn').on('click', function () {
+                var user = {
+                    userID: $('#ModalUP input[name="userID"]').val(),
+                    firstName: $('#ModalUP input[name="firstName"]').val(),
+                    lastName: $('#ModalUP input[name="lastName"]').val(),
+                    phoneNumber: $('#ModalUP input[name="phoneNumber"]').val(),
+                    email: $('#ModalUP input[name="email"]').val(),
+                    roleID: $('#ModalUP select[name="roleID"]').val()
+                };
 
+                $.ajax({
+                    url: 'updateUser', // URL của servlet để cập nhật thông tin
+                    type: 'POST',
+                    data: user,
+                    success: function (response) {
+                        swal("Đã cập nhật thành công!", {
+                            icon: "success"
+                        }).then(() => {
+                            location.reload(); // Reload trang sau khi cập nhật
+                        });
+                    },
+                    error: function () {
+                        swal("Cập nhật thất bại!", {
+                            icon: "error"
+                        });
+                    }
+                });
+            });
+
+        </script>
+        <script>
+            function loadUserData(userID) {
+                $.ajax({
+                    url: 'getUser', // URL của servlet lấy thông tin người dùng
+                    type: 'GET',
+                    data: {id: userID},
+                    success: function (user) {
+                        // Hiển thị dữ liệu vào modal
+                        $('#ModalUP input[name="userID"]').val(user.userID);
+                        $('#ModalUP input[name="firstName"]').val(user.firstName);
+                        $('#ModalUP input[name="lastName"]').val(user.lastName);
+                        $('#ModalUP input[name="phoneNumber"]').val(user.phoneNumber);
+                        $('#ModalUP input[name="email"]').val(user.email);
+                        $('#ModalUP select[name="roleID"]').val(user.roleID);
+                    },
+                    error: function () {
+                        swal("Không thể tải dữ liệu người dùng!", {
+                            icon: "error"
+                        });
+                    }
+                });
+            }
+        </script>
         <script>
             function deleteUser(userID) {
                 swal({
                     title: "Cảnh báo",
                     text: "Bạn có chắc chắn muốn xóa nhân viên này?",
-                    buttons: {
-                        cancel: "Hủy bỏ",
-                        confirm: "Đồng ý"
-                    }
+                    buttons: ["Hủy bỏ", "Đồng ý"]
                 }).then((willDelete) => {
                     if (willDelete) {
                         $.ajax({
@@ -229,7 +281,7 @@
                                 swal("Đã xóa thành công!", {
                                     icon: "success"
                                 }).then(() => {
-                                    location.reload(); // Tải lại trang để cập nhật danh sách
+                                    location.reload(); // Reload trang để cập nhật danh sách
                                 });
                             },
                             error: function () {
@@ -242,9 +294,33 @@
                 });
             }
         </script>
-
         <script>
+            function deleteRow(r) {
+                var i = r.parentNode.parentNode.rowIndex;
+                document.getElementById("myTable").deleteRow(i);
+            }
+            jQuery(function () {
+                jQuery(".trash").click(function () {
+                    swal({
+                        title: "Cảnh báo",
 
+                        text: "Bạn có chắc chắn là muốn xóa nhân viên này?",
+                        buttons: ["Hủy bỏ", "Đồng ý"],
+                    })
+                            .then((willDelete) => {
+                                if (willDelete) {
+                                    swal("Đã xóa thành công.!", {
+
+                                    });
+                                }
+                            });
+                });
+            });
+            oTable = $('#sampleTable').dataTable();
+            $('#all').click(function (e) {
+                $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
+                e.stopImmediatePropagation();
+            });
 
             //EXCEL
             // $(document).ready(function () {

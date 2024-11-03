@@ -27,13 +27,16 @@
         %>
 
         <c:if test="${permissions != null}">
-
-            <c:if test="${permissions.contains('ORDER-MANAGE')}">
+ 
+                            
+                            
+                            
+            <c:if test="${permissions.contains('ORDER')}">
                 <li><a class="app-menu__item haha" href="order"><i class='app-menu__icon bx bx-cart-alt'></i>
                         <span class="app-menu__label">POS Bán Hàng</span></a></li>
                     </c:if>
 
-            <c:if test="${permissions.contains('HOMEPAGE')}">
+           <c:if test="${permissions.contains('HOMEPAGE')}">
                 <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Bảng điều khiển</span></a></li>
                         </c:if>
@@ -42,6 +45,13 @@
                 <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i>
                         <span class="app-menu__label">Quản lý nhân viên</span></a></li>
                     </c:if>
+
+          
+
+
+
+
+
 
 
             <c:if test="${permissions.contains('PRODUCT-MANAGE')}">
@@ -59,21 +69,24 @@
                 <li><a class="app-menu__item " href="cashbook"><i class='app-menu__icon bx bx-dollar'></i><span
                             class="app-menu__label">Quản lý sổ quỹ</span></a></li>
                         </c:if>
-
-            <c:if test="${permissions.contains('INVENTORY-MANAGE')}">
+                        <c:if test="${permissions.contains('INVENTORY-MANAGE')}">
 
                 <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Quản lý   kho</span></a></li>
                         </c:if>
-
-
-            <c:if test="${permissions.contains('SETTING')}">
+                            
+                            
+                        <c:if test="${permissions.contains('SETTING')}">
                 <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Thay đổi mật khẩu </span></a></li>
                         </c:if>
 
 
-            <c:if test="${permissions.contains('ROLE-MANAGE')}">
+
+
+
+
+  <c:if test="${permissions.contains('ROLE-MANAGE')}">
                 <li><a class="app-menu__item" href="roles"><i class='app-menu__icon bx bx-user-voice'></i><span
                             class="app-menu__label">Role Manage</span></a></li>
                         </c:if>
@@ -84,7 +97,7 @@
                             class="app-menu__label">Permission Manage</span></a></li>
                         </c:if>
 
-
+         
         </c:if>
     </ul>
 

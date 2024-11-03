@@ -113,20 +113,18 @@ public class InventoryDAO extends DBContext {
         }
     }
 
-    public void deleteInventory(int id) {
-        String sql = "DELETE FROM Inventory WHERE InventoryID = ?";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setInt(1, id);
-            int affectedRows = st.executeUpdate();
-            if (affectedRows > 0) {
-                System.out.println("Successfully deleted inventory with ID: " + id);
-            } else {
-                System.out.println("Inventory with ID: " + id + " not found");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    
+    
+   public void deleteInventory(int id) {
+    String sql = "DELETE FROM Inventory WHERE InventoryID = ?";
+    try (PreparedStatement st = connection.prepareStatement(sql)) {
+        st.setInt(1, id);
+        // Xóa mà không cần kiểm tra ảnh hưởng hay thông báo
+        st.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
 
     private Inventory createInventoryFromResultSet(ResultSet rs) throws SQLException {
         int inventoryID = rs.getInt("InventoryID");
@@ -139,27 +137,54 @@ public class InventoryDAO extends DBContext {
         return new Inventory(inventoryID, productID, warehouseID, quantity, lastUpdated, productName, warehouseName);
     }
 
-    public ArrayList<Inventory> searchInventories(String searchTerm) {
-        ArrayList<Inventory> data = new ArrayList<>();
-        String sql = "SELECT i.InventoryID, i.ProductID, p.ProductName, i.WarehouseID, w.WarehouseName, i.Quantity " +
-                     "FROM Inventory i " +
-                     "JOIN Product p ON i.ProductID = p.ProductID " +
-                     "JOIN Warehouse w ON i.WarehouseID = w.WarehouseID " +
-                     "WHERE w.WarehouseName LIKE ? OR p.ProductName LIKE ?";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
-            String searchPattern = "%" + searchTerm + "%";
-            st.setString(1, searchPattern);
-            st.setString(2, searchPattern);
-            ResultSet rs = st.executeQuery();
+   public ArrayList<Inventory> searchInventories(String searchTerm) {
+    ArrayList<Inventory> data = new ArrayList<>();
+    String sql = "SELECT i.InventoryID, i.ProductID, p.ProductName, i.WarehouseID, w.WarehouseName, i.Quantity, i.LastUpdated " +
+                 "FROM Inventory i " +
+                 "JOIN Product p ON i.ProductID = p.ProductID " +
+                 "JOIN Warehouse w ON i.WarehouseID = w.WarehouseID " +
+                 "WHERE LOWER(w.WarehouseName) LIKE LOWER(?) OR LOWER(p.ProductName) LIKE LOWER(?)";
+    try (PreparedStatement st = connection.prepareStatement(sql)) {
+        String searchPattern = "%" + searchTerm + "%";
+        st.setString(1, searchPattern);
+        st.setString(2, searchPattern);
+        try (ResultSet rs = st.executeQuery()) {
             while (rs.next()) {
                 data.add(createInventoryFromResultSet(rs));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return data;
+    } catch (SQLException e) {
+        System.out.println("Error in searchInventories: " + e.getMessage());
+        e.printStackTrace();
     }
+    return data;
+
+    }
+   public void deleteAllInventories() {
+    String sql = "DELETE FROM Inventory";
+    try (PreparedStatement st = connection.prepareStatement(sql)) {
+        // Thực hiện câu lệnh xóa
+        st.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
     
-    
+  public boolean isProductAndWarehouseExist(int productID, int warehouseID) {
+    String sql = "SELECT COUNT(*) FROM Inventory WHERE ProductID = ? AND WarehouseID = ?";
+    try (PreparedStatement st = connection.prepareStatement(sql)) {
+        st.setInt(1, productID);
+        st.setInt(2, warehouseID);
+        ResultSet rs = st.executeQuery();
+        if (rs.next()) {
+            int count = rs.getInt(1);
+            return count > 0;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}  
     
 }

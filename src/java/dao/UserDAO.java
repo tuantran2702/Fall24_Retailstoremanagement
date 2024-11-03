@@ -218,7 +218,18 @@ public class UserDAO extends DBContext {
         }
         return user;  // Trả về đối tượng user, nếu không tìm thấy sẽ trả về null
     }
-    
+
+    public static void main(String[] args) {
+        UserDAO ud = new UserDAO();
+
+        User u = ud.getUserByEmail("trungpt1503@gmail.com");
+        System.out.println(u);
+//        List<User> lst = ud.getAllUsers();
+//        for (User user : lst) {
+//            System.out.println(user); // In thông tin người dùng ra console
+//        }
+    }
+
     public User getUserById(int id) {
         UserDAO ud = new UserDAO();
         List<User> lst = ud.getAllUsers();
@@ -229,17 +240,4 @@ public class UserDAO extends DBContext {
         }
         return null;
     }
-
-    public static void main(String[] args) {
-        UserDAO ud = new UserDAO();
-
-        
-        System.out.println(ud.deleteUser(1078));
-//        List<User> lst = ud.getAllUsers();
-//        for (User user : lst) {
-//            System.out.println(user); // In thông tin người dùng ra console
-//        }
-    }
-
-    
 }

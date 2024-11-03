@@ -1,7 +1,6 @@
 package controllers;
 
 import dao.InventoryDAO;
-import dao.PermissionsDAO;
 import model.Inventory;
 import model.Product;
 import model.Warehouse;
@@ -9,111 +8,193 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import model.User;
 
 public class InventoryController extends HttpServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-    }
+    private final InventoryDAO inventoryDAO = new InventoryDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        //Xử lí Phân Quyền
-        String END_POINT = "INVENTORY-MANAGE";
-        if (request.getSession().getAttribute("User") != null) {
-            PermissionsDAO pd = new PermissionsDAO();
-            User u = (User) request.getSession().getAttribute("User");
-            if (!pd.isAccess(u, END_POINT)) {
-                response.sendRedirect("404.jsp");
-                return;
-            }
-        } else {
-            response.sendRedirect("404.jsp");
-            return;
-        }
-        
         String action = request.getParameter("action");
         String idStr = request.getParameter("id");
-        InventoryDAO inventoryDAO = new InventoryDAO();
+        String searchTerm = request.getParameter("search");
+        HttpSession session = request.getSession();
 
-        if (action == null) {
-            request.setAttribute("data", inventoryDAO.getListInventory());
-            request.getRequestDispatcher("/InventoryManager/inventoryList.jsp").forward(request, response);
-        } else if ("edit".equals(action) && idStr != null) {
-            int id = Integer.parseInt(idStr);
-            Inventory inventory = inventoryDAO.getInventoryById(id);
-            request.setAttribute("inventory", inventory);
-            
-            // Fetch products and warehouses for dropdowns
-            List<Product> products = inventoryDAO.getAllProducts();
-            List<Warehouse> warehouses = inventoryDAO.getAllWarehouses();
-            request.setAttribute("products", products);
-            request.setAttribute("warehouses", warehouses);
-            
-            request.getRequestDispatcher("/InventoryManager/updateInventory.jsp").forward(request, response);
-        } else if ("create".equals(action)) {
-            List<Product> products = inventoryDAO.getAllProducts();
-            List<Warehouse> warehouses = inventoryDAO.getAllWarehouses();
-            request.setAttribute("products", products);
-            request.setAttribute("warehouses", warehouses);
-            request.getRequestDispatcher("/InventoryManager/createInventory.jsp").forward(request, response);
-        } else if ("delete".equals(action) && idStr != null) {
-            int id = Integer.parseInt(idStr);
-            request.setAttribute("id", id);
-            request.getRequestDispatcher("/InventoryManager/deleteInventory.jsp").forward(request, response);
+        try {
+            switch (action == null ? "list" : action) {
+                case "list":
+                    handleList(request, response, searchTerm);
+                    break;
+                case "create":
+                    handleShowCreate(request, response);
+                    break;
+                case "edit":
+                    handleShowEdit(request, response, idStr);
+                    break;
+                case "delete":
+                    handleShowDelete(request, response, idStr);
+                    break;
+                default:
+                    response.sendRedirect(request.getContextPath() + "/inventory");
+                    break;
+            }
+        } catch (Exception e) {
+            session.setAttribute("errorMessage", "Có lỗi xảy ra: " + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/inventory");
         }
     }
 
- 
   @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
     String action = request.getParameter("action");
-    InventoryDAO inventoryDAO = new InventoryDAO();
+    HttpSession session = request.getSession();
 
-    if ("create".equals(action)) {
+    try {
+        switch (action) {
+            case "create":
+                handleCreate(request, response);
+                break;
+            case "update":
+                handleUpdate(request, response);
+                break;
+            case "delete":
+                handleDelete(request, response);
+                break;
+            case "deleteAll": // Thêm trường hợp xóa tất cả
+                handleDeleteAll(request, response);
+                break;
+            default:
+                response.sendRedirect(request.getContextPath() + "/inventory");
+                break;
+        }
+    } catch (Exception e) {
+        session.setAttribute("errorMessage", "Có lỗi xảy ra: " + e.getMessage());
+        response.sendRedirect(request.getContextPath() + "/inventory");
+    }
+}
+
+
+private void handleDeleteAll(HttpServletRequest request, HttpServletResponse response) 
+        throws ServletException, IOException {
+    inventoryDAO.deleteAllInventories(); // Gọi phương thức xóa tất cả
+    HttpSession session = request.getSession();
+    session.setAttribute("successMessage", "Đã xóa tất cả các mục trong kho!");
+    response.sendRedirect(request.getContextPath() + "/inventory");
+}
+    private void handleList(HttpServletRequest request, HttpServletResponse response, String searchTerm) 
+            throws ServletException, IOException {
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            request.setAttribute("data", inventoryDAO.searchInventories(searchTerm.trim()));
+            request.setAttribute("searchTerm", searchTerm);
+        } else {
+            request.setAttribute("data", inventoryDAO.getListInventory());
+        }
+        request.getRequestDispatcher("/InventoryManager/inventoryList.jsp").forward(request, response);
+    }
+
+    private void handleShowCreate(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        List<Product> products = inventoryDAO.getAllProducts();
+        List<Warehouse> warehouses = inventoryDAO.getAllWarehouses();
+        request.setAttribute("products", products);
+        request.setAttribute("warehouses", warehouses);
+        request.getRequestDispatcher("/InventoryManager/createInventory.jsp").forward(request, response);
+    }
+
+    private void handleShowEdit(HttpServletRequest request, HttpServletResponse response, String idStr) 
+            throws ServletException, IOException {
+        if (idStr != null && !idStr.trim().isEmpty()) {
+            int id = Integer.parseInt(idStr);
+            Inventory inventory = inventoryDAO.getInventoryById(id);
+            if (inventory != null) {
+                List<Product> products = inventoryDAO.getAllProducts();
+                List<Warehouse> warehouses = inventoryDAO.getAllWarehouses();
+                request.setAttribute("inventory", inventory);
+                request.setAttribute("products", products);
+                request.setAttribute("warehouses", warehouses);
+                request.getRequestDispatcher("/InventoryManager/updateInventory.jsp").forward(request, response);
+                return;
+            }
+        }
+        response.sendRedirect(request.getContextPath() + "/inventory");
+    }
+
+    private void handleShowDelete(HttpServletRequest request, HttpServletResponse response, String idStr) 
+            throws ServletException, IOException {
+        if (idStr != null && !idStr.trim().isEmpty()) {
+            int id = Integer.parseInt(idStr);
+            Inventory inventory = inventoryDAO.getInventoryById(id);
+            if (inventory != null) {
+                request.setAttribute("inventory", inventory);
+                request.getRequestDispatcher("/InventoryManager/deleteInventory.jsp").forward(request, response);
+                return;
+            }
+        }
+        response.sendRedirect(request.getContextPath() + "/inventory");
+    }
+
+    private void handleCreate(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
         int productID = Integer.parseInt(request.getParameter("productID"));
         int warehouseID = Integer.parseInt(request.getParameter("warehouseID"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+        // Kiểm tra trùng lặp
+        if (inventoryDAO.isProductAndWarehouseExist(productID, warehouseID)) {
+            session.setAttribute("errorMessage", "Sản phẩm đã tồn tại trong kho này!");
+            response.sendRedirect(request.getContextPath() + "/inventory?action=create");
+            return;
+        }
+
+        // Tạo mới inventory
         Inventory inventory = new Inventory();
         inventory.setProductID(productID);
         inventory.setWarehouseID(warehouseID);
-        inventory.setQuantity(quantity);
+        inventory.setQuantity(0); // Số lượng mặc định khi tạo mới
         inventory.setLastUpdated(new Date());
+        
         inventoryDAO.createInventory(inventory);
-        response.sendRedirect("inventory");
-    } else if ("update".equals(action)) {
-        try {
-            int id = Integer.parseInt(request.getParameter("inventoryID"));
-            int productID = Integer.parseInt(request.getParameter("productID"));
-            int warehouseID = Integer.parseInt(request.getParameter("warehouseID"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
-            
-            Inventory inventory = new Inventory();
-            inventory.setInventoryID(id);
+        session.setAttribute("successMessage", "Thêm mới thành công!");
+        response.sendRedirect(request.getContextPath() + "/inventory");
+    }
+
+    private void handleUpdate(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int id = Integer.parseInt(request.getParameter("inventoryID"));
+        int productID = Integer.parseInt(request.getParameter("productID"));
+        int warehouseID = Integer.parseInt(request.getParameter("warehouseID"));
+
+        // Lấy inventory hiện tại và cập nhật
+        Inventory inventory = inventoryDAO.getInventoryById(id);
+        if (inventory != null) {
             inventory.setProductID(productID);
             inventory.setWarehouseID(warehouseID);
-            inventory.setQuantity(quantity);
             inventory.setLastUpdated(new Date());
+            
             inventoryDAO.updateInventory(inventory);
-            response.sendRedirect("inventory");
-        } catch (NumberFormatException e) {
-            // Xử lý nếu có lỗi khi chuyển đổi chuỗi thành số
-            request.setAttribute("errorMessage", "Invalid input. Please ensure all fields are filled correctly.");
-            request.getRequestDispatcher("/InventoryManager/updateInventory.jsp").forward(request, response);
+            session.setAttribute("successMessage", "Cập nhật thành công!");
+        } else {
+            session.setAttribute("errorMessage", "Không tìm thấy inventory!");
         }
-    } else if ("delete".equals(action)) {
-        int id = Integer.parseInt(request.getParameter("id"));
-        inventoryDAO.deleteInventory(id);
-        response.sendRedirect("inventory");
+        response.sendRedirect(request.getContextPath() + "/inventory");
     }
+
+ private void handleDelete(HttpServletRequest request, HttpServletResponse response) 
+        throws ServletException, IOException {
+    String idStr = request.getParameter("id");
+    if (idStr != null && !idStr.trim().isEmpty()) {
+        int id = Integer.parseInt(idStr);
+        // Gọi phương thức xóa mà không cần kiểm tra
+        inventoryDAO.deleteInventory(id);
+    }
+    // Sau khi xóa, điều hướng về danh sách
+    response.sendRedirect(request.getContextPath() + "/inventory");
 }
 
 

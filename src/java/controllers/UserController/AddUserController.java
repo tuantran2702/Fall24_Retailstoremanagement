@@ -67,22 +67,6 @@ public class AddUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        //Xử lí Phân Quyền
-        String END_POINT = "USER-MANAGE";
-        if (request.getSession().getAttribute("User") != null) {
-            PermissionsDAO pd = new PermissionsDAO();
-            User u = (User) request.getSession().getAttribute("User");
-            if (!pd.isAccess(u, END_POINT)) {
-                response.sendRedirect("404.jsp");
-                return;
-            }
-        } else {
-            response.sendRedirect("404.jsp");
-            return;
-        }
-        
-        
         RoleDAO rd = new RoleDAO();
         List<Role> roles = rd.getAllRole();
         User user = new User(); // Khởi tạo một đối tượng User mới
@@ -100,6 +84,8 @@ public class AddUserController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private static final String UPLOAD_DIRECTORY = "img-anhthe";  // Folder where images will be stored
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Collect form data
@@ -112,39 +98,35 @@ public class AddUserController extends HttpServlet {
         SendEmail se = new SendEmail();
         String password = se.generateRandomCode(6);
 
-        // Xử lý ảnh tải lên
+        //Img
         ImageHandler ih = new ImageHandler();
-        String imgPath = null;
+        String uploadFilePath = "E:\\Fall24\\SWP391\\Clone-Git\\Fall24_Retailstoremanagement-Clone\\web\\img-anhthe";
+        String imgPath = "img-anhthe\\default.png";
 
-        // Lấy phần file tải lên từ request
+        // Lấy phần file tải lên
         Part filePart = request.getPart("ImageUpload");
-        // Lưu ảnh vào thư mục upload và lấy đường dẫn ảnh
-        imgPath = ih.luuAnh(filePart, getServletContext());
+
+        if (filePart != null && filePart.getSize() > 0) {
+            // Lưu ảnh vào thư mục và lấy đường dẫn ảnh
+            imgPath = ih.luuAnh(filePart, uploadFilePath);
+        }
 
         //Tao 1 User de kiem tra
         User addedUser = new User();
-
         addedUser.setFirstName(firstName);
-
         addedUser.setLastName(lastName);
-
         addedUser.setEmail(email);
-
         addedUser.setPassword(password); // Password will be hashed in the DAO layer
-
         addedUser.setPhoneNumber(phone);
-
         addedUser.setAddress(address);
-
         addedUser.setImg(imgPath); // Set the image path
 
         //Kiem tra Role
         int roleId;
-
         try {
             roleId = Integer.parseInt(request.getParameter("role"));
             addedUser.setRoleID(roleId);
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             // Gửi thông báo lỗi khi người dùng không chọn chức vụ hợp lệ
             request.setAttribute("errorMessage", "Vui lòng chọn chức vụ.");
 
@@ -164,8 +146,7 @@ public class AddUserController extends HttpServlet {
         //Kiem Tra Email
         UserDAO ud = new UserDAO();
         User checkEmail = ud.getUserByEmail(addedUser.getEmail());
-        if (checkEmail
-                != null) {
+        if (checkEmail != null) {
             request.setAttribute("errorMessage", "Email already exists");
 
             addedUser.setEmail("");
@@ -184,7 +165,6 @@ public class AddUserController extends HttpServlet {
 
         // Kiểm tra số điện thoại có hợp lệ hay không (10 số và bắt đầu bằng 0)
         String phonePattern = "^0\\d{9}$";
-
         if (!phone.matches(phonePattern)) {
             // Nếu số điện thoại không hợp lệ, thiết lập thông báo lỗi
             request.setAttribute("errorMessage", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại 10 số bắt đầu bằng 0.");
@@ -201,10 +181,9 @@ public class AddUserController extends HttpServlet {
             request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
             return;  // Dừng xử lý tiếp
         }
-
+//      
         // Create a user object
         User user = new User();
-
         user.setFirstName(addedUser.getFirstName());
         user.setLastName(addedUser.getLastName());
         user.setEmail(addedUser.getEmail());
@@ -215,12 +194,13 @@ public class AddUserController extends HttpServlet {
         user.setImg(addedUser.getImg()); // Set the image path
 
         // Insert user into the database
+        ;
         try {
             ud.addUser(user);
             se.sendEmailWelcome(email, password);
             response.sendRedirect("userManage"); // Redirect on success
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             // Set error message in the request
             request.setAttribute("errorMessage", "An error occurred while adding the user. Please try again.");
             // Forward request back to the form page

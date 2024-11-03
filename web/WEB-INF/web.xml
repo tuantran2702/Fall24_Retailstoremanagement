@@ -65,6 +65,10 @@
         <servlet-class>controllers.UserController.AddUserController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>GetUserServlet</servlet-name>
+        <servlet-class>controllers.UserController.GetUserServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LogOutServlet</servlet-name>
         <servlet-class>controllers.UserController.LogOutServlet</servlet-class>
     </servlet>
@@ -95,10 +99,6 @@
     <servlet>
         <servlet-name>UpdateUserController</servlet-name>
         <servlet-class>controllers.UserController.UpdateUserController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DeleteUserServlet</servlet-name>
-        <servlet-class>controllers.UserController.DeleteUserServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SalesController</servlet-name>
@@ -137,28 +137,8 @@
         <servlet-class>controllers.RoleControllers.PermissionsServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GetPermissionServlet</servlet-name>
-        <servlet-class>controllers.RoleControllers.GetPermissionServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AddPermissionServlet</servlet-name>
-        <servlet-class>controllers.RoleControllers.AddPermissionServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DeletePermissionServlet</servlet-name>
-        <servlet-class>controllers.RoleControllers.DeletePermissionServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>TestServle</servlet-name>
-        <servlet-class>controllers.UserController.TestServle</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DiscountServlet</servlet-name>
-        <servlet-class>controllers.DiscountControllers.DiscountServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GetDiscountServlet</servlet-name>
-        <servlet-class>controllers.DiscountControllers.GetDiscountServlet</servlet-class>
+        <servlet-name>GetInventoriesServlet</servlet-name>
+        <servlet-class>controllers.GetInventoriesServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
@@ -229,6 +209,10 @@
         <url-pattern>/addUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>GetUserServlet</servlet-name>
+        <url-pattern>/getUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>LogOutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
@@ -259,10 +243,6 @@
     <servlet-mapping>
         <servlet-name>UpdateUserController</servlet-name>
         <url-pattern>/updateUser</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeleteUserServlet</servlet-name>
-        <url-pattern>/deleteUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SalesController</servlet-name>
@@ -301,28 +281,8 @@
         <url-pattern>/permissions</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>GetPermissionServlet</servlet-name>
-        <url-pattern>/getPermission</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AddPermissionServlet</servlet-name>
-        <url-pattern>/addPermission</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeletePermissionServlet</servlet-name>
-        <url-pattern>/deletePermission</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>TestServle</servlet-name>
-        <url-pattern>/test</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DiscountServlet</servlet-name>
-        <url-pattern>/discount</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GetDiscountServlet</servlet-name>
-        <url-pattern>/getDiscount</url-pattern>
+        <servlet-name>GetInventoriesServlet</servlet-name>
+        <url-pattern>/getInventories</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

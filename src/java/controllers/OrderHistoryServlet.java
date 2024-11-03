@@ -5,7 +5,6 @@
 package controllers;
 
 import dao.OrderDAO;
-import dao.PermissionsDAO;
 import dto.OrderHistoryDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -63,21 +62,6 @@ public class OrderHistoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        //Xử lí Phân Quyền
-        String END_POINT = "ORDER-MANAGE";
-        if (request.getSession().getAttribute("User") != null) {
-            PermissionsDAO pd = new PermissionsDAO();
-            User u = (User) request.getSession().getAttribute("User");
-            if (!pd.isAccess(u, END_POINT)) {
-                response.sendRedirect("404.jsp");
-                return;
-            }
-        } else {
-            response.sendRedirect("404.jsp");
-            return;
-        }
-        
         OrderDAO d = new OrderDAO();
         HttpSession session = request.getSession();
         int cp = 1;
