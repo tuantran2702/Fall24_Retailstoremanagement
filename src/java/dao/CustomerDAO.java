@@ -115,4 +115,67 @@ public class CustomerDAO extends DBContext {
             e.printStackTrace();
         }
     }
+    // Xóa tất cả khách hàng
+
+    public void deleteAllCustomers() {
+        String sql = "DELETE FROM Customer";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    // Get filtered customers by name and rank
+    public ArrayList<Customer> getFilteredCustomers(String firstName, String lastName, int rankID) {
+        ArrayList<Customer> data = new ArrayList<>();
+        String sql = "SELECT c.*, r.RankName, c.CurrentPoint FROM Customer c JOIN CustomerRank r ON c.RankID = r.RankID WHERE 1=1";
+
+        // Add filtering conditions
+        if (firstName != null && !firstName.isEmpty()) {
+            sql += " AND c.FirstName LIKE ?";
+        }
+        if (lastName != null && !lastName.isEmpty()) {
+            sql += " AND c.LastName LIKE ?";
+        }
+        if (rankID > 0) {
+            sql += " AND c.RankID = ?";
+        }
+
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int paramIndex = 1;
+
+            // Set parameters for filtering
+            if (firstName != null && !firstName.isEmpty()) {
+                st.setString(paramIndex++, "%" + firstName + "%");
+            }
+            if (lastName != null && !lastName.isEmpty()) {
+                st.setString(paramIndex++, "%" + lastName + "%");
+            }
+            if (rankID > 0) {
+                st.setInt(paramIndex++, rankID);
+            }
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("CustomerID");
+                String fName = rs.getString("FirstName");
+                String lName = rs.getString("LastName");
+                String email = rs.getString("Email");
+                String phoneNumber = rs.getString("PhoneNumber");
+                double totalSpent = rs.getDouble("TotalSpent");
+                String address = rs.getString("Address");
+                int rID = rs.getInt("RankID");
+                String rankName = rs.getString("RankName"); // Get RankName
+                int currentPoint = rs.getInt("CurrentPoint"); // Get CurrentPoint
+
+                Customer customer = new Customer(customerID, fName, lName, email, phoneNumber, totalSpent, address, rID, rankName, currentPoint);
+                data.add(customer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
 }

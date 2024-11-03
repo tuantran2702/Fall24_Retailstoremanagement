@@ -73,11 +73,11 @@
                         <h3 class="tile-title">Danh sách bán hàng</h3>
                         <div class="tile-body">
                             <div class="row element-button">
-<!--                                <div class="col-sm-2">
-                                    <a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/customer?action=create" title="Thêm">
-                                        <i class="fas fa-user-plus"></i> Tạo mới thứ bậc
-                                    </a>
-                                </div>-->
+                                <!--                                <div class="col-sm-2">
+                                                                    <a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/customer?action=create" title="Thêm">
+                                                                        <i class="fas fa-user-plus"></i> Tạo mới thứ bậc
+                                                                    </a>
+                                                                </div>-->
                                 <div class="col-sm-2">
                                     <a class="btn btn-warning btn-sm nhap-tu-file" type="button" title="Nhập" href="customer">
                                         <i class="fas fa-users"></i> Quản lý khách hàng
@@ -96,6 +96,11 @@
                                 <div class="col-sm-2">
                                     <a class="btn btn-danger btn-sm print-file js-textareacopybtn" type="button" href="order">
                                         <i class="fas fa-shopping-cart"></i> Order
+                                    </a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-excel btn-sm" href="${pageContext.request.contextPath}/sales?action=exportExcel" title="Xuất Excel">
+                                        <i class="fas fa-file-excel"></i> Xuất Excel
                                     </a>
                                 </div>
                             </div>

@@ -43,6 +43,18 @@
                     <li class="breadcrumb-item">Danh sách điểm thưởng</li>
                 </ul>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="${pageContext.request.contextPath}/loyalty" method="GET">
+                        <div class="form-group">
+                            <label for="customerName">Tên khách hàng:</label>
+                            <input type="text" id="customerName" name="customerName" class="form-control" placeholder="Nhập tên khách hàng">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                    </form>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-12">
@@ -73,6 +85,11 @@
                                 <div class="col-sm-2">
                                     <a class="btn btn-danger btn-sm print-file js-textareacopybtn" type="button" href="order">
                                         <i class="fas fa-shopping-cart"></i> Order
+                                    </a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-excel btn-sm" href="${pageContext.request.contextPath}/loyalty?action=exportExcel" title="Xuất Excel">
+                                        <i class="fas fa-file-excel"></i> Xuất Excel
                                     </a>
                                 </div>
                             </div>

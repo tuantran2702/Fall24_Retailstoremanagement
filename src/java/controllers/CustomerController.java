@@ -3,8 +3,12 @@ package controllers;
 import dao.CustomerDAO;
 import dao.CustomerRankDAO;
 import model.Customer;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStream;
+import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,14 +23,21 @@ public class CustomerController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String idStr = request.getParameter("id");
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        String rankIDStr = request.getParameter("rankID");
+        int rankID = (rankIDStr != null && !rankIDStr.isEmpty()) ? Integer.parseInt(rankIDStr) : 0;
 
         CustomerDAO customerDAO = new CustomerDAO();
         CustomerRankDAO customerRankDAO = new CustomerRankDAO();
 
         if (action == null) {
-            // Display list of customers
-            request.setAttribute("data", customerDAO.getListCustomers());
+            // Tìm kiếm khách hàng
+            List<Customer> customers = customerDAO.getFilteredCustomers(firstName, lastName, rankID);
+            request.setAttribute("data", customers);
+            request.setAttribute("ranks", customerRankDAO.getListCustomerRank()); // Để hiển thị danh sách rank
             request.getRequestDispatcher("/CustomerManager/Customer/CustomerManager.jsp").forward(request, response);
+
         } else if (action.equals("edit") && idStr != null) {
             // Edit customer
             int id = Integer.parseInt(idStr);
@@ -47,6 +58,9 @@ public class CustomerController extends HttpServlet {
             int id = Integer.parseInt(idStr);
             request.setAttribute("id", id);
             request.getRequestDispatcher("/CustomerManager/Customer/deleteCustomer.jsp").forward(request, response);
+        } else if (action.equals("exportExcel")) {
+            // Xuất Excel
+            exportExcel(response, customerDAO.getListCustomers());
         }
     }
 
@@ -85,9 +99,6 @@ public class CustomerController extends HttpServlet {
             String phoneNumber = request.getParameter("phoneNumber");
             String address = request.getParameter("address");
 
-//            double totalSpent = Double.parseDouble(request.getParameter("totalSpent"));
-//            int rankID = Integer.parseInt(request.getParameter("rankID"));
-
             Customer customer = new Customer();
             customer.setCustomerID(id);
             customer.setFirstName(firstName);
@@ -95,8 +106,6 @@ public class CustomerController extends HttpServlet {
             customer.setEmail(email);
             customer.setPhoneNumber(phoneNumber);
             customer.setAddress(address);
-//            customer.setTotalSpent(totalSpent);
-//            customer.setRankID(rankID);
 
             customerDAO.updateCustomer(customer);
             response.sendRedirect(request.getContextPath() + "/customer");
@@ -105,6 +114,45 @@ public class CustomerController extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             customerDAO.deleteCustomer(id);
             response.sendRedirect(request.getContextPath() + "/customer");
+        }
+    }
+
+    private void exportExcel(HttpServletResponse response, List<Customer> customers) throws IOException {
+        // Thiết lập thông tin cho file Excel
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=customers.xlsx");
+
+        // Tạo workbook và sheet
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Customers");
+
+        // Tạo hàng tiêu đề
+        Row headerRow = sheet.createRow(0);
+        String[] columnHeaders = {"Customer ID", "First Name", "Last Name", "Email", "Phone Number", "Total Spent", "Address", "Rank"};
+        for (int i = 0; i < columnHeaders.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(columnHeaders[i]);
+        }
+
+        // Thêm dữ liệu vào sheet
+        int rowNum = 1;
+        for (Customer customer : customers) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(customer.getCustomerID());
+            row.createCell(1).setCellValue(customer.getFirstName());
+            row.createCell(2).setCellValue(customer.getLastName());
+            row.createCell(3).setCellValue(customer.getEmail());
+            row.createCell(4).setCellValue(customer.getPhoneNumber());
+            row.createCell(5).setCellValue(customer.getTotalSpent());
+            row.createCell(6).setCellValue(customer.getAddress());
+            row.createCell(7).setCellValue(customer.getRankName());
+        }
+
+        // Ghi workbook vào OutputStream
+        try ( OutputStream out = response.getOutputStream()) {
+            workbook.write(out);
+        } finally {
+            workbook.close();
         }
     }
 

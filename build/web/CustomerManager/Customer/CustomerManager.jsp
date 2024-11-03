@@ -61,6 +61,33 @@
                     <li class="breadcrumb-item">Danh sách khách hàng</li>
                 </ul>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="${pageContext.request.contextPath}/customer" method="GET">
+                        <div class="form-group">
+                            <label for="firstName">Họ:</label>
+                            <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Nhập firstName">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName">Tên:</label>
+                            <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Nhập lastName">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rankID">Hạng (Rank):</label>
+                            <select id="rankID" name="rankID" class="form-control">
+                                <option value="">-- Chọn hạng --</option>
+                                <c:forEach var="rank" items="${ranks}">
+                                    <option value="${rank.rankID}">${rank.rankName}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                    </form>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-12">
@@ -93,6 +120,27 @@
                                         <i class="fas fa-shopping-cart"></i> Order
                                     </a>
                                 </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-excel btn-sm" href="/Fall24_Retailstoremanagement/customer?action=exportExcel" title="In"><i class="fas fa-file-excel"></i> Xuất Excel</a>
+                                </div>
+<!--                                <div class="col-sm-2">
+                                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)"><i
+                                            class="fas fa-file-pdf"></i> Xuất PDF</a>
+                                </div>-->
+                                <div class="col-sm-2">
+                                    <a class="btn btn-delete btn-sm" type="button" title="Xóa tất cả" onclick="confirmDeleteAll()">
+                                        <i class="fas fa-trash-alt"></i> Xóa tất cả
+                                    </a>
+                                </div>
+
+                                <script>
+                                    function confirmDeleteAll() {
+                                        if (confirm("Bạn có chắc chắn muốn xóa tất cả khách hàng không?")) {
+                                            // Nếu người dùng xác nhận, chuyển hướng đến URL xóa tất cả
+                                            window.location.href = "customer?action=deleteAll";
+                                        }
+                                    }
+                                </script>
                             </div>
 
                             <table class="table table-hover table-bordered" id="sampleTable">

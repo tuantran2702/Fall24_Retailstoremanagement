@@ -45,6 +45,18 @@
                     <i class="fa fa-plus"></i> Thêm cấp bậc
                 </a>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="${pageContext.request.contextPath}/customerRank" method="GET">
+                        <div class="form-group">
+                            <label for="rankName">Tên hạng:</label>
+                            <input type="text" id="rankName" name="rankName" class="form-control" placeholder="Nhập tên hạng">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                    </form>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-md-12">
@@ -53,7 +65,7 @@
                         <div class="tile-body">
                             <div class="row element-button">
                                 <div class="col-sm-2">
-                                    <a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/customer?action=create" title="Thêm">
+                                    <a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/customerRank?action=create" title="Thêm">
                                         <i class="fas fa-user-plus"></i> Tạo mới thứ bậc
                                     </a>
                                 </div>
@@ -77,6 +89,27 @@
                                         <i class="fas fa-shopping-cart"></i> Order
                                     </a>
                                 </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-excel btn-sm" href="/Fall24_Retailstoremanagement/customerRank?action=exportExcel" title="In"><i class="fas fa-file-excel"></i> Xuất Excel</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)"><i
+                                            class="fas fa-file-pdf"></i> Xuất PDF</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a class="btn btn-delete btn-sm" type="button" title="Xóa" onclick="confirmDeleteAll()">
+                                        <i class="fas fa-trash-alt"></i> Xóa tất cả
+                                    </a>
+                                </div>
+
+                                <script>
+                                    function confirmDeleteAll() {
+                                        if (confirm("Bạn có chắc chắn muốn xóa tất cả customer ranks không?")) {
+                                            // Nếu người dùng xác nhận, chuyển hướng đến URL xóa tất cả
+                                            window.location.href = "customerRank?action=deleteAll";
+                                        }
+                                    }
+                                </script>
                             </div>
 
                             <table>
@@ -86,6 +119,7 @@
                                         <th>Rank Name</th>
                                         <th>Minimum Spent</th>
                                         <th>Description</th>
+                                        <th>Discount Percent</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -96,6 +130,7 @@
                                             <td>${rank.rankName}</td>
                                             <td>${rank.minimumSpent}</td>
                                             <td>${rank.description}</td>
+                                            <td>${rank.discountPercent}</td>
                                             <td>
                                                 <a href="${pageContext.request.contextPath}/customerRank?action=edit&id=${rank.rankID}" class="btn btn-primary btn-sm edit" title="Sửa"><i class="fas fa-edit"></i></a>
                                                 <a href="${pageContext.request.contextPath}/customerRank?action=delete&id=${rank.rankID}" class="btn btn-primary btn-sm trash" title="Xóa"><i class="fas fa-trash-alt"></i></a>
