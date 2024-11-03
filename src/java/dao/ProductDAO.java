@@ -22,7 +22,6 @@ import org.apache.tomcat.dbcp.dbcp2.PStmtKey;
  */
 public class ProductDAO extends DBContext {
 
-
 //    public boolean updateProduct(Product product) {
 //        String sql = "UPDATE Warehouse SET WarehouseName = ?, Location = ?, ManagerName = ?, ContactNumber = ? WHERE WarehouseID = ?";
 //        try {
@@ -50,7 +49,7 @@ public class ProductDAO extends DBContext {
 //        }
 //        return false;
 //    }
-        public ArrayList<Product> getListProduct() {
+    public ArrayList<Product> getListProduct() {
         ArrayList<Product> data = new ArrayList<>();
         String sql = "select p.*,c.CategoryName from Product p join Category c on p.CategoryID=c.CategoryID";
         try {
@@ -71,21 +70,17 @@ public class ProductDAO extends DBContext {
                 int userID = rs.getInt(12);
                 int unitID = rs.getInt(13);
                 int supplierID = rs.getInt(14);
-                String categoryName =rs.getString(15);
+                String categoryName = rs.getString(15);
 
-                data.add(new Product(productID, productCode, productName, categoryID, price, quantity, description, createdDate, expiredDate, updateDate, image, userID, unitID, supplierID,categoryName ));
+                data.add(new Product(productID, productCode, productName, categoryID, price, quantity, description, createdDate, expiredDate, updateDate, image, userID, unitID, supplierID, categoryName));
 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return data;
-        
-        
-        
+
     }
-        
-        
 
 //    public ArrayList<Product> getListProduct() {
 //        ArrayList<Product> data = new ArrayList<>();
@@ -117,8 +112,6 @@ public class ProductDAO extends DBContext {
 //        }
 //        return data;
 //    }
-
-
 //lay categoryname theo category id
     public ArrayList<Category> GetListCategory() {
         ArrayList<Category> data = new ArrayList<>();
@@ -127,11 +120,10 @@ public class ProductDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                int categoryID=rs.getInt(1);
-                String categoryName =rs.getString(2);
-                String description =rs.getString(3);
-                            data.add(new Category(categoryID, categoryName, description));
-
+                int categoryID = rs.getInt(1);
+                String categoryName = rs.getString(2);
+                String description = rs.getString(3);
+                data.add(new Category(categoryID, categoryName, description));
 
             }
 
@@ -139,11 +131,8 @@ public class ProductDAO extends DBContext {
             e.printStackTrace();
         }
         return data;
-        
 
     }
-
-
 
     public ArrayList<Unit> GetListUnit() {
         ArrayList<Unit> data = new ArrayList<>();
@@ -152,10 +141,9 @@ public class ProductDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                int unitID=rs.getInt(1);
-                String unitName =rs.getString(2);
-                            data.add(new Unit(unitID, unitName));
-
+                int unitID = rs.getInt(1);
+                String unitName = rs.getString(2);
+                data.add(new Unit(unitID, unitName));
 
             }
 
@@ -173,15 +161,14 @@ public class ProductDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                int supplierID=rs.getInt(1);
-                String supplierName =rs.getString(2);
-                String contactName=rs.getString(3);
-                String phoneNumber=rs.getString(4);
-                String email=rs.getString(5);
-                String address=rs.getString(6);
-                        
-                            data.add(new Supplier(supplierID, supplierName, contactName, phoneNumber, email, address));
+                int supplierID = rs.getInt(1);
+                String supplierName = rs.getString(2);
+                String contactName = rs.getString(3);
+                String phoneNumber = rs.getString(4);
+                String email = rs.getString(5);
+                String address = rs.getString(6);
 
+                data.add(new Supplier(supplierID, supplierName, contactName, phoneNumber, email, address));
 
             }
 
@@ -206,9 +193,11 @@ public class ProductDAO extends DBContext {
                 String password=rs.getString(5);
                 String phoneNumber=rs.getString(6);
                 String address=rs.getString(7);
-                int roleID =rs.getInt(8);
+                String img=rs.getString(8);
+                int roleID =rs.getInt(9);
+                
+                data.add(new User(userID, firstName, lastName, email, password, phoneNumber, address, roleID, img));
                         
-                            data.add(new User(userID, firstName, lastName, email, password, phoneNumber, address, roleID));
                             
 
 
@@ -221,50 +210,50 @@ public class ProductDAO extends DBContext {
         
 
     }
-    
 //    public static void main(String[] args) {
 //        System.out.println();
 //        ProductDAO p =new ProductDAO();
 //        System.out.println(p.GetListUser());
 //    }
-
     public void createProduct(Product product) {
-                String sql = "INSERT INTO [dbo].[Product]\n" +
-"           ([ProductCode]\n" +
-"           ,[ProductName]\n" +
-"           ,[CategoryID]\n" +
-"           ,[Price]\n" +
-"           ,[Quantity]\n" +
-"           ,[Description]\n" +
-"           ,[CreatedDate]\n" +
-"           ,[ExpiredDate]\n" +
-"           ,[UpdateDate]\n" +
-"           ,[Image]\n" +
-"           ,[UserID]\n" +
-"           ,[UnitID]\n" +
-"           ,[SupplierID]) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sql);
-                        stmt.setString(1, product.getProductCode());
-            stmt.setString(2, product.getProductName());
-            stmt.setInt(3, product.getCategoryID());
-            stmt.setDouble(4, product.getPrice());
-            stmt.setInt(5, product.getQuantity());
-            stmt.setString(6, product.getDescription());
-            stmt.setDate(7, new java.sql.Date(product.getCreatedDate().getTime()));
-            stmt.setDate(8, new java.sql.Date(product.getExpiredDate().getTime()));
-            stmt.setDate(9, new java.sql.Date(product.getUpdateDate().getTime()));
-            stmt.setString(10, product.getImage());
-            stmt.setInt(11, product.getUserID());
-            stmt.setInt(12, product.getUnitID());
-            stmt.setInt(13, product.getSupplierID());
+            String sql = "INSERT INTO [dbo].[Product]\n"
+                    + "           ([ProductCode]\n"
+                    + "           ,[ProductName]\n"
+                    + "           ,[CategoryID]\n"
+                    + "           ,[Price]\n"
+                    + "           ,[Quantity]\n"
+                    + "           ,[Description]\n"
+                    + "           ,[CreatedDate]\n"
+                    + "           ,[ExpiredDate]\n"
+                    + "           ,[UpdateDate]\n"
+                    + "           ,[Image]\n"
+                    + "           ,[UserID]\n"
+                    + "           ,[UnitID]\n"
+                    + "           ,[SupplierID]) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try {
+                PreparedStatement stmt = connection.prepareStatement(sql);
+                stmt.setString(1, product.getProductCode());
+                stmt.setString(2, product.getProductName());
+                stmt.setInt(3, product.getCategoryID());
+                stmt.setDouble(4, product.getPrice());
+                stmt.setInt(5, product.getQuantity());
+                stmt.setString(6, product.getDescription());
+                stmt.setDate(7, new java.sql.Date(product.getCreatedDate().getTime()));
+                stmt.setDate(8, new java.sql.Date(product.getExpiredDate().getTime()));
+                stmt.setDate(9, new java.sql.Date(product.getUpdateDate().getTime()));
+                stmt.setString(10, product.getImage());
+                stmt.setInt(11, product.getUserID());
+                stmt.setInt(12, product.getUnitID());
+                stmt.setInt(13, product.getSupplierID());
 
-             stmt.executeUpdate();
+                stmt.executeUpdate();
 
-        } catch (SQLException e) {
-            System.out.println("insertFail:" + e.getMessage());
+            } catch (SQLException e) {
+                System.out.println("insertFail:" + e.getMessage());
 //            e.printStackTrace();
-        }
+            }
+
+      
 
     }
 
@@ -298,43 +287,48 @@ public class ProductDAO extends DBContext {
 
     }
 
-
     public void updateProduct(Product product) {
-                String sql = "UPDATE Product SET ProductCode = ?,"
-                        + " ProductName = ?,"
-                        + " CategoryID = ?,"
-                        + " Price = ?,"
-                        + " Quantity = ?,"
-                        + " Description = ?,"
-                        + "CreatedDate = ?,"
-                        + " ExpiredDate = ?,"
-                        + " UpdateDate = ?,"
-                        + " Image = ?,"
-                        + " UserID = ?,"
-                        + " UnitID = ?,"
-                        + " SupplierID = ? WHERE ProductID = ?";
-        try {
-            PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setString(1, product.getProductCode());
-            stmt.setString(2, product.getProductName());
-            stmt.setInt(3, product.getCategoryID());
-            stmt.setDouble(4, product.getPrice());
-            stmt.setInt(5, product.getQuantity());
-            stmt.setString(6, product.getDescription());
-            stmt.setDate(7, new java.sql.Date(product.getCreatedDate().getTime()));
-            stmt.setDate(8, new java.sql.Date(product.getExpiredDate().getTime()));
-            stmt.setDate(9, new java.sql.Date(product.getUpdateDate().getTime()));
-            stmt.setString(10, product.getImage());
-            stmt.setInt(11, product.getUserID());
-            stmt.setInt(12, product.getUnitID());
-            stmt.setInt(13, product.getSupplierID());
-            stmt.setInt(14, product.getProductID());
+        int importInventory = getInventoryQuantityByProductId(product.getProductID());
+        if (product.getQuantity() <= importInventory) {
+            String sql = "UPDATE Product SET ProductCode = ?,"
+                    + " ProductName = ?,"
+                    + " CategoryID = ?,"
+                    + " Price = ?,"
+                    + " Quantity = ?,"
+                    + " Description = ?,"
+                    + "CreatedDate = ?,"
+                    + " ExpiredDate = ?,"
+                    + " UpdateDate = ?,"
+                    + " Image = ?,"
+                    + " UserID = ?,"
+                    + " UnitID = ?,"
+                    + " SupplierID = ? WHERE ProductID = ?";
+            try {
+                PreparedStatement stmt = connection.prepareStatement(sql);
+                stmt.setString(1, product.getProductCode());
+                stmt.setString(2, product.getProductName());
+                stmt.setInt(3, product.getCategoryID());
+                stmt.setDouble(4, product.getPrice());
+                stmt.setInt(5, product.getQuantity());
+                stmt.setString(6, product.getDescription());
+                stmt.setDate(7, new java.sql.Date(product.getCreatedDate().getTime()));
+                stmt.setDate(8, new java.sql.Date(product.getExpiredDate().getTime()));
+                stmt.setDate(9, new java.sql.Date(product.getUpdateDate().getTime()));
+                stmt.setString(10, product.getImage());
+                stmt.setInt(11, product.getUserID());
+                stmt.setInt(12, product.getUnitID());
+                stmt.setInt(13, product.getSupplierID());
+                stmt.setInt(14, product.getProductID());
 
-            stmt.executeUpdate();
+                stmt.executeUpdate();
 
-        } catch (SQLException e) {
-            System.out.println("insertFail:" + e.getMessage());
+            } catch (SQLException e) {
+                System.out.println("insertFail:" + e.getMessage());
 //            e.printStackTrace();
+            }
+
+        } else {
+            System.out.println("Error: Product quantity exceeds Inventory quantity.");
         }
 
     }
@@ -345,7 +339,7 @@ public class ProductDAO extends DBContext {
 //    }
 
     public void deleteProduct(int id) {
-                String sql = "DELETE FROM [dbo].[Product] WHERE ProductID=?";
+        String sql = "DELETE FROM [dbo].[Product] WHERE ProductID=?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -354,6 +348,23 @@ public class ProductDAO extends DBContext {
         } catch (Exception e) {
             System.out.println("DeleteFail:" + e.getMessage());
         }
+
+    }
+
+
+    public int getInventoryQuantityByProductId(int productID) {
+        String query = "select Quantity from Inventory where ProductID=?";
+        try {
+            PreparedStatement pstm = connection.prepareStatement(query);
+            pstm.setInt(1, productID);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("quantity");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
 
     }
 

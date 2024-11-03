@@ -29,6 +29,10 @@ public class Supplier {
         this.email = email;
         this.address = address;
     }
+
+    public Supplier(String supplierName) {
+        this.supplierName = supplierName;
+    }
     
     
 
@@ -86,4 +90,3 @@ public class Supplier {
     }
     
 }
-

@@ -59,7 +59,7 @@ public class CheckoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -80,7 +80,25 @@ public class CheckoutServlet extends HttpServlet {
             cart = new Cart();
         }
 
-        User u = (User) session.getAttribute("User");
+        String customerId_raw = request.getParameter("customerId");
+        int customerId = 0;
+        boolean isValidCustomerId = false; // Flag to track if the customer ID is valid
+        try {
+            if (customerId_raw != null && !customerId_raw.isEmpty()) {
+                customerId = Integer.parseInt(customerId_raw);
+                // Check if the customerId is greater than zero
+                if (customerId > 0) {
+                    isValidCustomerId = true; // Valid customer ID
+                } else {
+                    throw new NumberFormatException("Customer ID must be greater than zero");
+                }
+            } else {
+                throw new NumberFormatException("Customer ID is empty");
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
 
         int paymentMethodId = 0;
 
@@ -96,14 +114,22 @@ public class CheckoutServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
         }
-
-        double totalAmount = cart.getTotalMoney();
-        dao.addOrder(u.getUserID(), cart, totalAmount, paymentMethodId);
+        String totalAmount_raw = request.getParameter("total");
+        double totalAmount = 0;
+        try {
+            totalAmount = Double.parseDouble(totalAmount_raw);
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        }
+        
+        if (isValidCustomerId) {
+            dao.addOrder(customerId, cart, totalAmount, paymentMethodId);
+        } else {
+            dao.addOrder(cart, totalAmount, paymentMethodId);
+        }
         for (Item item : cart.getItems()) {
-            // Giả sử Item có phương thức getProductID() và getQuantity()
             int productId = item.getProduct().getProductID();
             int quantityOrdered = item.getQuantity();
-            // Cập nhật số lượng hàng trong kho
             dao.updateProductQuantity(productId, quantityOrdered);
         }
         session.removeAttribute("cart");

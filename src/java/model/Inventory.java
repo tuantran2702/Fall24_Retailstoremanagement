@@ -10,6 +10,7 @@ public class Inventory {
     private Date lastUpdated;
     private String productName;
     private String warehouseName;
+    
 
     // Constructor
     public Inventory(int inventoryID, int productID, int warehouseID, int quantity, Date lastUpdated, String productName, String warehouseName) {

@@ -50,35 +50,7 @@
         </header>
         <!-- Sidebar menu-->
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-        <aside class="app-sidebar">
-            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
-                                                alt="User Image">
-                <div>
-                    <p class="app-sidebar__user-name"><b>Võ Trường</b></p>
-                    <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
-                </div>
-            </div>
-            <hr>
-            <ul class="app-menu">
-                <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>POS Bán Hàng</a></li>
-                <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-tachometer'></i>Bảng điều khiển</a></li>
-
-
-       
-                <li><a class="app-menu__item active" href="${pageContext.request.contextPath}/product"><i class='app-menu__icon bx bx-task'></i>Quản lý sản phẩm</a></li>
-
-                <li><a class="app-menu__item " href="${pageContext.request.contextPath}/category"><i class='app-menu__icon bx bx-category'></i>Quản lý danh mục</a></li>
-                <li><a class="app-menu__item " href="${pageContext.request.contextPath}/warehouse"><i class='app-menu__icon bx bx-task'></i>Quản lý kho</a></li>
-                <li><a class="app-menu__item " href="${pageContext.request.contextPath}/inventory"><i class='app-menu__icon bx bx-task'></i>Quản lý tồn kho</a></li
-                <li><a class="app-menu__item " href="${pageContext.request.contextPath}/import"><i class='app-menu__icon bx bx-task'></i>Quản lý nhập hàng </a></li
-
-                <li><a class="app-menu__item" href="${pageContext.request.contextPath}/warehouseList.jsp"><i class='app-menu__icon bx bx-run'></i>Quản lý nội bộ</a></li>
-                <li><a class="app-menu__item" href="${pageContext.request.contextPath}/table-data-money.html"><i class='app-menu__icon bx bx-dollar'></i>Bảng kê lương</a></li>
-                <li><a class="app-menu__item" href="${pageContext.request.contextPath}/quan-ly-bao-cao.html"><i class='app-menu__icon bx bx-pie-chart-alt-2'></i>Báo cáo doanh thu</a></li>
-                <li><a class="app-menu__item" href="${pageContext.request.contextPath}/page-calendar.html"><i class='app-menu__icon bx bx-calendar-check'></i>Lịch công tác</a></li>
-                <li><a class="app-menu__item" href="${pageContext.request.contextPath}/#"><i class='app-menu__icon bx bx-cog'></i>Cài đặt hệ thống</a></li>
-            </ul>
-        </aside>
+     <<jsp:include page="/menu.jsp" />
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
@@ -97,17 +69,17 @@
                                         Create new product</a>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập" onclick="myFunction(this)"><i
-                                            class="fas fa-file-upload"></i> Tải từ file</a>
+                                    <a href="${pageContext.request.contextPath}/supplier" class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập" onclick="myFunction(this)"><i
+                                            class="fas fa-file-upload"></i> Supplier</a>
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()"><i
-                                            class="fas fa-print"></i> In dữ liệu</a>
+                                    <a href="${pageContext.request.contextPath}/category" class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()"><i
+                                            class="fas fa-print"></i> Category</a>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
-                                            class="fas fa-copy"></i> Sao chép</a>
+                                    <a href="${pageContext.request.contextPath}/unit" class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
+                                            class="fas fa-copy"></i> Unit</a>
                                 </div>
 
                                 <div class="col-sm-2">
@@ -148,12 +120,12 @@
                                             <td>
                                                 <a href="${pageContext.request.contextPath}/product?action=update&id=${p.getProductID()}" class="btn btn-primary btn-sm edit" title="Sửa">
                                                     <i class="fas fa-edit"></i></a>
-                                                <a href="${pageContext.request.contextPath}/product?action=delete&id=${p.getProductID()}" onclick="if (confirm('Are you sure you want to delete product with ID ${p.getProductID()}?')) {
-                                                            doDelete('${p.getProductID()}');
-                                                            return true;
-                                                        } else {
-                                                            return false;
-                                                        }" class="btn btn-primary btn-sm trash" title="Xóa">
+                                                <a href="${pageContext.request.contextPath}/product?action=delete&id=${p.getProductID()}" onclick="if (confirm('Are you sure you want to delete product with Name: ${p.getProductName()}?')) {
+                                                                doDelete('${p.getProductID()}');
+                                                                return true;
+                                                            } else {
+                                                                return false;
+                                                            }" class="btn btn-primary btn-sm trash" title="Xóa">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </a>
 

@@ -79,7 +79,7 @@ public class CartServlet extends HttpServlet {
         request.setAttribute("total", total);
         List<PaymentMethod> paymentMethods = orderDAO.getAllPaymentMethod();
         request.setAttribute("paymentMethods", paymentMethods);
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
+        request.getRequestDispatcher("oder1.jsp").forward(request, response);
     }
 
     /**
@@ -93,8 +93,8 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
         OrderDAO dao = new OrderDAO();
+        HttpSession session = request.getSession();
         Cart cart;
         Object o = session.getAttribute("cart");
 
@@ -130,9 +130,12 @@ public class CartServlet extends HttpServlet {
 
             session.setAttribute("cart", cart);
             session.setAttribute("size", list.size());
-            response.sendRedirect("order");
+            int cp = 1;
+            if (request.getParameter("cp") != null) {
+                cp = Integer.parseInt(request.getParameter("cp"));
+            }
+            response.sendRedirect("order?cp=" + cp);
         }
-        processRequest(request, response);
     }
 
     /**

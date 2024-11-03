@@ -5,15 +5,17 @@ public class CustomerRank {
     private String rankName;
     private double minimumSpent;
     private String description;
+    private double discountPercent;  // Thêm thuộc tính mới
 
     // Constructors, getters, and setters
     public CustomerRank() {}
 
-    public CustomerRank(int rankID, String rankName, double minimumSpent, String description) {
+    public CustomerRank(int rankID, String rankName, double minimumSpent, String description, double discountPercent) {
         this.rankID = rankID;
         this.rankName = rankName;
         this.minimumSpent = minimumSpent;
         this.description = description;
+        this.discountPercent = discountPercent;
     }
 
     public int getRankID() {
@@ -46,5 +48,13 @@ public class CustomerRank {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public double getDiscountPercent() {
+        return discountPercent;
+    }
+
+    public void setDiscountPercent(double discountPercent) {
+        this.discountPercent = discountPercent;
     }
 }

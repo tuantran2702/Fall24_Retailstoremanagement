@@ -45,18 +45,18 @@ public class WarehouseControllerr extends HttpServlet {
 
         if (action == null) {
             request.setAttribute("data", warehouses);
-            request.getRequestDispatcher("/warehouseController/warehouseList.jsp").forward(request, response);
+            request.getRequestDispatcher("/warehouseManager/warehouseList.jsp").forward(request, response);
         } else if (action.equals("edit") && idStr != null) {
             int id = Integer.parseInt(idStr);
             Warehouse warehouse = warehouseDAO.getWarehouseById(id);
             request.setAttribute("warehouse", warehouse);
-            request.getRequestDispatcher("/warehouseController/updateWarehouse.jsp").forward(request, response);
+            request.getRequestDispatcher("/warehouseManager/updateWarehouse.jsp").forward(request, response);
         } else if (action.equals("create")) {
-            request.getRequestDispatcher("/warehouseController/createWarehouse.jsp").forward(request, response);
+            request.getRequestDispatcher("/warehouseManager/createWarehouse.jsp").forward(request, response);
         } else if (action.equals("delete") && idStr != null) {
             int id = Integer.parseInt(idStr);
             request.setAttribute("id", id);
-            request.getRequestDispatcher("/warehouseController/deleteWarehouse.jsp").forward(request, response);
+            request.getRequestDispatcher("/warehouseManager/deleteWarehouse.jsp").forward(request, response);
         }
     }
 

@@ -35,7 +35,7 @@ public class ProcessServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -95,7 +95,7 @@ public class ProcessServlet extends HttpServlet {
         request.setAttribute("total", total);
         session.setAttribute("cart", cart);
         session.setAttribute("size", list.size());
-        response.sendRedirect("cart");
+        response.sendRedirect("order");
     }
 
     /**
@@ -138,7 +138,7 @@ public class ProcessServlet extends HttpServlet {
         }
         list.remove(itemToRemove);
         request.setAttribute("total", total);
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
+        response.sendRedirect("order");
     }
 
     /**
