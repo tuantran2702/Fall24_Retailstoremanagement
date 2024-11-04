@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +12,42 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/doc/css/main.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <style>
+        /* CSS để thay đổi màu và căn giữa thanh tìm kiếm */
+        .search-form {
+            display: flex;
+            justify-content: center; /* Căn giữa */
+            margin-bottom: 20px;
+        }
+        .input-group {
+            width: 300px; /* Đặt chiều rộng nhỏ hơn */
+        }
+        .form-control {
+            background-color: #f8f9fa; /* Màu nền thanh tìm kiếm */
+            border: 1px solid #007bff; /* Màu viền */
+            border-radius: 4px;
+        }
+        .btn-outline-secondary {
+            background-color: #007bff; /* Màu nền nút tìm kiếm */
+            color: white; /* Màu chữ */
+        }
+        /* New styles for the delete all form */
+   .delete-all-form {
+    text-align: center;
+    margin: 20px 0; /* Margin for spacing */
+    position: relative;
+    left: -950px; 
+     top: -152px;/* Dịch chuyển sang phải 20px */
+    /* Hoặc: left: -20px; /* Dịch chuyển sang trái 20px */
+}
+
+
+        .btn-danger {
+            background-color: #dc3545; /* Bootstrap danger button color */
+            color: white; /* Button text color */
+        }
+    </style>
 </head>
 
 <body class="app sidebar-mini rtl">
@@ -25,7 +61,7 @@
 
     <!-- Sidebar menu -->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-   <jsp:include page="/menu.jsp" />
+    <jsp:include page="/menu.jsp" />
 
     <main class="app-content">
         <div class="app-title">
@@ -33,24 +69,29 @@
                 <li class="breadcrumb-item">Danh sách tồn kho</li>
             </ul>
             
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <a href="${pageContext.request.contextPath}/warehouse" class="btn btn-secondary" style="margin-right: 10px;">
-                        <i class="fa fa-warehouse"></i> Danh Mục Kho
-                    </a>
-                        
-                        
-                  <a href="${pageContext.request.contextPath}/import" class="btn btn-secondary" style="margin-right: 10px;">
-                        <i class="fa fa-upload"></i> Lịch sử nhập hàng 
-                    </a>
-                     <a href="${pageContext.request.contextPath}/import?action=create" class="btn btn-secondary" style="margin-right: 10px;">
-                        <i class="fa fa-upload"></i> Nhập Hàng
-                    </a>
-                </div>
-                <a href="${pageContext.request.contextPath}/inventory?action=create" class="btn btn-primary">
-                    <i class="fa fa-plus"></i> Thêm mới tồn kho
-                </a>
-            </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+          <form action="${pageContext.request.contextPath}/inventory" method="post" style="display: inline-block; margin-right: 10px;">
+            <input type="hidden" name="action" value="deleteAll"/>
+            <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa tất cả các mục không?');" class="btn btn-danger">
+                <i class="fa fa-trash"></i> Xóa tất cả
+            </button>
+        </form>
+        <a href="${pageContext.request.contextPath}/warehouse" class="btn btn-secondary" style="margin-right: 10px;">
+            <i class="fa fa-warehouse"></i> Danh Mục Kho
+        </a>
+      
+        <a href="${pageContext.request.contextPath}/import" class="btn btn-secondary" style="margin-right: 10px;">
+            <i class="fa fa-upload"></i> Lịch sử nhập hàng 
+        </a>
+        <a href="${pageContext.request.contextPath}/import?action=create" class="btn btn-secondary" style="margin-right: 10px;">
+            <i class="fa fa-upload"></i> Nhập Hàng
+        </a>
+    </div>
+    <a href="${pageContext.request.contextPath}/inventory?action=create" class="btn btn-primary">
+        <i class="fa fa-plus"></i> Thêm mới tồn kho
+    </a>
+</div>
         </div>
 
         <div class="row">
@@ -58,10 +99,16 @@
                 <div class="tile">
                     <h3 class="tile-title">Danh sách tồn kho</h3>
                     <div class="tile-body">
+                        <!-- Form tìm kiếm -->
+                     
+
+                            </form>
+                        </div>
+
+
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th>Mã kho</th>
                                     <th>Tên sản phẩm</th>
                                     <th>Tên kho</th>
                                     <th>Số lượng</th>
@@ -72,7 +119,6 @@
                             <tbody>
                                 <c:forEach var="inventory" items="${data}">
                                     <tr>
-                                        <td>${inventory.inventoryID}</td>
                                         <td>${inventory.productName}</td>
                                         <td>${inventory.warehouseName}</td>
                                         <td>${inventory.quantity}</td>

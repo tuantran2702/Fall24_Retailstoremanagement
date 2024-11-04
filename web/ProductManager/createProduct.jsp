@@ -208,7 +208,7 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item">Danh sách sản phẩm</li>
+                    <li class="breadcrumb-item"><a href="product">Danh sách sản phẩm</a></li>
                     <li class="breadcrumb-item"><a href="#">Thêm sản phẩm</a></li>
                 </ul>
             </div>
@@ -231,17 +231,22 @@
                                             class="fas fa-folder-plus"></i> Thêm Unit</a>
                                 </div>
                             </div>
-                            <form action="product" method="post" class="row">
+                            <c:if test="${not empty error}">
+                                <div style="color: red;">
+                                    ${error}
+                                </div>
+                            </c:if>
+                            <form action="product" method="post" class="row" onsubmit="return validateForm();">
                                 <input type="hidden" name="action" value="create">
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Product Code</label>
-                                    <input class="form-control" type="text" name="productCode" id="productCode" oninput="validateProductCode();">
+                                    <input class="form-control" type="text" name="productCode" id="productCode" required oninput="validateForm();">
                                     <small id="error-message-code" style="color: red;"></small>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Product Name</label>
-                                    <input class="form-control" type="text" name="productName" id="productName" oninput="validateProductName();">
+                                    <input class="form-control" type="text" name="productName" id="productName" required oninput="validateForm();">
                                     <small id="error-message-name" style="color: red;"></small>
                                 </div>
 
@@ -259,28 +264,28 @@
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Price</label>
-                                    <input class="form-control" type="number" name="price" id="price" oninput="validatePrice();">
+                                    <input class="form-control" type="number" name="price" id="price" required oninput="validateForm();">
                                     <small id="error-message-price" style="color: red;"></small> <!-- Thêm thông báo lỗi cho giá -->
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Quantity</label>
-                                    <input class="form-control" type="number" name="quantity" id="quantity" oninput="validateQuantity();">
+                                    <input class="form-control" type="number" name="quantity" id="quantity" required oninput="validateForm();">
                                     <small id="error-message-quantity" style="color: red;"></small> <!-- Thay đổi ID thông báo lỗi -->
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Created Date</label>
-                                    <input class="form-control" type="date" name="createdDate">
+                                    <input class="form-control" type="date" required name="createdDate">
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Expired Date</label>
-                                    <input class="form-control" type="date" name="expiredDate">
+                                    <input class="form-control" type="date" required name="expiredDate">
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Update Date</label>
-                                    <input class="form-control" type="date" name="updateDate">
+                                    <input class="form-control" type="date" required name="updateDate">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="exampleSelect1" class="control-label">User </label>
@@ -336,7 +341,7 @@
 
                         </div>
                         <button class="btn btn-save" type="submit">Lưu lại</button>
-                        <a class="btn btn-cancel" href="table-data-product.html">Hủy bỏ</a>
+                        <a class="btn btn-cancel" href="${pageContext.request.contextPath}/product">Hủy bỏ</a>
                         </form>
 
                     </div>
@@ -494,9 +499,57 @@
                     <script src="js/bootstrap.min.js"></script>
                     <script src="js/main.js"></script>
                     <script src="js/plugins/pace.min.js"></script>
-
-
+                    
+                    
                     <script>
+    function validateForm() {
+        let isValid = true;
+
+        // Kiểm tra từng trường
+        const productCodeInput = document.getElementById('productCode');
+        const productNameInput = document.getElementById('productName');
+        const priceInput = document.getElementById('price');
+        const quantityInput = document.getElementById('quantity');
+
+        // Kiểm tra mã sản phẩm
+        const regexCode = /^[A-Z0-9]{3,10}$/;
+        if (!regexCode.test(productCodeInput.value)) {
+            document.getElementById('error-message-code').textContent = 'Please enter a valid product code (3-10 uppercase letters and numbers).';
+            isValid = false;
+        } else {
+            document.getElementById('error-message-code').textContent = '';
+        }
+
+        // Kiểm tra tên sản phẩm
+        if (productNameInput.value.trim().length < 3 || productNameInput.value.trim().length > 50) {
+            document.getElementById('error-message-name').textContent = 'Please enter a valid product name (3-50 characters).';
+            isValid = false;
+        } else {
+            document.getElementById('error-message-name').textContent = '';
+        }
+
+        // Kiểm tra giá
+        if (priceInput.value <= 0) {
+            document.getElementById('error-message-price').textContent = 'Please enter a valid price (greater than 0).';
+            isValid = false;
+        } else {
+            document.getElementById('error-message-price').textContent = '';
+        }
+
+        // Kiểm tra số lượng
+        if (quantityInput.value < 1) {
+            document.getElementById('error-message-quantity').textContent = 'Please enter a valid quantity (1 or more).';
+            isValid = false;
+        } else {
+            document.getElementById('error-message-quantity').textContent = '';
+        }
+
+        return isValid; // Nếu tất cả đều hợp lệ, cho phép gửi form
+    }
+</script>
+
+
+<!--                    <script>
                                         function validateProductCode() {
                                             const productCodeInput = document.getElementById('productCode');
                                             const errorMessageCode = document.getElementById('error-message-code');
@@ -592,29 +645,8 @@
 
 
 
-                    </script>
+                    </script>-->
 
-                    <!--                    <script>
-                                            const inpFile = document.getElementById("inpFile");
-                                            const loadFile = document.getElementById("loadFile");
-                                            const previewContainer = document.getElementById("imagePreview");
-                                            const previewContainer = document.getElementById("imagePreview");
-                                            const previewImage = previewContainer.querySelector(".image-preview__image");
-                                            const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
-                                            inpFile.addEventListener("change", function () {
-                                                const file = this.files[0];
-                                                if (file) {
-                                                    const reader = new FileReader();
-                                                    previewDefaultText.style.display = "none";
-                                                    previewImage.style.display = "block";
-                                                    reader.addEventListener("load", function () {
-                                                        previewImage.setAttribute("src", this.result);
-                                                    });
-                                                    reader.readAsDataURL(file);
-                                                }
-                                            });
-                    
-                                        </script>-->
                     </body>
 
                     </html>

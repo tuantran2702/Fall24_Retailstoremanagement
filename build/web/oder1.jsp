@@ -46,12 +46,6 @@
     <body onload="time()" class="app sidebar-mini rtl">
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
         <jsp:include page="/menu.jsp" />
-        <header class="app-header">
-            <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
-            <ul class="app-nav">
-                <li><a class="app-nav__item" href="logout"><i class='bx bx-log-out bx-rotate-180'></i></a></li>
-            </ul>
-        </header>
         <main class="app-content">
             <div class="row">
                 <div class="col-md-12">
@@ -166,19 +160,29 @@
                                 <div class="form-group col-md-12">
                                     <label class="control-label">Khách hàng: </label>
                                     <div class="input-group">
-                                        <input class="form-control" list="datalistOptions" name="customerName" id="customerName" placeholder="Type to search...">
+                                        <input class="form-control" list="datalistOptions" name="customerName" id="customerName" placeholder="Type to search..." oninput="updateCustomerId()">
                                         <datalist id="datalistOptions">
                                             <c:forEach var="customer" items="${listCustomer}">
-                                                <option value="${customer.firstName} ${customer.lastName}" data-customer-id="${customer.customerID}"></option>
+                                                <option value="${customer.firstName} ${customer.lastName}" data-customer-id="${customer.customerID}" data-current-point="${customer.currentPoint}"></option>
                                             </c:forEach>
                                         </datalist>
                                         <input type="hidden" name="customerId" id="customerId" value="" />
-
                                         <!-- New Customer Icon -->
                                         <a href="customer?action=create" style="margin-left: 5%" class="btn btn-outline-secondary" title="Tạo mới khách hàng">
                                             <i class="fas fa-plus"></i>
                                         </a>
                                     </div>
+                                </div>
+                                <!-- Hiển thị điểm thưởng -->
+                                <div class="form-group col-md-12">
+                                    <!--                                    <label class="control-label">Điểm thưởng của khách hàng đã chọn:</label>-->
+                                    <p>Điểm thưởng hiện có: <span id="currentPointsValue">0</span> điểm</p>
+                                </div>
+                                <!-- Trường nhập số điểm thưởng muốn sử dụng -->
+                                <div class="form-group col-md-12">
+                                    <label class="control-label">Số điểm thưởng muốn sử dụng:</label>
+                                    <input class="form-control" type="number" id="pointsToUse" value="0" min="0">
+                                    <button id="confirmPointsButton" class="btn btn-primary" style="margin-top: 10px;">Xác nhận</button>
                                 </div>
 
                                 <div class="form-group col-md-12">
@@ -202,13 +206,94 @@
                                     <input class="form-control" type="number" value="0" id="discount">
                                 </div>
                                 <div class="form-group col-md-12">
-                                    <label class="control-label">Tổng cộng thanh toán:</label>
+                                    <label class="control-label">Tổng cộng thanh toán :</label>
                                     <p class="control-all-money-total" id="totalAmountTotal">= ${total} VNĐ</p>
                                     <input type="hidden" name="total" value="${total}" id="totalAmountInput"/>
                                 </div>
                                 <button class="btn btn-primary luu-san-pham" type="submit" style="width: 129%">Yêu cầu thanh toán</button>
                                 <button class="btn btn-primary luu-va-in" type="button" style="width: 129%">Lưu và in hóa đơn</button>
                             </form>
+
+                            <script>
+                                function updateCustomerId() {
+                                    var input = document.getElementById("customerName");
+                                    var customerName = input.value;
+                                    var options = document.querySelectorAll('#datalistOptions option');
+                                    var found = false;
+
+                                    // Tìm kiếm trong danh sách các tùy chọn
+                                    for (var i = 0; i < options.length; i++) {
+                                        if (options[i].value === customerName) {
+                                            // Cập nhật ID khách hàng
+                                            document.getElementById("customerId").value = options[i].getAttribute("data-customer-id");
+                                            // Cập nhật điểm thưởng
+                                            document.getElementById("currentPointsValue").innerHTML = options[i].getAttribute("data-current-point");
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+
+                                    // Nếu không tìm thấy, xóa ID và điểm thưởng
+                                    if (!found) {
+                                        document.getElementById("customerId").value = "";
+                                        document.getElementById("currentPointsValue").innerHTML = "0";
+                                    }
+                                }
+
+                                // Đảm bảo khi chọn từ datalist, giá trị không bị mất
+                                document.getElementById("customerName").addEventListener("blur", function () {
+                                    var input = document.getElementById("customerName").value;
+                                    var options = document.querySelectorAll('#datalistOptions option');
+                                    var found = false;
+
+                                    for (var i = 0; i < options.length; i++) {
+                                        if (options[i].value === input) {
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+
+                                    // Nếu không tìm thấy, đặt lại giá trị input
+                                    if (!found) {
+                                        document.getElementById("customerName").value = "";
+                                        document.getElementById("customerId").value = "";
+                                        document.getElementById("currentPointsValue").innerHTML = "0";
+                                    }
+                                });
+                                // Hàm cập nhật tổng tiền hàng
+                                function updateTotalAmount(pointsToUse) {
+                                    // Lấy tổng tiền hàng
+                                    let totalAmount = parseFloat(document.getElementById("totalAmountInput").value);
+                                    // Lấy số điểm thưởng hiện có
+                                    let currentPoints = parseInt(document.getElementById("currentPointsValue").innerText);
+
+                                    // Kiểm tra số điểm thưởng muốn sử dụng không vượt quá số điểm hiện có
+                                    if (pointsToUse > currentPoints) {
+                                        alert("Số điểm thưởng muốn sử dụng không được vượt quá số điểm hiện có!");
+                                        pointsToUse = currentPoints; // Đặt lại về số điểm hiện có
+                                    }
+
+                                    // Tính toán tổng tiền hàng sau khi sử dụng điểm thưởng
+                                    let newTotalAmount = totalAmount - pointsToUse;
+
+                                    // Đảm bảo tổng tiền không âm
+                                    if (newTotalAmount < 0) {
+                                        newTotalAmount = 0;
+                                    }
+
+                                    // Cập nhật tổng tiền hàng
+                                    document.getElementById("totalAmountTotal").innerText = "Tổng cộng thanh toán: " + newTotalAmount.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'});
+                                    document.getElementById("totalAmountInput").value = newTotalAmount;
+                                }
+
+// Thêm sự kiện cho nút xác nhận
+                                document.getElementById("confirmPointsButton").addEventListener("click", function () {
+                                    // Lấy số điểm thưởng muốn sử dụng
+                                    let pointsToUse = parseInt(document.getElementById("pointsToUse").value) || 0;
+                                    // Cập nhật tổng tiền hàng
+                                    updateTotalAmount(pointsToUse);
+                                });
+                            </script>
                         </div>
                     </div>
                 </div>
@@ -220,60 +305,60 @@
         <script src="${pageContext.request.contextPath}/doc/js/bootstrap.min.js"></script>
         <script src="${pageContext.request.contextPath}/doc/js/main.js"></script>
         <script>
-        const customerInput = document.getElementById('customerName');
-        const customerIdInput = document.getElementById('customerId');
+                                const customerInput = document.getElementById('customerName');
+                                const customerIdInput = document.getElementById('customerId');
 
-        customerInput.addEventListener('input', function () {
-            const options = document.querySelectorAll('#datalistOptions option');
-            let selectedCustomerId = null;
+                                customerInput.addEventListener('input', function () {
+                                    const options = document.querySelectorAll('#datalistOptions option');
+                                    let selectedCustomerId = null;
 
-            options.forEach(option => {
-                if (option.value === customerInput.value) {
-                    selectedCustomerId = option.getAttribute('data-customer-id');
-                }
-            });
+                                    options.forEach(option => {
+                                        if (option.value === customerInput.value) {
+                                            selectedCustomerId = option.getAttribute('data-customer-id');
+                                        }
+                                    });
 
-            customerIdInput.value = selectedCustomerId || ''; // Set to null if no customer is selected
-        });
+                                    customerIdInput.value = selectedCustomerId || ''; // Set to null if no customer is selected
+                                });
 
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("checkoutForm").onsubmit = function (event) {
-                var totalAmount = parseFloat(document.getElementById("totalAmountInput").value); // Get the total amount from the hidden input
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    document.getElementById("checkoutForm").onsubmit = function (event) {
+                                        var totalAmount = parseFloat(document.getElementById("totalAmountInput").value); // Get the total amount from the hidden input
 
-                // Check if total is 0
-                if (totalAmount <= 0) {
-                    event.preventDefault(); // Prevent the form from submitting
-                    alert("Vui lòng chọn sản phẩm để thanh toán!"); // Display an alert message
-                }
-            };
-        });
+                                        // Check if total is 0
+                                        if (totalAmount <= 0) {
+                                            event.preventDefault(); // Prevent the form from submitting
+                                            alert("Vui lòng chọn sản phẩm để thanh toán!"); // Display an alert message
+                                        }
+                                    };
+                                });
 
-        function time() {
-            var today = new Date();
-            var weekday = new Array(7);
-            weekday[0] = "Chủ Nhật";
-            weekday[1] = "Thứ Hai";
-            weekday[2] = "Thứ Ba";
-            weekday[3] = "Thứ Tư";
-            weekday[4] = "Thứ Năm";
-            weekday[5] = "Thứ Sáu";
-            weekday[6] = "Thứ Bảy";
-            var d = today.getDate();
-            var m = today.getMonth();
-            var y = today.getFullYear();
-            document.getElementById('currentTime').innerHTML = today.getHours() + ":" + today.getMinutes() + " " + weekday[today.getDay()] + ", " + d + "/" + (m + 1) + "/" + y;
-        }
+                                function time() {
+                                    var today = new Date();
+                                    var weekday = new Array(7);
+                                    weekday[0] = "Chủ Nhật";
+                                    weekday[1] = "Thứ Hai";
+                                    weekday[2] = "Thứ Ba";
+                                    weekday[3] = "Thứ Tư";
+                                    weekday[4] = "Thứ Năm";
+                                    weekday[5] = "Thứ Sáu";
+                                    weekday[6] = "Thứ Bảy";
+                                    var d = today.getDate();
+                                    var m = today.getMonth();
+                                    var y = today.getFullYear();
+                                    document.getElementById('currentTime').innerHTML = today.getHours() + ":" + today.getMinutes() + " " + weekday[today.getDay()] + ", " + d + "/" + (m + 1) + "/" + y;
+                                }
 
-        $(document).ready(function () {
-            let totalAmount = 0;
+                                $(document).ready(function () {
+                                    let totalAmount = 0;
 
-            $('.add-to-cart').click(function () {
-                const row = $(this).closest('tr');
-                const productName = row.find('td:eq(1)').text();
-                const productPrice = parseInt(row.find('td:eq(3)').text().replace(/[^0-9]/g, ''));
+                                    $('.add-to-cart').click(function () {
+                                        const row = $(this).closest('tr');
+                                        const productName = row.find('td:eq(1)').text();
+                                        const productPrice = parseInt(row.find('td:eq(3)').text().replace(/[^0-9]/g, ''));
 
-                // Add product to selected products list
-                const selectedProductRow = `
+                                        // Add product to selected products list
+                                        const selectedProductRow = `
                         <tr>
                             <td>${productName}</td>
 <td><input type="number" class="form-control product-quantity" value="1" min="1"></td>
@@ -285,23 +370,23 @@
 </td>
 </tr>
 `;
-                $('#selectedProductsList').append(selectedProductRow);
+                                        $('#selectedProductsList').append(selectedProductRow);
 
 // Update total amount
-                totalAmount += productPrice;
-                $('.control-all-money-tamtinh').text(`= ${totalAmount.toLocaleString()} VNĐ`);
-                $('.control-all-money-total').text(`= ${totalAmount.toLocaleString()} VNĐ`);
+                                        totalAmount += productPrice;
+                                        $('.control-all-money-tamtinh').text(`= ${totalAmount.toLocaleString()} VNĐ`);
+                                        $('.control-all-money-total').text(`= ${totalAmount.toLocaleString()} VNĐ`);
 
 // Remove product
-                $('.remove-product').off('click').on('click', function () {
-                    const quantity = $(this).closest('tr').find('.product-quantity').val();
-                    totalAmount -= productPrice * quantity;
-                    $(this).closest('tr').remove();
-                    $('.control-all-money-tamtinh').text(`= ${totalAmount.toLocaleString()} VNĐ`);
-                    $('.control-all-money-total').text(`= ${totalAmount.toLocaleString()} VNĐ`);
-                });
-            });
-        });
+                                        $('.remove-product').off('click').on('click', function () {
+                                            const quantity = $(this).closest('tr').find('.product-quantity').val();
+                                            totalAmount -= productPrice * quantity;
+                                            $(this).closest('tr').remove();
+                                            $('.control-all-money-tamtinh').text(`= ${totalAmount.toLocaleString()} VNĐ`);
+                                            $('.control-all-money-total').text(`= ${totalAmount.toLocaleString()} VNĐ`);
+                                        });
+                                    });
+                                });
         </script>
     </body>
 </html>

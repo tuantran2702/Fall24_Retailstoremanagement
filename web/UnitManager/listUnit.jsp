@@ -114,8 +114,8 @@
                             <div class="row element-button">
                                 <div class="col-sm-2">
 
-                                    <a href="${pageContext.request.contextPath}/supplier?action=create" class="btn btn-add btn-sm"  title="Thêm"><i class="fas fa-plus"></i>
-                                        Create new Supplier</a>
+                                    <a href="${pageContext.request.contextPath}/unit?action=create" class="btn btn-add btn-sm"  title="Thêm"><i class="fas fa-plus"></i>
+                                        Create new Unit</a>
                                 </div>
                                 <div class="col-sm-2">
                                     <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập" onclick="myFunction(this)"><i
@@ -157,9 +157,9 @@
                                             <td>${u.getUnitID()}</td>
                                             <td><span class="badge bg-success">${u.getUnitName()}</span></td>
                                             <td>
-                                                <a href="${pageContext.request.contextPath}/supplier?action=update&id=${u.getUnitID()}" class="btn btn-primary btn-sm edit" title="Sửa">
+                                                <a href="${pageContext.request.contextPath}/unit?action=update&id=${u.getUnitID()}" class="btn btn-primary btn-sm edit" title="Sửa">
                                                     <i class="fas fa-edit"></i></a>
-                                                <a href="${pageContext.request.contextPath}/category?action=delete&id=${u.getUnitID()}" onclick="if (confirm('Are you sure you want to delete product with Name: ${u.getUnitName()}?')) {
+                                                <a href="${pageContext.request.contextPath}/unit?action=delete&id=${u.getUnitID()}" onclick="if (confirm('Are you sure you want to delete product with Name: ${u.getUnitName()}?')) {
                                                                 doDelete('${u.getUnitID()}');
                                                                 return true;
                                                             } else {

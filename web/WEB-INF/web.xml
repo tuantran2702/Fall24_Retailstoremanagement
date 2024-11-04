@@ -148,6 +148,14 @@
         <servlet-name>TestServle</servlet-name>
         <servlet-class>controllers.UserController.TestServle</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ExportExcel</servlet-name>
+        <servlet-class>controllers.ExportExcel</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetInventoriesServlet</servlet-name>
+        <servlet-class>controllers.GetInventoriesServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -299,6 +307,14 @@
     <servlet-mapping>
         <servlet-name>TestServle</servlet-name>
         <url-pattern>/test</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportExcel</servlet-name>
+        <url-pattern>/exportExcel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetInventoriesServlet</servlet-name>
+        <url-pattern>/getinventories</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

@@ -5,7 +5,6 @@
 package controllers;
 
 import dao.OrderDAO;
-import dao.PermissionsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,7 +18,6 @@ import model.Customer;
 import model.Item;
 import model.PaymentMethod;
 import model.Product;
-import model.User;
 
 /**
  *
@@ -44,50 +42,69 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
+//    @Override
+//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        OrderDAO d = new OrderDAO();
+//        List<Product> listProduct = d.getAllListProduct();
+//        request.setAttribute("listProduct", listProduct);
+//        double total = 0;
+//        HttpSession session = request.getSession();
+//        Cart cart;
+//        Object o = session.getAttribute("cart");
+//        if (o != null) {
+//            cart = (Cart) o;
+//        } else {
+//            cart = new Cart();
+//        }
+//        List<Item> list = cart.getItems();
+//        for (Item item : list) {
+//            total += (item.getPrice() * item.getQuantity());
+//        }
+//        OrderDAO orderDAO = new OrderDAO();
+//        request.setAttribute("total", total);
+//        List<PaymentMethod> paymentMethods = orderDAO.getAllPaymentMethod();
+//        request.setAttribute("paymentMethods", paymentMethods);
+//        OrderDAO orderDAO1 = new OrderDAO();
+//        List<Customer> listCustomer = orderDAO1.getAllCustomers();
+//        request.setAttribute("listCustomer", listCustomer);
+//        
+//        request.getRequestDispatcher("oder1.jsp").forward(request, response);
+//    }
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        //Xử lí Phân Quyền
-        String END_POINT = "ORDER-MANAGE";
-        if (request.getSession().getAttribute("User") != null) {
-            PermissionsDAO pd = new PermissionsDAO();
-            User u = (User) request.getSession().getAttribute("User");
-            if (!pd.isAccess(u, END_POINT)) {
-                response.sendRedirect("404.jsp");
-                return;
-            }
-        } else {
-            response.sendRedirect("404.jsp");
-            return;
-        }
-        
-        OrderDAO d = new OrderDAO();
-        List<Product> listProduct = d.getAllListProduct();
-        request.setAttribute("listProduct", listProduct);
-        double total = 0;
-        HttpSession session = request.getSession();
-        Cart cart;
-        Object o = session.getAttribute("cart");
-        if (o != null) {
-            cart = (Cart) o;
-        } else {
-            cart = new Cart();
-        }
-        List<Item> list = cart.getItems();
-        for (Item item : list) {
-            total += (item.getPrice() * item.getQuantity());
-        }
-        OrderDAO orderDAO = new OrderDAO();
-        request.setAttribute("total", total);
-        List<PaymentMethod> paymentMethods = orderDAO.getAllPaymentMethod();
-        request.setAttribute("paymentMethods", paymentMethods);
-        OrderDAO orderDAO1 = new OrderDAO();
-        List<Customer> listCustomer = orderDAO1.getAllCustomers();
-        request.setAttribute("listCustomer", listCustomer);
-        
-        request.getRequestDispatcher("oder1.jsp").forward(request, response);
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    OrderDAO d = new OrderDAO();
+    List<Product> listProduct = d.getAllListProduct();
+    request.setAttribute("listProduct", listProduct);
+    double total = 0;
+    HttpSession session = request.getSession();
+    Cart cart;
+    Object o = session.getAttribute("cart");
+    if (o != null) {
+        cart = (Cart) o;
+    } else {
+        cart = new Cart();
     }
+    List<Item> list = cart.getItems();
+    for (Item item : list) {
+        total += (item.getPrice() * item.getQuantity());
+    }
+    OrderDAO orderDAO = new OrderDAO();
+    request.setAttribute("total", total);
+    List<PaymentMethod> paymentMethods = orderDAO.getAllPaymentMethod();
+    request.setAttribute("paymentMethods", paymentMethods);
+    OrderDAO orderDAO1 = new OrderDAO();
+    List<Customer> listCustomer = orderDAO1.getAllCustomers();
+    request.setAttribute("listCustomer", listCustomer);
+    
+    // Store current points for each customer in the session
+    for (Customer customer : listCustomer) {
+        request.setAttribute("currentPoint_" + customer.getCustomerID(), customer.getCurrentPoint());
+    }
+
+    request.getRequestDispatcher("oder1.jsp").forward(request, response);
+}
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

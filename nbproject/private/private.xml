@@ -3,9 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Fall24/SWP391/Clone-Git/Fall24_Retailstoremanagement-Clone/src/java/controllers/UserController/UpdateUserController.java</file>
-            <file>file:/E:/Fall24/SWP391/Clone-Git/Fall24_Retailstoremanagement-Clone/src/java/controllers/UserController/AddUserController.java</file>
-            <file>file:/E:/Fall24/SWP391/Clone-Git/Fall24_Retailstoremanagement-Clone/web/User/EditEmployee.jsp</file>
+            <file>file:/E:/391SWP/project%20clone%20github/project%20clone%20github/Fall24_Retailstoremanagement/web/ProductManager/createProduct.jsp</file>
+            <file>file:/E:/391SWP/project%20clone%20github/project%20clone%20github/Fall24_Retailstoremanagement/web/SupplierManager/createSupplier.jsp</file>
+            <file>file:/E:/391SWP/project%20clone%20github/project%20clone%20github/Fall24_Retailstoremanagement/web/SupplierManager/listSupplier.jsp</file>
+            <file>file:/E:/391SWP/project%20clone%20github/project%20clone%20github/Fall24_Retailstoremanagement/web/SupplierManager/updateSupplier.jsp</file>
+            <file>file:/E:/391SWP/project%20clone%20github/project%20clone%20github/Fall24_Retailstoremanagement/web/ProductManager/listProduct.jsp</file>
+            <file>file:/E:/391SWP/project%20clone%20github/project%20clone%20github/Fall24_Retailstoremanagement/web/ProductManager/updateProduct.jsp</file>
         </group>
     </open-files>
 </project-private>

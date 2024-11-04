@@ -451,35 +451,36 @@ public class OrderDAO extends DBContext {
     }
 
     public List<Customer> getAllCustomers() {
-        List<Customer> customers = new ArrayList<>();
-        String query = "SELECT CustomerID, FirstName, LastName, Email, PhoneNumber, TotalSpent, Address, RankID FROM Customer";
+    List<Customer> customers = new ArrayList<>();
+    String query = "SELECT CustomerID, FirstName, LastName, Email, PhoneNumber, TotalSpent, Address, RankID, CurrentPoint FROM Customer"; // Đảm bảo cột CurrentPoint tồn tại
 
-        try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+    try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            Customer customer = new Customer();
+            customer.setCustomerID(rs.getInt("CustomerID"));
+            customer.setFirstName(rs.getString("FirstName"));
+            customer.setLastName(rs.getString("LastName"));
+            customer.setEmail(rs.getString("Email"));
+            customer.setPhoneNumber(rs.getString("PhoneNumber"));
 
-            while (rs.next()) {
-                Customer customer = new Customer();
-                customer.setCustomerID(rs.getInt("CustomerID"));
-                customer.setFirstName(rs.getString("FirstName"));
-                customer.setLastName(rs.getString("LastName"));
-                customer.setEmail(rs.getString("Email"));
-                customer.setPhoneNumber(rs.getString("PhoneNumber"));
+            // Chuyển kiểu dữ liệu TotalSpent từ ResultSet thành double
+            customer.setTotalSpent(rs.getDouble("TotalSpent"));
+            customer.setAddress(rs.getString("Address"));
 
-                // Chuyển kiểu dữ liệu TotalSpent từ ResultSet thành double
-                customer.setTotalSpent(rs.getDouble("TotalSpent"));
+            // Chuyển kiểu dữ liệu RankID từ ResultSet thành int
+            customer.setRankID(rs.getInt("RankID"));
 
-                customer.setAddress(rs.getString("Address"));
+            // Thêm dòng này để thiết lập currentPoint
+            customer.setCurrentPoint(rs.getInt("CurrentPoint")); // Cần đảm bảo cột CurrentPoint tồn tại trong cơ sở dữ liệu
 
-                // Chuyển kiểu dữ liệu RankID từ ResultSet thành int
-                customer.setRankID(rs.getInt("RankID"));
-
-                customers.add(customer);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            customers.add(customer);
         }
-
-        return customers;
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+
+    return customers;
+}
 
     public static void main(String[] args) {
         OrderDAO d = new OrderDAO();

@@ -2,34 +2,28 @@ package controllers;
 
 import dao.LoyaltyPointsDAO;
 import model.LoyaltyPoints;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 @WebServlet(name = "LoyaltyPointsController", urlPatterns = {"/loyalty"})
 public class LoyaltyPointsController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoyaltyPointsController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoyaltyPointsController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        // This method can be removed if not used
     }
 
     @Override
@@ -58,6 +52,10 @@ public class LoyaltyPointsController extends HttpServlet {
             int id = Integer.parseInt(idStr);
             request.setAttribute("id", id);
             request.getRequestDispatcher("/CustomerManager/LoyaltyPoints/deleteLoyaltyPoints.jsp").forward(request, response);
+        } else if (action.equals("exportExcel")) {
+            // Export loyalty points to Excel
+            List<LoyaltyPoints> loyaltyPointsList = loyaltyPointsDAO.getListLoyaltyPoints();
+            exportExcel(response, loyaltyPointsList);
         }
     }
 
@@ -65,12 +63,11 @@ public class LoyaltyPointsController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-
         LoyaltyPointsDAO loyaltyPointsDAO = new LoyaltyPointsDAO();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-        if (action.equals("create")) {
-            try {
+        try {
+            if (action.equals("create")) {
                 int customerID = Integer.parseInt(request.getParameter("customerID"));
                 int pointsEarned = Integer.parseInt(request.getParameter("pointsEarned"));
                 int pointsRedeemed = Integer.parseInt(request.getParameter("pointsRedeemed"));
@@ -80,11 +77,7 @@ public class LoyaltyPointsController extends HttpServlet {
                 LoyaltyPoints lp = new LoyaltyPoints(0, customerID, pointsEarned, pointsRedeemed, transactionDate, description);
                 loyaltyPointsDAO.createLoyaltyPoints(lp);
                 response.sendRedirect(request.getContextPath() + "/loyalty");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        } else if (action.equals("update")) {
-            try {
+            } else if (action.equals("update")) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 int customerID = Integer.parseInt(request.getParameter("customerID"));
                 int pointsEarned = Integer.parseInt(request.getParameter("pointsEarned"));
@@ -95,9 +88,51 @@ public class LoyaltyPointsController extends HttpServlet {
                 LoyaltyPoints lp = new LoyaltyPoints(id, customerID, pointsEarned, pointsRedeemed, transactionDate, description);
                 loyaltyPointsDAO.updateLoyaltyPoints(lp);
                 response.sendRedirect(request.getContextPath() + "/loyalty");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            } else if (action.equals("delete")) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                loyaltyPointsDAO.deleteLoyaltyPoints(id);
+                response.sendRedirect(request.getContextPath() + "/loyalty");
+ }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void exportExcel(HttpServletResponse response, List<LoyaltyPoints> loyaltyPointsList) throws IOException {
+        // Set the content type and header for the response
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=loyalty_points.xlsx");
+
+        // Create a workbook and a sheet
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Loyalty Points");
+
+        // Create header row
+        Row headerRow = sheet.createRow(0);
+        String[] columnHeaders = {"Loyalty Point ID", "Customer ID", "Customer Name", "Points Earned", "Points Redeemed", "Transaction Date", "Description"};
+        for (int i = 0; i < columnHeaders.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(columnHeaders[i]);
+        }
+
+        // Populate the sheet with loyalty points data
+        int rowNum = 1;
+        for (LoyaltyPoints lp : loyaltyPointsList) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(lp.getLoyaltyPointID());
+            row.createCell(1).setCellValue(lp.getCustomerID());
+            row.createCell(2).setCellValue(lp.getCustomerName());
+            row.createCell(3).setCellValue(lp.getPointsEarned());
+            row.createCell(4).setCellValue(lp.getPointsRedeemed());
+            row.createCell(5).setCellValue(lp.getTransactionDate().toString());
+            row.createCell(6).setCellValue(lp.getDescription());
+        }
+
+        // Write the workbook to the output stream
+        try (OutputStream out = response.getOutputStream()) {
+            workbook.write(out);
+        } finally {
+            workbook.close();
         }
     }
 

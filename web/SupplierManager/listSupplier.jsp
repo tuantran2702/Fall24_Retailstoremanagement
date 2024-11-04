@@ -50,11 +50,11 @@
         </header>
         <!-- Sidebar menu-->
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-  <jsp:include page="/menu.jsp" />
+        <jsp:include page="/menu.jsp" />
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><a href="#"><b>Product</b></a></li>  
+                    <li class="breadcrumb-item active"><a href="#"><b>Danh sách Nhà cung cấp</b></a></li>  
                 </ul>
                 <div id="clock"></div>
             </div>
@@ -69,29 +69,28 @@
                                         Create new Supplier</a>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập" onclick="myFunction(this)"><i
-                                            class="fas fa-file-upload"></i> Tải từ file</a>
+                                    <a class="btn btn-warning btn-sm nhap-tu-file" type="button" title="Nhập" href="${pageContext.request.contextPath}/product">
+                                        <i class="fas fa-trophy"></i> Sản Phẩm
+                                    </a>
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()"><i
-                                            class="fas fa-print"></i> In dữ liệu</a>
+                                    <a href="${pageContext.request.contextPath}/category" class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()"><i
+                                            class="fas fa-print"></i> Danh mục</a>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
-                                            class="fas fa-copy"></i> Sao chép</a>
+                                    <a href="${pageContext.request.contextPath}/unit" class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
+                                            class="fas fa-copy"></i> Đơn vị</a>
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất Excel</a>
+                                    <a class="btn btn-excel btn-sm" href="${pageContext.request.contextPath}/exportExcel" title="Xuất Excel">
+                                        <i class="fas fa-file-excel"></i> Xuất Excel
+                                    </a>
                                 </div>
                                 <div class="col-sm-2">
                                     <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)"><i
                                             class="fas fa-file-pdf"></i> Xuất PDF</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm" type="button" title="Xóa" onclick="myFunction(this)"><i
-                                            class="fas fa-trash-alt"></i> Xóa tất cả </a>
                                 </div>
                             </div>
                             <table class="table table-hover table-bordered" id="sampleTable">
@@ -117,11 +116,11 @@
                                                 <a href="${pageContext.request.contextPath}/supplier?action=update&id=${s.getSupplierID()}" class="btn btn-primary btn-sm edit" title="Sửa">
                                                     <i class="fas fa-edit"></i></a>
                                                 <a href="${pageContext.request.contextPath}/supplier?action=delete&id=${s.getSupplierID()}" onclick="if (confirm('Are you sure you want to delete product with Name: ${s.getSupplierName()}?')) {
-                                                                doDelete('${s.getSupplierID()}');
-                                                                return true;
-                                                            } else {
-                                                                return false;
-                                                            }" class="btn btn-primary btn-sm trash" title="Xóa">
+                                                            doDelete('${s.getSupplierID()}');
+                                                            return true;
+                                                        } else {
+                                                            return false;
+                                                        }" class="btn btn-primary btn-sm trash" title="Xóa">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </a>
 
@@ -151,47 +150,47 @@
         <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
         <script type="text/javascript">
-                                    $('#sampleTable').DataTable();
-                                    //Thời Gian
-                                    function time() {
-                                        var today = new Date();
-                                        var weekday = new Array(7);
-                                        weekday[0] = "Chủ Nhật";
-                                        weekday[1] = "Thứ Hai";
-                                        weekday[2] = "Thứ Ba";
-                                        weekday[3] = "Thứ Tư";
-                                        weekday[4] = "Thứ Năm";
-                                        weekday[5] = "Thứ Sáu";
-                                        weekday[6] = "Thứ Bảy";
-                                        var day = weekday[today.getDay()];
-                                        var dd = today.getDate();
-                                        var mm = today.getMonth() + 1;
-                                        var yyyy = today.getFullYear();
-                                        var h = today.getHours();
-                                        var m = today.getMinutes();
-                                        var s = today.getSeconds();
-                                        m = checkTime(m);
-                                        s = checkTime(s);
-                                        nowTime = h + " giờ " + m + " phút " + s + " giây";
-                                        if (dd < 10) {
-                                            dd = '0' + dd
-                                        }
-                                        if (mm < 10) {
-                                            mm = '0' + mm
-                                        }
-                                        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
-                                        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
-                                                '</span>';
-                                        document.getElementById("clock").innerHTML = tmp;
-                                        clocktime = setTimeout("time()", "1000", "Javascript");
+                                                    $('#sampleTable').DataTable();
+                                                    //Thời Gian
+                                                    function time() {
+                                                        var today = new Date();
+                                                        var weekday = new Array(7);
+                                                        weekday[0] = "Chủ Nhật";
+                                                        weekday[1] = "Thứ Hai";
+                                                        weekday[2] = "Thứ Ba";
+                                                        weekday[3] = "Thứ Tư";
+                                                        weekday[4] = "Thứ Năm";
+                                                        weekday[5] = "Thứ Sáu";
+                                                        weekday[6] = "Thứ Bảy";
+                                                        var day = weekday[today.getDay()];
+                                                        var dd = today.getDate();
+                                                        var mm = today.getMonth() + 1;
+                                                        var yyyy = today.getFullYear();
+                                                        var h = today.getHours();
+                                                        var m = today.getMinutes();
+                                                        var s = today.getSeconds();
+                                                        m = checkTime(m);
+                                                        s = checkTime(s);
+                                                        nowTime = h + " giờ " + m + " phút " + s + " giây";
+                                                        if (dd < 10) {
+                                                            dd = '0' + dd
+                                                        }
+                                                        if (mm < 10) {
+                                                            mm = '0' + mm
+                                                        }
+                                                        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+                                                        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+                                                                '</span>';
+                                                        document.getElementById("clock").innerHTML = tmp;
+                                                        clocktime = setTimeout("time()", "1000", "Javascript");
 
-                                        function checkTime(i) {
-                                            if (i < 10) {
-                                                i = "0" + i;
-                                            }
-                                            return i;
-                                        }
-                                    }
+                                                        function checkTime(i) {
+                                                            if (i < 10) {
+                                                                i = "0" + i;
+                                                            }
+                                                            return i;
+                                                        }
+                                                    }
         </script>
         <script>
 //            function deleteRow(r) {

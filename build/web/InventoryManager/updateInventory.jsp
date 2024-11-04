@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="model.Inventory" %>
+<%@ page import="model.Product" %>
 <%@ page import="model.Warehouse" %>
+<%@ page import="java.util.List" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,11 +37,6 @@
                 <p class="app-sidebar__user-name"><b>Võ Trường</b></p>
                 <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
             </div>
-        </div>
-        <hr>
-        <ul class="app-menu">
-            <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>POS Bán Hàng</a></li>
-            <li><a class="app-menu__item active" href="${pageContext.request.contextPath}/inventory"><i class='app-menu__icon bx bx-task'></i>Quản lý tồn kho</a></li>
         </ul>
     </aside>
     <main class="app-content">
@@ -55,15 +53,27 @@
                     <div class="tile-body">
                         <% 
                             Inventory inventory = (Inventory) request.getAttribute("inventory");
+                            List<Product> products = (List<Product>) request.getAttribute("products");
+                            List<Warehouse> warehouses = (List<Warehouse>) request.getAttribute("warehouses");
                         %>
                         <form action="inventory" method="post">
                             <input type="hidden" name="action" value="update">
                             <input type="hidden" name="inventoryID" value="<%= inventory.getInventoryID() %>">
-                            <input type="hidden" name="productID" value="<%= inventory.getProductID() %>">
-                            <input type="hidden" name="warehouseID" value="<%= inventory.getWarehouseID() %>">
                             <div class="form-group">
-                                <label for="quantity">Số lượng:</label>
-                                <input type="number" class="form-control" id="quantity" name="quantity" value="<%= inventory.getQuantity() %>" required>
+                                <label for="productID">Sản phẩm:</label>
+                                <select class="form-control" id="productID" name="productID">
+                                    <c:forEach items="${products}" var="product">
+                                        <option value="${product.productID}" ${product.productID == inventory.getProductID() ? 'selected' : ''}>${product.productName}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="warehouseID">Kho:</label>
+                                <select class="form-control" id="warehouseID" name="warehouseID">
+                                    <c:forEach items="${warehouses}" var="warehouse">
+                                        <option value="${warehouse.warehouseID}" ${warehouse.warehouseID == inventory.getWarehouseID() ? 'selected' : ''}>${warehouse.warehouseName}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
                             <button type="submit" class="btn btn-primary">Cập nhật</button>
                             <a href="inventory" class="btn btn-secondary">Hủy</a>

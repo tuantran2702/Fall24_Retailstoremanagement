@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,16 +27,17 @@
     <!-- Sidebar menu -->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
-          <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
-                                                alt="User Image">      <div>
-                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
-                    <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
-                </div>
+        <div class="app-sidebar__user">
+            <img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px" alt="User Image">
+            <div>
+                <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
+                <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
             </div>
+        </div>
         <hr>
         <ul class="app-menu">
             <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>POS Bán Hàng</a></li>
-            <li><a class="app-menu__item active" href="${pageContext.request.contextPath}/inventory"><i class='app-menu__icon bx bx-task'></i>Quản lý  kho</a></li>
+            <li><a class="app-menu__item active" href="${pageContext.request.contextPath}/inventory"><i class='app-menu__icon bx bx-task'></i>Quản lý kho</a></li>
         </ul>
     </aside>
 
@@ -52,7 +53,7 @@
                 <div class="tile">
                     <h3 class="tile-title">Thêm tồn kho</h3>
                     <div class="tile-body">
-                        <form action="inventory" method="post">
+                        <form action="${pageContext.request.contextPath}/inventory" method="post">
                             <input type="hidden" name="action" value="create">
                             <div class="form-group">
                                 <label for="productID">Sản phẩm:</label>
@@ -72,10 +73,7 @@
                                     </c:forEach>
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="quantity">Số lượng:</label>
-                                <input type="number" class="form-control" id="quantity" name="quantity" required>
-                            </div>
+                            
                             <button type="submit" class="btn btn-primary">Lưu</button>
                             <a href="inventory" class="btn btn-secondary">Quay lại</a>
                         </form>

@@ -169,7 +169,7 @@
                                     <!-- Buttons -->
                                     <div class="col-md-12 text-right">
                                         <button class="btn btn-save" type="submit">Lưu lại</button>
-                                        <a class="btn btn-cancel" href="#">Hủy bỏ</a>
+                                        <a class="btn btn-cancel" href="${pageContext.request.contextPath}/supplier">Hủy bỏ</a>
                                     </div>
                                 </div>
                             </form>

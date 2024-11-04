@@ -67,6 +67,10 @@
                                     <label for="description">Mô tả</label>
                                     <textarea class="form-control" id="description" name="description" required>${customerRank.description}</textarea>
                                 </div>
+                                <div class="form-group">
+                                    <label for="discountPercent">Phần trăm giảm giá</label>
+                                    <textarea class="form-control" id="discountPercent" name="discountPercent" required>${customerRank.discountPercent}</textarea>
+                                </div>
                                 <button type="submit" class="btn btn-primary">Cập nhật</button>
                                 <a href="${pageContext.request.contextPath}/customerRank" class="btn btn-secondary">Hủy</a>
                             </form>

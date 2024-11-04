@@ -1,7 +1,6 @@
 package controllers;
 
 import dao.CategoryDAO;
-import dao.PermissionsDAO;
 import model.Category;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,29 +8,30 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.User;
 
 public class CategoryController extends HttpServlet {
 
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             // Example code to output a sample page
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CategoryController</title>");  
+            out.println("<title>Servlet CategoryController</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet CategoryController at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CategoryController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -40,22 +40,7 @@ public class CategoryController extends HttpServlet {
     // Handles the HTTP GET method.
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        
-        //Xử lí Phân Quyền
-        String END_POINT = "PRODUCT-MANAGE";
-        if (request.getSession().getAttribute("User") != null) {
-            PermissionsDAO pd = new PermissionsDAO();
-            User u = (User) request.getSession().getAttribute("User");
-            if (!pd.isAccess(u, END_POINT)) {
-                response.sendRedirect("404.jsp");
-                return;
-            }
-        } else {
-            response.sendRedirect("404.jsp");
-            return;
-        }
-        
+            throws ServletException, IOException {
         String action = request.getParameter("action");
         String idStr = request.getParameter("id");
 
@@ -64,63 +49,54 @@ public class CategoryController extends HttpServlet {
             CategoryDAO categoryDAO = new CategoryDAO();
             request.setAttribute("data", categoryDAO.getListCategory());
             request.getRequestDispatcher("/CategoryManager/listCategory.jsp").forward(request, response);
-        } else if (action.equals("edit") && idStr != null) {
+        } else if (action.equals("update") && idStr != null) {
             // Edit category
             int id = Integer.parseInt(idStr);
-            CategoryDAO categoryDAO = new CategoryDAO();
-            Category category = categoryDAO.getCategoryById(id);
-            request.setAttribute("category", category);
-            request.getRequestDispatcher("/category/updateCategory.jsp").forward(request, response);
+            
+            CategoryDAO category = new CategoryDAO();
+            Category c = category.getCategoryById(id);
+            request.setAttribute("category", c);
+            request.getRequestDispatcher("/CategoryManager/updateCategory.jsp").forward(request, response);
         } else if (action.equals("create")) {
             // Create new category
-            request.getRequestDispatcher("/category/createCategory.jsp").forward(request, response);
+            request.getRequestDispatcher("/CategoryManager/createCategory.jsp").forward(request, response);
         } else if (action.equals("delete") && idStr != null) {
             // Delete category
-            int id = Integer.parseInt(idStr);
-            request.setAttribute("id", id);
-            request.getRequestDispatcher("/category/deleteCategory.jsp").forward(request, response);
+            int id = Integer.parseInt(request.getParameter("id"));
+            CategoryDAO category = new CategoryDAO();
+            category.deleteCategory(id);
+            response.sendRedirect("category");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String action = request.getParameter("action");
 
         if (action.equals("create")) {
             // Create new category
-            String name = request.getParameter("name");
+            String categoryName = request.getParameter("categoryName");
             String description = request.getParameter("description");
 
-            Category category = new Category();
-            category.setCategoryName(name);
-            category.setDescription(description);
+            Category category = new Category(0, categoryName, description);
+            CategoryDAO c = new CategoryDAO();
+            c.createCategory(category);
+            response.sendRedirect("category");
 
-            CategoryDAO categoryDAO = new CategoryDAO();
-            categoryDAO.createCategory(category);
-            response.sendRedirect(request.getContextPath() + "/category");
         } else if (action.equals("update")) {
             // Update existing category
             int id = Integer.parseInt(request.getParameter("id"));
-            String name = request.getParameter("name");
+            String categoryName = request.getParameter("categoryName");
             String description = request.getParameter("description");
 
-            Category category = new Category();
-            category.setCategoryID(id);
-            category.setCategoryName(name);
-            category.setDescription(description);
+            Category category = new Category(id, categoryName, description);
 
-            CategoryDAO categoryDAO = new CategoryDAO();
-            categoryDAO.updateCategory(category);
-            response.sendRedirect(request.getContextPath() + "/category");
-        } else if (action.equals("delete")) {
-            // Delete category
-            int id = Integer.parseInt(request.getParameter("id"));
-            CategoryDAO categoryDAO = new CategoryDAO();
-            categoryDAO.deleteCategory(id);
-            response.sendRedirect(request.getContextPath() + "/category");
-        }
-        else if ("createCategoryName".equals(action)) {
+
+            CategoryDAO c = new CategoryDAO();
+            c.updateCategory(category);
+            response.sendRedirect("category");
+        } else if ("createCategoryName".equals(action)) {
             // Lấy giá trị của categoryName từ form
             String categoryName = request.getParameter("categoryName");
 
@@ -131,7 +107,7 @@ public class CategoryController extends HttpServlet {
             // Chuyển hướng sau khi thêm thành công
             response.sendRedirect("product?action=create");
         }
-        
+
     }
 
     @Override
