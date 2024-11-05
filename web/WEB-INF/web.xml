@@ -136,6 +136,10 @@
         <servlet-name>PermissionsServlet</servlet-name>
         <servlet-class>controllers.RoleControllers.PermissionsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerReportController</servlet-name>
+        <servlet-class>controllers.CustomerReportController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -275,6 +279,10 @@
     <servlet-mapping>
         <servlet-name>PermissionsServlet</servlet-name>
         <url-pattern>/permissions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerReportController</servlet-name>
+        <url-pattern>/customerReport</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
