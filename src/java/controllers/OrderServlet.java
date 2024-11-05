@@ -42,35 +42,69 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
+//    @Override
+//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        OrderDAO d = new OrderDAO();
+//        List<Product> listProduct = d.getAllListProduct();
+//        request.setAttribute("listProduct", listProduct);
+//        double total = 0;
+//        HttpSession session = request.getSession();
+//        Cart cart;
+//        Object o = session.getAttribute("cart");
+//        if (o != null) {
+//            cart = (Cart) o;
+//        } else {
+//            cart = new Cart();
+//        }
+//        List<Item> list = cart.getItems();
+//        for (Item item : list) {
+//            total += (item.getPrice() * item.getQuantity());
+//        }
+//        OrderDAO orderDAO = new OrderDAO();
+//        request.setAttribute("total", total);
+//        List<PaymentMethod> paymentMethods = orderDAO.getAllPaymentMethod();
+//        request.setAttribute("paymentMethods", paymentMethods);
+//        OrderDAO orderDAO1 = new OrderDAO();
+//        List<Customer> listCustomer = orderDAO1.getAllCustomers();
+//        request.setAttribute("listCustomer", listCustomer);
+//        
+//        request.getRequestDispatcher("oder1.jsp").forward(request, response);
+//    }
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        OrderDAO d = new OrderDAO();
-        List<Product> listProduct = d.getAllListProduct();
-        request.setAttribute("listProduct", listProduct);
-        double total = 0;
-        HttpSession session = request.getSession();
-        Cart cart;
-        Object o = session.getAttribute("cart");
-        if (o != null) {
-            cart = (Cart) o;
-        } else {
-            cart = new Cart();
-        }
-        List<Item> list = cart.getItems();
-        for (Item item : list) {
-            total += (item.getPrice() * item.getQuantity());
-        }
-        OrderDAO orderDAO = new OrderDAO();
-        request.setAttribute("total", total);
-        List<PaymentMethod> paymentMethods = orderDAO.getAllPaymentMethod();
-        request.setAttribute("paymentMethods", paymentMethods);
-        OrderDAO orderDAO1 = new OrderDAO();
-        List<Customer> listCustomer = orderDAO1.getAllCustomers();
-        request.setAttribute("listCustomer", listCustomer);
-        
-        request.getRequestDispatcher("oder1.jsp").forward(request, response);
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    OrderDAO d = new OrderDAO();
+    List<Product> listProduct = d.getAllListProduct();
+    request.setAttribute("listProduct", listProduct);
+    double total = 0;
+    HttpSession session = request.getSession();
+    Cart cart;
+    Object o = session.getAttribute("cart");
+    if (o != null) {
+        cart = (Cart) o;
+    } else {
+        cart = new Cart();
     }
+    List<Item> list = cart.getItems();
+    for (Item item : list) {
+        total += (item.getPrice() * item.getQuantity());
+    }
+    OrderDAO orderDAO = new OrderDAO();
+    request.setAttribute("total", total);
+    List<PaymentMethod> paymentMethods = orderDAO.getAllPaymentMethod();
+    request.setAttribute("paymentMethods", paymentMethods);
+    OrderDAO orderDAO1 = new OrderDAO();
+    List<Customer> listCustomer = orderDAO1.getAllCustomers();
+    request.setAttribute("listCustomer", listCustomer);
+    
+    // Store current points for each customer in the session
+    for (Customer customer : listCustomer) {
+        request.setAttribute("currentPoint_" + customer.getCustomerID(), customer.getCurrentPoint());
+    }
+
+    request.getRequestDispatcher("oder1.jsp").forward(request, response);
+}
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

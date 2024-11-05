@@ -23,8 +23,12 @@
             </ul>
         </header>
 
-        <!-- Sidebar menu -->
-        <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+       <!-- Sidebar menu -->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <jsp:include page="/menu.jsp" />
+
+        
+<!--        
         <aside class="app-sidebar">
             <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
                                                 alt="User Image">      <div>
@@ -42,7 +46,7 @@
                 <li><a class="app-menu__item " href="${pageContext.request.contextPath}/inventory"><i class='app-menu__icon bx bx-task'></i>Quản lý kho</a></li
                               
             </ul>
-        </aside>
+        </aside>-->
 
         <main class="app-content">
             <div class="app-title">
@@ -50,14 +54,32 @@
                     <li class="breadcrumb-item">Danh sách kho hàng</li>
                 </ul>
 
-                <form action="${pageContext.request.contextPath}/warehouse" method="get" style="float: right;">
-                    <input type="text" name="search" placeholder="Tìm kiếm kho..." />
-                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-                </form>
-
-                <a href="${pageContext.request.contextPath}/warehouse?action=create" class="btn btn-primary" style="float: right; margin-right: 10px;">
-                    <i class="fa fa-plus"></i> Thêm kho hàng
-                </a>
+                     <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+          <form action="${pageContext.request.contextPath}/inventory" method="post" style="display: inline-block; margin-right: 10px;">
+            <input type="hidden" name="action" value="deleteAll"/>
+            <button type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa tất cả các mục không?');" class="btn btn-danger">
+                <i class="fa fa-trash"></i> Xóa tất cả
+            </button>
+        </form>
+        <a href="${pageContext.request.contextPath}/warehouse" class="btn btn-secondary" style="margin-right: 10px;">
+            <i class="fa fa-warehouse"></i> Danh Mục Kho
+        </a>
+      
+        <a href="${pageContext.request.contextPath}/import" class="btn btn-secondary" style="margin-right: 10px;">
+            <i class="fa fa-upload"></i> Lịch sử nhập hàng 
+        </a>
+        <a href="${pageContext.request.contextPath}/import?action=create" class="btn btn-secondary" style="margin-right: 10px;">
+            <i class="fa fa-upload"></i> Nhập Hàng
+        </a>
+    </div>
+    <a href="${pageContext.request.contextPath}/inventory?action=create" class="btn btn-primary">
+        <i class="fa fa-plus"></i> Thêm mới tồn kho
+    </a>
+</div>
+                    
+                    
+                    
             </div>
 
 
@@ -67,6 +89,11 @@
                     <div class="tile">
                         <h3 class="tile-title">Danh sách kho hàng</h3>
                         <div class="tile-body">
+                              <form action="${pageContext.request.contextPath}/warehouse" method="get" style="float: right;">
+                    <input type="text" name="search" placeholder="Tìm kiếm kho..." />
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </form>
+
                             <table>
                                 <thead>
                                     <tr>

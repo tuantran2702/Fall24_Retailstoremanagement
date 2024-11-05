@@ -158,36 +158,36 @@
         <aside class="app-sidebar">
             <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
                                                 alt="User Image">      <div>
-        <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
-        <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
-      </div>
+                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
+                    <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
+                </div>
             </div>
 
             <hr>
-    <ul class="app-menu">
+            <ul class="app-menu">
                 <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
                         <span class="app-menu__label">POS Bán Hàng</span></a></li>
                 <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Bảng điều khiển</span></a></li>
-                              <li><a class="app-menu__item " href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
-                              
-                                    <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
-            class="app-menu__label">Quản lý nhân viên</span></a></li>
-                            
-                            
-                               <li><a class="app-menu__item active" href="product"><i
+                <li><a class="app-menu__item " href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
+
+                <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
+                            class="app-menu__label">Quản lý nhân viên</span></a></li>
+
+
+                <li><a class="app-menu__item active" href="product"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
                 </li>
 
                 <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-id-card'></i> <span
                             class="app-menu__label">Quản lý khách hàng </span></a></li>
-                            
-                            
-                            
-                            
-                   
 
-              
+
+
+
+
+
+
 
 
 
@@ -195,12 +195,12 @@
                 <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Quản lý   kho</span></a></li>
 
-   <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
+                <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Thay đổi mật khẩu </span></a></li>
 
 
-            
-            
+
+
             </ul>
 
 
@@ -208,17 +208,17 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item">Danh sách sản phẩm</li>
-                    <li class="breadcrumb-item"><a href="#">Thêm sản phẩm</a></li>
+                    <li class="breadcrumb-item"><a href="supplier">Danh sách Nhà cung cấp</a></li>
+                    <li class="breadcrumb-item"><a href="#">Thêm Nhà cung cấp</a></li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="tile">
-                        <h3 class="tile-title">Tạo mới sản phẩm</h3>
+                        <h3 class="tile-title">Tạo mới Nhà cung cấp</h3>
                         <div class="tile-body">
                             <div class="row element-button">
-                                <div class="col-sm-2">
+<!--                                <div class="col-sm-2">
                                     <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i
                                             class="fas fa-folder-plus"></i> Thêm nhà cung cấp</a>
                                 </div>
@@ -229,39 +229,44 @@
                                 <div class="col-sm-2">
                                     <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang"><i
                                             class="fas fa-folder-plus"></i> Thêm tình trạng</a>
-                                </div>
+                                </div>-->
                             </div>
                             <form action="supplier" method="post" class="row">
                                 <input type="hidden" name="action" value="create">
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Supplier Name</label>
-                                    <input class="form-control" type="text" name="supplierName">
+                                    <input class="form-control" type="text" name="supplierName" id="supplierName" required oninput="validateSupplierName();">
+                                    <small id="error-message-supplier" style="color: red;"></small>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Contact Name</label>
-                                    <input class="form-control" type="text" name="contactName">
+                                    <input class="form-control" type="text" name="contactName" id="contactName" required oninput="validateContactName();">
+                                    <small id="error-message-contact" style="color: red;"></small>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Phone Number</label>
-                                    <input class="form-control" type="number" name="phoneNumber">
+                                    <input class="form-control" type="number" name="phoneNumber" id="phoneNumber" required oninput="validatePhoneNumber();">
+                                    <small id="error-message-phone" style="color: red;"></small>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Email</label>
-                                    <input class="form-control" type="email" name="email">
+                                    <input class="form-control" type="email" name="email" id="email" required oninput="validateEmail();">
+                                    <small id="error-message-email" style="color: red;"></small>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Address</label>
-                                    <input class="form-control" type="text" name="address">
+                                    <input class="form-control" type="text" name="address" id="address" required oninput="validateAddress();">
+                                    <small id="error-message-address" style="color: red;"></small>
                                 </div>
 
                         </div>
                         <button class="btn btn-save" type="submit">Lưu lại</button>
-                        <a class="btn btn-cancel" href="table-data-product.html">Hủy bỏ</a>
+                        <a class="btn btn-cancel" href="${pageContext.request.contextPath}/supplier">Hủy bỏ</a>
                         </form>
 
 
@@ -308,24 +313,91 @@
                     <script src="js/main.js"></script>
                     <script src="js/plugins/pace.min.js"></script>
                     <script>
-            const inpFile = document.getElementById("inpFile");
-            const loadFile = document.getElementById("loadFile");
-            const previewContainer = document.getElementById("imagePreview");
-            const previewContainer = document.getElementById("imagePreview");
-            const previewImage = previewContainer.querySelector(".image-preview__image");
-            const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
-            inpFile.addEventListener("change", function () {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    previewDefaultText.style.display = "none";
-                    previewImage.style.display = "block";
-                    reader.addEventListener("load", function () {
-                        previewImage.setAttribute("src", this.result);
-                    });
-                    reader.readAsDataURL(file);
+            function validateSupplierName() {
+                const supplierNameInput = document.getElementById('supplierName');
+                const errorMessageSupplier = document.getElementById('error-message-supplier');
+                const supplierNameValue = supplierNameInput.value.trim();
+
+                if (supplierNameValue.length < 3 || supplierNameValue.length > 50) {
+                    errorMessageSupplier.textContent = 'Supplier name must be between 3 and 50 characters.';
+                } else {
+                    errorMessageSupplier.textContent = '';
                 }
-            });
+            }
+
+            function validateContactName() {
+                const contactNameInput = document.getElementById('contactName');
+                const errorMessageContact = document.getElementById('error-message-contact');
+                const contactNameValue = contactNameInput.value.trim();
+
+                if (contactNameValue.length < 3 || contactNameValue.length > 50) {
+                    errorMessageContact.textContent = 'Contact name must be between 3 and 50 characters.';
+                } else {
+                    errorMessageContact.textContent = '';
+                }
+            }
+
+            function validatePhoneNumber() {
+                const phoneNumberInput = document.getElementById('phoneNumber');
+                const errorMessagePhone = document.getElementById('error-message-phone');
+                const phoneNumberValue = phoneNumberInput.value;
+
+                const phoneRegex = /^[0-9]{10,15}$/; // Validates a range of 10-15 digits
+
+                if (!phoneRegex.test(phoneNumberValue)) {
+                    errorMessagePhone.textContent = 'Please enter a valid phone number (10-15 digits).';
+                } else {
+                    errorMessagePhone.textContent = '';
+                }
+            }
+
+            function validateEmail() {
+                const emailInput = document.getElementById('email');
+                const errorMessageEmail = document.getElementById('error-message-email');
+                const emailValue = emailInput.value.trim();
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format validation
+
+                if (!emailRegex.test(emailValue)) {
+                    errorMessageEmail.textContent = 'Please enter a valid email address.';
+                } else {
+                    errorMessageEmail.textContent = '';
+                }
+            }
+
+            function validateAddress() {
+                const addressInput = document.getElementById('address');
+                const errorMessageAddress = document.getElementById('error-message-address');
+                const addressValue = addressInput.value.trim();
+
+                if (addressValue.length < 5 || addressValue.length > 100) {
+                    errorMessageAddress.textContent = 'Address must be between 5 and 100 characters.';
+                } else {
+                    errorMessageAddress.textContent = '';
+                }
+            }
+
+
+                    </script>
+                    <script>
+                        const inpFile = document.getElementById("inpFile");
+                        const loadFile = document.getElementById("loadFile");
+                        const previewContainer = document.getElementById("imagePreview");
+                        const previewContainer = document.getElementById("imagePreview");
+                        const previewImage = previewContainer.querySelector(".image-preview__image");
+                        const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+                        inpFile.addEventListener("change", function () {
+                            const file = this.files[0];
+                            if (file) {
+                                const reader = new FileReader();
+                                previewDefaultText.style.display = "none";
+                                previewImage.style.display = "block";
+                                reader.addEventListener("load", function () {
+                                    previewImage.setAttribute("src", this.result);
+                                });
+                                reader.readAsDataURL(file);
+                            }
+                        });
 
                     </script>
                     </body>

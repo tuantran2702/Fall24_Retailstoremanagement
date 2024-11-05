@@ -10,32 +10,61 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Permissions;
 import model.Role;
+import model.User;
 
 /**
  *
  * @author ptrung
  */
 public class PermissionsDAO extends DBContext {
-//    public List<String> getPermissionsName() {
-//        
-//        List<String> permissions = new ArrayList<>();
-//        
-//        String sql = "SELECT PermissionName FROM [Permissions]";
-//
-//        try {
-//            PreparedStatement st = connection.prepareStatement(sql);
-//            ResultSet rs = st.executeQuery();
-//
-//            while (rs.next()) {
-//                permissions.add(rs.getString(2));
-//            }
-//            
-//            
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return permissions;
-//    }
+/// Cập nhật quyền trong database
+
+    public boolean updatePermission(Permissions permission) {
+        
+        String sql = "UPDATE Permissions SET PermissionName = ? WHERE PermissionID = ?";
+        // Sử dụng try-with-resources để tự động đóng kết nối
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, permission.getPermissionName());
+            st.setInt(2, permission.getId());
+            st.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean deletePermission(int id){
+        String sql = "DELETE FROM [dbo].[Permissions] WHERE PermissionID = ?";
+        // Sử dụng try-with-resources để tự động đóng kết nối
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Permissions getPermissionById(int id) {
+        Permissions permission = new Permissions();
+        String sql = "SELECT * FROM Permissions Where PermissionID = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                permission.setId(rs.getInt(1));
+                permission.setPermissionName(rs.getString(2));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return permission;
+    }
 
     // Lấy tất cả các quyền hạn
     public List<Permissions> getAllPermissions() {
@@ -111,16 +140,19 @@ public class PermissionsDAO extends DBContext {
             e.printStackTrace();
         }
     }
+    
+    public boolean isAccess(User u, String s){
+        List<String> lst = getAssignedPermissionsForRole(u.getRoleID());
+        if(lst.contains(s)){
+            return true;
+        }
+        return false;
+    }
 
     public static void main(String[] args) {
         PermissionsDAO pd = new PermissionsDAO();
-        List<Permissions> lst = pd.getAllPermissions();
-        
-        List<String> lstlst = pd.getAssignedPermissionsForRole(1);
-        for (Permissions p : lst){
-            System.out.println(p);
-        }
-        
+        Permissions p = pd.getPermissionById(6);
+        System.out.println(p);
 
     }
 }

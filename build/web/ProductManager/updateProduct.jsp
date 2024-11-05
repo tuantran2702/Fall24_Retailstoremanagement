@@ -103,14 +103,14 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item"><a href="warehouse">Danh sách kho hàng</a></li>
-                    <li class="breadcrumb-item active">Cập nhật kho hàng</li>
+                    <li class="breadcrumb-item"><a href="product">Danh sách sản phẩm</a></li>
+                    <li class="breadcrumb-item active">Cập nhật sản phẩm</li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="tile">
-                        <h3 class="tile-title">Cập nhật kho hàng</h3>
+                        <h3 class="tile-title">Cập nhật sản phẩm</h3>
                         <div class="tile-body">
                             <!-- Hiển thị thông báo lỗi nếu có -->
                             <form action="product" method="post" >
@@ -278,7 +278,7 @@
                                     <a href="#" style="float: right; font-weight: 600; color: #ea0000;">Chỉnh sửa sản phẩm nâng cao</a>
                                     <br><br>
                                     <button class="btn btn-save" type="submit">Lưu lại</button>
-                                    <a class="btn btn-cancel" href="#">Hủy bỏ</a>
+                                    <a class="btn btn-cancel" href="${pageContext.request.contextPath}/product">Hủy bỏ</a>
                                     <br>
                                 </div>
                             </form>

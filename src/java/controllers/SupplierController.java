@@ -4,6 +4,7 @@
  */
 package controllers;
 
+import dao.PermissionsDAO;
 import dao.SupplierDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,7 +12,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import model.Supplier;
+import model.User;
 
 /**
  *
@@ -57,28 +60,51 @@ public class SupplierController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        //Xử lí Phân Quyền
+        String END_POINT = "INVENTORY-MANAGE";
+        if (request.getSession().getAttribute("User") != null) {
+            PermissionsDAO pd = new PermissionsDAO();
+            User u = (User) request.getSession().getAttribute("User");
+            if (!pd.isAccess(u, END_POINT)) {
+                response.sendRedirect("404.jsp");
+                return;
+            }
+        } else {
+            response.sendRedirect("404.jsp");
+            return;
+        }
+
         String action = request.getParameter("action");
         String idStr = request.getParameter("id");
+
+        // Xử lý tìm kiếm và lọc
+        String keyword = request.getParameter("keyword");
+        String supplierID = request.getParameter("supplierID");
+
+        SupplierDAO supplierDAO = new SupplierDAO();
+
         if (action == null) {
-            SupplierDAO supplier = new SupplierDAO();
-            request.setAttribute("data", supplier.getListsupplier());
+            // Nếu không có hành động, thực hiện tìm kiếm
+            List<Supplier> suppliers;
+            if (keyword != null || supplierID != null) {
+                suppliers = supplierDAO.searchSuppliers(keyword, supplierID); // Tìm kiếm dựa trên từ khóa và ID
+            } else {
+                suppliers = supplierDAO.getListsupplier(); // Lấy tất cả nhà cung cấp
+            }
+            request.setAttribute("data", suppliers); // Gửi danh sách nhà cung cấp đến JSP
             request.getRequestDispatcher("/SupplierManager/listSupplier.jsp").forward(request, response);
 
         } else if (action.equals("create")) {
-            SupplierDAO supplier = new SupplierDAO();
             request.getRequestDispatcher("/SupplierManager/createSupplier.jsp").forward(request, response);
         } else if (action.equals("update") && idStr != null) {
             int id = Integer.parseInt(idStr);
-            
-            SupplierDAO supplier = new SupplierDAO();
-            Supplier s = supplier.getSupplierById(id);
-            request.setAttribute("supplier", s);         
+            Supplier s = supplierDAO.getSupplierById(id);
+            request.setAttribute("supplier", s);
             request.getRequestDispatcher("/SupplierManager/updateSupplier.jsp").forward(request, response);
-        }
-         else if (action.equals("delete") && idStr != null) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            SupplierDAO supplier = new SupplierDAO();
-            supplier.deletesupplier(id);
+        } else if (action.equals("delete") && idStr != null) {
+            int id = Integer.parseInt(idStr);
+            supplierDAO.deletesupplier(id);
             response.sendRedirect("supplier");
         }
     }
@@ -95,40 +121,36 @@ public class SupplierController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        if(action.equals("create")){
+        if (action.equals("create")) {
             String supplierName = request.getParameter("supplierName");
-        String contactName = request.getParameter("contactName");
-        String phoneNumber = request.getParameter("phoneNumber");
-        String email = request.getParameter("email");
-        String address = request.getParameter("address");
-        
-        Supplier supplier =new Supplier(0, supplierName, contactName, phoneNumber, email, address);
-        SupplierDAO s=new SupplierDAO();
-        s.createSupplier(supplier);
-        response.sendRedirect("supplier");
-                
-                
-            
-        }
-        else if (action.equals("update")) {
-            
+            String contactName = request.getParameter("contactName");
+            String phoneNumber = request.getParameter("phoneNumber");
+            String email = request.getParameter("email");
+            String address = request.getParameter("address");
+
+            Supplier supplier = new Supplier(0, supplierName, contactName, phoneNumber, email, address);
+            SupplierDAO s = new SupplierDAO();
+            s.createSupplier(supplier);
+            response.sendRedirect("supplier");
+
+        } else if (action.equals("update")) {
+
             int id = Integer.parseInt(request.getParameter("id"));
             String supplierName = request.getParameter("supplierName");
             String contactName = request.getParameter("contactName");
             String phoneNumber = request.getParameter("phoneNumber");
             String email = request.getParameter("email");
             String address = request.getParameter("address");
-            
+
             Supplier supplier = new Supplier(id, supplierName, contactName, phoneNumber, email, address);
             SupplierDAO s = new SupplierDAO();
 
             s.updateSupplier(supplier);
             response.sendRedirect("supplier");
-        
-        }
-        else if ("createSupplierName".equals(action)) {
+
+        } else if ("createSupplierName".equals(action)) {
             // Lấy giá trị của categoryName từ form
-            String supplierName  = request.getParameter("supplierName");
+            String supplierName = request.getParameter("supplierName");
 
             // Thực hiện thêm Category vào database (giả sử có một service hoặc DAO xử lý)
             SupplierDAO supplierDAO = new SupplierDAO();
@@ -137,8 +159,6 @@ public class SupplierController extends HttpServlet {
             // Chuyển hướng sau khi thêm thành công
             response.sendRedirect("product?action=create");
         }
-        
-
 
     }
 

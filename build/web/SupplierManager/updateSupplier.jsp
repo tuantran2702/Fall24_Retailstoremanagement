@@ -103,14 +103,14 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item"><a href="warehouse">Danh sách kho hàng</a></li>
-                    <li class="breadcrumb-item active">Cập nhật supplier</li>
+                    <li class="breadcrumb-item"><a href="supplier">Danh sách Nhà cung cấp</a></li>
+                    <li class="breadcrumb-item active">Cập nhật Nhà cung cấp</li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="tile">
-                        <h3 class="tile-title">Cập nhật supplier</h3>
+                        <h3 class="tile-title">Cập nhật Nhà cung cấp</h3>
                         <div class="tile-body">
                             <form action="supplier" method="post">
                                 <input type="hidden" name="action" value="update">
@@ -169,7 +169,7 @@
                                     <!-- Buttons -->
                                     <div class="col-md-12 text-right">
                                         <button class="btn btn-save" type="submit">Lưu lại</button>
-                                        <a class="btn btn-cancel" href="#">Hủy bỏ</a>
+                                        <a class="btn btn-cancel" href="${pageContext.request.contextPath}/supplier">Hủy bỏ</a>
                                     </div>
                                 </div>
                             </form>

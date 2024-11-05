@@ -4,6 +4,7 @@
  */
 package controllers;
 
+import dao.PermissionsDAO;
 import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,7 +15,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import model.Product;
+import model.User;
 
 /**
  *
@@ -59,44 +62,67 @@ public class ProductController extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        PrintWriter out = response.getWriter();
+        PrintWriter out = response.getWriter();
 
-        String action = request.getParameter("action");
-        String idStr = request.getParameter("id");
-//        out.print(action);
-
-        if (action == null) {
-            ProductDAO product = new ProductDAO();
-            request.setAttribute("data", product.getListProduct());
-            request.getRequestDispatcher("/ProductManager/listProduct.jsp").forward(request, response);
-
-        } else if (action.equals("create")) {
-            ProductDAO product = new ProductDAO();
-            request.setAttribute("listCategory", product.GetListCategory());
-            request.setAttribute("listUser", product.GetListUser());
-            request.setAttribute("listUnit", product.GetListUnit());
-            request.setAttribute("listSupplier", product.GetListSupplier());
-            request.getRequestDispatcher("/ProductManager/createProduct.jsp").forward(request, response);
-//            out.print(product.GetListCategory());
-        } else if (action.equals("update") && idStr != null) {
-            int id = Integer.parseInt(idStr);
-            ProductDAO product = new ProductDAO();
-            request.setAttribute("listCategory", product.GetListCategory());
-            request.setAttribute("listUser", product.GetListUser());
-            request.setAttribute("listUnit", product.GetListUnit());
-            request.setAttribute("listSupplier", product.GetListSupplier());
-            Product p = product.getProductById(id);
-            request.setAttribute("product", p);
-            request.getRequestDispatcher("/ProductManager/updateProduct.jsp").forward(request, response);
-//                        out.print(product.getProductById(id));
-        } else if (action.equals("delete") && idStr != null) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            ProductDAO product = new ProductDAO();
-            product.deleteProduct(id);
-            response.sendRedirect("product");
-
+        //Xử lí Phân Quyền
+        String END_POINT = "PRODUCT-MANAGE";
+        if (request.getSession().getAttribute("User") != null) {
+            PermissionsDAO pd = new PermissionsDAO();
+            User u = (User) request.getSession().getAttribute("User");
+            if (!pd.isAccess(u, END_POINT)) {
+                response.sendRedirect("404.jsp");
+                return;
+            }
+        } else {
+            response.sendRedirect("404.jsp");
+            return;
         }
 
+//        PrintWriter out = response.getWriter();
+        String action = request.getParameter("action");
+        String idStr = request.getParameter("id");
+
+        String productName = request.getParameter("productName");
+        String categoryIDStr = request.getParameter("categoryID");
+        String minPriceStr = request.getParameter("minPrice");
+        String maxPriceStr = request.getParameter("maxPrice");
+
+        int categoryID = (categoryIDStr != null && !categoryIDStr.isEmpty()) ? Integer.parseInt(categoryIDStr) : 0;
+        double minPrice = (minPriceStr != null && !minPriceStr.isEmpty()) ? Double.parseDouble(minPriceStr) : 0;
+        double maxPrice = (maxPriceStr != null && !maxPriceStr.isEmpty()) ? Double.parseDouble(maxPriceStr) : Double.MAX_VALUE;
+
+        ProductDAO productDAO = new ProductDAO();
+
+        if (action == null) {
+            // Search for products
+            List<Product> products = productDAO.getFilteredProducts(productName, categoryID, minPrice, maxPrice);
+            request.setAttribute("data", products);
+            request.setAttribute("listCategory", productDAO.GetListCategory()); // To display category list
+            request.getRequestDispatcher("/ProductManager/listProduct.jsp").forward(request, response);
+        } else if (action.equals("create")) {
+            // Create new product
+            request.setAttribute("listCategory", productDAO.GetListCategory());
+            request.setAttribute("listUser", productDAO.GetListUser());
+            request.setAttribute("listUnit", productDAO.GetListUnit());
+            request.setAttribute("listSupplier", productDAO.GetListSupplier());
+            request.getRequestDispatcher("/ProductManager/createProduct.jsp").forward(request, response);
+        } 
+        else if (action.equals("update") && idStr != null) {
+            // Update product
+            int id = Integer.parseInt(idStr);
+            request.setAttribute("listCategory", productDAO.GetListCategory());
+            request.setAttribute("listUser", productDAO.GetListUser());
+            request.setAttribute("listUnit", productDAO.GetListUnit());
+            request.setAttribute("listSupplier", productDAO.GetListSupplier());
+            Product p = productDAO.getProductById(id);
+            request.setAttribute("product", p);
+            request.getRequestDispatcher("/ProductManager/updateProduct.jsp").forward(request, response);
+        } else if (action.equals("delete") && idStr != null) {
+            // Delete product
+            int id = Integer.parseInt(request.getParameter("id"));
+            productDAO.deleteProduct(id);
+            response.sendRedirect("product");
+        }
     }
 
     /**
@@ -135,6 +161,19 @@ public class ProductController extends HttpServlet {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            
+            ProductDAO productDAO = new ProductDAO();
+        
+        // Kiểm tra xem sản phẩm đã tồn tại hay chưa
+        if (productDAO.isProductExists(productCode, productName)) {
+            request.setAttribute("error", "Sản phẩm đã tồn tại. Vui lòng kiểm tra lại.");
+            request.setAttribute("listCategory", productDAO.GetListCategory());
+            request.setAttribute("listUser", productDAO.GetListUser ());
+            request.setAttribute("listUnit", productDAO.GetListUnit());
+            request.setAttribute("listSupplier", productDAO.GetListSupplier());
+            request.getRequestDispatcher("/ProductManager/createProduct.jsp").forward(request, response);
+            return; // Dừng lại nếu sản phẩm đã tồn tại
+        }
 
             Product product = new Product(0, productCode, productName, categoryID, price, quantity, description, createdDate, expiredDate, updateDate, image, userID, unitID, supplierID);
             ProductDAO p = new ProductDAO();

@@ -154,21 +154,7 @@
        <jsp:include page="/menu.jsp" />
 
         <main class="app-content">
-            <c:if test="${not empty sessionScope.successMessage}">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    ${sessionScope.successMessage}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    <% session.removeAttribute("successMessage"); %>
-                </div>
-            </c:if>
-            <c:if test="${not empty sessionScope.errorMessage}">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ${sessionScope.errorMessage}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    <% session.removeAttribute("errorMessage"); %>
-                </div>
-            </c:if>
-
+          
             <div class="row mb-4">
                 <div class="col-md-12 d-flex justify-content-between align-items-center">
                     <form method="POST" action="${pageContext.request.contextPath}/cashbook" onsubmit="return confirmReset()" class="me-2">
