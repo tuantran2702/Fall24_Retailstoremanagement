@@ -76,22 +76,23 @@
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()">
+                                    <a class="btn btn-sm btn-delete print-file" type="button" title="In" onclick="printTable()">
                                         <i class="fas fa-print"></i> In dữ liệu
                                     </a>
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <a class="btn btn-excel btn-sm" href="#" title="Xuất Excel">
+                                    <a class="btn btn-sm btn-excel" type="button" title="Xuất Excel" onclick="exportToExcel()">
                                         <i class="fas fa-file-excel"></i> Xuất Excel
                                     </a>
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="Xuất PDF" onclick="myApp.xuatPDF()">
+                                    <a class="btn btn-sm btn-delete pdf-file" type="button" title="Xuất PDF" onclick="exportToPDF()">
                                         <i class="fas fa-file-pdf"></i> Xuất PDF
                                     </a>
                                 </div>
+
 
                                 <div class="col-sm-2">
                                     <a class="btn btn-delete btn-sm" type="button" title="Xóa" onclick="myFunction(this)"><i
@@ -104,7 +105,7 @@
                                 <thead>
                                     <tr>
 
-                                        <th>Img</th>
+                                        <th class="no-export">Img</th>
                                         <th>ID nhân viên</th>
                                         <th width="150">Họ và tên</th>
                                         <th width="170">Email</th>
@@ -119,7 +120,7 @@
                                     <c:forEach var="user" items="${requestScope.userList}">
                                         <tr>
 
-                                            <td><img src="${user.img}" alt="User Image" style="width:100px;height:100px;"></td>
+                                            <td class="no-export"><img src="${user.img}" alt="User Image" style="width:100px;height:100px;"></td>
                                             <td>${user.userID}</td>
                                             <td>${user.firstName} ${user.lastName}</td>
                                             <td>${user.email}</td>
@@ -166,61 +167,89 @@
         <script src="src/jquery.table2excel.js"></script>
         <!-- Font Awesome cho biểu tượng -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <!-- SheetJS for Excel export -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+
+        <!-- jsPDF for PDF export -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+
+
+
         <script type="text/javascript">$('#sampleTable').DataTable();</script>
 
-        <style>
-            /* Ẩn cột Tính năng khi in */
-            @media print {
-                .no-print {
-                    display: none !important;
-                }
-            }
-        </style>
-
         <script>
-            var myApp = {
-                // Hàm in bảng, loại bỏ cột "Tính năng" khi in
-                printTable: function () {
-                    $('.no-export').hide(); // Ẩn cột Tính năng
-                    var printContents = document.getElementById('sampleTable').outerHTML;
-                    var originalContents = document.body.innerHTML;
+// Function to export table to Excel (without the "Tính năng" column)
+            function exportToExcel() {
+                var table = document.getElementById('sampleTable').cloneNode(true);
+                removeNoExportColumns(table);
+                var wb = XLSX.utils.table_to_book(table, {sheet: "Sheet1"});
+                XLSX.writeFile(wb, 'employee_list.xlsx');
+            }
 
-                    document.body.innerHTML = printContents;
-                    window.print();
+// Function to export table to PDF (without the "Tính năng" column)
+            function exportToPDF() {
+                // Tạo đối tượng jsPDF
+                var {jsPDF} = window.jspdf;
+                var doc = new jsPDF();
 
-                    document.body.innerHTML = originalContents;
-                    $('.no-export').show(); // Hiển thị lại cột sau khi in
-                    location.reload();
-                },
+                // Thêm font tùy chỉnh vào jsPDF (base64)
+                doc.addFileToVFS("Arial-normal.ttf", "<base64-data>");
+                doc.addFont("Arial-normal.ttf", "Arial", "normal");
+                doc.setFont("Arial"); // Sử dụng font "Arial"
 
-                // Hàm xuất PDF
-                xuatPDF: function () {
-                    $('.no-export').hide(); // Ẩn cột Tính năng trước khi xuất PDF
-                    var doc = new jsPDF();
-                    doc.autoTable({
-                        html: '#sampleTable',
-                        theme: 'grid',
-                        styles: {fontSize: 10},
-                        margin: {top: 10}
-                    });
-                    doc.save('table_data.pdf'); // Lưu file PDF
-                    $('.no-export').show(); // Hiển thị lại cột sau khi xuất PDF
-                }
-            };
+                // Clone bảng và xóa các cột không cần xuất
+                var table = document.getElementById('sampleTable').cloneNode(true);
+                removeNoExportColumns(table);
 
-            $(document).ready(function () {
-                // Hàm xuất Excel
-                $('.btn-excel').click(function (e) {
-                    e.preventDefault(); // Ngăn không reload trang
-                    $('.no-export').hide(); // Ẩn cột Tính năng trước khi xuất Excel
-                    $("#sampleTable").table2excel({
-                        exclude: ".no-export", // Loại bỏ các cột có class "no-export"
-                        filename: "table_data.xls" // Tên file Excel
-                    });
-                    $('.no-export').show(); // Hiển thị lại cột sau khi xuất Excel
+                // Sử dụng autoTable với font hỗ trợ tiếng Việt
+                doc.autoTable({
+                    html: table,
+                    columnStyles: {
+                        0: {cellWidth: 20},
+                        1: {cellWidth: 20},
+                        2: {cellWidth: 40},
+                        3: {cellWidth: 40}
+                    },
+                    margin: {top: 10}
                 });
-            });
+
+                doc.save('employee_list.pdf');
+            }
+
+
+
+// Function to print the table (without the "Tính năng" column)
+            function printTable() {
+                var printContent = document.getElementById('sampleTable').cloneNode(true);
+                removeNoExportColumns(printContent);
+                var originalContent = document.body.innerHTML;
+
+                document.body.innerHTML = "<html><head><title>Print</title></head><body>" + printContent.outerHTML + "</body></html>";
+                window.print();
+                document.body.innerHTML = originalContent;
+            }
+
+// Function to remove columns with class 'no-export'
+            function removeNoExportColumns(table) {
+                // Remove header columns
+                var headers = table.querySelectorAll('th.no-export');
+                headers.forEach(function (header) {
+                    header.parentNode.removeChild(header);
+                });
+
+                // Remove data columns
+                var rows = table.querySelectorAll('tr');
+                rows.forEach(function (row) {
+                    var cells = row.querySelectorAll('td.no-export');
+                    cells.forEach(function (cell) {
+                        cell.parentNode.removeChild(cell);
+                    });
+                });
+            }
         </script>
+
+
 
         <script>
             // Hàm hiển thị cảnh báo xóa
