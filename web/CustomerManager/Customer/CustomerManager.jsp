@@ -121,12 +121,17 @@
                                     </a>
                                 </div>
                                 <div class="col-sm-2">
+                                    <a class="btn btn-info btn-sm print-file" type="button" href="customerReport">
+                                        <i class="fas fa-chart-line"></i> Báo cáo
+                                    </a>
+                                </div>
+                                <div class="col-sm-2">
                                     <a class="btn btn-excel btn-sm" href="/Fall24_Retailstoremanagement/customer?action=exportExcel" title="In"><i class="fas fa-file-excel"></i> Xuất Excel</a>
                                 </div>
-<!--                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)"><i
-                                            class="fas fa-file-pdf"></i> Xuất PDF</a>
-                                </div>-->
+                                <!--                                <div class="col-sm-2">
+                                                                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)"><i
+                                                                            class="fas fa-file-pdf"></i> Xuất PDF</a>
+                                                                </div>-->
                                 <div class="col-sm-2">
                                     <a class="btn btn-delete btn-sm" type="button" title="Xóa tất cả" onclick="confirmDeleteAll()">
                                         <i class="fas fa-trash-alt"></i> Xóa tất cả
