@@ -157,10 +157,8 @@
         <!-- Data table plugin-->
         <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-        <script src="js/jquery-3.2.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.10/jspdf.plugin.autotable.min.js"></script>
-        <script src="src/jquery.table2excel.js"></script>
+        
+
         <!-- Font Awesome cho biểu tượng -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <!-- SheetJS for Excel export -->
@@ -175,6 +173,9 @@
         <script type="text/javascript">$('#sampleTable').DataTable();</script>
 
         <script>
+            $(document).ready(function () {
+                $('#sampleTable').DataTable();
+            });
 // Function to export table to Excel (without the "Tính năng" column)
             function exportToExcel() {
                 var table = document.getElementById('sampleTable').cloneNode(true);
@@ -335,7 +336,7 @@
                     mm = '0' + mm
                 }
                 today = day + ', ' + dd + '/' + mm + '/' + yyyy;
-                tmp = '<span class="date"> ' + nowTime + '  -  ' + today  +
+                tmp = '<span class="date"> ' + nowTime + '  -  ' + today +
                         '</span>';
                 document.getElementById("clock").innerHTML = tmp;
                 clocktime = setTimeout("time()", "1000", "Javascript");

@@ -12,7 +12,7 @@
 <html lang="en">
 
     <head>
-        <title>Thêm nhân viên | Quản trị Admin</title>
+        <title>Add New Employee | GROUP1</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -124,8 +124,8 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item">Danh sách nhân viên</li>
-                    <li class="breadcrumb-item"><a href="#">Thêm nhân viên</a></li>
+                    <li class="breadcrumb-item"><a href="userManage">Employees List</a></li>
+                    <li class="breadcrumb-item"><a href="addUser">Add New Employee</a></li>
                 </ul>
             </div>
             <div class="row">
@@ -133,12 +133,12 @@
 
                     <div class="tile">
 
-                        <h3 class="tile-title">Tạo mới nhân viên</h3>
+                        <h3 class="tile-title">Add New Employee</h3>
                         <div class="tile-body">
                             <div class="row element-button">
                                 <div class="col-sm-2">
                                     <a class="btn btn-add btn-sm" href="addRole"><b><i
-                                                class="fas fa-folder-plus"></i> Tạo chức vụ mới</b></a>
+                                                class="fas fa-folder-plus"></i>Add New Role</b></a>
                                 </div>
 
                             </div> 
@@ -159,7 +159,7 @@
                                     <input class="form-control" type="email" value="<%= ((User) request.getAttribute("user")).getEmail() != null ? ((User) request.getAttribute("user")).getEmail() : "" %>" name="email" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label class="control-label">Số điện thoại</label>
+                                    <label class="control-label">Phone Number</label>
                                     <input class="form-control" type="text" value="<%= ((User) request.getAttribute("user")).getPhoneNumber() != null ? ((User) request.getAttribute("user")).getPhoneNumber() : "" %>" name="phone" required>
                                 </div>
                                 <div class="form-group col-md-4">
@@ -167,9 +167,9 @@
                                     <input class="form-control" type="text" value="<%= ((User) request.getAttribute("user")).getAddress() != null ? ((User) request.getAttribute("user")).getAddress() : "" %>" name="address">
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="exampleSelect1" class="control-label">Chức vụ</label>
+                                    <label for="exampleSelect1" class="control-label">Role</label>
                                     <select class="form-control" id="exampleSelect1" name="role">
-                                        <option>-- Chọn chức vụ --</option>
+                                        <option>-- Select Role --</option>
                                         <c:forEach var="role" items="${roles}">
                                             <option value="${role.roleID}" 
                                                     <c:if test="${role.roleID == user.roleID}">
@@ -182,7 +182,7 @@
                                 </div>
                                 <div class="form-group col-md-12">
 
-                                    <label class="control-label">Ảnh 3x4 nhân viên</label>
+                                    <label class="control-label">Employee 3x4 Image</label>
                                     <p id="error-message" class="error" style="color: red"></p> <!-- Thông báo lỗi -->
                                     <div id="myfileupload">
                                         <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
@@ -196,12 +196,12 @@
                                     </div>
 
                                     <div id="boxchoice">
-                                        <a href="javascript:" class="Choicefile"><i class='bx bx-upload'></i> Chọn file</a>
+                                        <a href="javascript:" class="Choicefile"><i class='bx bx-upload'></i>Select file</a>
                                         <p style="clear:both"></p>
                                     </div>
                                 </div>
-                                <button class="btn btn-save" type="submit">Lưu lại</button>
-                                <a class="btn btn-cancel" href="userManage">Hủy bỏ</a>
+                                <button class="btn btn-save" type="submit">Save</button>
+                                <a class="btn btn-cancel" href="userManage">Cancel</a>
                             </form>
 
                         </div>
@@ -230,10 +230,10 @@
                                             // Hàm kiểm tra file hợp lệ
                                             function validateFile(file) {
                                                 if (!VALID_IMAGE_TYPES.includes(file.type)) {
-                                                    return "Chỉ cho phép file ảnh (JPEG, PNG, GIF).";
+                                                    return "Only image files (JPEG, PNG, GIF) are allowed.";
                                                 }
                                                 if (file.size > MAX_FILE_SIZE) {
-                                                    return "Kích thước ảnh phải nhỏ hơn 2MB.";
+                                                    return "Image size must be less than 2MB.";
                                                 }
                                                 return null;
                                             }

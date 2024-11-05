@@ -11,7 +11,7 @@
 <html lang="en">
 
     <head>
-        <title>Thêm nhân viên | Quản trị Admin</title>
+        <title>Update Employee | GROUP1</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -124,8 +124,8 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item"><a href="userManage">Danh sách nhân viên</a></li>
-                    <li class="breadcrumb-item"><a href="#">Cập nhật nhân viên</a></li>
+                    <li class="breadcrumb-item"><a href="userManage">Emloyees List</a></li>
+                    <li class="breadcrumb-item"><a href="">Update Employee</a></li>
                 </ul>
             </div>
             <div class="row">
@@ -133,12 +133,12 @@
 
                     <div class="tile">
 
-                        <h3 class="tile-title">Cập Nhật Nhân Viên</h3>
+                        <h3 class="tile-title">Update Employee</h3>
                         <div class="tile-body">
                             <div class="row element-button">
                                 <div class="col-sm-2">
                                     <a class="btn btn-add btn-sm" href="addRole"><b><i
-                                                class="fas fa-folder-plus"></i> Tạo chức vụ mới</b></a>
+                                                class="fas fa-folder-plus"></i> Add New Role</b></a>
                                 </div>
 
                             </div> 
@@ -171,9 +171,9 @@
                                     <input class="form-control" type="text" value="<%= ((User) request.getAttribute("user")).getAddress() != null ? ((User) request.getAttribute("user")).getAddress() : "" %>" name="address">
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="exampleSelect1" class="control-label">Chức vụ</label>
+                                    <label for="exampleSelect1" class="control-label">Role</label>
                                     <select class="form-control" id="exampleSelect1" name="role">
-                                        <option>-- Chọn chức vụ --</option>
+                                        <option>-- Select Role --</option>
                                         <c:forEach var="role" items="${roles}">
                                             <option value="${role.roleID}" 
                                                     <c:if test="${role.roleID == user.roleID}">
@@ -188,7 +188,7 @@
 
                                 <div class="form-group col-md-12">
 
-                                    <label class="control-label">Ảnh 3x4 nhân viên</label>
+                                    <label class="control-label">Employee 3x4 Image</label>
                                     <p id="error-message" class="error" style="color: red"></p> <!-- Thông báo lỗi -->
                                     <div id="myfileupload">
                                         <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
@@ -208,8 +208,8 @@
                                     </div>
                                 </div>
 
-                                <button class="btn btn-save" type="submit">Lưu lại</button>
-                                <a class="btn btn-cancel" href="userManage">Hủy bỏ</a>
+                                <button class="btn btn-save" type="submit">Save Change</button>
+                                <a class="btn btn-cancel" href="userManage">Cancel</a>
                             </form>
 
                         </div>
@@ -235,9 +235,9 @@
                                                 const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
                                                 const maxFileSize = 2 * 1024 * 1024; // 2MB giới hạn kích thước
                                                 if (!validImageTypes.includes(file.type))
-                                                    return "Chỉ cho phép file ảnh (JPEG, PNG, GIF).";
+                                                    return "Only image files (JPEG, PNG, GIF) are allowed.";
                                                 if (file.size > maxFileSize)
-                                                    return "Kích thước ảnh phải nhỏ hơn 2MB.";
+                                                    return "Image size must be less than 2MB.";
                                                 return null;
                                             }
 

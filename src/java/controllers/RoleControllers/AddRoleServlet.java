@@ -82,38 +82,46 @@ public class AddRoleServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // Lấy dữ liệu từ form
-        String roleName = request.getParameter("roleName");
-        String description = request.getParameter("description");
+        String roleName = request.getParameter("roleName").trim();
+        String description = request.getParameter("description").trim();
         String[] permissions = request.getParameterValues("permissions"); // Lấy danh sách quyền hạn được chọn
 
-        // Kiểm tra nếu các giá trị không rỗng
-        if (roleName == null || roleName.isEmpty() || description == null || description.isEmpty()) {
-            // Nếu có lỗi, đặt thông báo lỗi và quay lại trang form
-            request.setAttribute("errorMessage", "Các trường Role Name và Description không được để trống.");
+        // Khởi tạo đối tượng DAO
+        RoleDAO roleDAO = new RoleDAO();
+        PermissionsDAO permissionsDAO = new PermissionsDAO();
 
-            // Gửi danh sách quyền đến trang JSP
-            request.setAttribute("permissions", permissions);
+        // Kiểm tra nếu các giá trị không rỗng
+        if (roleName.isEmpty() || description.isEmpty()) {
+            request.setAttribute("errorMessage", "Các trường Role Name và Description không được để trống.");
+            request.setAttribute("permissions", permissionsDAO.getAllPermissions());
+            request.getRequestDispatcher("Role/AddRole.jsp").forward(request, response);
+            return;
+        }
+        
+        if (permissions == null) {
+            request.setAttribute("errorMessage", "Permission = null.");
+            request.setAttribute("permissions", permissionsDAO.getAllPermissions());
             request.getRequestDispatcher("Role/AddRole.jsp").forward(request, response);
             return;
         }
 
-        // Tạo đối tượng RoleDAO để tương tác với DB
-        RoleDAO rd = new RoleDAO();
+        try {
+            // Thêm vai trò vào cơ sở dữ liệu
+            boolean addSuccess = roleDAO.addRole(roleName, description, permissions);
 
-        // Thêm vai trò vào cơ sở dữ liệu
-        boolean addSuccess = rd.addRole(roleName, description, permissions);
-
-        // Nếu thêm vai trò thành công, chuyển hướng đến trang danh sách vai trò
-        if (addSuccess) {
-            response.sendRedirect("roles");
-        } else {
-            // Nếu thêm vai trò thất bại, quay lại trang form với thông báo lỗi
-            // Gửi danh sách quyền đến trang JSP
-            // Sử dụng DAO để lấy danh sách quyền
-            PermissionsDAO permissionsDAO = new PermissionsDAO();
-            List<Permissions> psm = permissionsDAO.getAllPermissions();
-            request.setAttribute("permissions", psm);
-            request.setAttribute("errorMessage", "Thêm vai trò thất bại. Vui lòng thử lại.");
+            if (addSuccess) {
+                // Nếu thêm vai trò thành công, chuyển hướng đến trang danh sách vai trò
+                response.sendRedirect("roles");
+            } else {
+                // Nếu thêm vai trò thất bại, gửi thông báo lỗi và danh sách quyền đến trang form
+                request.setAttribute("errorMessage", "Thêm vai trò thất bại. Vui lòng thử lại.");
+                request.setAttribute("permissions", permissionsDAO.getAllPermissions());
+                request.getRequestDispatcher("Role/AddRole.jsp").forward(request, response);
+            }
+        } catch (Exception e) {
+            // Xử lý lỗi và thông báo đến người dùng
+            request.setAttribute("errorMessage", "Đã xảy ra lỗi trong quá trình thêm vai trò. Vui lòng thử lại sau.");
+            request.setAttribute("permissions", permissionsDAO.getAllPermissions());
             request.getRequestDispatcher("Role/AddRole.jsp").forward(request, response);
         }
     }

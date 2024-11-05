@@ -64,10 +64,7 @@
         <servlet-name>AddUserController</servlet-name>
         <servlet-class>controllers.UserController.AddUserController</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>GetUserServlet</servlet-name>
-        <servlet-class>controllers.UserController.GetUserServlet</servlet-class>
-    </servlet>
+
     <servlet>
         <servlet-name>LogOutServlet</servlet-name>
         <servlet-class>controllers.UserController.LogOutServlet</servlet-class>
@@ -126,7 +123,7 @@
     </servlet>
     <servlet>
         <servlet-name>DeleteRoleServlet</servlet-name>
-        <servlet-class>DeleteRoleServlet</servlet-class>
+        <servlet-class>controllers.RoleControllers.DeleteRoleServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>GetRoleServlet</servlet-name>
@@ -215,10 +212,6 @@
     <servlet-mapping>
         <servlet-name>DeleteUserServlet</servlet-name>
         <url-pattern>/deleteUser</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GetUserServlet</servlet-name>
-        <url-pattern>/getUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogOutServlet</servlet-name>

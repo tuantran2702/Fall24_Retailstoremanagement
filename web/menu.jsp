@@ -49,11 +49,6 @@
 
 
 
-
-
-
-
-
             <c:if test="${permissions.contains('PRODUCT-MANAGE')}">
                 <li><a class="app-menu__item" href="product"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
