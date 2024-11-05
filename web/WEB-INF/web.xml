@@ -101,6 +101,10 @@
         <servlet-class>controllers.UserController.UpdateUserController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <servlet-class>controllers.UserController.DeleteUserServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>SalesController</servlet-name>
         <servlet-class>controllers.SalesController</servlet-class>
     </servlet>
@@ -207,6 +211,10 @@
     <servlet-mapping>
         <servlet-name>AddUserController</servlet-name>
         <url-pattern>/addUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <url-pattern>/deleteUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GetUserServlet</servlet-name>

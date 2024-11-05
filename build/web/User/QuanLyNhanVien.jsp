@@ -49,8 +49,8 @@
         <!-- Sidebar menu-->
         <!-- Include menu -->
         <jsp:include page="/menu.jsp" />
-        
-        
+
+
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
@@ -103,7 +103,7 @@
                                    id="sampleTable">
                                 <thead>
                                     <tr>
-                                        
+
                                         <th>Img</th>
                                         <th>ID nhân viên</th>
                                         <th width="150">Họ và tên</th>
@@ -118,7 +118,7 @@
                                 <tbody>
                                     <c:forEach var="user" items="${requestScope.userList}">
                                         <tr>
-                                            
+
                                             <td><img src="${user.img}" alt="User Image" style="width:100px;height:100px;"></td>
                                             <td>${user.userID}</td>
                                             <td>${user.firstName} ${user.lastName}</td>
@@ -132,7 +132,7 @@
                                                     <i class="fas fa-edit"></i>
                                                 </button>
                                                 <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                                        onclick="deleteUser(${user.userID})"><i class="fas fa-trash-alt"></i></button>
+                                                        onclick="deleteUser('${user.userID}')"><i class="fas fa-trash-alt"></i></button>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -210,118 +210,59 @@
             }
         </script>
 
-
         <script>
-            $('#saveChangesBtn').on('click', function () {
-                var user = {
-                    userID: $('#ModalUP input[name="userID"]').val(),
-                    firstName: $('#ModalUP input[name="firstName"]').val(),
-                    lastName: $('#ModalUP input[name="lastName"]').val(),
-                    phoneNumber: $('#ModalUP input[name="phoneNumber"]').val(),
-                    email: $('#ModalUP input[name="email"]').val(),
-                    roleID: $('#ModalUP select[name="roleID"]').val()
-                };
-
-                $.ajax({
-                    url: 'updateUser', // URL của servlet để cập nhật thông tin
-                    type: 'POST',
-                    data: user,
-                    success: function (response) {
-                        swal("Đã cập nhật thành công!", {
-                            icon: "success"
-                        }).then(() => {
-                            location.reload(); // Reload trang sau khi cập nhật
-                        });
-                    },
-                    error: function () {
-                        swal("Cập nhật thất bại!", {
-                            icon: "error"
-                        });
-                    }
-                });
-            });
-
-        </script>
-        <script>
-            function loadUserData(userID) {
-                $.ajax({
-                    url: 'getUser', // URL của servlet lấy thông tin người dùng
-                    type: 'GET',
-                    data: {id: userID},
-                    success: function (user) {
-                        // Hiển thị dữ liệu vào modal
-                        $('#ModalUP input[name="userID"]').val(user.userID);
-                        $('#ModalUP input[name="firstName"]').val(user.firstName);
-                        $('#ModalUP input[name="lastName"]').val(user.lastName);
-                        $('#ModalUP input[name="phoneNumber"]').val(user.phoneNumber);
-                        $('#ModalUP input[name="email"]').val(user.email);
-                        $('#ModalUP select[name="roleID"]').val(user.roleID);
-                    },
-                    error: function () {
-                        swal("Không thể tải dữ liệu người dùng!", {
-                            icon: "error"
-                        });
-                    }
-                });
-            }
-        </script>
-        <script>
-            function deleteUser(userID) {
+            // Hàm hiển thị cảnh báo xóa
+            function showDeleteWarning(message, onConfirm) {
                 swal({
                     title: "Cảnh báo",
-                    text: "Bạn có chắc chắn muốn xóa nhân viên này?",
-                    buttons: ["Hủy bỏ", "Đồng ý"]
-                }).then((willDelete) => {
+                    text: message,
+                    buttons: ["Hủy bỏ", "Đồng ý"],
+                    dangerMode: true
+                }).then(onConfirm);
+            }
+
+// Hàm xóa người dùng
+            function deleteUser(userID) {
+                if (!userID) {
+                    swal("Lỗi", "ID người dùng không hợp lệ", {icon: "error"});
+                    return;
+                }
+
+                showDeleteWarning("Bạn có chắc chắn muốn xóa nhân viên này?", (willDelete) => {
                     if (willDelete) {
-                        $.ajax({
-                            url: 'deleteUser', // URL của servlet xử lý xóa người dùng
-                            type: 'POST',
-                            data: {id: userID},
-                            success: function (response) {
-                                swal("Đã xóa thành công!", {
-                                    icon: "success"
-                                }).then(() => {
-                                    location.reload(); // Reload trang để cập nhật danh sách
+                        $.post('deleteUser', {id: userID})
+                                .done(() => {
+                                    swal("Đã xóa thành công!", {icon: "success"})
+                                            .then(() => location.reload());
+                                })
+                                .fail(() => {
+                                    swal("Xóa thất bại!", {icon: "error"});
                                 });
-                            },
-                            error: function () {
-                                swal("Xóa thất bại!", {
-                                    icon: "error"
-                                });
-                            }
-                        });
                     }
                 });
             }
-        </script>
-        <script>
-            function deleteRow(r) {
-                var i = r.parentNode.parentNode.rowIndex;
-                document.getElementById("myTable").deleteRow(i);
+
+// Hàm xóa hàng khỏi bảng mà không cần reload
+            function deleteRow(row) {
+                row.closest('tr').remove();
             }
-            jQuery(function () {
-                jQuery(".trash").click(function () {
-                    swal({
-                        title: "Cảnh báo",
 
-                        text: "Bạn có chắc chắn là muốn xóa nhân viên này?",
-                        buttons: ["Hủy bỏ", "Đồng ý"],
-                    })
-                            .then((willDelete) => {
-                                if (willDelete) {
-                                    swal("Đã xóa thành công.!", {
-
-                                    });
-                                }
-                            });
+// Thiết lập sự kiện cho nút xóa dòng
+            $(document).ready(function () {
+                // Sử dụng 'on' để bắt sự kiện cho các phần tử sinh ra sau khi DataTable load lại
+                $('#sampleTable').on('click', '.trash', function () {
+                    const userID = $(this).closest('tr').find('td:nth-child(2)').text().trim(); // Lấy ID từ cột tương ứng
+                    deleteUser(userID);
                 });
-            });
-            oTable = $('#sampleTable').dataTable();
-            $('#all').click(function (e) {
-                $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
-                e.stopImmediatePropagation();
+
+                // Khởi tạo DataTable
+                $('#sampleTable').DataTable();
             });
 
+        </script>
+
+
+        <script>
             //EXCEL
             // $(document).ready(function () {
             //   $('#').DataTable({
