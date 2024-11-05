@@ -499,153 +499,154 @@
                     <script src="js/bootstrap.min.js"></script>
                     <script src="js/main.js"></script>
                     <script src="js/plugins/pace.min.js"></script>
-                    
-                    
+
+
                     <script>
-    function validateForm() {
-        let isValid = true;
+                                        function validateForm() {
+                                            let isValid = true;
 
-        // Kiểm tra từng trường
-        const productCodeInput = document.getElementById('productCode');
-        const productNameInput = document.getElementById('productName');
-        const priceInput = document.getElementById('price');
-        const quantityInput = document.getElementById('quantity');
-
-        // Kiểm tra mã sản phẩm
-        const regexCode = /^[A-Z0-9]{3,10}$/;
-        if (!regexCode.test(productCodeInput.value)) {
-            document.getElementById('error-message-code').textContent = 'Please enter a valid product code (3-10 uppercase letters and numbers).';
-            isValid = false;
-        } else {
-            document.getElementById('error-message-code').textContent = '';
-        }
-
-        // Kiểm tra tên sản phẩm
-        if (productNameInput.value.trim().length < 3 || productNameInput.value.trim().length > 50) {
-            document.getElementById('error-message-name').textContent = 'Please enter a valid product name (3-50 characters).';
-            isValid = false;
-        } else {
-            document.getElementById('error-message-name').textContent = '';
-        }
-
-        // Kiểm tra giá
-        if (priceInput.value <= 0) {
-            document.getElementById('error-message-price').textContent = 'Please enter a valid price (greater than 0).';
-            isValid = false;
-        } else {
-            document.getElementById('error-message-price').textContent = '';
-        }
-
-        // Kiểm tra số lượng
-        if (quantityInput.value < 1) {
-            document.getElementById('error-message-quantity').textContent = 'Please enter a valid quantity (1 or more).';
-            isValid = false;
-        } else {
-            document.getElementById('error-message-quantity').textContent = '';
-        }
-
-        return isValid; // Nếu tất cả đều hợp lệ, cho phép gửi form
-    }
-</script>
-
-
-<!--                    <script>
-                                        function validateProductCode() {
+                                            // Kiểm tra từng trường
                                             const productCodeInput = document.getElementById('productCode');
-                                            const errorMessageCode = document.getElementById('error-message-code');
-                                            const productCodeValue = productCodeInput.value;
-
-                                            const regex = /^[A-Z0-9]{3,10}$/;
-
-                                            if (!regex.test(productCodeValue)) {
-                                                errorMessageCode.textContent = 'Please enter a valid product code (3-10 uppercase letters and numbers).';
-                                            } else {
-                                                errorMessageCode.textContent = '';
-                                            }
-                                        }
-
-                                        function validateProductName() {
                                             const productNameInput = document.getElementById('productName');
-                                            const errorMessageName = document.getElementById('error-message-name');
-                                            const productNameValue = productNameInput.value.trim();
-
-                                            if (productNameValue.length < 3 || productNameValue.length > 50) {
-                                                errorMessageName.textContent = 'Please enter a valid product name (3-50 characters).';
-                                            } else if (!/^[a-zA-Z0-9\s]+$/.test(productNameValue)) {
-                                                errorMessageName.textContent = 'Product name can only contain letters, numbers, and spaces.';
-                                            } else {
-                                                errorMessageName.textContent = '';
-                                            }
-                                        }
-
-                                        function validatePrice() {
                                             const priceInput = document.getElementById('price');
-                                            const errorMessagePrice = document.getElementById('error-message-price');
-                                            const priceValue = priceInput.value;
-
-                                            if (priceValue <= 0) {
-                                                errorMessagePrice.textContent = 'Please enter a valid price (greater than 0).';
-                                            } else {
-                                                errorMessagePrice.textContent = '';
-                                            }
-                                        }
-
-                                        function validateQuantity() {
                                             const quantityInput = document.getElementById('quantity');
-                                            const errorMessageQuantity = document.getElementById('error-message-quantity');
-                                            const quantityValue = quantityInput.value;
 
-                                            if (quantityValue < 1) {
-                                                errorMessageQuantity.textContent = 'Please enter a valid quantity (1 or more).';
+                                            // Kiểm tra mã sản phẩm
+                                            const regexCode = /^[A-Z0-9]{3,10}$/;
+                                            if (!regexCode.test(productCodeInput.value)) {
+                                                document.getElementById('error-message-code').textContent = 'Please enter a valid product code (3-10 uppercase letters and numbers).';
+                                                isValid = false;
                                             } else {
-                                                errorMessageQuantity.textContent = '';
+                                                document.getElementById('error-message-code').textContent = '';
                                             }
-                                        }
-                                        function readURL(input) {
-                                            const errorMessageImage = document.getElementById('error-message-image');
-                                            const thumbImage = document.getElementById('thumbimage');
 
-                                            // Kiểm tra nếu có tệp được chọn
-                                            if (input.files && input.files[0]) {
-                                                const file = input.files[0];
-                                                const fileType = file.type;
-                                                const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"]; // Các định dạng hình ảnh hợp lệ
-
-                                                // Kiểm tra loại tệp
-                                                if (!validImageTypes.includes(fileType)) {
-                                                    errorMessageImage.textContent = 'Please select a valid image file (JPEG, PNG, GIF, WEBP).';
-                                                    thumbImage.style.display = 'none'; // Ẩn ảnh thumbnail
-                                                    return;
-                                                } else {
-                                                    errorMessageImage.textContent = ''; // Xóa thông báo lỗi nếu hợp lệ
-                                                }
-
-                                                // Hiển thị ảnh thumbnail
-                                                const reader = new FileReader();
-                                                reader.onload = function (e) {
-                                                    thumbImage.src = e.target.result;
-                                                    thumbImage.style.display = 'block'; // Hiển thị ảnh thumbnail
-                                                };
-                                                reader.readAsDataURL(file);
+                                            // Kiểm tra tên sản phẩm
+                                            const regexName = /^[A-Za-zÀ-ỹ\s]{3,50}$/; // Hỗ trợ cả tiếng Việt có dấu
+                                            if (!regexName.test(productNameInput.value.trim())) {
+                                                document.getElementById('error-message-name').textContent = 'Please enter a valid product name (worrd &&3-50 characters).';
+                                                isValid = false;
+                                            } else {
+                                                document.getElementById('error-message-name').textContent = '';
                                             }
+
+                                            // Kiểm tra giá
+                                            if (priceInput.value <= 0) {
+                                                document.getElementById('error-message-price').textContent = 'Please enter a valid price (greater than 0).';
+                                                isValid = false;
+                                            } else {
+                                                document.getElementById('error-message-price').textContent = '';
+                                            }
+
+                                            // Kiểm tra số lượng
+                                            if (quantityInput.value < 1) {
+                                                document.getElementById('error-message-quantity').textContent = 'Please enter a valid quantity (1 or more).';
+                                                isValid = false;
+                                            } else {
+                                                document.getElementById('error-message-quantity').textContent = '';
+                                            }
+
+                                            return isValid; // Nếu tất cả đều hợp lệ, cho phép gửi form
                                         }
-
-                                        function removeImage() {
-                                            const thumbImage = document.getElementById('thumbimage');
-                                            const uploadfile = document.getElementById('uploadfile');
-                                            const errorMessageImage = document.getElementById('error-message-image');
-
-                                            uploadfile.value = ''; // Đặt lại giá trị của input file
-                                            thumbImage.src = ''; // Đặt lại src của ảnh thumbnail
-                                            thumbImage.style.display = 'none'; // Ẩn ảnh thumbnail
-                                            errorMessageImage.textContent = ''; // Xóa thông báo lỗi
-                                        }
+                    </script>
 
 
-
-
-
-                    </script>-->
+                    <!--                    <script>
+                                                            function validateProductCode() {
+                                                                const productCodeInput = document.getElementById('productCode');
+                                                                const errorMessageCode = document.getElementById('error-message-code');
+                                                                const productCodeValue = productCodeInput.value;
+                    
+                                                                const regex = /^[A-Z0-9]{3,10}$/;
+                    
+                                                                if (!regex.test(productCodeValue)) {
+                                                                    errorMessageCode.textContent = 'Please enter a valid product code (3-10 uppercase letters and numbers).';
+                                                                } else {
+                                                                    errorMessageCode.textContent = '';
+                                                                }
+                                                            }
+                    
+                                                            function validateProductName() {
+                                                                const productNameInput = document.getElementById('productName');
+                                                                const errorMessageName = document.getElementById('error-message-name');
+                                                                const productNameValue = productNameInput.value.trim();
+                    
+                                                                if (productNameValue.length < 3 || productNameValue.length > 50) {
+                                                                    errorMessageName.textContent = 'Please enter a valid product name (3-50 characters).';
+                                                                } else if (!/^[a-zA-Z0-9\s]+$/.test(productNameValue)) {
+                                                                    errorMessageName.textContent = 'Product name can only contain letters, numbers, and spaces.';
+                                                                } else {
+                                                                    errorMessageName.textContent = '';
+                                                                }
+                                                            }
+                    
+                                                            function validatePrice() {
+                                                                const priceInput = document.getElementById('price');
+                                                                const errorMessagePrice = document.getElementById('error-message-price');
+                                                                const priceValue = priceInput.value;
+                    
+                                                                if (priceValue <= 0) {
+                                                                    errorMessagePrice.textContent = 'Please enter a valid price (greater than 0).';
+                                                                } else {
+                                                                    errorMessagePrice.textContent = '';
+                                                                }
+                                                            }
+                    
+                                                            function validateQuantity() {
+                                                                const quantityInput = document.getElementById('quantity');
+                                                                const errorMessageQuantity = document.getElementById('error-message-quantity');
+                                                                const quantityValue = quantityInput.value;
+                    
+                                                                if (quantityValue < 1) {
+                                                                    errorMessageQuantity.textContent = 'Please enter a valid quantity (1 or more).';
+                                                                } else {
+                                                                    errorMessageQuantity.textContent = '';
+                                                                }
+                                                            }
+                                                            function readURL(input) {
+                                                                const errorMessageImage = document.getElementById('error-message-image');
+                                                                const thumbImage = document.getElementById('thumbimage');
+                    
+                                                                // Kiểm tra nếu có tệp được chọn
+                                                                if (input.files && input.files[0]) {
+                                                                    const file = input.files[0];
+                                                                    const fileType = file.type;
+                                                                    const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"]; // Các định dạng hình ảnh hợp lệ
+                    
+                                                                    // Kiểm tra loại tệp
+                                                                    if (!validImageTypes.includes(fileType)) {
+                                                                        errorMessageImage.textContent = 'Please select a valid image file (JPEG, PNG, GIF, WEBP).';
+                                                                        thumbImage.style.display = 'none'; // Ẩn ảnh thumbnail
+                                                                        return;
+                                                                    } else {
+                                                                        errorMessageImage.textContent = ''; // Xóa thông báo lỗi nếu hợp lệ
+                                                                    }
+                    
+                                                                    // Hiển thị ảnh thumbnail
+                                                                    const reader = new FileReader();
+                                                                    reader.onload = function (e) {
+                                                                        thumbImage.src = e.target.result;
+                                                                        thumbImage.style.display = 'block'; // Hiển thị ảnh thumbnail
+                                                                    };
+                                                                    reader.readAsDataURL(file);
+                                                                }
+                                                            }
+                    
+                                                            function removeImage() {
+                                                                const thumbImage = document.getElementById('thumbimage');
+                                                                const uploadfile = document.getElementById('uploadfile');
+                                                                const errorMessageImage = document.getElementById('error-message-image');
+                    
+                                                                uploadfile.value = ''; // Đặt lại giá trị của input file
+                                                                thumbImage.src = ''; // Đặt lại src của ảnh thumbnail
+                                                                thumbImage.style.display = 'none'; // Ẩn ảnh thumbnail
+                                                                errorMessageImage.textContent = ''; // Xóa thông báo lỗi
+                                                            }
+                    
+                    
+                    
+                    
+                    
+                                        </script>-->
 
                     </body>
 

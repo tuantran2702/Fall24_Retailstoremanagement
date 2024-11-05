@@ -215,7 +215,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="tile">
-                        <h3 class="tile-title">Tạo mới Supplier</h3>
+                        <h3 class="tile-title">Tạo mới Nhà cung cấp</h3>
                         <div class="tile-body">
                             <div class="row element-button">
 <!--                                <div class="col-sm-2">

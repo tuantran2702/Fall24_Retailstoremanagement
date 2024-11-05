@@ -208,40 +208,32 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item">Danh sách sản phẩm</li>
-                    <li class="breadcrumb-item"><a href="#">Thêm Unit</a></li>
+                    <li class="breadcrumb-item"><a href="unit">Danh sách Đơn vị</a></li>
+                    <li class="breadcrumb-item"><a href="#">Thêm Đơn vị</a></li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="tile">
-                        <h3 class="tile-title">Tạo mới Unit</h3>
+                        <h3 class="tile-title">Tạo mới Đơn vị</h3>
                         <div class="tile-body">
                             <div class="row element-button">
-                                <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i
-                                            class="fas fa-folder-plus"></i> Thêm nhà cung cấp</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc"><i
-                                            class="fas fa-folder-plus"></i> Thêm danh mục</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang"><i
-                                            class="fas fa-folder-plus"></i> Thêm tình trạng</a>
-                                </div>
                             </div>
-                            <form action="unit" method="post" class="row">
+                            <c:if test="${not empty errorMessage}">
+                                <div style="color: red;">${errorMessage}</div>
+                            </c:if>
+                            <form action="unit" method="post" class="row" onsubmit="return validateForm();">
                                 <input type="hidden" name="action" value="create">
 
-                                <div class="form-group col-md-3">
-                                    <label class="control-label">Unit Name</label>
-                                    <input class="form-control" type="text" name="unitName" required>
-                                </div>
+                            <div class="form-group col-md-3">
+                                <label class="control-label">Tên Đơn vị</label>
+                                <input class="form-control" type="text" name="unitName" id="unitName" required oninput="validateForm();">
+                                <small id="error-message-name" style="color: red;"></small>
+                            </div>
 
                         </div>
                         <button class="btn btn-save" type="submit">Lưu lại</button>
-                        <a class="btn btn-cancel" href="table-data-product.html">Hủy bỏ</a>
+                        <a class="btn btn-cancel" href="${pageContext.request.contextPath}/unit">Hủy bỏ</a>
                         </form>
 
 
@@ -287,6 +279,25 @@
                     <script src="js/bootstrap.min.js"></script>
                     <script src="js/main.js"></script>
                     <script src="js/plugins/pace.min.js"></script>
+    <script>
+        function validateForm() {
+            let isValid = true;
+
+            // Kiểm tra từng trường
+            const unitNameInput = document.getElementById('unitName');
+
+            // Kiểm tra tên đơn vị
+            const regexName = /^[A-Za-zÀ-ỹ\s]{3,50}$/; // Hỗ trợ cả tiếng Việt có dấu
+            if (!regexName.test(unitNameInput.value.trim())) {
+                document.getElementById('error-message-name').textContent = 'Please enter a valid unit name (worrd &&3-50 characters).';
+                isValid = false;
+            } else {
+                document.getElementById('error-message-name').textContent = '';
+            }
+
+            return isValid; // Nếu tất cả đều hợp lệ, cho phép gửi form
+        }
+    </script>
                     <script>
             const inpFile = document.getElementById("inpFile");
             const loadFile = document.getElementById("loadFile");

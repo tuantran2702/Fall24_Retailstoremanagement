@@ -138,10 +138,6 @@
                                     <i class="fas fa-file-excel"></i> Xuất Excel
                                 </a>
                             </div>
-                            <div class="col-sm-2">
-                                <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)"><i
-                                        class="fas fa-file-pdf"></i> Xuất PDF</a>
-                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
@@ -171,7 +167,7 @@
                                         <input type="number" id="maxPrice" name="maxPrice" class="form-control" placeholder="Nhập giá tối đa">
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary">Search</button>
+                                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
                                 </form>
                             </div>
                         </div>
@@ -351,7 +347,7 @@
     <!-- Page specific javascripts-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <!-- Data table plugin-->
-<!--    <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>-->
+    <!--    <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>-->
     <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
                                 $('#sampleTable').DataTable();
@@ -387,7 +383,6 @@
                                             '</span>';
                                     document.getElementById("clock").innerHTML = tmp;
                                     clocktime = setTimeout("time()", "1000", "Javascript");
-
                                     function checkTime(i) {
                                         if (i < 10) {
                                             i = "0" + i;
@@ -395,7 +390,7 @@
                                         return i;
                                     }
                                 }
-    </script
+    </script>
 </body>
 
 </html>

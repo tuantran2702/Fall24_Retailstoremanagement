@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -118,6 +119,41 @@ public class UnitDAO extends DBContext {
 //            e.printStackTrace();
         }
 
+    }
+    
+    public List<Unit> searchUnits(String keyword, Integer unitID) {
+        List<Unit> units = new ArrayList<>();
+        String sql = "SELECT * FROM Unit WHERE (UnitName LIKE ? OR ? IS NULL) AND (UnitID = ? OR ? IS NULL)";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, "%" + keyword + "%");
+            st.setString(2, keyword);
+            st.setObject(3, unitID);
+            st.setObject(4, unitID);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("UnitID");
+                String name = rs.getString("UnitName");
+                units.add(new Unit(id, name));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return units;
+    }
+    
+    public boolean isUnitNameExists(String unitName) {
+        String sql = "SELECT COUNT(*) FROM Unit WHERE UnitName = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, unitName);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Nếu có ít nhất 1 bản ghi, trả về true
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Nếu không có bản ghi nào, trả về false
     }
 
 }

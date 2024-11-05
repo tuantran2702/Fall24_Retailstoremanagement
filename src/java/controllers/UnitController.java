@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import model.Unit;
 
 /**
@@ -59,31 +60,46 @@ public class UnitController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String idStr = request.getParameter("id");
-        if (action == null) {
-            UnitDAO unit = new UnitDAO();
-            request.setAttribute("data", unit.getListunit());
-            request.getRequestDispatcher("/UnitManager/listUnit.jsp").forward(request, response);
+        String keyword = request.getParameter("keyword");
+        String unitIDStr = request.getParameter("unitID");
+        Integer unitID = null;
 
-        } 
-        else if (action.equals("create")) {
-            UnitDAO unit = new UnitDAO();
-            request.getRequestDispatcher("/UnitManager/createUnit.jsp").forward(request, response);
-        } 
-        else if (action.equals("update") && idStr != null) {
-            int id = Integer.parseInt(idStr);
-
-            UnitDAO unit = new UnitDAO();
-            Unit u = unit.getUnitById(id);
-            request.setAttribute("unit", u);
-            request.getRequestDispatcher("/UnitManager/updateUnit.jsp").forward(request, response);
-        } 
-        else if (action.equals("delete") && idStr != null) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            UnitDAO unit = new UnitDAO();
-            unit.deleteUnit(id);
-            response.sendRedirect("unit");
+        // Chuyển đổi unitID từ String sang Integer
+        if (unitIDStr != null && !unitIDStr.isEmpty()) {
+            try {
+                unitID = Integer.parseInt(unitIDStr);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                // Xử lý lỗi nếu cần, có thể đặt unitID về null hoặc thông báo lỗi
+            }
         }
 
+        UnitDAO unitDAO = new UnitDAO();
+
+        // Lấy danh sách đơn vị để hiển thị trong dropdown
+        List<Unit> listUnit = unitDAO.getListunit();
+        request.setAttribute("listUnit", listUnit);
+
+        if (action == null) {
+            // Hiển thị danh sách đơn vị với chức năng tìm kiếm
+            List<Unit> units = unitDAO.searchUnits(keyword, unitID);
+            request.setAttribute("data", units);
+            request.getRequestDispatcher("/UnitManager/listUnit.jsp").forward(request, response);
+        } else if (action.equals("update") && idStr != null) {
+            // Chỉnh sửa đơn vị
+            int id = Integer.parseInt(idStr);
+            Unit u = unitDAO.getUnitById(id);
+            request.setAttribute("unit", u);
+            request.getRequestDispatcher("/UnitManager/updateUnit.jsp").forward(request, response);
+        } else if (action.equals("create")) {
+            // Tạo đơn vị mới
+            request.getRequestDispatcher("/UnitManager/createUnit.jsp").forward(request, response);
+        } else if (action.equals("delete") && idStr != null) {
+            // Xóa đơn vị
+            int id = Integer.parseInt(request.getParameter("id"));
+            unitDAO.deleteUnit(id);
+            response.sendRedirect("unit");
+        }
     }
 
     /**
@@ -101,6 +117,14 @@ public class UnitController extends HttpServlet {
         String action = request.getParameter("action");
         if (action.equals("create")) {
             String unitName = request.getParameter("unitName");
+            
+            UnitDAO unitDAO = new UnitDAO();
+            // Kiểm tra xem tên đơn vị đã tồn tại chưa
+        if (unitDAO.isUnitNameExists(unitName)) {
+            request.setAttribute("errorMessage", "Tên đơn vị đã tồn tại. Vui lòng nhập tên khác.");
+            request.getRequestDispatcher("/UnitManager/createUnit.jsp").forward(request, response);
+            return;
+        }
 
             Unit unit = new Unit(0, unitName);
             UnitDAO u = new UnitDAO();
@@ -114,9 +138,6 @@ public class UnitController extends HttpServlet {
 
             Unit unit = new Unit(id, unitName);
             UnitDAO u = new UnitDAO();
-            
-            
-            
 
             u.updateUnit(unit);
             response.sendRedirect("unit");

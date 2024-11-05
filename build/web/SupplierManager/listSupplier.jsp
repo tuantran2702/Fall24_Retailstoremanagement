@@ -66,12 +66,11 @@
                                 <div class="col-sm-2">
 
                                     <a href="${pageContext.request.contextPath}/supplier?action=create" class="btn btn-add btn-sm"  title="Thêm"><i class="fas fa-plus"></i>
-                                        Create new Supplier</a>
+                                        Thêm Nhà cung cấp</a>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-warning btn-sm nhap-tu-file" type="button" title="Nhập" href="${pageContext.request.contextPath}/product">
-                                        <i class="fas fa-trophy"></i> Sản Phẩm
-                                    </a>
+                                    <a class="btn btn-delete btn-sm pdf-file" type="button" href="${pageContext.request.contextPath}/product"><i
+                                            class="fas fa-file-pdf"></i> Sản Phẩm</a>
                                 </div>
 
                                 <div class="col-sm-2">
@@ -84,15 +83,34 @@
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <a class="btn btn-excel btn-sm" href="${pageContext.request.contextPath}/exportExcel" title="Xuất Excel">
+                                    <a class="btn btn-excel btn-sm" href="${pageContext.request.contextPath}/exportSupplier" title="Xuất Excel">
                                         <i class="fas fa-file-excel"></i> Xuất Excel
                                     </a>
                                 </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)"><i
-                                            class="fas fa-file-pdf"></i> Xuất PDF</a>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form action="${pageContext.request.contextPath}/supplier" method="GET">
+                                        <div class="form-group">
+                                            <label for="keyword">Từ Khóa:</label>
+                                            <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="supplierID">Nhà cung cấp:</label>
+                                            <select id="supplierID" name="supplierID" class="form-control">
+                                                <option value="">-- Chọn Nhà cung cấp --</option>
+                                                <c:forEach var="supplier" items="${data}">
+                                                    <option value="${supplier.supplierID}">${supplier.supplierName}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                    </form>
                                 </div>
                             </div>
+
                             <table class="table table-hover table-bordered" id="sampleTable">
                                 <thead>
                                     <tr>
@@ -147,7 +165,7 @@
         <!-- Page specific javascripts-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
         <!-- Data table plugin-->
-        <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
+        <!--        <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>-->
         <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
         <script type="text/javascript">
                                                     $('#sampleTable').DataTable();
@@ -191,33 +209,6 @@
                                                             return i;
                                                         }
                                                     }
-        </script>
-        <script>
-//            function deleteRow(r) {
-//                var i = r.parentNode.parentNode.rowIndex;
-//                document.getElementById("myTable").deleteRow(i);
-//            }
-//            jQuery(function () {
-//                jQuery(".trash").click(function () {
-//                    swal({
-//                        title: "Cảnh báo",
-//                        text: "Bạn có chắc chắn là muốn xóa sản phẩm này?",
-//                        buttons: ["Hủy bỏ", "Đồng ý"],
-//                    })
-//                            .then((willDelete) => {
-//                                if (willDelete) {
-//                                    swal("Đã xóa thành công.!", {
-//
-//                                    });
-//                                }
-//                            });
-//                });
-//            });
-//            oTable = $('#sampleTable').dataTable();
-//            $('#all').click(function (e) {
-//                $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
-//                e.stopImmediatePropagation();
-//            });
         </script>
     </body>
 

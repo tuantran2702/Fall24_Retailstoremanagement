@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import model.Category;
 
 public class CategoryDAO extends DBContext {
@@ -107,4 +108,60 @@ public class CategoryDAO extends DBContext {
         }
 
     }
+
+    public List<Category> searchCategories(String keyword, Integer categoryID) {
+        List<Category> categories = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM Category WHERE 1=1"); // Bắt đầu với điều kiện luôn đúng
+
+        // Thêm điều kiện tìm kiếm theo từ khóa
+        if (keyword != null && !keyword.isEmpty()) {
+            sql.append(" AND (categoryName LIKE ? OR description LIKE ?)");
+        }
+
+        // Thêm điều kiện tìm kiếm theo danh mục
+        if (categoryID != null) {
+            sql.append(" AND categoryID = ?");
+        }
+
+        try ( PreparedStatement ps = connection.prepareStatement(sql.toString())) {
+            int index = 1;
+            // Gán giá trị cho các tham số
+            if (keyword != null && !keyword.isEmpty()) {
+                ps.setString(index++, "%" + keyword + "%");
+                ps.setString(index++, "%" + keyword + "%");
+            }
+            if (categoryID != null) {
+                ps.setInt(index++, categoryID); // Sử dụng setInt cho categoryID
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                // Tạo đối tượng Category và thêm vào danh sách
+                Category category = new Category();
+                category.setCategoryID(rs.getInt("categoryID")); // Sử dụng getInt cho categoryID
+                category.setCategoryName(rs.getString("categoryName"));
+                category.setDescription(rs.getString("description")); // Thêm description vào đối tượng
+                categories.add(category);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return categories;
+    }
+
+    // Phương thức kiểm tra xem danh mục đã tồn tại hay chưa
+    public boolean isCategoryExists(String categoryName) {
+        String sql = "SELECT COUNT(*) FROM Category WHERE CategoryName = ?"; // Thay đổi tên bảng và cột cho phù hợp
+        try ( PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, categoryName);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Nếu có ít nhất 1 danh mục thì trả về true
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Không tìm thấy danh mục
+    }
+
 }

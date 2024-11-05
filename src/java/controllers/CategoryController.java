@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class CategoryController extends HttpServlet {
 
@@ -43,28 +44,44 @@ public class CategoryController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String idStr = request.getParameter("id");
+        String keyword = request.getParameter("keyword");
+        String categoryIDStr = request.getParameter("categoryID");
+        Integer categoryID = null;
+
+        // Chuyển đổi categoryID từ String sang Integer
+        if (categoryIDStr != null && !categoryIDStr.isEmpty()) {
+            try {
+                categoryID = Integer.parseInt(categoryIDStr);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                // Xử lý lỗi nếu cần, có thể đặt categoryID về null hoặc thông báo lỗi
+            }
+        }
+
+        CategoryDAO categoryDAO = new CategoryDAO();
+
+        // Lấy danh sách danh mục để hiển thị trong dropdown
+        List<Category> listCategory = categoryDAO.getListCategory();
+        request.setAttribute("listCategory", listCategory);
 
         if (action == null) {
-            // Display list of categories
-            CategoryDAO categoryDAO = new CategoryDAO();
-            request.setAttribute("data", categoryDAO.getListCategory());
+            // Hiển thị danh sách danh mục với chức năng tìm kiếm
+            List<Category> categories = categoryDAO.searchCategories(keyword, categoryID);
+            request.setAttribute("data", categories);
             request.getRequestDispatcher("/CategoryManager/listCategory.jsp").forward(request, response);
         } else if (action.equals("update") && idStr != null) {
-            // Edit category
+            // Chỉnh sửa danh mục
             int id = Integer.parseInt(idStr);
-            
-            CategoryDAO category = new CategoryDAO();
-            Category c = category.getCategoryById(id);
+            Category c = categoryDAO.getCategoryById(id);
             request.setAttribute("category", c);
             request.getRequestDispatcher("/CategoryManager/updateCategory.jsp").forward(request, response);
         } else if (action.equals("create")) {
-            // Create new category
+            // Tạo danh mục mới
             request.getRequestDispatcher("/CategoryManager/createCategory.jsp").forward(request, response);
         } else if (action.equals("delete") && idStr != null) {
-            // Delete category
+            // Xóa danh mục
             int id = Integer.parseInt(request.getParameter("id"));
-            CategoryDAO category = new CategoryDAO();
-            category.deleteCategory(id);
+            categoryDAO.deleteCategory(id);
             response.sendRedirect("category");
         }
     }
@@ -79,6 +96,14 @@ public class CategoryController extends HttpServlet {
             String categoryName = request.getParameter("categoryName");
             String description = request.getParameter("description");
 
+            CategoryDAO categoryDAO = new CategoryDAO();
+
+            if (categoryDAO.isCategoryExists(categoryName)) {
+                request.setAttribute("errorMessage", "Tên danh mục đã tồn tại. Vui lòng chọn tên khác.");
+                request.getRequestDispatcher("/CategoryManager/createCategory.jsp").forward(request, response);
+                return;
+            }
+
             Category category = new Category(0, categoryName, description);
             CategoryDAO c = new CategoryDAO();
             c.createCategory(category);
@@ -91,7 +116,6 @@ public class CategoryController extends HttpServlet {
             String description = request.getParameter("description");
 
             Category category = new Category(id, categoryName, description);
-
 
             CategoryDAO c = new CategoryDAO();
             c.updateCategory(category);

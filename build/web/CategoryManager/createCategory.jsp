@@ -208,35 +208,27 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item">Danh sách sản phẩm</li>
-                    <li class="breadcrumb-item"><a href="#">Thêm sản phẩm</a></li>
+                    <li class="breadcrumb-item"><a href="category">Danh sách Danh mục</a></li>
+                    <li class="breadcrumb-item"><a href="#">Thêm Danh mục</a></li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="tile">
-                        <h3 class="tile-title">Tạo mới sản phẩm</h3>
+                        <h3 class="tile-title">Tạo mới Danh mục</h3>
                         <div class="tile-body">
                             <div class="row element-button">
-                                <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i
-                                            class="fas fa-folder-plus"></i> Thêm nhà cung cấp</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc"><i
-                                            class="fas fa-folder-plus"></i> Thêm danh mục</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang"><i
-                                            class="fas fa-folder-plus"></i> Thêm tình trạng</a>
-                                </div>
                             </div>
-                            <form action="category" method="post" class="row">
+                            <c:if test="${not empty errorMessage}">
+                                <div style="color: red;">${errorMessage}</div>
+                            </c:if>
+                            <form action="category" method="post" class="row" onsubmit="return validateForm();">
                                 <input type="hidden" name="action" value="create">
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Category Name</label>
-                                    <input class="form-control" type="text" name="categoryName" required>
+                                    <input class="form-control" type="text" name="categoryName" id="categoryName" required oninput="validateForm();">
+                                    <small id="error-message-name" style="color: red;"></small>
                                 </div>
 
                                 <div class="form-group col-md-12">
@@ -245,75 +237,102 @@
                                     <script>CKEDITOR.replace('description');</script>
                                 </div>
 
+                                <button class="btn btn-save" type="submit">Lưu lại</button>
+                                <a class="btn btn-cancel" href="${pageContext.request.contextPath}/category">Hủy bỏ</a>
+                            </form>
+
+
+
+
                         </div>
-                        <button class="btn btn-save" type="submit">Lưu lại</button>
-                        <a class="btn btn-cancel" href="table-data-product.html">Hủy bỏ</a>
-                        </form>
+                        </main>
 
 
-                    </div>
-                    </main>
+                        <!--
+                        MODAL CHỨC VỤ 
+                        -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                             data-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
 
-
-                    <!--
-                    MODAL CHỨC VỤ 
-                    -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                         data-backdrop="static" data-keyboard="false">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="form-group  col-md-12">
-                                            <span class="thong-tin-thanh-toan">
-                                                <h5>Thêm mới nhà cung cấp</h5>
-                                            </span>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group  col-md-12">
+                                                <span class="thong-tin-thanh-toan">
+                                                    <h5>Thêm mới nhà cung cấp</h5>
+                                                </span>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Nhập tên chức vụ mới</label>
+                                                <input class="form-control" type="text" required>
+                                            </div>
                                         </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Nhập tên chức vụ mới</label>
-                                            <input class="form-control" type="text" required>
-                                        </div>
+                                        <BR>
+                                        <button class="btn btn-save" type="button">Lưu lại</button>
+                                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                        <BR>
                                     </div>
-                                    <BR>
-                                    <button class="btn btn-save" type="button">Lưu lại</button>
-                                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                    <BR>
-                                </div>
-                                <div class="modal-footer">
+                                    <div class="modal-footer">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
 
 
-                    <script src="js/jquery-3.2.1.min.js"></script>
-                    <script src="js/popper.min.js"></script>
-                    <script src="js/bootstrap.min.js"></script>
-                    <script src="js/main.js"></script>
-                    <script src="js/plugins/pace.min.js"></script>
-                    <script>
-            const inpFile = document.getElementById("inpFile");
-            const loadFile = document.getElementById("loadFile");
-            const previewContainer = document.getElementById("imagePreview");
-            const previewContainer = document.getElementById("imagePreview");
-            const previewImage = previewContainer.querySelector(".image-preview__image");
-            const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
-            inpFile.addEventListener("change", function () {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    previewDefaultText.style.display = "none";
-                    previewImage.style.display = "block";
-                    reader.addEventListener("load", function () {
-                        previewImage.setAttribute("src", this.result);
-                    });
-                    reader.readAsDataURL(file);
-                }
-            });
+                        <script src="js/jquery-3.2.1.min.js"></script>
+                        <script src="js/popper.min.js"></script>
+                        <script src="js/bootstrap.min.js"></script>
+                        <script src="js/main.js"></script>
+                        <script src="js/plugins/pace.min.js"></script>
 
-                    </script>
-                    </body>
+                        <script>
+                                        function validateForm() {
+                                            let isValid = true;
 
-                    </html>
+                                            // Kiểm tra từng trường
+                                            const categoryNameInput = document.getElementById('categoryName');
+
+
+                                            // Kiểm tra tên sản phẩm
+                                            const regexName = /^[A-Za-zÀ-ỹ\s]{3,50}$/; // Hỗ trợ cả tiếng Việt có dấu
+                                            if (!regexName.test(categoryNameInput.value.trim())) {
+                                                document.getElementById('error-message-name').textContent = 'Please enter a valid category name (Word && 3-50 characters).';
+                                                isValid = false;
+                                            } else {
+                                                document.getElementById('error-message-name').textContent = '';
+                                            }
+
+
+
+
+                                            return isValid; // Nếu tất cả đều hợp lệ, cho phép gửi form
+                                        }
+                        </script>
+
+
+                        <script>
+                            const inpFile = document.getElementById("inpFile");
+                            const loadFile = document.getElementById("loadFile");
+                            const previewContainer = document.getElementById("imagePreview");
+                            const previewContainer = document.getElementById("imagePreview");
+                            const previewImage = previewContainer.querySelector(".image-preview__image");
+                            const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+                            inpFile.addEventListener("change", function () {
+                                const file = this.files[0];
+                                if (file) {
+                                    const reader = new FileReader();
+                                    previewDefaultText.style.display = "none";
+                                    previewImage.style.display = "block";
+                                    reader.addEventListener("load", function () {
+                                        previewImage.setAttribute("src", this.result);
+                                    });
+                                    reader.readAsDataURL(file);
+                                }
+                            });
+
+                        </script>
+                        </body>
+
+                        </html>

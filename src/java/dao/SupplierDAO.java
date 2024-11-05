@@ -208,6 +208,68 @@ public void deletesupplier(int id) {
         }
 
     }
+    
+    
+    
+    // Phương thức tìm kiếm nhà cung cấp
+    public ArrayList<Supplier> searchSuppliers(String keyword, String supplierID) {
+    ArrayList<Supplier> filteredSuppliers = new ArrayList<>();
+    StringBuilder query = new StringBuilder("SELECT * FROM Supplier WHERE 1=1"); // Mặc định là true để dễ dàng thêm điều kiện
+
+    // Kiểm tra nếu keyword không rỗng
+    if (keyword != null && !keyword.isEmpty()) {
+        query.append(" AND (");
+        query.append(" supplierName LIKE ? OR");
+        query.append(" contactName LIKE ? OR");
+        query.append(" phoneNumber LIKE ? OR");
+        query.append(" email LIKE ? OR");
+        query.append(" address LIKE ?");
+        query.append(")");
+    }
+
+    // Kiểm tra nếu supplierID không rỗng
+    if (supplierID != null && !supplierID.isEmpty()) {
+        query.append(" AND supplierID = ?");
+    }
+
+    try {
+        PreparedStatement pstmt = connection.prepareStatement(query.toString());
+        int index = 1;
+
+        // Nếu keyword không rỗng, thêm vào PreparedStatement
+        if (keyword != null && !keyword.isEmpty()) {
+            String likeKeyword = "%" + keyword + "%";
+            pstmt.setString(index++, likeKeyword);
+            pstmt.setString(index++, likeKeyword);
+            pstmt.setString(index++, likeKeyword);
+            pstmt.setString(index++, likeKeyword);
+            pstmt.setString(index++, likeKeyword);
+        }
+
+        // Nếu supplierID không rỗng, thêm vào PreparedStatement
+        if (supplierID != null && !supplierID.isEmpty()) {
+            pstmt.setInt(index++, Integer.parseInt(supplierID));
+        }
+
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt(1);
+            String supplierName = rs.getString(2);
+            String contactName = rs.getString(3);
+            String phoneNumber = rs.getString(4);
+            String email = rs.getString(5);
+            String address = rs.getString(6);
+
+            filteredSuppliers.add(new Supplier(id, supplierName, contactName, phoneNumber, email, address));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return filteredSuppliers;
+}
+
+    
+
 
 
 }

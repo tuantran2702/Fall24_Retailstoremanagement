@@ -103,14 +103,14 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item"><a href="warehouse">Danh sách kho hàng</a></li>
-                    <li class="breadcrumb-item active">Cập nhật unit</li>
+                    <li class="breadcrumb-item"><a href="unit">Danh sách Đơn vị</a></li>
+                    <li class="breadcrumb-item active">Cập nhật Đơn vị</li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="tile">
-                        <h3 class="tile-title">Cập nhật unit</h3>
+                        <h3 class="tile-title">Cập nhật Đơn vị</h3>
                         <div class="tile-body">
                             <form action="unit" method="post">
                                 <input type="hidden" name="action" value="update">
@@ -140,7 +140,7 @@
                                     <!-- Buttons -->
                                     <div class="col-md-12 text-left">
                                         <button class="btn btn-save" type="submit">Lưu lại</button>
-                                        <a class="btn btn-cancel" href="#">Hủy bỏ</a>
+                                        <a class="btn btn-cancel" href="${pageContext.request.contextPath}/unit">Hủy bỏ</a>
                                     </div>
                                 </div>
                             </form>
