@@ -54,7 +54,7 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><a href="#"><b>Danh sách nhân viên</b></a></li>
+                    <li class="breadcrumb-item active"><a href="userManage"><b>Danh sách nhân viên</b></a></li>
                 </ul>
                 <div id="clock"></div>
             </div>
@@ -76,19 +76,19 @@
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()"><i
-                                            class="fas fa-print"></i> In dữ liệu</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
-                                            class="fas fa-copy"></i> Sao chép</a>
+                                    <a class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()">
+                                        <i class="fas fa-print"></i> In dữ liệu
+                                    </a>
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất Excel</a>
+                                    <a class="btn btn-excel btn-sm" href="#" title="Xuất Excel">
+                                        <i class="fas fa-file-excel"></i> Xuất Excel
+                                    </a>
                                 </div>
+
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="xuatPDF()">
+                                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="Xuất PDF" onclick="myApp.xuatPDF()">
                                         <i class="fas fa-file-pdf"></i> Xuất PDF
                                     </a>
                                 </div>
@@ -111,7 +111,7 @@
                                         <th width="170">Địa chỉ</th>
                                         <th>Số điện thoại</th>
                                         <th>Chức vụ</th>
-                                        <th width="100">Tính năng</th>
+                                        <th width="100" class="no-export">Tính năng</th>
                                     </tr>
                                 </thead>
 
@@ -126,7 +126,7 @@
                                             <td>${user.address}</td>
                                             <td>${user.phoneNumber}</td>
                                             <td>${roleMap[user.roleID]}</td>
-                                            <td>
+                                            <td class="no-export"> 
                                                 <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" 
                                                         onclick="window.location.href = 'updateUser?userID=${user.userID}'">
                                                     <i class="fas fa-edit"></i>
@@ -160,54 +160,66 @@
         <!-- Data table plugin-->
         <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-        <!-- Thêm jsPDF -->
+        <script src="js/jquery-3.2.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-        <!-- Thêm autoTable -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.10/jspdf.plugin.autotable.min.js"></script>
+        <script src="src/jquery.table2excel.js"></script>
         <!-- Font Awesome cho biểu tượng -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <script type="text/javascript">$('#sampleTable').DataTable();</script>
 
-        <script>
-            function xuatPDF() {
-                const {jsPDF} = window.jspdf;
-                const doc = new jsPDF();
-
-                // Tiêu đề PDF
-                doc.setFontSize(18);
-                doc.text("Danh sách nhân viên", 14, 20);
-
-                // Tạo dữ liệu cho bảng
-                const rows = [];
-                const tableHeader = ['ID', 'Tên', 'Email', 'Địa chỉ', 'Số điện thoại', 'Vai trò'];
-
-                const tableRows = document.querySelectorAll("tbody tr");
-                tableRows.forEach((row) => {
-                    const userID = row.cells[2].innerText; // userID
-                    const fullName = row.cells[3].innerText; // Tên đầy đủ
-                    const email = row.cells[4].innerText; // Email
-                    const address = row.cells[5].innerText; // Địa chỉ
-                    const phoneNumber = row.cells[6].innerText; // Số điện thoại
-                    const roleID = row.cells[7].innerText; // Vai trò
-
-                    // Thêm thông tin vào hàng bảng
-                    rows.push([userID, fullName, email, address, phoneNumber, roleID]);
-                });
-
-                // Sử dụng autoTable để tạo bảng
-                doc.autoTable({
-                    head: [tableHeader],
-                    body: rows,
-                    startY: 30, // Vị trí bắt đầu
-                    theme: 'grid', // Chủ đề của bảng
-                    headStyles: {fillColor: [22, 160, 133]}, // Màu nền tiêu đề
-                    styles: {cellWidth: 'auto', halign: 'left'}, // Định dạng các ô
-                    margin: {top: 30}
-                });
-
-                // Tải xuống tệp PDF
-                doc.save('danh_sach_nhan_vien.pdf');
+        <style>
+            /* Ẩn cột Tính năng khi in */
+            @media print {
+                .no-print {
+                    display: none !important;
+                }
             }
+        </style>
+
+        <script>
+            var myApp = {
+                // Hàm in bảng, loại bỏ cột "Tính năng" khi in
+                printTable: function () {
+                    $('.no-export').hide(); // Ẩn cột Tính năng
+                    var printContents = document.getElementById('sampleTable').outerHTML;
+                    var originalContents = document.body.innerHTML;
+
+                    document.body.innerHTML = printContents;
+                    window.print();
+
+                    document.body.innerHTML = originalContents;
+                    $('.no-export').show(); // Hiển thị lại cột sau khi in
+                    location.reload();
+                },
+
+                // Hàm xuất PDF
+                xuatPDF: function () {
+                    $('.no-export').hide(); // Ẩn cột Tính năng trước khi xuất PDF
+                    var doc = new jsPDF();
+                    doc.autoTable({
+                        html: '#sampleTable',
+                        theme: 'grid',
+                        styles: {fontSize: 10},
+                        margin: {top: 10}
+                    });
+                    doc.save('table_data.pdf'); // Lưu file PDF
+                    $('.no-export').show(); // Hiển thị lại cột sau khi xuất PDF
+                }
+            };
+
+            $(document).ready(function () {
+                // Hàm xuất Excel
+                $('.btn-excel').click(function (e) {
+                    e.preventDefault(); // Ngăn không reload trang
+                    $('.no-export').hide(); // Ẩn cột Tính năng trước khi xuất Excel
+                    $("#sampleTable").table2excel({
+                        exclude: ".no-export", // Loại bỏ các cột có class "no-export"
+                        filename: "table_data.xls" // Tên file Excel
+                    });
+                    $('.no-export').show(); // Hiển thị lại cột sau khi xuất Excel
+                });
+            });
         </script>
 
         <script>

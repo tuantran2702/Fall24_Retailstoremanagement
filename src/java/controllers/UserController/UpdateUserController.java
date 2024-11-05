@@ -162,7 +162,7 @@ public class UpdateUserController extends HttpServlet {
             // Lưu danh sách roles vào request attribute
             request.setAttribute("roles", roles);
             // Chuyển tiếp yêu cầu về lại trang thêm người dùng
-            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
+            request.getRequestDispatcher("User/EditEmployee.jsp").forward(request, response);
             return; // Dừng việc xử lý thêm người dùng
         }
 
@@ -182,7 +182,7 @@ public class UpdateUserController extends HttpServlet {
             // Lưu danh sách roles vào request attribute
             request.setAttribute("roles", roles);
             // Chuyển tiếp yêu cầu về lại trang thêm người dùng
-            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
+            request.getRequestDispatcher("User/EditEmployee.jsp").forward(request, response);
             return;  // Dừng xử lý tiếp
         }
 
