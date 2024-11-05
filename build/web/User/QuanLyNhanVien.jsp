@@ -13,7 +13,7 @@
 <html lang="en">
 
     <head>
-        <title>Danh sách nhân viên | Quản trị Admin</title>
+        <title>Employee List | GROUP1</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -54,7 +54,7 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><a href="userManage"><b>Danh sách nhân viên</b></a></li>
+                    <li class="breadcrumb-item active"><a href="userManage"><b>Employee List</b></a></li>
                 </ul>
                 <div id="clock"></div>
             </div>
@@ -68,28 +68,24 @@
                                 <div class="col-sm-2">
 
                                     <a class="btn btn-add btn-sm" href="addUser" title="Thêm"><i class="fas fa-plus"></i>
-                                        Tạo mới nhân viên</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập" onclick="myFunction(this)"><i
-                                            class="fas fa-file-upload"></i> Tải từ file</a>
+                                        Add New Employee</a>
                                 </div>
 
                                 <div class="col-sm-2">
                                     <a class="btn btn-sm btn-delete print-file" type="button" title="In" onclick="printTable()">
-                                        <i class="fas fa-print"></i> In dữ liệu
+                                        <i class="fas fa-print"></i> Print Data
                                     </a>
                                 </div>
 
                                 <div class="col-sm-2">
                                     <a class="btn btn-sm btn-excel" type="button" title="Xuất Excel" onclick="exportToExcel()">
-                                        <i class="fas fa-file-excel"></i> Xuất Excel
+                                        <i class="fas fa-file-excel"></i> Export Excel
                                     </a>
                                 </div>
 
                                 <div class="col-sm-2">
                                     <a class="btn btn-sm btn-delete pdf-file" type="button" title="Xuất PDF" onclick="exportToPDF()">
-                                        <i class="fas fa-file-pdf"></i> Xuất PDF
+                                        <i class="fas fa-file-pdf"></i> Export PDF
                                     </a>
                                 </div>
 
@@ -105,14 +101,14 @@
                                 <thead>
                                     <tr>
 
-                                        <th class="no-export">Img</th>
-                                        <th>ID nhân viên</th>
-                                        <th width="150">Họ và tên</th>
+                                        <th class="no-export" width="150">Img</th>
+                                        <th>Employee ID</th>
+                                        <th width="150">Employee Name</th>
                                         <th width="170">Email</th>
-                                        <th width="170">Địa chỉ</th>
-                                        <th>Số điện thoại</th>
-                                        <th>Chức vụ</th>
-                                        <th width="100" class="no-export">Tính năng</th>
+                                        <th width="170">Address</th>
+                                        <th>Phone Number</th>
+                                        <th>Role</th>
+                                        <th width="100" class="no-export">Features</th>
                                     </tr>
                                 </thead>
 
@@ -193,11 +189,6 @@
                 var {jsPDF} = window.jspdf;
                 var doc = new jsPDF();
 
-                // Thêm font tùy chỉnh vào jsPDF (base64)
-                doc.addFileToVFS("Arial-normal.ttf", "<base64-data>");
-                doc.addFont("Arial-normal.ttf", "Arial", "normal");
-                doc.setFont("Arial"); // Sử dụng font "Arial"
-
                 // Clone bảng và xóa các cột không cần xuất
                 var table = document.getElementById('sampleTable').cloneNode(true);
                 removeNoExportColumns(table);
@@ -255,9 +246,9 @@
             // Hàm hiển thị cảnh báo xóa
             function showDeleteWarning(message, onConfirm) {
                 swal({
-                    title: "Cảnh báo",
+                    title: "Warning",
                     text: message,
-                    buttons: ["Hủy bỏ", "Đồng ý"],
+                    buttons: ["Cancel", "Agree"],
                     dangerMode: true
                 }).then(onConfirm);
             }
@@ -265,19 +256,19 @@
 // Hàm xóa người dùng
             function deleteUser(userID) {
                 if (!userID) {
-                    swal("Lỗi", "ID người dùng không hợp lệ", {icon: "error"});
+                    swal("Error", "Invalid user ID", {icon: "error"});
                     return;
                 }
 
-                showDeleteWarning("Bạn có chắc chắn muốn xóa nhân viên này?", (willDelete) => {
+                showDeleteWarning("Are you sure you want to delete this employee?", (willDelete) => {
                     if (willDelete) {
                         $.post('deleteUser', {id: userID})
                                 .done(() => {
-                                    swal("Đã xóa thành công!", {icon: "success"})
+                                    swal("Deleted successfully!", {icon: "success"})
                                             .then(() => location.reload());
                                 })
                                 .fail(() => {
-                                    swal("Xóa thất bại!", {icon: "error"});
+                                    swal("Delete failed!", {icon: "error"});
                                 });
                     }
                 });
@@ -320,13 +311,13 @@
             function time() {
                 var today = new Date();
                 var weekday = new Array(7);
-                weekday[0] = "Chủ Nhật";
-                weekday[1] = "Thứ Hai";
-                weekday[2] = "Thứ Ba";
-                weekday[3] = "Thứ Tư";
-                weekday[4] = "Thứ Năm";
-                weekday[5] = "Thứ Sáu";
-                weekday[6] = "Thứ Bảy";
+                weekday[0] = "Sunday";
+                weekday[1] = "Monday";
+                weekday[2] = "Tuesday";
+                weekday[3] = "Wednesday";
+                weekday[4] = "Thursday";
+                weekday[5] = "Friday";
+                weekday[6] = "Saturday";
                 var day = weekday[today.getDay()];
                 var dd = today.getDate();
                 var mm = today.getMonth() + 1;
@@ -336,7 +327,7 @@
                 var s = today.getSeconds();
                 m = checkTime(m);
                 s = checkTime(s);
-                nowTime = h + " giờ " + m + " phút " + s + " giây";
+                nowTime = h + ":" + m + ":" + s;
                 if (dd < 10) {
                     dd = '0' + dd
                 }
@@ -344,7 +335,7 @@
                     mm = '0' + mm
                 }
                 today = day + ', ' + dd + '/' + mm + '/' + yyyy;
-                tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+                tmp = '<span class="date"> ' + nowTime + '  -  ' + today  +
                         '</span>';
                 document.getElementById("clock").innerHTML = tmp;
                 clocktime = setTimeout("time()", "1000", "Javascript");
