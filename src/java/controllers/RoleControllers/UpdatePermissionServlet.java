@@ -19,8 +19,10 @@ import model.Permissions;
  *
  * @author ptrung
  */
-public class GetPermissionServlet extends HttpServlet {
-private PermissionsDAO permissionDAO = new PermissionsDAO();
+public class UpdatePermissionServlet extends HttpServlet {
+
+    private PermissionsDAO permissionDAO = new PermissionsDAO();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,7 +40,7 @@ private PermissionsDAO permissionDAO = new PermissionsDAO();
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GetPermissionServlet</title>");            
+            out.println("<title>Servlet GetPermissionServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet GetPermissionServlet at " + request.getContextPath() + "</h1>");
@@ -58,21 +60,21 @@ private PermissionsDAO permissionDAO = new PermissionsDAO();
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("Role/Permissions.jsp").forward(request, response);
-//        String action = request.getParameter("action");
-//        String permissionID = request.getParameter("id");
-//
-//        if ("getPermission".equals(action) && permissionID != null) {
-//            Permissions permission = permissionDAO.getPermissionById(Integer.parseInt(permissionID));
-//            if (permission != null) {
-//                String json = new Gson().toJson(permission);
-//                response.setContentType("application/json");
-//                response.setCharacterEncoding("UTF-8");
-//                response.getWriter().write(json);
-//            } else {
-//                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//            }
-//        }
+        
+        String permissionID = request.getParameter("id");
+
+        if ( permissionID != null) {
+            Permissions permission = permissionDAO.getPermissionById(Integer.parseInt(permissionID));
+            if (permission != null) {
+                String json = new Gson().toJson(permission);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(json);
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                response.getWriter().write("{\"status\":\"error\",\"message\":\"Permission not found\"}");
+            }
+        }
     }
 
     /**

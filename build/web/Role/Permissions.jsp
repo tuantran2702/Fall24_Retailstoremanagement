@@ -64,7 +64,7 @@
                             <div class="row element-button">
                                 <div class="col-sm-2">
 
-                                    <a class="btn btn-add btn-sm" href="addPermission" title="Thêm"><i class="fas fa-plus"></i>
+                                    <a class="btn btn-add btn-sm" onclick="$('#addPermissionModal').modal('show');" title="Thêm"><i class="fas fa-plus"></i>
                                         Tạo mới phân quyền</a>
                                 </div>
                             </div>
@@ -141,6 +141,35 @@
             </div>
         </div>
 
+        <!-- Modal Add -->
+        <div class="modal fade" id="addPermissionModal" tabindex="-1" role="dialog" aria-labelledby="addPermissionModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addPermissionModalLabel">Add New Permission</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <!-- Form Add Permission -->
+                    <form id="addPermissionForm" method="POST" action="permissions">
+                        <div class="modal-body">
+                            <!-- Tên quyền -->
+                            <div class="form-group">
+                                <label for="permissionName">Permission Name</label>
+                                <input type="text" class="form-control" id="permissionName" name="permissionName" required>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
 
 
@@ -148,7 +177,7 @@
         <script src="js/jquery-3.2.1.min.js"></script>
         <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        
+
         <script src="js/main.js"></script>
         <!-- The javascript plugin to display page loading on top-->
         <script src="js/plugins/pace.min.js"></script>
@@ -157,7 +186,7 @@
         <!-- Data table plugin-->
         <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-        
+
         <!-- Font Awesome cho biểu tượng -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <script type="text/javascript">$('#sampleTable').DataTable();</script>
@@ -170,10 +199,9 @@
             // Hàm tải dữ liệu quyền vào modal
             function loadPermissionData(permissionID) {
                 $.ajax({
-                    url: 'getPermission', // URL của servlet
+                    url: 'updatePermission', // URL của servlet
                     type: 'GET',
                     data: {
-                        action: 'getPermission', // Thêm action để servlet nhận diện
                         id: permissionID
                     },
                     success: function (permission) {
@@ -197,7 +225,7 @@
                     var formData = $(this).serialize() + '&action=updatePermission'; // Thêm action vào dữ liệu
 
                     $.ajax({
-                        url: 'getPermission',
+                        url: 'updatePermission',
                         type: 'POST',
                         data: formData,
                         success: function (response) {
@@ -226,7 +254,7 @@
                 }).then((willDelete) => {
                     if (willDelete) {
                         $.ajax({
-                            url: 'getPermission',
+                            url: 'updatePermission',
                             type: 'POST',
                             data: {
                                 action: 'deletePermission', // Thêm action để xác định xóa quyền

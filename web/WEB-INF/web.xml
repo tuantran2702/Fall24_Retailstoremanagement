@@ -9,11 +9,6 @@
         <servlet-class>controllers.InventoryController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>WarehouseControllerr</servlet-name>
-        <servlet-class>controllers.WarehouseControllerr</servlet-class>
-    </servlet>
-    
-    <servlet>
         <servlet-name>ImportController</servlet-name>
         <servlet-class>controllers.ImportController</servlet-class>
     </servlet>
@@ -138,8 +133,8 @@
         <servlet-class>controllers.GetInventoriesServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GetPermissionServlet</servlet-name>
-        <servlet-class>controllers.RoleControllers.GetPermissionServlet</servlet-class>
+        <servlet-name>UpdatePermissionServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.UpdatePermissionServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
@@ -154,12 +149,8 @@
         <url-pattern>/inventory</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>WarehouseControllerr</servlet-name>
+        <servlet-name>WarehouseController</servlet-name>
         <url-pattern>/warehouse</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>EmployeeManageControllerr</servlet-name>
-        <url-pattern>/employee</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ImportController</servlet-name>
@@ -286,8 +277,8 @@
         <url-pattern>/getInventories</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>GetPermissionServlet</servlet-name>
-        <url-pattern>/getPermission</url-pattern>
+        <servlet-name>UpdatePermissionServlet</servlet-name>
+        <url-pattern>/updatePermission</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

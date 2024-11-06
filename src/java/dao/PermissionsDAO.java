@@ -87,7 +87,7 @@ public class PermissionsDAO extends DBContext {
     }
     
     public boolean deletePermission(int permissionID) {
-        String query = "DELETE FROM Permission WHERE PermissionID = ?";
+        String query = "DELETE FROM [dbo].[Permissions] WHERE PermissionID = ?";
         boolean rowDeleted = false;
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -154,8 +154,8 @@ public class PermissionsDAO extends DBContext {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String permissionName = resultSet.getString("permissionName");
+                int id = resultSet.getInt(1);
+                String permissionName = resultSet.getString(2);
 
                 permission = new Permissions(id, permissionName);
             }
