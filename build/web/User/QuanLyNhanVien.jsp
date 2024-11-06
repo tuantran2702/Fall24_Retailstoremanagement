@@ -13,7 +13,7 @@
 <html lang="en">
 
     <head>
-        <title>Employee List | GROUP1</title>
+        <title>Danh sách nhân viên | GROUP1</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -54,7 +54,7 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><a href="userManage"><b>Employee List</b></a></li>
+                    <li class="breadcrumb-item active"><a href="userManage"><b>Danh sách nhân viên</b></a></li>
                 </ul>
                 <div id="clock"></div>
             </div>
@@ -68,32 +68,29 @@
                                 <div class="col-sm-2">
 
                                     <a class="btn btn-add btn-sm" href="addUser" title="Thêm"><i class="fas fa-plus"></i>
-                                        Add New Employee</a>
+                                        Thêm nhân viên</a>
                                 </div>
 
                                 <div class="col-sm-2">
                                     <a class="btn btn-sm btn-delete print-file" type="button" title="In" onclick="printTable()">
-                                        <i class="fas fa-print"></i> Print Data
+                                        <i class="fas fa-print"></i> In dữ liệu
                                     </a>
                                 </div>
 
                                 <div class="col-sm-2">
                                     <a class="btn btn-sm btn-excel" type="button" title="Xuất Excel" onclick="exportToExcel()">
-                                        <i class="fas fa-file-excel"></i> Export Excel
+                                        <i class="fas fa-file-excel"></i> Xuất Excel
                                     </a>
                                 </div>
 
                                 <div class="col-sm-2">
                                     <a class="btn btn-sm btn-delete pdf-file" type="button" title="Xuất PDF" onclick="exportToPDF()">
-                                        <i class="fas fa-file-pdf"></i> Export PDF
+                                        <i class="fas fa-file-pdf"></i> Xuất PDF
                                     </a>
                                 </div>
 
 
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm" type="button" title="Xóa" onclick="myFunction(this)"><i
-                                            class="fas fa-trash-alt"></i> Xóa tất cả </a>
-                                </div>
+                                
                             </div>
 
                             <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
@@ -157,7 +154,7 @@
         <!-- Data table plugin-->
         <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-        
+
 
         <!-- Font Awesome cho biểu tượng -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -247,9 +244,9 @@
             // Hàm hiển thị cảnh báo xóa
             function showDeleteWarning(message, onConfirm) {
                 swal({
-                    title: "Warning",
+                    title: "Thông báo",
                     text: message,
-                    buttons: ["Cancel", "Agree"],
+                    buttons: ["Hủy bỏ", "Đồng ý"],
                     dangerMode: true
                 }).then(onConfirm);
             }
@@ -257,19 +254,19 @@
 // Hàm xóa người dùng
             function deleteUser(userID) {
                 if (!userID) {
-                    swal("Error", "Invalid user ID", {icon: "error"});
+                    swal("Error", "Không tồn tại ID", {icon: "error"});
                     return;
                 }
 
-                showDeleteWarning("Are you sure you want to delete this employee?", (willDelete) => {
+                showDeleteWarning("Bạn chắc chắn muốn xóa nhân viên này?", (willDelete) => {
                     if (willDelete) {
                         $.post('deleteUser', {id: userID})
                                 .done(() => {
-                                    swal("Deleted successfully!", {icon: "success"})
+                                    swal("Xóa nhân viên thành công!", {icon: "success"})
                                             .then(() => location.reload());
                                 })
                                 .fail(() => {
-                                    swal("Delete failed!", {icon: "error"});
+                                    swal("Xóa thất bại!", {icon: "error"});
                                 });
                     }
                 });
@@ -296,29 +293,20 @@
 
 
         <script>
-            //EXCEL
-            // $(document).ready(function () {
-            //   $('#').DataTable({
-
-            //     dom: 'Bfrtip',
-            //     "buttons": [
-            //       'excel'
-            //     ]
-            //   });
-            // });
+            
 
 
             //Thời Gian
             function time() {
                 var today = new Date();
                 var weekday = new Array(7);
-                weekday[0] = "Sunday";
-                weekday[1] = "Monday";
-                weekday[2] = "Tuesday";
-                weekday[3] = "Wednesday";
-                weekday[4] = "Thursday";
-                weekday[5] = "Friday";
-                weekday[6] = "Saturday";
+                weekday[0] = "Chủ Nhật";
+                weekday[1] = "Thứ Hai";
+                weekday[2] = "Thứ Ba";
+                weekday[3] = "Thứ Tư";
+                weekday[4] = "Thứ Năm";
+                weekday[5] = "Thứ Sáu";
+                weekday[6] = "Thứ Bảy";
                 var day = weekday[today.getDay()];
                 var dd = today.getDate();
                 var mm = today.getMonth() + 1;
@@ -328,7 +316,7 @@
                 var s = today.getSeconds();
                 m = checkTime(m);
                 s = checkTime(s);
-                nowTime = h + ":" + m + ":" + s;
+                nowTime = h + " giờ " + m + " phút " + s + " giây";
                 if (dd < 10) {
                     dd = '0' + dd
                 }
@@ -336,7 +324,7 @@
                     mm = '0' + mm
                 }
                 today = day + ', ' + dd + '/' + mm + '/' + yyyy;
-                tmp = '<span class="date"> ' + nowTime + '  -  ' + today +
+                tmp = '<span class="date"> ' + today + ' - ' + nowTime +
                         '</span>';
                 document.getElementById("clock").innerHTML = tmp;
                 clocktime = setTimeout("time()", "1000", "Javascript");
@@ -348,32 +336,7 @@
                     return i;
                 }
             }
-            //In dữ liệu
-            var myApp = new function () {
-                this.printTable = function () {
-                    var tab = document.getElementById('sampleTable');
-                    var win = window.open('', '', 'height=700,width=700');
-                    win.document.write(tab.outerHTML);
-                    win.document.close();
-                    win.print();
-                }
-            }
-            //     //Sao chép dữ liệu
-            //     var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
-
-            // copyTextareaBtn.addEventListener('click', function(event) {
-            //   var copyTextarea = document.querySelector('.js-copytextarea');
-            //   copyTextarea.focus();
-            //   copyTextarea.select();
-
-            //   try {
-            //     var successful = document.execCommand('copy');
-            //     var msg = successful ? 'successful' : 'unsuccessful';
-            //     console.log('Copying text command was ' + msg);
-            //   } catch (err) {
-            //     console.log('Oops, unable to copy');
-            //   }
-            // });
+            
 
 
 

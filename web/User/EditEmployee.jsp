@@ -11,7 +11,7 @@
 <html lang="en">
 
     <head>
-        <title>Update Employee | GROUP1</title>
+        <title>Cập nhật nhân viên | GROUP1</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -124,8 +124,8 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item"><a href="userManage">Emloyees List</a></li>
-                    <li class="breadcrumb-item"><a href="">Update Employee</a></li>
+                    <li class="breadcrumb-item"><a href="userManage">Danh sách nhân viên</a></li>
+                    <li class="breadcrumb-item"><a href="">Cập nhật nhân viên</a></li>
                 </ul>
             </div>
             <div class="row">
@@ -133,12 +133,12 @@
 
                     <div class="tile">
 
-                        <h3 class="tile-title">Update Employee</h3>
+                        <h3 class="tile-title">Cập nhật nhân viên</h3>
                         <div class="tile-body">
                             <div class="row element-button">
                                 <div class="col-sm-2">
                                     <a class="btn btn-add btn-sm" href="addRole"><b><i
-                                                class="fas fa-folder-plus"></i> Add New Role</b></a>
+                                                class="fas fa-folder-plus"></i>Tạo chức vụ</b></a>
                                 </div>
 
                             </div> 
@@ -151,29 +151,34 @@
                                     <input class="form-control" type="text" value="<%= ((User) request.getAttribute("user")) != null ? ((User) request.getAttribute("user")).getUserID() : "" %>" name="userID" readonly="true" required style="max-width: 15%">
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label class="control-label">FirstName</label>
+                                    <label class="control-label">Họ</label>
                                     <input class="form-control" type="text" value="<%= ((User) request.getAttribute("user")).getFirstName() != null ? ((User) request.getAttribute("user")).getFirstName() : "" %>" name="firstName" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label class="control-label">LastName</label>
+                                    <label class="control-label">Tên</label>
                                     <input class="form-control" type="text" value="<%= ((User) request.getAttribute("user")).getLastName() != null ? ((User) request.getAttribute("user")).getLastName() : "" %>" name="lastName" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Email</label>
-                                    <input class="form-control" type="email" value="<%= ((User) request.getAttribute("user")).getEmail() != null ? ((User) request.getAttribute("user")).getEmail() : "" %>" name="email" required>
+                                    <!-- Thẻ span để hiển thị lỗi cho trường Email -->
+                                    <span id="emailError" style="color:red; display:none;">Vui lòng nhập email hợp lệ.</span>
+                                    <input class="form-control" type="email" name="email" id="emailInput" required>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label class="control-label">Số điện thoại</label>
+                                    <!-- Thẻ span để hiển thị lỗi cho trường Số điện thoại -->
+                                    <span id="phoneError" style="color:red; display:none;">Vui lòng nhập số điện thoại hợp lệ (ít nhất 10 chữ số).</span>
+                                    <input class="form-control" type="text" name="phone" id="phoneInput" required>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label class="control-label">Phone Number</label>
-                                    <input class="form-control" type="text" value="<%= ((User) request.getAttribute("user")).getPhoneNumber() != null ? ((User) request.getAttribute("user")).getPhoneNumber() : "" %>" name="phone" required>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label class="control-label">Address</label>
+                                    <label class="control-label">Địa chỉ</label>
                                     <input class="form-control" type="text" value="<%= ((User) request.getAttribute("user")).getAddress() != null ? ((User) request.getAttribute("user")).getAddress() : "" %>" name="address">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="exampleSelect1" class="control-label">Role</label>
                                     <select class="form-control" id="exampleSelect1" name="role">
-                                        <option>-- Select Role --</option>
+                                        <option>-- Chọn chức vụ --</option>
                                         <c:forEach var="role" items="${roles}">
                                             <option value="${role.roleID}" 
                                                     <c:if test="${role.roleID == user.roleID}">
@@ -188,7 +193,7 @@
 
                                 <div class="form-group col-md-12">
 
-                                    <label class="control-label">Employee 3x4 Image</label>
+                                    <label class="control-label">Ảnh nhân viên 3x4</label>
                                     <p id="error-message" class="error" style="color: red"></p> <!-- Thông báo lỗi -->
                                     <div id="myfileupload">
                                         <input type="file" id="uploadfile" name="ImageUpload" onchange="readURL(this);" />
@@ -208,8 +213,8 @@
                                     </div>
                                 </div>
 
-                                <button class="btn btn-save" type="submit">Save Change</button>
-                                <a class="btn btn-cancel" href="userManage">Cancel</a>
+                                <button class="btn btn-save" type="submit">Lưu lại</button>
+                                <a class="btn btn-cancel" href="userManage">Hủy bỏ</a>
                             </form>
 
                         </div>
@@ -230,71 +235,123 @@
                     <script src="js/plugins/pace.min.js"></script>
 
                     <script>
-                                            // Hàm kiểm tra file hợp lệ
-                                            function validateFile(file) {
-                                                const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
-                                                const maxFileSize = 2 * 1024 * 1024; // 2MB giới hạn kích thước
-                                                if (!validImageTypes.includes(file.type))
-                                                    return "Only image files (JPEG, PNG, GIF) are allowed.";
-                                                if (file.size > maxFileSize)
-                                                    return "Image size must be less than 2MB.";
-                                                return null;
-                                            }
+                                            function validateForm() {
+                                                let isValid = true;
 
-                                            // Hàm hiển thị ảnh xem trước và kiểm tra file
-                                            function readURL(input) {
-                                                const file = input.files?.[0];
-                                                if (!file)
-                                                    return;
+                                                // Lấy các input và span lỗi
+                                                let emailInput = document.getElementById("emailInput");
+                                                let phoneInput = document.getElementById("phoneInput");
+                                                let emailError = document.getElementById("emailError");
+                                                let phoneError = document.getElementById("phoneError");
 
-                                                const error = validateFile(file);
-                                                if (error) {
-                                                    displayError(error);
-                                                    resetFileInput(input);
-                                                    return;
+                                                // Reset thông báo lỗi
+                                                emailError.style.display = "none";
+                                                phoneError.style.display = "none";
+
+                                                // Kiểm tra Email
+                                                if (!isValidEmail(emailInput.value)) {
+                                                    emailError.style.display = "block";
+                                                    emailInput.focus();
+                                                    isValid = false;
                                                 }
 
-                                                // Hiển thị ảnh xem trước
-                                                const reader = new FileReader();
-                                                reader.onload = e => {
-                                                    $("#thumbimage").attr('src', e.target.result).show();
-                                                    $(".removeimg").show();
-                                                    updateChoiceFileStyle(false);
-                                                    $(".filename").text(file.name);
-                                                    $("#error-message").text("");
-                                                };
-                                                reader.readAsDataURL(file);
+                                                // Kiểm tra Số điện thoại
+                                                if (!isValidPhoneNumber(phoneInput.value)) {
+                                                    phoneError.style.display = "block";
+                                                    if (isValid)
+                                                        phoneInput.focus(); // Chỉ focus vào phoneInput nếu email đã hợp lệ
+                                                    isValid = false;
+                                                }
+
+                                                return isValid;
                                             }
 
-                                            function displayError(message) {
-                                                $("#error-message").text(message);
+                                     // Hàm kiểm tra định dạng email
+                                            function isValidEmail(email) {
+                                                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                                return emailRegex.test(email);
                                             }
 
-                                            function resetFileInput(input) {
-                                                input.value = "";
-                                                $("#thumbimage").hide();
-                                                $(".removeimg").hide();
-                                                updateChoiceFileStyle(true);
-                                                $(".filename").text("");
+                                            // Hàm kiểm tra định dạng số điện thoại
+                                            function isValidPhoneNumber(phone) {
+                                                const phoneRegex = /^0\d{9}$/;
+                                                return phoneRegex.test(phone);
                                             }
 
-                                            function updateChoiceFileStyle(isReset) {
-                                                const style = isReset ? {background: '#14142B', cursor: 'pointer'} : {background: '#14142B', cursor: 'default'};
-                                                $(".Choicefile").css(style);
-                                            }
+                                    // Gắn hàm validateForm vào sự kiện onsubmit của form
+                                            document.querySelector("form").onsubmit = function () {
+                                                return validateForm();
+                                            };
 
-                                            $(document).ready(function () {
-                                                $(".Choicefile").on('click', () => $("#uploadfile").click());
+                    </script>
 
-                                                $(".removeimg").on('click', function () {
-                                                    $("#thumbimage").hide().attr('src', '');
-                                                    $("#myfileupload").html('<input type="file" id="uploadfile" onchange="readURL(this);" />');
-                                                    $(".removeimg").hide();
-                                                    updateChoiceFileStyle(true);
-                                                    $(".filename").text("");
-                                                    $("#error-message").text("");
-                                                });
-                                            });
+
+                    <script>
+                        // Hàm kiểm tra file hợp lệ
+                        function validateFile(file) {
+                            const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+                            const maxFileSize = 2 * 1024 * 1024; // 2MB giới hạn kích thước
+                            if (!validImageTypes.includes(file.type))
+                                return "Chỉ cho phép file ảnh (JPEG, PNG, GIF).";
+                            if (file.size > maxFileSize)
+                                return "Ảnh phải có kích thước nhỏ hơn 2MB.";
+                            return null;
+                        }
+
+                        // Hàm hiển thị ảnh xem trước và kiểm tra file
+                        function readURL(input) {
+                            const file = input.files?.[0];
+                            if (!file)
+                                return;
+
+                            const error = validateFile(file);
+                            if (error) {
+                                displayError(error);
+                                resetFileInput(input);
+                                return;
+                            }
+
+                            // Hiển thị ảnh xem trước
+                            const reader = new FileReader();
+                            reader.onload = e => {
+                                $("#thumbimage").attr('src', e.target.result).show();
+                                $(".removeimg").show();
+                                updateChoiceFileStyle(false);
+                                $(".filename").text(file.name);
+                                $("#error-message").text("");
+                            };
+                            reader.readAsDataURL(file);
+                        }
+
+                        function displayError(message) {
+                            $("#error-message").text(message);
+                        }
+
+                        function resetFileInput(input) {
+                            input.value = "";
+                            $("#thumbimage").hide();
+                            $(".removeimg").hide();
+                            updateChoiceFileStyle(true);
+                            $(".filename").text("");
+                        }
+
+                        function updateChoiceFileStyle(isReset) {
+                            const style = isReset ? {background: '#14142B', cursor: 'pointer'} : {background: '#14142B', cursor: 'default'};
+                            $(".Choicefile").css(style);
+                        }
+
+                        $(document).ready(function () {
+                            $(".Choicefile").on('click', () => $("#uploadfile").click());
+
+                            $(".removeimg").on('click', function () {
+                                $("#thumbimage").hide().attr('src', '');
+                                $("#myfileupload").html('<input type="file" id="uploadfile" onchange="readURL(this);" />');
+                                $(".removeimg").hide();
+                                updateChoiceFileStyle(true);
+                                $(".filename").text("");
+                                $("#error-message").text("");
+                            });
+                        });
                     </script>
 
 

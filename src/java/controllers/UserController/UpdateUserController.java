@@ -166,26 +166,6 @@ public class UpdateUserController extends HttpServlet {
             return; // Dừng việc xử lý thêm người dùng
         }
 
-        // Kiểm tra số điện thoại có hợp lệ hay không (10 số và bắt đầu bằng 0)
-        String phonePattern = "^0\\d{9}$";
-        if (!phone.matches(phonePattern)) {
-            // Nếu số điện thoại không hợp lệ, thiết lập thông báo lỗi
-            request.setAttribute("errorMessage", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại 10 số bắt đầu bằng 0.");
-
-            u.setPhoneNumber("");
-            request.setAttribute("user", u);
-
-            // Truy vấn dữ liệu từ database
-            RoleDAO roleDAO = new RoleDAO();
-            List<Role> roles = roleDAO.getAllRole();
-
-            // Lưu danh sách roles vào request attribute
-            request.setAttribute("roles", roles);
-            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
-            request.getRequestDispatcher("User/EditEmployee.jsp").forward(request, response);
-            return;  // Dừng xử lý tiếp
-        }
-
 // Proceed with further logic (e.g., update user data with imgPath)
         // Update user object
         User user = new User();

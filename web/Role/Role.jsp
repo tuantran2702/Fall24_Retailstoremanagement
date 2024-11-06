@@ -17,7 +17,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Main CSS-->
         <link rel="stylesheet" type="text/css" href="doc/css/main.css">
-        <link rel="stylesheet" type="text/css" href="css/main_2.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
         <!-- or -->
         <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
@@ -120,7 +119,7 @@
                                 <div class="col-sm-2">
 
                                     <a class="btn btn-add btn-sm" href="addRole" title="Thêm"><i class="fas fa-plus"></i>
-                                        Tạo mới Phân Quyền</a>
+                                        Tạo mới chức vụ</a>
                                 </div>
                             </div>
 
@@ -128,7 +127,7 @@
                                    id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th width="10">ID chức vụ</th>
+                                        <th width="80">ID chức vụ</th>
                                         <th width="180">Tên chức vụ</th>
                                         <th>Mô tả</th>
                                         <th width="100">Tính năng</th>

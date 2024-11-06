@@ -9,7 +9,7 @@
 <html lang="en">
 
     <head>
-        <title>Khôi phục mật khẩu | Website quản trị v2.0</title>
+        <title>Khôi phục mật khẩu | GROUP1</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
@@ -52,7 +52,7 @@
 
 
 
-                        <div class="wrap-input100 validate-input" data-validate="Bạn cần nhập đúng thông tin như: ex@abc.xyz">
+                        <div class="wrap-input100 validate-input">
                             <input class="input100" type="text" placeholder="Nhập email" name="emailInput" id="emailInput" value="" required />
                             <span class="focus-input100"></span>
                             <span class="symbol-input100">

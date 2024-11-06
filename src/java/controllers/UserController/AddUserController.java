@@ -129,7 +129,7 @@ public class AddUserController extends HttpServlet {
             addedUser.setRoleID(roleId);
         } catch (Exception e) {
             // Gửi thông báo lỗi khi người dùng không chọn chức vụ hợp lệ
-            request.setAttribute("errorMessage", "Vui lòng chọn chức vụ.");
+            request.setAttribute("errorMessage", "Please Select Role!");
 
             request.setAttribute("user", addedUser);
 
@@ -164,24 +164,7 @@ public class AddUserController extends HttpServlet {
             return;  // Dừng xử lý tiếp
         }
 
-        // Kiểm tra số điện thoại có hợp lệ hay không (10 số và bắt đầu bằng 0)
-        String phonePattern = "^0\\d{9}$";
-        if (!phone.matches(phonePattern)) {
-            // Nếu số điện thoại không hợp lệ, thiết lập thông báo lỗi
-            request.setAttribute("errorMessage", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại 10 số bắt đầu bằng 0.");
-
-            request.setAttribute("user", addedUser);
-
-            // Truy vấn dữ liệu từ database
-            RoleDAO roleDAO = new RoleDAO();
-            List<Role> roles = roleDAO.getAllRole();
-
-            // Lưu danh sách roles vào request attribute
-            request.setAttribute("roles", roles);
-            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
-            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
-            return;  // Dừng xử lý tiếp
-        }
+        
 //      
         // Create a user object
         User user = new User();

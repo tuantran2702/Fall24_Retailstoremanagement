@@ -12,7 +12,7 @@
 <html lang="en">
 
     <head>
-        <title>Danh sách nhân viên | Quản trị Admin</title>
+        <title>Danh sách phân quyền | GROUP1</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -51,7 +51,7 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><a href="roles"><b>Permissions List</b></a></li>
+                    <li class="breadcrumb-item active"><a href="roles"><b>Danh sách phân quyền</b></a></li>
                 </ul>
                 <div id="clock"></div>
             </div>
@@ -72,8 +72,8 @@
                             <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0" id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th width="10">ID phân quyền</th>
-                                        <th width="180">Tên phân quyền</th>
+                                        <th width="100">ID phân quyền</th>
+                                        <th width="auto">Tên phân quyền</th>
                                         <th width="100">Tính năng</th>
                                     </tr>
                                 </thead>
