@@ -2,6 +2,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -91,7 +92,7 @@
                                         <th>Tổng chi tiêu</th>
                                         <th>Điểm thưởng tích lũy</th>
                                         <th>Điểm thưởng đã sử dụng</th>
-                                        <th>Sản phẩm mua nhiều nhất</th>
+<!--                                        <th>Sản phẩm mua nhiều nhất</th>-->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -104,7 +105,7 @@
                                             <td>${report.totalSpent}</td>
                                             <td>${report.loyaltyPointsEarned}</td>
                                             <td>${report.loyaltyPointsRedeemed}</td>
-                                            <td>${report.mostPurchasedProduct}</td>
+<!--                                            <td>${report.mostPurchasedProduct}</td>-->
                                         </tr>
                                     </c:forEach>
                                 </tbody>
