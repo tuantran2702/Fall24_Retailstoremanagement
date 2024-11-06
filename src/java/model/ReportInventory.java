@@ -1,87 +1,115 @@
-package com.example.retailstore.model;
+package model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class ReportInventory {
-    private Integer reportId;
-    private LocalDateTime reportDate;
-    private Integer productId;
-    private Integer warehouseId;
-    private Integer totalQuantity;
-    private Double totalStockValue;
+    private int reportID;
+    private Date reportDate;
+    private int productID;
+    private int warehouseID;
+    private int totalQuantity;
+    private double totalStockValue;
+    private String productName;
+    private String warehouseName;
 
-    // Default constructor
-    public ReportInventory() {}
+    public ReportInventory() {
+    }
 
-    // Constructor with all fields
-    public ReportInventory(Integer reportId, LocalDateTime reportDate, Integer productId, 
-                           Integer warehouseId, Integer totalQuantity, Double totalStockValue) {
-        this.reportId = reportId;
+    public ReportInventory(int reportID, Date reportDate, int productID, int warehouseID, int totalQuantity, double totalStockValue) {
+        this.reportID = reportID;
         this.reportDate = reportDate;
-        this.productId = productId;
-        this.warehouseId = warehouseId;
+        this.productID = productID;
+        this.warehouseID = warehouseID;
         this.totalQuantity = totalQuantity;
         this.totalStockValue = totalStockValue;
     }
 
+    public ReportInventory(int reportID, Date reportDate, int productID, int warehouseID, int totalQuantity, double totalStockValue, String productName, String warehouseName) {
+        this.reportID = reportID;
+        this.reportDate = reportDate;
+        this.productID = productID;
+        this.warehouseID = warehouseID;
+        this.totalQuantity = totalQuantity;
+        this.totalStockValue = totalStockValue;
+        this.productName = productName;
+        this.warehouseName = warehouseName;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
+    }
+    
+
     // Getters and Setters
-    public Integer getReportId() {
-        return reportId;
+    public int getReportID() {
+        return reportID;
     }
 
-    public void setReportId(Integer reportId) {
-        this.reportId = reportId;
+    public void setReportID(int reportID) {
+        this.reportID = reportID;
     }
 
-    public LocalDateTime getReportDate() {
+    public Date getReportDate() {
         return reportDate;
     }
 
-    public void setReportDate(LocalDateTime reportDate) {
+    public void setReportDate(Date reportDate) {
         this.reportDate = reportDate;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public int getProductID() {
+        return productID;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setProductID(int productID) {
+        this.productID = productID;
     }
 
-    public Integer getWarehouseId() {
-        return warehouseId;
+    public int getWarehouseID() {
+        return warehouseID;
     }
 
-    public void setWarehouseId(Integer warehouseId) {
-        this.warehouseId = warehouseId;
+    public void setWarehouseID(int warehouseID) {
+        this.warehouseID = warehouseID;
     }
 
-    public Integer getTotalQuantity() {
+    public int getTotalQuantity() {
         return totalQuantity;
     }
 
-    public void setTotalQuantity(Integer totalQuantity) {
+    public void setTotalQuantity(int totalQuantity) {
         this.totalQuantity = totalQuantity;
     }
 
-    public Double getTotalStockValue() {
+    public double getTotalStockValue() {
         return totalStockValue;
     }
 
-    public void setTotalStockValue(Double totalStockValue) {
+    public void setTotalStockValue(double totalStockValue) {
         this.totalStockValue = totalStockValue;
     }
 
     @Override
     public String toString() {
         return "ReportInventory{" +
-               "reportId=" + reportId +
-               ", reportDate=" + reportDate +
-               ", productId=" + productId +
-               ", warehouseId=" + warehouseId +
-               ", totalQuantity=" + totalQuantity +
-               ", totalStockValue=" + totalStockValue +
-               '}';
+                "reportID=" + reportID +
+                ", reportDate=" + reportDate +
+                ", productID=" + productID +
+                ", warehouseID=" + warehouseID +
+                ", totalQuantity=" + totalQuantity +
+                ", totalStockValue=" + totalStockValue +
+                '}';
     }
 }

@@ -132,6 +132,11 @@
                                 </div>
 
                                 <div class="col-sm-2">
+                                    <a href="${pageContext.request.contextPath}/reportInventory" class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i class="fas fa-chart-line"></i>
+                                        Báo cáo Tồn kho</a>
+                                </div>
+
+                                <div class="col-sm-2">
                                     <a class="btn btn-excel btn-sm" href="${pageContext.request.contextPath}/exportUnit" title="Xuất Excel">
                                         <i class="fas fa-file-excel"></i> Xuất Excel
                                     </a>
@@ -163,9 +168,9 @@
                             <table class="table table-hover table-bordered" id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th>Unit ID</th>
-                                        <th>Unit Name</th>
-                                        <th>Action</th>
+                                        <th>Mã Đơn Vị</th>
+                                        <th>Tên Đơn Vị</th>
+                                        <th>Hành Động</th>
                                     </tr>
                                 </thead>
                                 <tbody>

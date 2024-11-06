@@ -125,13 +125,13 @@
                                 <div class="row">
                                     <!-- Supplier Name -->
                                     <div class="form-group col-md-6">
-                                        <label class="control-label">Supplier Name</label>
+                                        <label class="control-label">Tên nhà cung cấp</label>
                                         <input class="form-control" type="text" required name="supplierName" value="${supplier.supplierName}">
                                     </div>
 
                                     <!-- Contact Name -->
                                     <div class="form-group col-md-6">
-                                        <label class="control-label">Contact Name</label>
+                                        <label class="control-label">Tên liên lạc</label>
                                         <input class="form-control" type="text" required name="contactName" value="${supplier.contactName}">
                                     </div>
                                 </div>
@@ -139,7 +139,7 @@
                                 <div class="row">
                                     <!-- Phone Number -->
                                     <div class="form-group col-md-6">
-                                        <label class="control-label">Phone Number</label>
+                                        <label class="control-label">Số điện thoại</label>
                                         <input class="form-control" type="number" required name="phoneNumber" value="${supplier.phoneNumber}">
                                     </div>
 
@@ -153,7 +153,7 @@
                                 <div class="row">
                                     <!-- Address -->
                                     <div class="form-group col-md-12">
-                                        <label class="control-label">Address</label>
+                                        <label class="control-label">Địa chỉ</label>
                                         <textarea class="form-control" name="address" id="address">${supplier.address}</textarea>
                                         <script>CKEDITOR.replace('address');</script>
                                     </div>

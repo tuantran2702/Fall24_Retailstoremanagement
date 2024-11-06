@@ -218,37 +218,40 @@
                         <h3 class="tile-title">Tạo mới Nhà cung cấp</h3>
                         <div class="tile-body">
                             <div class="row element-button">
-<!--                                <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i
-                                            class="fas fa-folder-plus"></i> Thêm nhà cung cấp</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc"><i
-                                            class="fas fa-folder-plus"></i> Thêm danh mục</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang"><i
-                                            class="fas fa-folder-plus"></i> Thêm tình trạng</a>
-                                </div>-->
+                                <!--                                <div class="col-sm-2">
+                                                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i
+                                                                            class="fas fa-folder-plus"></i> Thêm nhà cung cấp</a>
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc"><i
+                                                                            class="fas fa-folder-plus"></i> Thêm danh mục</a>
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang"><i
+                                                                            class="fas fa-folder-plus"></i> Thêm tình trạng</a>
+                                                                </div>-->
                             </div>
-                            <form action="supplier" method="post" class="row">
+                            <c:if test="${not empty errorMessage}">
+                                <div style="color: red;">${errorMessage}</div>
+                            </c:if>
+                            <form action="supplier" method="post" class="row" onsubmit="return validateForm();">
                                 <input type="hidden" name="action" value="create">
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Supplier Name</label>
+                                    <label class="control-label">Tên nhà cung cấp</label>
                                     <input class="form-control" type="text" name="supplierName" id="supplierName" required oninput="validateSupplierName();">
                                     <small id="error-message-supplier" style="color: red;"></small>
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Contact Name</label>
+                                    <label class="control-label">Tên liên lạc</label>
                                     <input class="form-control" type="text" name="contactName" id="contactName" required oninput="validateContactName();">
                                     <small id="error-message-contact" style="color: red;"></small>
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Phone Number</label>
-                                    <input class="form-control" type="number" name="phoneNumber" id="phoneNumber" required oninput="validatePhoneNumber();">
+                                    <label class="control-label">Số điện thoại</label>
+                                    <input class="form-control" type="text" name="phoneNumber" id="phoneNumber" required oninput="validatePhoneNumber();">
                                     <small id="error-message-phone" style="color: red;"></small>
                                 </div>
 
@@ -259,147 +262,156 @@
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Address</label>
+                                    <label class="control-label">Địa chỉ</label>
                                     <input class="form-control" type="text" name="address" id="address" required oninput="validateAddress();">
                                     <small id="error-message-address" style="color: red;"></small>
                                 </div>
 
+                                <button class="btn btn-save" type="submit">Lưu lại</button>
+                                <a class="btn btn-cancel" href="${pageContext.request.contextPath}/supplier">Hủy bỏ</a>
+                            </form>
+
+
                         </div>
-                        <button class="btn btn-save" type="submit">Lưu lại</button>
-                        <a class="btn btn-cancel" href="${pageContext.request.contextPath}/supplier">Hủy bỏ</a>
-                        </form>
+                        </main>
 
 
-                    </div>
-                    </main>
+                        <!--
+                        MODAL CHỨC VỤ 
+                        -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                             data-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
 
-
-                    <!--
-                    MODAL CHỨC VỤ 
-                    -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                         data-backdrop="static" data-keyboard="false">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="form-group  col-md-12">
-                                            <span class="thong-tin-thanh-toan">
-                                                <h5>Thêm mới nhà cung cấp</h5>
-                                            </span>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group  col-md-12">
+                                                <span class="thong-tin-thanh-toan">
+                                                    <h5>Thêm mới nhà cung cấp</h5>
+                                                </span>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Nhập tên chức vụ mới</label>
+                                                <input class="form-control" type="text" required>
+                                            </div>
                                         </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Nhập tên chức vụ mới</label>
-                                            <input class="form-control" type="text" required>
-                                        </div>
+                                        <BR>
+                                        <button class="btn btn-save" type="button">Lưu lại</button>
+                                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                        <BR>
                                     </div>
-                                    <BR>
-                                    <button class="btn btn-save" type="button">Lưu lại</button>
-                                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                    <BR>
-                                </div>
-                                <div class="modal-footer">
+                                    <div class="modal-footer">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
 
 
-                    <script src="js/jquery-3.2.1.min.js"></script>
-                    <script src="js/popper.min.js"></script>
-                    <script src="js/bootstrap.min.js"></script>
-                    <script src="js/main.js"></script>
-                    <script src="js/plugins/pace.min.js"></script>
-                    <script>
-            function validateSupplierName() {
-                const supplierNameInput = document.getElementById('supplierName');
-                const errorMessageSupplier = document.getElementById('error-message-supplier');
-                const supplierNameValue = supplierNameInput.value.trim();
+                        <script src="js/jquery-3.2.1.min.js"></script>
+                        <script src="js/popper.min.js"></script>
+                        <script src="js/bootstrap.min.js"></script>
+                        <script src="js/main.js"></script>
+                        <script src="js/plugins/pace.min.js"></script>
+                        <script>
+                                // Biểu thức chính quy
+                                const regexName = /^[A-Za-zÀ-ỹ\s]{3,50}$/;
+                                const regexPhone = /^[0-9]{10,15}$/;
+                                const regexAddress = /^.{5,100}$/;
 
-                if (supplierNameValue.length < 3 || supplierNameValue.length > 50) {
-                    errorMessageSupplier.textContent = 'Supplier name must be between 3 and 50 characters.';
-                } else {
-                    errorMessageSupplier.textContent = '';
-                }
-            }
+                                function validateSupplierName() {
+                                    const supplierName = document.getElementById('supplierName');
+                                    const errorMessageSupplier = document.getElementById('error-message-supplier');
 
-            function validateContactName() {
-                const contactNameInput = document.getElementById('contactName');
-                const errorMessageContact = document.getElementById('error-message-contact');
-                const contactNameValue = contactNameInput.value.trim();
+                                    if (!regexName.test(supplierName.value.trim())) {
+                                        errorMessageSupplier.textContent = 'Tên nhà cung cấp phải là chữ cái (có dấu) và từ 3-50 ký tự.';
+                                        return false;
+                                    } else {
+                                        errorMessageSupplier.textContent = '';
+                                        return true;
+                                    }
+                                }
 
-                if (contactNameValue.length < 3 || contactNameValue.length > 50) {
-                    errorMessageContact.textContent = 'Contact name must be between 3 and 50 characters.';
-                } else {
-                    errorMessageContact.textContent = '';
-                }
-            }
+                                function validateContactName() {
+                                    const contactName = document.getElementById('contactName');
+                                    const errorMessageContact = document.getElementById('error-message-contact');
 
-            function validatePhoneNumber() {
-                const phoneNumberInput = document.getElementById('phoneNumber');
-                const errorMessagePhone = document.getElementById('error-message-phone');
-                const phoneNumberValue = phoneNumberInput.value;
+                                    if (!regexName.test(contactName.value.trim())) {
+                                        errorMessageContact.textContent = 'Tên liên hệ phải là chữ cái (có dấu) và từ 3-50 ký tự.';
+                                        return false;
+                                    } else {
+                                        errorMessageContact.textContent = '';
+                                        return true;
+                                    }
+                                }
 
-                const phoneRegex = /^[0-9]{10,15}$/; // Validates a range of 10-15 digits
+                                function validatePhoneNumber() {
+                                    const phoneNumber = document.getElementById('phoneNumber');
+                                    const errorMessagePhone = document.getElementById('error-message-phone');
 
-                if (!phoneRegex.test(phoneNumberValue)) {
-                    errorMessagePhone.textContent = 'Please enter a valid phone number (10-15 digits).';
-                } else {
-                    errorMessagePhone.textContent = '';
-                }
-            }
+                                    if (!regexPhone.test(phoneNumber.value.trim())) {
+                                        errorMessagePhone.textContent = 'Số điện thoại phải từ 10-15 chữ số.';
+                                        return false;
+                                    } else {
+                                        errorMessagePhone.textContent = '';
+                                        return true;
+                                    }
+                                }
 
-            function validateEmail() {
-                const emailInput = document.getElementById('email');
-                const errorMessageEmail = document.getElementById('error-message-email');
-                const emailValue = emailInput.value.trim();
+                                function validateEmail() {
+                                    const email = document.getElementById('email');
+                                    const errorMessageEmail = document.getElementById('error-message-email');
 
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format validation
+                                    if (!email.checkValidity()) {
+                                        errorMessageEmail.textContent = 'Email không hợp lệ.';
+                                        return false;
+                                    } else {
+                                        errorMessageEmail.textContent = '';
+                                        return true;
+                                    }
+                                }
 
-                if (!emailRegex.test(emailValue)) {
-                    errorMessageEmail.textContent = 'Please enter a valid email address.';
-                } else {
-                    errorMessageEmail.textContent = '';
-                }
-            }
+                                function validateAddress() {
+                                    const address = document.getElementById('address');
+                                    const errorMessageAddress = document.getElementById('error-message-address');
 
-            function validateAddress() {
-                const addressInput = document.getElementById('address');
-                const errorMessageAddress = document.getElementById('error-message-address');
-                const addressValue = addressInput.value.trim();
+                                    if (!regexAddress.test(address.value.trim())) {
+                                        errorMessageAddress.textContent = 'Địa chỉ phải từ 5-100 ký tự.';
+                                        return false;
+                                    } else {
+                                        errorMessageAddress.textContent = '';
+                                        return true;
+                                    }
+                                }
 
-                if (addressValue.length < 5 || addressValue.length > 100) {
-                    errorMessageAddress.textContent = 'Address must be between 5 and 100 characters.';
-                } else {
-                    errorMessageAddress.textContent = '';
-                }
-            }
+                                function validateForm() {
+                                    // Kiểm tra tất cả các trường
+                                    return validateSupplierName() && validateContactName() && validatePhoneNumber() && validateEmail() && validateAddress();
+                                }
+                        </script>
 
+                        <script>
+                            const inpFile = document.getElementById("inpFile");
+                            const loadFile = document.getElementById("loadFile");
+                            const previewContainer = document.getElementById("imagePreview");
+                            const previewContainer = document.getElementById("imagePreview");
+                            const previewImage = previewContainer.querySelector(".image-preview__image");
+                            const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+                            inpFile.addEventListener("change", function () {
+                                const file = this.files[0];
+                                if (file) {
+                                    const reader = new FileReader();
+                                    previewDefaultText.style.display = "none";
+                                    previewImage.style.display = "block";
+                                    reader.addEventListener("load", function () {
+                                        previewImage.setAttribute("src", this.result);
+                                    });
+                                    reader.readAsDataURL(file);
+                                }
+                            });
 
-                    </script>
-                    <script>
-                        const inpFile = document.getElementById("inpFile");
-                        const loadFile = document.getElementById("loadFile");
-                        const previewContainer = document.getElementById("imagePreview");
-                        const previewContainer = document.getElementById("imagePreview");
-                        const previewImage = previewContainer.querySelector(".image-preview__image");
-                        const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
-                        inpFile.addEventListener("change", function () {
-                            const file = this.files[0];
-                            if (file) {
-                                const reader = new FileReader();
-                                previewDefaultText.style.display = "none";
-                                previewImage.style.display = "block";
-                                reader.addEventListener("load", function () {
-                                    previewImage.setAttribute("src", this.result);
-                                });
-                                reader.readAsDataURL(file);
-                            }
-                        });
+                        </script>
+                        </body>
 
-                    </script>
-                    </body>
-
-                    </html>
+                        </html>

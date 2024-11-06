@@ -134,6 +134,11 @@
                             </div>
 
                             <div class="col-sm-2">
+                                <a href="${pageContext.request.contextPath}/reportInventory" class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i class="fas fa-chart-line"></i>
+                                    Báo cáo Tồn kho</a>
+                            </div>
+
+                            <div class="col-sm-2">
                                 <a class="btn btn-excel btn-sm" href="${pageContext.request.contextPath}/exportExcel" title="Xuất Excel">
                                     <i class="fas fa-file-excel"></i> Xuất Excel
                                 </a>

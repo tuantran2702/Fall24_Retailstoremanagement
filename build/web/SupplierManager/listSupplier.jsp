@@ -83,6 +83,12 @@
                                 </div>
 
                                 <div class="col-sm-2">
+                                    <a href="${pageContext.request.contextPath}/reportInventory" class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i class="fas fa-chart-line"></i>
+                                        Báo cáo Tồn kho</a>
+                                </div>
+
+
+                                <div class="col-sm-2">
                                     <a class="btn btn-excel btn-sm" href="${pageContext.request.contextPath}/exportSupplier" title="Xuất Excel">
                                         <i class="fas fa-file-excel"></i> Xuất Excel
                                     </a>
@@ -114,12 +120,12 @@
                             <table class="table table-hover table-bordered" id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th>Supplier Name</th>
-                                        <th>Contact Name</th>
-                                        <th>Phone Number</th>
+                                        <th>Tên Nhà Cung Cấp</th>
+                                        <th>Tên Người Liên Hệ</th>
+                                        <th>Số Điện Thoại</th>
                                         <th>Email</th>
-                                        <th>Address</th>
-                                        <th>Action</th>
+                                        <th>Địa Chỉ</th>
+                                        <th>Hành Động</th>
                                     </tr>
                                 </thead>
                                 <tbody>

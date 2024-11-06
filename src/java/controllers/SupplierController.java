@@ -128,6 +128,15 @@ public class SupplierController extends HttpServlet {
             String email = request.getParameter("email");
             String address = request.getParameter("address");
 
+            SupplierDAO supplierDAO = new SupplierDAO();
+
+// Kiểm tra xem tên nhà cung cấp và tên liên hệ đã tồn tại chưa
+        if (supplierDAO.isSupplierExists(supplierName, contactName)) {
+            request.setAttribute("errorMessage", "Tên nhà cung cấp và tên liên hệ đã tồn tại. Vui lòng chọn tên khác.");
+            request.getRequestDispatcher("/SupplierManager/createSupplier.jsp").forward(request, response);
+            return;
+        }
+
             Supplier supplier = new Supplier(0, supplierName, contactName, phoneNumber, email, address);
             SupplierDAO s = new SupplierDAO();
             s.createSupplier(supplier);

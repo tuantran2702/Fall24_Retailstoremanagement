@@ -50,14 +50,107 @@
         </header>
         <!-- Sidebar menu-->
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-        <jsp:include page="/menu.jsp" />
+        <aside class="app-sidebar">
+            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
+                                                alt="User Image">      <div>
+                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
+                    <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
+                </div>
+            </div>
+
+            <hr>
+            <ul class="app-menu">
+                <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
+                        <span class="app-menu__label">POS Bán Hàng</span></a></li>
+                <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
+                            class="app-menu__label">Bảng điều khiển</span></a></li>
+                <li><a class="app-menu__item " href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
+
+                <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
+                            class="app-menu__label">Quản lý nhân viên</span></a></li>
+
+
+                <li><a class="app-menu__item active" href="product"><i
+                            class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
+                </li>
+
+                <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-id-card'></i> <span
+                            class="app-menu__label">Quản lý khách hàng </span></a></li>
+
+
+
+
+
+
+
+
+
+
+
+                <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Quản lý   kho</span></a></li>
+
+                <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
+                            class="app-menu__label">Thay đổi mật khẩu </span></a></li>
+
+
+
+
+            </ul>
+
+
+        </aside>
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><a href="#"><b>Danh sách Nhà cung cấp</b></a></li>  
+                    <li class="breadcrumb-item active"><a href="#"><b>Danh sách Báo cáo Tồn kho</b></a></li>  
                 </ul>
                 <div id="clock"></div>
             </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="${pageContext.request.contextPath}/reportInventory" method="GET">
+                        <div class="form-group">
+                            <label for="keyword">Từ Khóa:</label>
+                            <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="startDate">Ngày bắt đầu:</label>
+                            <input type="date" id="startDate" name="startDate" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="endDate">Ngày kết thúc:</label>
+                            <input type="date" id="endDate" name="endDate" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productID">Tên sản phẩm:</label>
+                            <select id="productID" name="productID" class="form-control">
+                                <option value="">-- Chọn sản phẩm --</option>
+                                <c:forEach var="product" items="${data}">
+                                    <option value="${product.productID}">${product.productName}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="warehouseID">Tên kho:</label>
+                            <select id="warehouseID" name="warehouseID" class="form-control">
+                                <option value="">-- Chọn kho --</option>
+                                <c:forEach var="warehouse" items="${data}">
+                                    <option value="${warehouse.warehouseID}">${warehouse.warehouseName}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                    </form>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="tile">
@@ -65,12 +158,17 @@
                             <div class="row element-button">
                                 <div class="col-sm-2">
 
-                                    <a href="${pageContext.request.contextPath}/supplier?action=create" class="btn btn-add btn-sm"  title="Thêm"><i class="fas fa-plus"></i>
-                                        Thêm Nhà cung cấp</a>
+                                    <a href="${pageContext.request.contextPath}/reportInventory?action=create" class="btn btn-add btn-sm" title="Thêm">
+                                        <i class="fas fa-plus"></i> Tạo Báo Cáo Tồn Kho Mới
+                                    </a>
                                 </div>
                                 <div class="col-sm-2">
                                     <a class="btn btn-delete btn-sm pdf-file" type="button" href="${pageContext.request.contextPath}/product"><i
                                             class="fas fa-file-pdf"></i> Sản Phẩm</a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="${pageContext.request.contextPath}/supplier" class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập" onclick="myFunction(this)"><i
+                                            class="fas fa-file-upload"></i> Nhà cung cấp</a>
                                 </div>
 
                                 <div class="col-sm-2">
@@ -83,64 +181,35 @@
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <a href="${pageContext.request.contextPath}/reportInventory" class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i class="fas fa-chart-line"></i>
-                                        Báo cáo Tồn kho</a>
-                                </div>
-
-
-                                <div class="col-sm-2">
-                                    <a class="btn btn-excel btn-sm" href="${pageContext.request.contextPath}/exportSupplier" title="Xuất Excel">
+                                    <a class="btn btn-excel btn-sm" href="${pageContext.request.contextPath}/exportReportInventory" title="Xuất Excel">
                                         <i class="fas fa-file-excel"></i> Xuất Excel
                                     </a>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <form action="${pageContext.request.contextPath}/supplier" method="GET">
-                                        <div class="form-group">
-                                            <label for="keyword">Từ Khóa:</label>
-                                            <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="supplierID">Nhà cung cấp:</label>
-                                            <select id="supplierID" name="supplierID" class="form-control">
-                                                <option value="">-- Chọn Nhà cung cấp --</option>
-                                                <c:forEach var="supplier" items="${data}">
-                                                    <option value="${supplier.supplierID}">${supplier.supplierName}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-
-                                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-                                    </form>
-                                </div>
-                            </div>
-
                             <table class="table table-hover table-bordered" id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th>Tên Nhà Cung Cấp</th>
-                                        <th>Tên Người Liên Hệ</th>
-                                        <th>Số Điện Thoại</th>
-                                        <th>Email</th>
-                                        <th>Địa Chỉ</th>
-                                        <th>Hành Động</th>
+                                        <th>Ngày báo cáo</th>
+                                        <th>Sản phẩm</th>
+                                        <th>Kho</th>
+                                        <th>Tổng số lượng</th>
+                                        <th>Tổng giá trị tồn kho</th>
+                                        <th>Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:forEach var="s" items="${data}">
                                         <tr>
-                                            <td>${s.getSupplierName()}</td>
-                                            <td>${s.getContactName()}</td>
-                                            <td><span class="badge bg-success">${s.getPhoneNumber()}</span></td>
-                                            <td>${s.getEmail()}</td>
-                                            <td>${s.getAddress()}</td>
+                                            <td>${s.getReportDate()}</td>
+                                            <td>${s.getProductName()}</td>
+                                            <td><span class="badge bg-success">${s.getWarehouseName()}</span></td>
+                                            <td>${s.getTotalQuantity()}</td>
+                                            <td>${s.getTotalStockValue()}</td>
                                             <td>
-                                                <a href="${pageContext.request.contextPath}/supplier?action=update&id=${s.getSupplierID()}" class="btn btn-primary btn-sm edit" title="Sửa">
+                                                <a href="${pageContext.request.contextPath}/reportInventory?action=update&id=${s.getReportID()}" class="btn btn-primary btn-sm edit" title="Sửa">
                                                     <i class="fas fa-edit"></i></a>
-                                                <a href="${pageContext.request.contextPath}/supplier?action=delete&id=${s.getSupplierID()}" onclick="if (confirm('Are you sure you want to delete product with Name: ${s.getSupplierName()}?')) {
-                                                            doDelete('${s.getSupplierID()}');
+                                                <a href="${pageContext.request.contextPath}/reportInventory?action=delete&id=${s.getReportID()}" onclick="if (confirm('Are you sure you want to delete product with Name: ${s.getReportID()}?')) {
+                                                            doDelete('${s.getReportID()}');
                                                             return true;
                                                         } else {
                                                             return false;
@@ -215,6 +284,33 @@
                                                             return i;
                                                         }
                                                     }
+        </script>
+        <script>
+//            function deleteRow(r) {
+//                var i = r.parentNode.parentNode.rowIndex;
+//                document.getElementById("myTable").deleteRow(i);
+//            }
+//            jQuery(function () {
+//                jQuery(".trash").click(function () {
+//                    swal({
+//                        title: "Cảnh báo",
+//                        text: "Bạn có chắc chắn là muốn xóa sản phẩm này?",
+//                        buttons: ["Hủy bỏ", "Đồng ý"],
+//                    })
+//                            .then((willDelete) => {
+//                                if (willDelete) {
+//                                    swal("Đã xóa thành công.!", {
+//
+//                                    });
+//                                }
+//                            });
+//                });
+//            });
+//            oTable = $('#sampleTable').dataTable();
+//            $('#all').click(function (e) {
+//                $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
+//                e.stopImmediatePropagation();
+//            });
         </script>
     </body>
 

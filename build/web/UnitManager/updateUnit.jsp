@@ -125,7 +125,7 @@
                                 <div class="row">
                                     <!-- Supplier Name -->
                                     <div class="form-group col-md-6">
-                                        <label class="control-label">Unit Name</label>
+                                        <label class="control-label">Tên Đơn Vị</label>
                                         <input class="form-control" type="text" required name="unitName" value="${unit.unitName}">
                                     </div>
                                 </div>

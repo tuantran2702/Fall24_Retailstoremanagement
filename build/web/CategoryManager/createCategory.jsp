@@ -226,14 +226,15 @@
                                 <input type="hidden" name="action" value="create">
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Category Name</label>
-                                    <input class="form-control" type="text" name="categoryName" id="categoryName" required oninput="validateForm();">
-                                    <small id="error-message-name" style="color: red;"></small>
+                                    <label class="control-label">Tên Danh Mục</label>
+                                    <input class="form-control" type="text" name="categoryName" id="categoryName" required oninput="validateCategoryName();">
+                                    <small id="error-message-category" style="color: red;"></small>
                                 </div>
 
                                 <div class="form-group col-md-12">
-                                    <label class="control-label">Description</label>
-                                    <textarea class="form-control" name="description" id="description"></textarea>
+                                    <label class="control-label">Mô Tả</label>
+                                    <textarea class="form-control" name="description" id="description" required oninput="validateDescription();"></textarea>
+                                    <small id="error-message-description" style="color: red;"></small>
                                     <script>CKEDITOR.replace('description');</script>
                                 </div>
 
@@ -288,27 +289,43 @@
                         <script src="js/plugins/pace.min.js"></script>
 
                         <script>
-                                        function validateForm() {
-                                            let isValid = true;
+                                        // Biểu thức chính quy
+                                        const regexCategoryName = /^[A-Za-zÀ-ỹ\s]{3,50}$/; // Chữ cái có dấu và từ 3-50 ký tự
+                                        const regexDescription = /^.{10,500}$/;            // Mô tả từ 10-500 ký tự
 
-                                            // Kiểm tra từng trường
-                                            const categoryNameInput = document.getElementById('categoryName');
+                                        function validateCategoryName() {
+                                            const categoryName = document.getElementById('categoryName');
+                                            const errorMessageCategory = document.getElementById('error-message-category');
 
-
-                                            // Kiểm tra tên sản phẩm
-                                            const regexName = /^[A-Za-zÀ-ỹ\s]{3,50}$/; // Hỗ trợ cả tiếng Việt có dấu
-                                            if (!regexName.test(categoryNameInput.value.trim())) {
-                                                document.getElementById('error-message-name').textContent = 'Please enter a valid category name (Word && 3-50 characters).';
-                                                isValid = false;
+                                            if (!regexCategoryName.test(categoryName.value.trim())) {
+                                                errorMessageCategory.textContent = 'Tên danh mục phải là chữ cái (có dấu) và từ 3-50 ký tự.';
+                                                return false;
                                             } else {
-                                                document.getElementById('error-message-name').textContent = '';
+                                                errorMessageCategory.textContent = '';
+                                                return true;
                                             }
-
-
-
-
-                                            return isValid; // Nếu tất cả đều hợp lệ, cho phép gửi form
                                         }
+
+                                        function validateDescription() {
+                                            const description = CKEDITOR.instances.description.getData(); // Lấy nội dung từ CKEditor
+                                            const errorMessageDescription = document.getElementById('error-message-description');
+
+                                            if (!regexDescription.test(description.trim())) {
+                                                errorMessageDescription.textContent = 'Mô tả phải từ 10-500 ký tự.';
+                                                return false;
+                                            } else {
+                                                errorMessageDescription.textContent = '';
+                                                return true;
+                                            }
+                                        }
+
+                                        function validateForm() {
+                                            // Kiểm tra tất cả các trường
+                                            return validateCategoryName() && validateDescription();
+                                        }
+
+                                        // Sự kiện 'change' cho CKEditor để hiển thị lỗi ngay khi người dùng chỉnh sửa
+                                        CKEDITOR.instances.description.on('change', validateDescription);
                         </script>
 
 

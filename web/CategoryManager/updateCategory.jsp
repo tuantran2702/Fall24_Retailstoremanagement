@@ -125,7 +125,7 @@
                                 <div class="row">
                                     <!-- Supplier Name -->
                                     <div class="form-group col-md-6">
-                                        <label class="control-label">Category Name</label>
+                                        <label class="control-label">Tên Danh Mục</label>
                                         <input class="form-control" type="text" required name="categoryName" value="${category.categoryName}">
                                     </div>
                                 </div>
@@ -134,7 +134,7 @@
                                 <div class="row">
                                     <!-- Address -->
                                     <div class="form-group col-md-12">
-                                        <label class="control-label">Description</label>
+                                        <label class="control-label">Mô Tả</label>
                                         <textarea class="form-control" name="description" id="address">${category.description}</textarea>
                                         <script>CKEDITOR.replace('description');</script>
                                     </div>

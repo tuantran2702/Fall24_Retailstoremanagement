@@ -225,100 +225,101 @@
                             <form action="unit" method="post" class="row" onsubmit="return validateForm();">
                                 <input type="hidden" name="action" value="create">
 
-                            <div class="form-group col-md-3">
-                                <label class="control-label">Tên Đơn vị</label>
-                                <input class="form-control" type="text" name="unitName" id="unitName" required oninput="validateForm();">
-                                <small id="error-message-name" style="color: red;"></small>
-                            </div>
+                                <div class="form-group col-md-3">
+                                    <label class="control-label">Tên Đơn vị</label>
+                                    <input class="form-control" type="text" name="unitName" id="unitName" required oninput="validateUnitName();">
+                                    <small id="error-message-name" style="color: red;"></small>
+                                </div>
+
+                                <button class="btn btn-save" type="submit">Lưu lại</button>
+                                <a class="btn btn-cancel" href="${pageContext.request.contextPath}/unit">Hủy bỏ</a>
+                            </form>
+
 
                         </div>
-                        <button class="btn btn-save" type="submit">Lưu lại</button>
-                        <a class="btn btn-cancel" href="${pageContext.request.contextPath}/unit">Hủy bỏ</a>
-                        </form>
+                        </main>
 
 
-                    </div>
-                    </main>
+                        <!--
+                        MODAL CHỨC VỤ 
+                        -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                             data-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
 
-
-                    <!--
-                    MODAL CHỨC VỤ 
-                    -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                         data-backdrop="static" data-keyboard="false">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="form-group  col-md-12">
-                                            <span class="thong-tin-thanh-toan">
-                                                <h5>Thêm mới nhà cung cấp</h5>
-                                            </span>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group  col-md-12">
+                                                <span class="thong-tin-thanh-toan">
+                                                    <h5>Thêm mới nhà cung cấp</h5>
+                                                </span>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Nhập tên chức vụ mới</label>
+                                                <input class="form-control" type="text" required>
+                                            </div>
                                         </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Nhập tên chức vụ mới</label>
-                                            <input class="form-control" type="text" required>
-                                        </div>
+                                        <BR>
+                                        <button class="btn btn-save" type="button">Lưu lại</button>
+                                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                        <BR>
                                     </div>
-                                    <BR>
-                                    <button class="btn btn-save" type="button">Lưu lại</button>
-                                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                    <BR>
-                                </div>
-                                <div class="modal-footer">
+                                    <div class="modal-footer">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
 
 
-                    <script src="js/jquery-3.2.1.min.js"></script>
-                    <script src="js/popper.min.js"></script>
-                    <script src="js/bootstrap.min.js"></script>
-                    <script src="js/main.js"></script>
-                    <script src="js/plugins/pace.min.js"></script>
-    <script>
-        function validateForm() {
-            let isValid = true;
+                        <script src="js/jquery-3.2.1.min.js"></script>
+                        <script src="js/popper.min.js"></script>
+                        <script src="js/bootstrap.min.js"></script>
+                        <script src="js/main.js"></script>
+                        <script src="js/plugins/pace.min.js"></script>
+                        <script>
+                                // Biểu thức chính quy cho tên đơn vị: chỉ chấp nhận chữ cái, khoảng trắng, và từ 3-50 ký tự
+                                const regexUnitName = /^[A-Za-zÀ-ỹ\s]{3,50}$/;
 
-            // Kiểm tra từng trường
-            const unitNameInput = document.getElementById('unitName');
+                                function validateUnitName() {
+                                    const unitName = document.getElementById('unitName');
+                                    const errorMessageName = document.getElementById('error-message-name');
 
-            // Kiểm tra tên đơn vị
-            const regexName = /^[A-Za-zÀ-ỹ\s]{3,50}$/; // Hỗ trợ cả tiếng Việt có dấu
-            if (!regexName.test(unitNameInput.value.trim())) {
-                document.getElementById('error-message-name').textContent = 'Please enter a valid unit name (worrd &&3-50 characters).';
-                isValid = false;
-            } else {
-                document.getElementById('error-message-name').textContent = '';
-            }
+                                    if (!regexUnitName.test(unitName.value.trim())) {
+                                        errorMessageName.textContent = 'Tên đơn vị phải có từ 3-50 ký tự và chỉ chứa chữ cái.';
+                                        return false;
+                                    } else {
+                                        errorMessageName.textContent = '';
+                                        return true;
+                                    }
+                                }
 
-            return isValid; // Nếu tất cả đều hợp lệ, cho phép gửi form
-        }
-    </script>
-                    <script>
-            const inpFile = document.getElementById("inpFile");
-            const loadFile = document.getElementById("loadFile");
-            const previewContainer = document.getElementById("imagePreview");
-            const previewContainer = document.getElementById("imagePreview");
-            const previewImage = previewContainer.querySelector(".image-preview__image");
-            const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
-            inpFile.addEventListener("change", function () {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    previewDefaultText.style.display = "none";
-                    previewImage.style.display = "block";
-                    reader.addEventListener("load", function () {
-                        previewImage.setAttribute("src", this.result);
-                    });
-                    reader.readAsDataURL(file);
-                }
-            });
+                                function validateForm() {
+                                    return validateUnitName(); // Chỉ cần kiểm tra tên đơn vị khi submit
+                                }
+                        </script>
+                        <script>
+                            const inpFile = document.getElementById("inpFile");
+                            const loadFile = document.getElementById("loadFile");
+                            const previewContainer = document.getElementById("imagePreview");
+                            const previewContainer = document.getElementById("imagePreview");
+                            const previewImage = previewContainer.querySelector(".image-preview__image");
+                            const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+                            inpFile.addEventListener("change", function () {
+                                const file = this.files[0];
+                                if (file) {
+                                    const reader = new FileReader();
+                                    previewDefaultText.style.display = "none";
+                                    previewImage.style.display = "block";
+                                    reader.addEventListener("load", function () {
+                                        previewImage.setAttribute("src", this.result);
+                                    });
+                                    reader.readAsDataURL(file);
+                                }
+                            });
 
-                    </script>
-                    </body>
+                        </script>
+                        </body>
 
-                    </html>
+                        </html>

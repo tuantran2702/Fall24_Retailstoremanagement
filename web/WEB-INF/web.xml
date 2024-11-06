@@ -168,6 +168,14 @@
         <servlet-name>ExportUnit</servlet-name>
         <servlet-class>controllers.ExportUnit</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReportInventory</servlet-name>
+        <servlet-class>controllers.ReportInventoryController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ExportReportInventory</servlet-name>
+        <servlet-class>controllers.ExportReportInventory</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -339,6 +347,14 @@
     <servlet-mapping>
         <servlet-name>ExportUnit</servlet-name>
         <url-pattern>/exportUnit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReportInventory</servlet-name>
+        <url-pattern>/reportInventory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportReportInventory</servlet-name>
+        <url-pattern>/exportReportInventory</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

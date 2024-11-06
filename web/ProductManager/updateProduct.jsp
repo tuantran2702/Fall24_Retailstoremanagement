@@ -127,19 +127,19 @@
                                         <input type="hidden" name="id" value="${product.productID}">
 
                                         <div class="form-group col-md-6">
-                                            <label class="control-label">Product Code</label>
+                                            <label class="control-label">Mã sản phẩm</label>
                                             <input class="form-control" type="text" required name="productCode" value="${product.productCode}"><br>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label class="control-label">Product Name</label>
+                                            <label class="control-label">Tên sản phẩm</label>
                                             <input class="form-control" type="text" required name="productName" value="${product.productName}"><br>
                                         </div>
                                         <div class="form-group  col-md-6">
-                                            <label class="control-label">Price</label>
+                                            <label class="control-label">Giá</label>
                                             <input class="form-control" type="number" required name="price" value="${product.price}"><br>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="categorySelect" class="control-label">Category</label>
+                                            <label for="categorySelect" class="control-label">Loại</label>
                                             <select class="form-control" id="categorySelect" name="categoryID" required>
                                                 <c:forEach var="c" items="${listCategory}">
                                                     <option value="${c.categoryID}" 
@@ -156,7 +156,7 @@
                                             <input class="form-control" type="text" required name="categoryID" value="${product.categoryID}"><br>
                                         </div>-->
                                         <div class="form-group col-md-6">
-                                            <label class="control-label">Quantity</label>
+                                            <label class="control-label">Số lượng</label>
                                             <input class="form-control" type="text" name="quantity" value="${product.quantity}"><br>
                                             <c:if test="${not empty error}">
     <div style="color: red;">
@@ -165,20 +165,20 @@
 </c:if>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label class="control-label">Created Date</label>
+                                            <label class="control-label">Ngày tạo</label>
                                             <input class="form-control" type="date" name="createdDate" value="${product.createdDate}"><br>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label class="control-label">Expired Date</label>
+                                            <label class="control-label">Ngày hết hạn</label>
                                             <input class="form-control" type="date" name="expiredDate" value="${product.expiredDate}"><br>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label class="control-label">Update Date</label>
+                                            <label class="control-label">Ngày cập nhật</label>
                                             <input class="form-control" type="date" name="updateDate" value="${product.updateDate}"><br>
                                         </div>
                                         <div class="form-group col-md-6">
                                             
-                                                                                        <label for="userSelect" class="control-label">User</label>
+                                                                                        <label for="userSelect" class="control-label">Người sử dụng</label>
                                             <select class="form-control" id="userSelect" name="userID" required>
                                                 <c:forEach var="s" items="${listUser}">
                                                     <option value="${s.userID}" 
@@ -193,7 +193,7 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             
-                                                        <label for="unitSelect" class="control-label">Unit</label>
+                                                        <label for="unitSelect" class="control-label">Đơn vị</label>
                                             <select class="form-control" id="unitSelect" name="unitID" required>
                                                 <c:forEach var="u" items="${listUnit}">
                                                     <option value="${u.unitID}" 
@@ -207,7 +207,7 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             
-                                                                                                    <label for="supplierSelect" class="control-label">Supplier</label>
+                                                                                                    <label for="supplierSelect" class="control-label">Nhà cung cấp</label>
                                             <select class="form-control" id="supplierSelect" name="supplierID" required>
                                                 <c:forEach var="s" items="${listSupplier}">
                                                     <option value="${s.supplierID}" 
@@ -221,7 +221,7 @@
 
                                         </div>
                                         <div class="form-group col-md-12">
-                                            <label class="control-label">Image</label>
+                                            <label class="control-label">Hình ảnh</label>
                                             <div id="myfileupload">
                                                 <!-- Input to upload a new image -->
                                                 <input type="file" name="image" id="uploadfile" onchange="readURL(this);" value="${product.image}">
@@ -269,7 +269,7 @@
                                 </div>-->
 
                                         <div class="form-group col-md-12">
-                                            <label class="control-label">Description</label>
+                                            <label class="control-label">Sự miêu tả</label>
                                             <textarea class="form-control" name="description" id="description">${product.description}</textarea>
                                             <script>CKEDITOR.replace('description');</script>
                                         </div>
