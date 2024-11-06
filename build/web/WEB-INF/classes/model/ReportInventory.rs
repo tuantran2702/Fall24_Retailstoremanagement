@@ -1,1 +1,3 @@
 com.example.retailstore.model.ReportInventory
+ReportInventory$ReportInventory
+ReportInventory
