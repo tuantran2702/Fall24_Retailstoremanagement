@@ -1,12 +1,12 @@
 package model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class CustomerReport {
     private int reportID;
     private int customerID;
     private String customerName; // Thay đổi này sẽ được cập nhật
-    private LocalDateTime reportDate;
+    private Date reportDate;
     private int totalOrders;
     private double totalSpent;
     private int loyaltyPointsEarned;
@@ -16,7 +16,7 @@ public class CustomerReport {
     // Constructor, getters and setters
     public CustomerReport() {}
 
-    public CustomerReport(int reportID, int customerID, String customerName, LocalDateTime reportDate,
+    public CustomerReport(int reportID, int customerID, String customerName, Date reportDate,
                           int totalOrders, double totalSpent, int loyaltyPointsEarned,
                           int loyaltyPointsRedeemed, String mostPurchasedProduct) {
         this.reportID = reportID;
@@ -55,11 +55,11 @@ public class CustomerReport {
         this.customerName = customerName;
     }
 
-    public LocalDateTime getReportDate() {
+    public Date getReportDate() {
         return reportDate;
     }
 
-    public void setReportDate(LocalDateTime reportDate) {
+    public void setReportDate(Date reportDate) {
         this.reportDate = reportDate;
     }
 

@@ -42,10 +42,10 @@
                 <ul class="app-breadcrumb breadcrumb">
                     <li class="breadcrumb-item">Báo cáo khách hàng</li>
                 </ul>
-                <div>
+<!--                <div>
                     <strong>Số lượng khách hàng hiện có: ${totalCustomers}</strong><br>
                     <strong>Tổng số đơn hàng: ${totalOrders}</strong>
-                </div>
+                </div>-->
             </div>
 
             <div class="row">
@@ -65,6 +65,27 @@
                     </form>
                 </div>
             </div>
+                        <div class="row">
+                        <div class="col-md-6">
+                            <div class="widget-small primary coloured-icon"><i class='icon bx bxs-user-account fa-3x'></i>
+                                <div class="info">
+                                    <h4>Tổng khách hàng</h4>
+                                    <p><b>${totalCustomers} khách hàng</b></p>
+                                    <p class="info-tong">Tổng số khách hàng được quản lý.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- col-6 -->
+                        <div class="col-md-6">
+                            <div class="widget-small info coloured-icon"><i class='icon bx bxs-data fa-3x'></i>
+                                <div class="info">
+                                    <h4>Tổng số đơn hàng:</h4>
+                                    <p><b>${totalOrders} đơn hàng</b></p>
+                                    <p class="info-tong">Tổng số đơn hàng đã được bán.</p>
+                                </div>
+                            </div>
+                        </div>
+                                    </div>
 
             <div class="row">
                 <div class="col-md-12">

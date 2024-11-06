@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -79,32 +80,32 @@ public class CustomerReportController extends HttpServlet {
         String action = request.getParameter("action");
         CustomerReportDAO reportDAO = new CustomerReportDAO();
 
-        if (action.equals("create")) {
-            // Tạo mới báo cáo khách hàng
-            int customerID = Integer.parseInt(request.getParameter("customerID"));
-            LocalDateTime reportDate = LocalDateTime.now(); // Lấy thời gian hiện tại
-            int totalOrders = Integer.parseInt(request.getParameter("totalOrders"));
-            double totalSpent = Double.parseDouble(request.getParameter("totalSpent"));
-            int loyaltyPointsEarned = Integer.parseInt(request.getParameter("loyaltyPointsEarned"));
-            int loyaltyPointsRedeemed = Integer.parseInt(request.getParameter("loyaltyPointsRedeemed"));
-            String mostPurchasedProduct = request.getParameter("mostPurchasedProduct");
-
-            // Tạo đối tượng CustomerReport
-            CustomerReport report = new CustomerReport();
-            report.setCustomerID(customerID);
-            report.setReportDate(reportDate);
-            report.setTotalOrders(totalOrders);
-            report.setTotalSpent(totalSpent);
-            report.setLoyaltyPointsEarned(loyaltyPointsEarned);
-            report.setLoyaltyPointsRedeemed(loyaltyPointsRedeemed);
-            report.setMostPurchasedProduct(mostPurchasedProduct);
-
-            // Lưu báo cáo vào cơ sở dữ liệu
-            reportDAO.createCustomerReport(report);
-
-            // Chuyển hướng về danh sách báo cáo
-            response.sendRedirect(request.getContextPath() + "/customerReport");
-        }
+//        if (action.equals("create")) {
+//            // Tạo mới báo cáo khách hàng
+//            int customerID = Integer.parseInt(request.getParameter("customerID"));
+//            Date reportDate = Date.now(); // Lấy thời gian hiện tại
+//            int totalOrders = Integer.parseInt(request.getParameter("totalOrders"));
+//            double totalSpent = Double.parseDouble(request.getParameter("totalSpent"));
+//            int loyaltyPointsEarned = Integer.parseInt(request.getParameter("loyaltyPointsEarned"));
+//            int loyaltyPointsRedeemed = Integer.parseInt(request.getParameter("loyaltyPointsRedeemed"));
+//            String mostPurchasedProduct = request.getParameter("mostPurchasedProduct");
+//
+//            // Tạo đối tượng CustomerReport
+//            CustomerReport report = new CustomerReport();
+//            report.setCustomerID(customerID);
+//            report.setReportDate(reportDate);
+//            report.setTotalOrders(totalOrders);
+//            report.setTotalSpent(totalSpent);
+//            report.setLoyaltyPointsEarned(loyaltyPointsEarned);
+//            report.setLoyaltyPointsRedeemed(loyaltyPointsRedeemed);
+//            report.setMostPurchasedProduct(mostPurchasedProduct);
+//
+//            // Lưu báo cáo vào cơ sở dữ liệu
+//            reportDAO.createCustomerReport(report);
+//
+//            // Chuyển hướng về danh sách báo cáo
+//            response.sendRedirect(request.getContextPath() + "/customerReport");
+//        }
     }
 
     private void exportToExcel(HttpServletResponse response, List<CustomerReport> reports) throws IOException {

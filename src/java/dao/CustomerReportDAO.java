@@ -24,7 +24,7 @@ public class CustomerReportDAO extends DBContext {
                 String firstName = rs.getString("FirstName");
                 String lastName = rs.getString("LastName");
                 String customerName = firstName + " " + lastName; // Kết hợp FirstName và LastName
-                java.time.LocalDateTime reportDate = rs.getTimestamp("ReportDate").toLocalDateTime();
+                java.util.Date saleDate = rs.getDate("ReportDate");
                 int totalOrders = rs.getInt("TotalOrders");
                 double totalSpent = rs.getDouble("TotalSpent");
                 int loyaltyPointsEarned = rs.getInt("LoyaltyPointsEarned");
@@ -32,7 +32,7 @@ public class CustomerReportDAO extends DBContext {
                 String mostPurchasedProduct = rs.getString("MostPurchasedProduct");
 
                 // Tạo đối tượng CustomerReport với customerName
-                CustomerReport report = new CustomerReport(reportID, customerID, customerName, reportDate,
+                CustomerReport report = new CustomerReport(reportID, customerID, customerName, saleDate,
                         totalOrders, totalSpent, loyaltyPointsEarned,
                         loyaltyPointsRedeemed, mostPurchasedProduct);
                 data.add(report);
@@ -44,22 +44,22 @@ public class CustomerReportDAO extends DBContext {
     }
 
     // Create a new customer report
-    public void createCustomerReport(CustomerReport report) {
-        String sql = "INSERT INTO CustomerReport (CustomerID, ReportDate, TotalOrders, TotalSpent, LoyaltyPointsEarned, LoyaltyPointsRedeemed, MostPurchasedProduct) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        try {
-            PreparedStatement st = connection.prepareStatement(sql);
-            st.setInt(1, report.getCustomerID());
-            st.setTimestamp(2, java.sql.Timestamp.valueOf(report.getReportDate()));
-            st.setInt(3, report.getTotalOrders());
-            st.setDouble(4, report.getTotalSpent());
-            st.setInt(5, report.getLoyaltyPointsEarned());
-            st.setInt(6, report.getLoyaltyPointsRedeemed());
-            st.setString(7, report.getMostPurchasedProduct());
-            st.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void createCustomerReport(CustomerReport report) {
+//        String sql = "INSERT INTO CustomerReport (CustomerID, ReportDate, TotalOrders, TotalSpent, LoyaltyPointsEarned, LoyaltyPointsRedeemed, MostPurchasedProduct) VALUES (?, ?, ?, ?, ?, ?, ?)";
+//        try {
+//            PreparedStatement st = connection.prepareStatement(sql);
+//            st.setInt(1, report.getCustomerID());
+//            st.setTimestamp(2, java.sql.Timestamp.valueOf(report.getReportDate()));
+//            st.setInt(3, report.getTotalOrders());
+//            st.setDouble(4, report.getTotalSpent());
+//            st.setInt(5, report.getLoyaltyPointsEarned());
+//            st.setInt(6, report.getLoyaltyPointsRedeemed());
+//            st.setString(7, report.getMostPurchasedProduct());
+//            st.executeUpdate();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     // Delete a report by ID
     public void deleteReport(int id) {
@@ -111,7 +111,8 @@ public class CustomerReportDAO extends DBContext {
             while (rs.next()) {
                 int reportID = rs.getInt("ReportID");
                 int customerID = rs.getInt("CustomerID");
-                java.time.LocalDateTime reportDateTime = rs.getTimestamp("ReportDate").toLocalDateTime();
+                //java.time.Date reportDateTime = rs.getTimestamp("ReportDate").toLocalDateTime();
+                java.util.Date reportDateTime = rs.getDate("ReportDate");
                 int totalOrders = rs.getInt("TotalOrders");
                 double totalSpent = rs.getDouble("TotalSpent");
                 int loyaltyPointsEarned = rs.getInt("LoyaltyPointsEarned");
