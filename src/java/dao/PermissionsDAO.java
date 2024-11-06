@@ -68,6 +68,39 @@ public class PermissionsDAO extends DBContext {
             return false;
         }
     }
+    
+    public boolean updatePermission(Permissions permission) {
+        String query = "UPDATE [dbo].[Permissions] SET PermissionName = ? WHERE PermissionID = ?";
+        boolean rowUpdated = false;
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            // Thiết lập giá trị cho câu lệnh PreparedStatement
+            statement.setString(1, permission.getPermissionName());
+            statement.setInt(2, permission.getId());
+
+            // Thực thi câu lệnh cập nhật và kiểm tra số hàng bị ảnh hưởng
+            rowUpdated = statement.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rowUpdated;
+    }
+    
+    public boolean deletePermission(int permissionID) {
+        String query = "DELETE FROM Permission WHERE PermissionID = ?";
+        boolean rowDeleted = false;
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            // Thiết lập giá trị cho câu lệnh PreparedStatement
+            statement.setInt(1, permissionID);
+
+            // Thực thi câu lệnh xóa và kiểm tra số hàng bị ảnh hưởng
+            rowDeleted = statement.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rowDeleted;
+    }
 
     // Lấy các quyền hạn đã gán cho vai trò
     public List<String> getAssignedPermissionsForRole(int roleID) {
@@ -111,15 +144,31 @@ public class PermissionsDAO extends DBContext {
             e.printStackTrace();
         }
     }
+    
+    public Permissions getPermissionById(int permissionID) {
+        Permissions permission = null;
+        String query = "SELECT * FROM [dbo].[Permissions] WHERE PermissionID = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, permissionID);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String permissionName = resultSet.getString("permissionName");
+
+                permission = new Permissions(id, permissionName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return permission;
+    }
 
     public static void main(String[] args) {
         PermissionsDAO pd = new PermissionsDAO();
-        List<Permissions> lst = pd.getAllPermissions();
         
-        List<String> lstlst = pd.getAssignedPermissionsForRole(1);
-        for (Permissions p : lst){
-            System.out.println(p);
-        }
+        System.out.println(pd.getPermissionById(3));
         
 
     }

@@ -11,7 +11,7 @@
 <html lang="en">
 
     <head>
-        <title>Danh sách nhân viên | Quản trị Admin</title>
+        <title>Danh sách chức vụ | GROUP1</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -106,7 +106,7 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><a href="roles"><b>Danh sách Phân Quyền</b></a></li>
+                    <li class="breadcrumb-item active"><a href="roles"><b>Danh sách chức vụ</b></a></li>
                 </ul>
                 <div id="clock"></div>
             </div>
@@ -128,9 +128,9 @@
                                    id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th width="10">RoleID</th>
-                                        <th width="180">Role Name</th>
-                                        <th>Description</th>
+                                        <th width="10">ID chức vụ</th>
+                                        <th width="180">Tên chức vụ</th>
+                                        <th>Mô tả</th>
                                         <th width="100">Tính năng</th>
                                     </tr>
                                 </thead>
@@ -170,7 +170,7 @@
         <div class="modal fade" id="updateRoleModal" tabindex="-1" role="dialog" aria-labelledby="updateRoleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <h3 class="tile-title">Update Role</h3>
+                    <h3 class="tile-title">Cập nhật chức vụ</h3>
 
                     <!-- Form cập nhật role -->
                     <form id="updateRoleForm" method="POST">
@@ -178,19 +178,19 @@
                             <!-- Tên vai trò -->
                             <input name="roleID" value="" style="display: none"> <!-- Hidden field để giữ roleID -->
                             <div class="form-group">
-                                <label for="roleName">Role Name</label>
+                                <label for="roleName">Tên chức vụ</label>
                                 <input type="text" class="form-control" id="roleName" name="roleName" value="" required>
                             </div>
 
                             <!-- Mô tả vai trò -->
                             <div class="form-group">
-                                <label for="description">Description</label>
+                                <label for="description">Mô tả</label>
                                 <input type="text" class="form-control" id="description" name="description" value="" required>
                             </div>
 
                             <!-- Danh sách quyền (permissions) -->
                             <div class="form-group">
-                                <label for="permissions">Permissions</label>
+                                <label for="permissions">Phân quyền</label>
                                 <div class="checkbox-group">
                                     <!-- Danh sách checkbox sẽ được thêm qua JavaScript -->
                                 </div>
@@ -198,8 +198,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btnn btn-cancel" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btnn btn-save">Update</button>
+                            <button type="button" class="btnn btn-cancel" data-dismiss="modal">Hủy bỏ</button>
+                            <button type="submit" class="btnn btn-save">Lưu lại</button>
                         </div>
                     </form>
                 </div>

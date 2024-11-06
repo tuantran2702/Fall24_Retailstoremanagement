@@ -11,7 +11,7 @@
 <html lang="en">
 
     <head>
-        <title>Thêm nhân viên | Quản trị Admin</title>
+        <title>Danh sách chức vụ | GROUP1</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -150,8 +150,8 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item"><a href="roles">List Role</a></li>
-                    <li class="breadcrumb-item"><a href="#">Add New Role</a></li>
+                    <li class="breadcrumb-item"><a href="roles">Danh sách chức vụ</a></li>
+                    <li class="breadcrumb-item"><a href="addRole">Tạo mới chức vụ</a></li>
                 </ul>
             </div>
             <div class="row">
@@ -159,24 +159,24 @@
 
                     <div class="tile">
 
-                        <h3 class="tile-title">Add New Role</h3>
+                        <h3 class="tile-title">Tạo mới chức vụ</h3>
                         <div class="tile-body">
                             <c:if test="${not empty errorMessage}">
                                 <p style="color:red">${errorMessage}</p>
                             </c:if>
                             <form class="form-container row" action="addRole" method="POST">
                                 <div class="form-group col-md-12">
-                                    <label class="control-label">Role Name</label>
+                                    <label class="control-label">Tên chức vụ</label>
                                     <input class="form-control" type="text" value="<%= request.getAttribute("roleName") != null ? request.getAttribute("roleName") : "" %>" name="roleName" required>
                                 </div>
 
                                 <div class="form-group col-md-12">
-                                    <label class="control-label">Description</label>
+                                    <label class="control-label">Mô tả</label>
                                     <input class="form-control" type="text" value="<%= request.getAttribute("description") != null ? request.getAttribute("description") : "" %>" name="description" required>
                                 </div>
 
                                 <div class="form-group col-md-12">
-                                    <label class="control-label">Permissions</label>
+                                    <label class="control-label">Phân quyền</label>
                                     <div class="checkbox-group">
                                         <c:forEach var="permission" items="${permissions}">
                                             <label>
