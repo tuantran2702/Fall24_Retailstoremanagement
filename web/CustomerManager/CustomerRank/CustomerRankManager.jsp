@@ -115,10 +115,10 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Rank ID</th>
-                                        <th>Rank Name</th>
-                                        <th>Minimum Spent</th>
-                                        <th>Description</th>
+<!--                                        <th>Rank ID</th>-->
+                                        <th>Tên thứ hạng</th>
+                                        <th>Chi tiêu tối thiểu</th>
+                                        <th>Mô tả</th>
                                         <th>Discount Percent</th>
                                         <th>Actions</th>
                                     </tr>
@@ -126,7 +126,7 @@
                                 <tbody>
                                     <c:forEach var="rank" items="${data}">
                                         <tr>
-                                            <td>${rank.rankID}</td>
+<!--                                            <td>${rank.rankID}</td>-->
                                             <td>${rank.rankName}</td>
                                             <td>${rank.minimumSpent}</td>
                                             <td>${rank.description}</td>

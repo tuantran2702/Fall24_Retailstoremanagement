@@ -151,23 +151,23 @@
                             <table class="table table-hover table-bordered" id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th>Customer ID</th>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
+<!--                                        <th>Customer ID</th>-->
+                                        <th>Tên đầy đủ</th>
+<!--                                        <th>Last Name</th>-->
                                         <th>Email</th>
-                                        <th>Phone Number</th>
-                                        <th>Total Spent</th>
-                                        <th>Address</th>
-                                        <th>Rank</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Tổng chi tiêu</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Thứ hạng</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:forEach var="customer" items="${data}">
                                         <tr>
-                                            <td>${customer.customerID}</td>
-                                            <td>${customer.firstName}</td>
-                                            <td>${customer.lastName}</td>
+<!--                                            <td>${customer.customerID}</td>-->
+                                            <td>${customer.firstName} ${customer.lastName}</td>
+<!--                                            <td>${customer.lastName}</td>-->
                                             <td>${customer.email}</td>
                                             <td>${customer.phoneNumber}</td>
                                             <td>${customer.totalSpent}</td>

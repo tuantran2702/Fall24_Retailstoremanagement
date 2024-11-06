@@ -1,5 +1,6 @@
 package controllers;
 
+import dao.CustomerDAO;
 import dao.CustomerReportDAO;
 import model.CustomerReport;
 import jakarta.servlet.ServletException;
@@ -27,21 +28,25 @@ public class CustomerReportController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         CustomerReportDAO reportDAO = new CustomerReportDAO();
+        String idStr = request.getParameter("id");
+        String customerName = request.getParameter("customerName"); // Tham số tìm kiếm theo tên khách hàng
+        String reportDate = request.getParameter("reportDate"); // Tham số tìm kiếm theo ngày
+
+        CustomerDAO customerDAO = new CustomerDAO();
 
         if (action == null) {
             // Hiển thị danh sách báo cáo
-            List<CustomerReport> reports = reportDAO.getListCustomerReports();
+//        List<CustomerReport> reports = reportDAO.getListCustomerReports();
+//        request.setAttribute("data", reports);
+            // Hiển thị danh sách Sale với bộ lọc
+            ArrayList<CustomerReport> reports = reportDAO.getFilteredCustomerReports(customerName, reportDate);
             request.setAttribute("data", reports);
-
+            //request.getRequestDispatcher("/CustomerManager/Report/CustomerReportManager.jsp").forward(request, response);
             // Tính toán số lượng khách hàng hiện có và tổng số đơn hàng
-            int totalCustomers = reports.size(); // Số lượng khách hàng
-            int totalOrders = reports.stream().mapToInt(CustomerReport::getTotalOrders).sum(); // Tổng số đơn hàng
-
-            // Thiết lập các thuộc tính vào request
+            int totalCustomers = reports.size();
+            int totalOrders = reports.stream().mapToInt(CustomerReport::getTotalOrders).sum();
             request.setAttribute("totalCustomers", totalCustomers);
             request.setAttribute("totalOrders", totalOrders);
-
-            // Chuyển hướng đến JSP
             request.getRequestDispatcher("/CustomerManager/Report/CustomerReportManager.jsp").forward(request, response);
         } else if (action.equals("delete")) {
             // Xóa báo cáo
@@ -52,6 +57,20 @@ public class CustomerReportController extends HttpServlet {
             // Xuất báo cáo ra file Excel
             exportToExcel(response, reportDAO.getListCustomerReports());
         }
+//    else if (action.equals("search")) {
+//        // Tìm kiếm báo cáo
+//        String customerName = request.getParameter("customerID");
+//        String reportDate = request.getParameter("reportDate");
+//
+//        List<CustomerReport> reports = reportDAO.getFilteredCustomerReports(customerName, reportDate);
+//        request.setAttribute("data", reports);
+//        // Tính toán số lượng khách hàng hiện có và tổng số đơn hàng
+//        int totalCustomers = reports.size();
+//        int totalOrders = reports.stream().mapToInt(CustomerReport::getTotalOrders).sum();
+//        request.setAttribute("totalCustomers", totalCustomers);
+//        request.setAttribute("totalOrders", totalOrders);
+//        request.getRequestDispatcher("/CustomerManager/Report/CustomerReportManager.jsp").forward(request, response);
+//    }
     }
 
     @Override
@@ -139,6 +158,5 @@ public class CustomerReportController extends HttpServlet {
     public String getServletInfo() {
         return "CustomerReportController handles CRUD operations for CustomerReport entities.";
     }
-
 
 }

@@ -42,17 +42,17 @@
                     <li class="breadcrumb-item">Báo cáo khách hàng</li>
                 </ul>
                 <div>
-                <strong>Số lượng khách hàng hiện có: ${totalCustomers}</strong><br>
-                <strong>Tổng số đơn hàng: ${totalOrders}</strong>
-            </div>
+                    <strong>Số lượng khách hàng hiện có: ${totalCustomers}</strong><br>
+                    <strong>Tổng số đơn hàng: ${totalOrders}</strong>
+                </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12">
                     <form action="${pageContext.request.contextPath}/customerReport" method="GET">
                         <div class="form-group">
-                            <label for="customerID">Tên khách hàng:</label>
-                            <input type="text" id="customerID" name="customerID" class="form-control" placeholder="Nhập Tên khách hàng">
+                            <label for="customerName">Tên khách hàng:</label>
+                            <input type="text" id="customerName" name="customerName" class="form-control" placeholder="Nhập Tên khách hàng">
                         </div>
 
                         <div class="form-group">
@@ -84,7 +84,7 @@
                             <table class="table table-hover table-bordered" id="sampleTable">
                                 <thead>
                                     <tr>
-<!--                                        <th>Report ID</th>-->
+                                        <!--                                        <th>Report ID</th>-->
                                         <th>Tên khách hàng</th> 
                                         <th>Ngày báo cáo</th>
                                         <th>Tổng đơn hàng</th>
