@@ -163,14 +163,14 @@
                                     <label class="control-label">Email</label>
                                     <!-- Thẻ span để hiển thị lỗi cho trường Email -->
                                     <span id="emailError" style="color:red; display:none;">Vui lòng nhập email hợp lệ.</span>
-                                    <input class="form-control" type="email" name="email" id="emailInput" required>
+                                    <input class="form-control" type="email" value="<%= ((User) request.getAttribute("user")).getEmail() != null ? ((User) request.getAttribute("user")).getEmail() : "" %>" name="email" id="emailInput" required>
                                 </div>
 
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Số điện thoại</label>
                                     <!-- Thẻ span để hiển thị lỗi cho trường Số điện thoại -->
                                     <span id="phoneError" style="color:red; display:none;">Vui lòng nhập số điện thoại hợp lệ (ít nhất 10 chữ số).</span>
-                                    <input class="form-control" type="text" name="phone" id="phoneInput" required>
+                                    <input class="form-control" type="text" value="<%= ((User) request.getAttribute("user")).getPhoneNumber() != null ? ((User) request.getAttribute("user")).getPhoneNumber() : "" %>" name="phone" id="phoneInput" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label class="control-label">Địa chỉ</label>

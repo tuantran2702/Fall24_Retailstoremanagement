@@ -180,22 +180,46 @@ public class RoleDAO extends DBContext {
     }
 
     public boolean deleteRole(int id) {
-        String sql = "DELETE FROM [Role] WHERE RoleID = ?";
+        String updateSql = "UPDATE [User] SET RoleID = NULL WHERE RoleID = ?";
+        String deleteSql = "DELETE FROM [Role] WHERE RoleID = ?";
 
         try {
-            PreparedStatement st = connection.prepareStatement(sql);
+            // Bắt đầu transaction
+            connection.setAutoCommit(false);
 
-            // Gán giá trị cho tham số trong câu lệnh SQL
-            st.setInt(1, id);
+            // Cập nhật RoleID trong bảng User thành NULL để tránh xung đột ràng buộc khóa ngoại
+            PreparedStatement updateStatement = connection.prepareStatement(updateSql);
+            updateStatement.setInt(1, id);
+            updateStatement.executeUpdate();
 
-            // Thực thi câu lệnh xóa và kiểm tra số dòng bị ảnh hưởng
-            int rowsDeleted = st.executeUpdate();
+            // Xóa Role khỏi bảng Role
+            PreparedStatement deleteStatement = connection.prepareStatement(deleteSql);
+            deleteStatement.setInt(1, id);
 
-            // Nếu có ít nhất 1 dòng bị xóa thì trả về true, nghĩa là xóa thành công
+            int rowsDeleted = deleteStatement.executeUpdate();
+
+            // Nếu có ít nhất 1 dòng bị xóa, commit và trả về true
+            connection.commit();
             return rowsDeleted > 0;
+
         } catch (Exception e) {
             e.printStackTrace();
-            return false;  // Trả về false nếu xảy ra lỗi
+
+            // Rollback nếu có lỗi xảy ra
+            try {
+                connection.rollback();
+            } catch (Exception rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+
+            return false;
+        } finally {
+            try {
+                // Kết thúc transaction
+                connection.setAutoCommit(true);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -221,6 +245,6 @@ public class RoleDAO extends DBContext {
 
     public static void main(String[] args) {
         RoleDAO rd = new RoleDAO();
-        rd.addRole("ad", "adtest", new String[]{"1", "2"});
+        rd.deleteRole(1005);
     }
 }
