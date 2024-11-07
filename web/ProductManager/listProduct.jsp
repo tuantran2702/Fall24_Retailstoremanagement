@@ -177,6 +177,52 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="widget-small primary coloured-icon">
+                                    <i class='icon bx bxs-user-account fa-3x'></i>
+                                    <div class="info">
+                                        <h4>Tổng mặt hàng</h4>
+                                        <p><b>${totalItems} mặt hàng</b></p>
+                                        <p class="info-tong">Tổng số mặt hàng được quản lý.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- col-6 -->
+                            <div class="col-md-6">
+                                <div class="widget-small info coloured-icon">
+                                    <i class='icon bx bxs-data fa-3x'></i>
+                                    <div class="info">
+                                        <h4>Tổng số lượng</h4>
+                                        <p><b>${totalQuantity} sản phẩm</b></p>
+                                        <p class="info-tong">Tổng số sản phẩm đang quản lý</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- col-6 -->
+                            <div class="col-md-6">
+                                <div class="widget-small warning coloured-icon">
+                                    <i class='icon bx bxs-shopping-bags fa-3x'></i>
+                                    <div class="info">
+                                        <h4>Tổng giá trị</h4>
+                                        <p><b>${totalValue} VND</b></p>
+                                        <p class="info-tong">Tổng giá trị hàng đang quản lý.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- col-6 -->
+                            <div class="col-md-6">
+                                <div class="widget-small danger coloured-icon">
+                                    <i class='icon bx bxs-error-alt fa-3x'></i>
+                                    <div class="info">
+                                        <h4>Sản phẩm cảnh báo hết hàng</h4>
+                                        <p><b>${lowStockCount} sản phẩm</b></p>
+                                        <p class="info-tong">Số sản phẩm cảnh báo hết cần nhập thêm.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>

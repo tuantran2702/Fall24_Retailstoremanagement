@@ -77,7 +77,6 @@ public class ReportInventoryController extends HttpServlet {
 //            response.sendRedirect("404.jsp");
 //            return;
 //        }
-
         String action = request.getParameter("action");
         String idStr = request.getParameter("id");
 
@@ -122,18 +121,30 @@ public class ReportInventoryController extends HttpServlet {
             } else {
                 reportInventories = reportDAO.getlistReportInventory(); // Lấy tất cả báo cáo tồn kho
             }
+
+            // Tính tổng số lượng và tổng giá trị tồn kho
+            int totalQuantity = 0;
+            double totalStockValue = 0.0;
+
+            for (ReportInventory report : reportInventories) {
+                totalQuantity += report.getTotalQuantity();
+                totalStockValue += report.getTotalStockValue();
+            }
+
+            request.setAttribute("totalQuantity", totalQuantity); // Gửi tổng số lượng đến JSP
+            request.setAttribute("totalStockValue", totalStockValue); // Gửi tổng giá trị tồn kho đến JSP
             request.setAttribute("data", reportInventories); // Gửi danh sách báo cáo đến JSP
             request.getRequestDispatcher("/ReportInventoryManager/listReportInventory.jsp").forward(request, response);
 
-        } else if (action.equals("create")) {
-            request.getRequestDispatcher("/ReportInventoryManager/createReportInventory.jsp").forward(request, response);
         } else if (action.equals("update") && idStr != null) {
             int id = Integer.parseInt(idStr);
+            request.setAttribute("listProduct", reportDAO.GetListProduct());
+            request.setAttribute("listWarehouse", reportDAO.GetListWarehouse());
             ReportInventory reportInventory = reportDAO.getlistReportInventoryById(id);
             request.setAttribute("reportInventory", reportInventory);
             request.getRequestDispatcher("/ReportInventoryManager/updateReportInventory.jsp").forward(request, response);
         } else if (action.equals("delete") && idStr != null) {
-            int id = Integer.parseInt(idStr);
+            int id = Integer.parseInt(request.getParameter("id"));
             reportDAO.deleteReportInventory(id);
             response.sendRedirect("reportInventory");
         }
@@ -142,6 +153,34 @@ public class ReportInventoryController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        String action = request.getParameter("action");
+
+        if (action.equals("update")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            int productID = Integer.parseInt(request.getParameter("productID"));
+            int warehouseID = Integer.parseInt(request.getParameter("warehouseID"));
+            int totalQuantity = Integer.parseInt(request.getParameter("totalQuantity"));
+            double totalStockValue = Double.parseDouble(request.getParameter("totalStockValue"));
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date reportDate = new Date();
+
+//            out.print(totalQuantity);
+//            out.print(totalStockValue);
+            try {
+                reportDate = dateFormat.parse(request.getParameter("reportDate"));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            ReportInventory reportInventory = new ReportInventory(id, reportDate, productID, warehouseID, totalQuantity, totalStockValue);
+            ReportInventoryDAO rp = new ReportInventoryDAO();
+
+            rp.updateReportInventory(reportInventory);
+            response.sendRedirect("reportInventory");
+
+        }
     }
 
     @Override

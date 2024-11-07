@@ -7,8 +7,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList" %>
-<%@page import="dao.SupplierDAO"%>
-<%@page import="model.Supplier"%>
+<%@page import="dao.ProductDAO"%>
+<%@page import="model.Product"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,39 +50,39 @@
         </header>
         <!-- Sidebar menu-->
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-         <aside class="app-sidebar">
+        <aside class="app-sidebar">
             <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
                                                 alt="User Image">      <div>
-        <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
-        <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
-      </div>
+                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
+                    <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
+                </div>
             </div>
 
             <hr>
-    <ul class="app-menu">
+            <ul class="app-menu">
                 <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
                         <span class="app-menu__label">POS Bán Hàng</span></a></li>
                 <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Bảng điều khiển</span></a></li>
-                              <li><a class="app-menu__item " href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
-                              
-                                    <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
-            class="app-menu__label">Quản lý nhân viên</span></a></li>
-                            
-                            
-                               <li><a class="app-menu__item active" href="product"><i
+                <li><a class="app-menu__item " href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
+
+                <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
+                            class="app-menu__label">Quản lý nhân viên</span></a></li>
+
+
+                <li><a class="app-menu__item active" href="product"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
                 </li>
 
                 <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-id-card'></i> <span
                             class="app-menu__label">Quản lý khách hàng </span></a></li>
-                            
-                            
-                            
-                            
-                   
 
-              
+
+
+
+
+
+
 
 
 
@@ -90,12 +90,12 @@
                 <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Quản lý   kho</span></a></li>
 
-   <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
+                <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Thay đổi mật khẩu </span></a></li>
 
 
-            
-            
+
+
             </ul>
 
 
@@ -103,77 +103,81 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item"><a href="supplier">Danh sách Nhà cung cấp</a></li>
-                    <li class="breadcrumb-item active">Cập nhật Nhà cung cấp</li>
+                    <li class="breadcrumb-item"><a href="reportInventory">Danh sách Báo cáo Tồn kho</a></li>
+                    <li class="breadcrumb-item active">Cập nhật Báo cáo Tồn kho</li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="tile">
-                        <h3 class="tile-title">Cập nhật Nhà cung cấp</h3>
+                        <h3 class="tile-title">Cập nhật Báo cáo Tồn kho</h3>
                         <div class="tile-body">
-                            <form action="supplier" method="post">
+                            <!-- Hiển thị thông báo lỗi nếu có -->
+                            <form action="reportInventory" method="post">
                                 <input type="hidden" name="action" value="update">
-                                <input type="hidden" name="id" value="${supplier.supplierID}">
-
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <h5 class="thong-tin-thanh-toan">Chỉnh sửa thông tin tồn kho</h5>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="id" value="${reportInventory.reportID}">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="productSelect" class="control-label">Sản phẩm</label>
+                                        <select class="form-control" id="productSelect" name="productID" required>
+                                            <c:forEach var="c" items="${listProduct}">
+                                                <option value="${c.productID}" 
+                                                        <c:if test="${c.productID == product.productID}">
+                                                            selected
+                                                        </c:if>>
+                                                    ${c.productName}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="warehouseSelect" class="control-label">Kho</label>
+                                        <select class="form-control" id="warehouseSelect" name="warehouseID" required>
+                                            <c:forEach var="u" items="${listWarehouse}">
+                                                <option value="${u.warehouseID}" 
+                                                        <c:if test="${u.warehouseID == product.warehouseID}">
+                                                            selected
+                                                        </c:if>>
+                                                    ${u.warehouseName} 
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label">Ngày báo cáo</label>
+                                        <input class="form-control" type="date" name="reportDate" value="${reportInventory.reportDate}">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label">Tổng số lượng</label>
+                                        <input class="form-control" type="number" required name="totalQuantity" value="${reportInventory.totalQuantity}">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="control-label">Tổng giá trị tồn kho</label>
+                                        <input class="form-control" type="text" name="totalStockValue" value="${reportInventory.totalStockValue}">
+                                        <c:if test="${not empty error}">
+                                            <div style="color: red;">
+                                                ${error}
+                                            </div>
+                                        </c:if>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h5>Chỉnh sửa thông tin supplier cơ bản</h5>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <!-- Supplier Name -->
-                                    <div class="form-group col-md-6">
-                                        <label class="control-label">Supplier Name</label>
-                                        <input class="form-control" type="text" required name="supplierName" value="${supplier.supplierName}">
-                                    </div>
-
-                                    <!-- Contact Name -->
-                                    <div class="form-group col-md-6">
-                                        <label class="control-label">Contact Name</label>
-                                        <input class="form-control" type="text" required name="contactName" value="${supplier.contactName}">
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <!-- Phone Number -->
-                                    <div class="form-group col-md-6">
-                                        <label class="control-label">Phone Number</label>
-                                        <input class="form-control" type="number" required name="phoneNumber" value="${supplier.phoneNumber}">
-                                    </div>
-
-                                    <!-- Email -->
-                                    <div class="form-group col-md-6">
-                                        <label class="control-label">Email</label>
-                                        <input class="form-control" type="email" name="email" value="${supplier.email}">
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <!-- Address -->
-                                    <div class="form-group col-md-12">
-                                        <label class="control-label">Address</label>
-                                        <textarea class="form-control" name="address" id="address">${supplier.address}</textarea>
-                                        <script>CKEDITOR.replace('address');</script>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12 text-right">
                                         <a href="#" style="font-weight: 600; color: #ea0000;">Chỉnh sửa sản phẩm nâng cao</a>
                                     </div>
                                 </div>
-
-                                <div class="row">
-                                    <!-- Buttons -->
+                                <div class="row mt-3">
                                     <div class="col-md-12 text-right">
                                         <button class="btn btn-save" type="submit">Lưu lại</button>
-                                        <a class="btn btn-cancel" href="${pageContext.request.contextPath}/supplier">Hủy bỏ</a>
+                                        <a class="btn btn-cancel" href="${pageContext.request.contextPath}/reportInventory">Hủy bỏ</a>
                                     </div>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
@@ -198,47 +202,47 @@
         <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
         <script type="text/javascript">
-                $('#sampleTable').DataTable();
-                //Thời Gian
-                function time() {
-                    var today = new Date();
-                    var weekday = new Array(7);
-                    weekday[0] = "Chủ Nhật";
-                    weekday[1] = "Thứ Hai";
-                    weekday[2] = "Thứ Ba";
-                    weekday[3] = "Thứ Tư";
-                    weekday[4] = "Thứ Năm";
-                    weekday[5] = "Thứ Sáu";
-                    weekday[6] = "Thứ Bảy";
-                    var day = weekday[today.getDay()];
-                    var dd = today.getDate();
-                    var mm = today.getMonth() + 1;
-                    var yyyy = today.getFullYear();
-                    var h = today.getHours();
-                    var m = today.getMinutes();
-                    var s = today.getSeconds();
-                    m = checkTime(m);
-                    s = checkTime(s);
-                    nowTime = h + " giờ " + m + " phút " + s + " giây";
-                    if (dd < 10) {
-                        dd = '0' + dd
-                    }
-                    if (mm < 10) {
-                        mm = '0' + mm
-                    }
-                    today = day + ', ' + dd + '/' + mm + '/' + yyyy;
-                    tmp = '<span class="date"> ' + today + ' - ' + nowTime +
-                            '</span>';
-                    document.getElementById("clock").innerHTML = tmp;
-                    clocktime = setTimeout("time()", "1000", "Javascript");
+        $('#sampleTable').DataTable();
+        //Thời Gian
+        function time() {
+            var today = new Date();
+            var weekday = new Array(7);
+            weekday[0] = "Chủ Nhật";
+            weekday[1] = "Thứ Hai";
+            weekday[2] = "Thứ Ba";
+            weekday[3] = "Thứ Tư";
+            weekday[4] = "Thứ Năm";
+            weekday[5] = "Thứ Sáu";
+            weekday[6] = "Thứ Bảy";
+            var day = weekday[today.getDay()];
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1;
+            var yyyy = today.getFullYear();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            nowTime = h + " giờ " + m + " phút " + s + " giây";
+            if (dd < 10) {
+                dd = '0' + dd
+            }
+            if (mm < 10) {
+                mm = '0' + mm
+            }
+            today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+            tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+                    '</span>';
+            document.getElementById("clock").innerHTML = tmp;
+            clocktime = setTimeout("time()", "1000", "Javascript");
 
-                    function checkTime(i) {
-                        if (i < 10) {
-                            i = "0" + i;
-                        }
-                        return i;
-                    }
+            function checkTime(i) {
+                if (i < 10) {
+                    i = "0" + i;
                 }
+                return i;
+            }
+        }
         </script>
         <script>
             function readURL(input) {

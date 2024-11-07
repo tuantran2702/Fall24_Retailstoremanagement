@@ -218,18 +218,6 @@
                         <h3 class="tile-title">Tạo mới Nhà cung cấp</h3>
                         <div class="tile-body">
                             <div class="row element-button">
-                                <!--                                <div class="col-sm-2">
-                                                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i
-                                                                            class="fas fa-folder-plus"></i> Thêm nhà cung cấp</a>
-                                                                </div>
-                                                                <div class="col-sm-2">
-                                                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc"><i
-                                                                            class="fas fa-folder-plus"></i> Thêm danh mục</a>
-                                                                </div>
-                                                                <div class="col-sm-2">
-                                                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang"><i
-                                                                            class="fas fa-folder-plus"></i> Thêm tình trạng</a>
-                                                                </div>-->
                             </div>
                             <c:if test="${not empty errorMessage}">
                                 <div style="color: red;">${errorMessage}</div>
@@ -261,7 +249,7 @@
                                     <small id="error-message-email" style="color: red;"></small>
                                 </div>
 
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-12">
                                     <label class="control-label">Địa chỉ</label>
                                     <input class="form-control" type="text" name="address" id="address" required oninput="validateAddress();">
                                     <small id="error-message-address" style="color: red;"></small>

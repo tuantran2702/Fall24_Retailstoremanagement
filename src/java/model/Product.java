@@ -78,9 +78,6 @@ public class Product extends DBContext {
         this.categoryName = categoryName;
         connect();
     }
-    
-    
-    
 
     public String getCategoryName() {
         return categoryName;

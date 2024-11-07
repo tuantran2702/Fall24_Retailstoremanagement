@@ -18,6 +18,7 @@ import model.ReportInventory;
 import model.Supplier;
 import model.Unit;
 import model.User;
+import model.Warehouse;
 import org.apache.tomcat.dbcp.dbcp2.PStmtKey;
 
 /**
@@ -59,11 +60,11 @@ public class ReportInventoryDAO extends DBContext {
         return data;
     }
 
-public List<ReportInventory> searchReportInventories(String keyword, Date startDate, Date endDate, Integer productID, Integer warehouseID) {
+    public List<ReportInventory> searchReportInventories(String keyword, Date startDate, Date endDate, Integer productID, Integer warehouseID) {
         List<ReportInventory> filteredReports = new ArrayList<>();
-        StringBuilder query = new StringBuilder("SELECT r.*, p.ProductName, w.WarehouseName FROM [RetailStoreDatabase1].[dbo].[ReportInventory] r " +
-                "JOIN [RetailStoreDatabase1].[dbo].[Product] p ON r.ProductID = p.ProductID " +
-                "JOIN [RetailStoreDatabase1].[dbo].[Warehouse] w ON r.WarehouseID = w.WarehouseID WHERE 1=1");
+        StringBuilder query = new StringBuilder("SELECT r.*, p.ProductName, w.WarehouseName FROM [RetailStoreDatabase1].[dbo].[ReportInventory] r "
+                + "JOIN [RetailStoreDatabase1].[dbo].[Product] p ON r.ProductID = p.ProductID "
+                + "JOIN [RetailStoreDatabase1].[dbo].[Warehouse] w ON r.WarehouseID = w.WarehouseID WHERE 1=1");
 
         // Kiểm tra nếu keyword không rỗng
         if (keyword != null && !keyword.isEmpty()) {
@@ -93,7 +94,7 @@ public List<ReportInventory> searchReportInventories(String keyword, Date startD
             query.append(" AND r.warehouseID = ?");
         }
 
-        try (PreparedStatement pstmt = connection.prepareStatement(query.toString())) {
+        try ( PreparedStatement pstmt = connection.prepareStatement(query.toString())) {
             int index = 1;
 
             // Nếu keyword không rỗng, thêm vào PreparedStatement
@@ -195,8 +196,30 @@ public List<ReportInventory> searchReportInventories(String keyword, Date startD
         }
     }
 
-    public void deleteReport(int id) {
-        String sql = "DELETE FROM [dbo].[ReportInventory] WHERE ReportID = ?";
+    public ReportInventory getlistReportInventoryById(int id) {
+                String sql = "select*from ReportInventory where ReportID= ?";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                Date reportDate = rs.getDate(2);
+                int productID = rs.getInt(3);
+                int warehouseID = rs.getInt(4);
+                int totalQuantity = rs.getInt(5);
+                double totalStockValue = rs.getDouble(6);
+
+                return new ReportInventory(productID, reportDate, productID, warehouseID, totalQuantity, totalStockValue);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void deleteReportInventory(int id) {
+        String sql = "DELETE FROM [dbo].[ReportInventory]\n" +
+"      WHERE ReportID = ?";
         try ( PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
@@ -206,12 +229,87 @@ public List<ReportInventory> searchReportInventories(String keyword, Date startD
 
     }
 
-    public ReportInventory getlistReportInventoryById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ArrayList<Product> GetListProduct() {
+        ArrayList<Product> products = new ArrayList<>();
+        String sql = "select p.*,c.CategoryName from Product p join Category c on p.CategoryID=c.CategoryID";
+        try {
+
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int productID = rs.getInt(1);
+                String productCode = rs.getString(2);
+                String productName = rs.getString(3);
+                int categoryID = rs.getInt(4);
+                double price = rs.getDouble(5);
+                int quantity = rs.getInt(6);
+                String description = rs.getString(7);
+                Date createdDate = rs.getDate(8);
+                Date expiredDate = rs.getDate(9);
+                Date updateDate = rs.getDate(10);
+                String image = rs.getString(11);
+                int userID = rs.getInt(12);
+                int unitID = rs.getInt(13);
+                int supplierID = rs.getInt(14);
+                String categoryName = rs.getString(15);
+
+                products.add(new Product(productID, productCode, productName, categoryID, price, quantity, description, createdDate, expiredDate, updateDate, image, userID, unitID, supplierID, categoryName));
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return products;
+
+
     }
 
-    public void deleteReportInventory(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ArrayList<Warehouse> GetListWarehouse() {
+        ArrayList<Warehouse> data = new ArrayList<>();
+        String sql = "SELECT * FROM Warehouse";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int warehouseID = rs.getInt("WarehouseID");
+                String warehouseName = rs.getString("WarehouseName");
+                String location = rs.getString("Location");
+                String managerName = rs.getString("ManagerName");
+                String contactNumber = rs.getString("ContactNumber");
+
+                data.add(new Warehouse(warehouseID, warehouseName, location, managerName, contactNumber));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return data;
+
+    }
+
+    public void updateReportInventory(ReportInventory reportInventory) {
+        
+        String sql = "UPDATE ReportInventory SET"
+                + " ReportDate = ?,"
+                + " ProductID = ?,"
+                + " WarehouseID = ?,"
+                + " TotalQuantity = ?,"
+                + " TotalStockValue = ? WHERE ReportID = ?";
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setDate(1, new java.sql.Date(reportInventory.getReportDate().getTime()));
+            stmt.setInt(2, reportInventory.getProductID());
+            stmt.setInt(3, reportInventory.getWarehouseID());
+            stmt.setInt(4, reportInventory.getTotalQuantity());
+            stmt.setDouble(5, reportInventory.getTotalStockValue());
+            stmt.setInt(6, reportInventory.getReportID());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("insertFail:" + e.getMessage());
+//            e.printStackTrace();
+        }
+
     }
 
 }

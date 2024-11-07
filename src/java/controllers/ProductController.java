@@ -98,6 +98,28 @@ public class ProductController extends HttpServlet {
             List<Product> products = productDAO.getFilteredProducts(productName, categoryID, minPrice, maxPrice);
             request.setAttribute("data", products);
             request.setAttribute("listCategory", productDAO.GetListCategory()); // To display category list
+
+            // Tính tổng số mặt hàng, tổng số lượng, và tổng giá trị
+            int totalItems = products.size();
+            int totalQuantity = 0;
+            double totalValue = 0.0;
+            int lowStockCount = 0; // Số sản phẩm cảnh báo hết hàng
+            int lowStockThreshold = 5; // Ngưỡng cảnh báo hết hàng
+
+            for (Product product : products) {
+                totalQuantity += product.getQuantity();
+                totalValue += product.getPrice() * product.getQuantity();
+                if (product.getQuantity() <= lowStockThreshold) {
+                    lowStockCount++; // Tăng số lượng sản phẩm cảnh báo hết hàng
+                }
+            }
+
+            // Gửi tổng đến JSP
+            request.setAttribute("totalItems", totalItems);
+            request.setAttribute("totalQuantity", totalQuantity);
+            request.setAttribute("totalValue", totalValue);
+            request.setAttribute("lowStockCount", lowStockCount); // Gửi số sản phẩm cảnh báo hết hàng
+
             request.getRequestDispatcher("/ProductManager/listProduct.jsp").forward(request, response);
         } else if (action.equals("create")) {
             // Create new product
@@ -106,8 +128,7 @@ public class ProductController extends HttpServlet {
             request.setAttribute("listUnit", productDAO.GetListUnit());
             request.setAttribute("listSupplier", productDAO.GetListSupplier());
             request.getRequestDispatcher("/ProductManager/createProduct.jsp").forward(request, response);
-        } 
-        else if (action.equals("update") && idStr != null) {
+        } else if (action.equals("update") && idStr != null) {
             // Update product
             int id = Integer.parseInt(idStr);
             request.setAttribute("listCategory", productDAO.GetListCategory());
@@ -161,19 +182,19 @@ public class ProductController extends HttpServlet {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            
+
             ProductDAO productDAO = new ProductDAO();
-        
-        // Kiểm tra xem sản phẩm đã tồn tại hay chưa
-        if (productDAO.isProductExists(productCode, productName)) {
-            request.setAttribute("error", "Sản phẩm đã tồn tại. Vui lòng kiểm tra lại.");
-            request.setAttribute("listCategory", productDAO.GetListCategory());
-            request.setAttribute("listUser", productDAO.GetListUser ());
-            request.setAttribute("listUnit", productDAO.GetListUnit());
-            request.setAttribute("listSupplier", productDAO.GetListSupplier());
-            request.getRequestDispatcher("/ProductManager/createProduct.jsp").forward(request, response);
-            return; // Dừng lại nếu sản phẩm đã tồn tại
-        }
+
+            // Kiểm tra xem sản phẩm đã tồn tại hay chưa
+            if (productDAO.isProductExists(productCode, productName)) {
+                request.setAttribute("error", "Sản phẩm đã tồn tại. Vui lòng kiểm tra lại.");
+                request.setAttribute("listCategory", productDAO.GetListCategory());
+                request.setAttribute("listUser", productDAO.GetListUser());
+                request.setAttribute("listUnit", productDAO.GetListUnit());
+                request.setAttribute("listSupplier", productDAO.GetListSupplier());
+                request.getRequestDispatcher("/ProductManager/createProduct.jsp").forward(request, response);
+                return; // Dừng lại nếu sản phẩm đã tồn tại
+            }
 
             Product product = new Product(0, productCode, productName, categoryID, price, quantity, description, createdDate, expiredDate, updateDate, image, userID, unitID, supplierID);
             ProductDAO p = new ProductDAO();

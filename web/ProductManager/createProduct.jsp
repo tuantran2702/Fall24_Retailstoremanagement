@@ -236,9 +236,9 @@
                                     ${error}
                                 </div>
                             </c:if>
-                            <form action="product" method="post" class="row" enctype="multipart/form-data" onsubmit="return validateForm();">
-                                <input type="hidden" name="action" value="create">
 
+                            <form action="product" method="post" class="row" onsubmit="return validateForm();">
+                                <input type="hidden" name="action" value="create">
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Mã sản phẩm</label>
                                     <input class="form-control" type="text" name="productCode" id="productCode" required oninput="validateProductCode();">
@@ -251,30 +251,42 @@
                                     <small id="error-message-name" style="color: red;"></small>
                                 </div>
 
+
+
+                                <div class="form-group col-md-3 ">
+                                    <label for="exampleSelect1" class="control-label">Loại </label>
+                                    <select class="form-control" id="exampleSelect1" name="categoryID">
+                                        <c:forEach var="c" items="${listCategory}">
+                                            <option value="${c.getCategoryID()}">${c.getCategoryName()}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+
+
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Giá</label>
                                     <input class="form-control" type="number" name="price" id="price" required oninput="validatePrice();">
-                                    <small id="error-message-price" style="color: red;"></small>
+                                    <small id="error-message-price" style="color: red;"></small> <!-- Thêm thông báo lỗi cho giá -->
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Số lượng</label>
                                     <input class="form-control" type="number" name="quantity" id="quantity" required oninput="validateQuantity();">
-                                    <small id="error-message-quantity" style="color: red;"></small>
+                                    <small id="error-message-quantity" style="color: red;"></small> <!-- Thay đổi ID thông báo lỗi -->
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Ngày tạo</label>
-                                    <input class="form-control" type="date" required name="createdDate">
+                                    <input class="form-control" type="date"  name="createdDate">
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Ngày hết hạn</label>
-                                    <input class="form-control" type="date" required name="expiredDate">
+                                    <input class="form-control" type="date"  name="expiredDate">
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Ngày cập nhật</label>
-                                    <input class="form-control" type="date" required name="updateDate">
+                                    <input class="form-control" type="date"  name="updateDate">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="exampleSelect1" class="control-label">Người sử dụng </label>
@@ -308,7 +320,7 @@
                                 <div class="form-group col-md-12">
                                     <label class="control-label">Hình ảnh</label>
                                     <div id="myfileupload">
-                                        <input type="file" name="image" id="uploadfile" accept="image/*" onchange="readURL(this);" />
+                                        <input type="file" name="image" id="uploadfile" accept="image/*" onchange="readURL(this);"required />
                                         <small id="error-message-image" style="color: red;"></small> <!-- Thêm thông báo lỗi cho hình ảnh -->
                                     </div>
                                     <div id="thumbbox">
@@ -327,246 +339,249 @@
                                     <script>CKEDITOR.replace('description');</script>
                                 </div>
 
-                                <button class="btn btn-save" type="submit">Lưu lại</button>
-                                <a class="btn btn-cancel" href="${pageContext.request.contextPath}/product">Hủy bỏ</a>
-                            </form>
 
                         </div>
-                        </main>
+                        <button class="btn btn-save" type="submit">Lưu lại</button>
+                        <a class="btn btn-cancel" href="${pageContext.request.contextPath}/product">Hủy bỏ</a>
+                        </form>
 
 
-                        <!--
-                        MODAL supplier 
-                        -->
-                        <form action="supplier" method="post" id="addSupplierForm">
-                            <input type="hidden" name="action" value="createSupplierName">
+                    </div>
+                    </main>
 
-                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                                 data-backdrop="static" data-keyboard="false">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
 
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="form-group  col-md-12">
-                                                    <span class="thong-tin-thanh-toan">
-                                                        <h5>Thêm mới nhà cung cấp</h5>
-                                                    </span>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    <label class="control-label">Nhập tên Supplier</label>
-                                                    <input class="form-control" type="text" name="supplierName" required>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    <label class="control-label">Danh mục Supplier hiện đang có</label>
-                                                    <ul style="padding-left: 20px;">
-                                                        <!-- Lặp qua danh sách category -->
-                                                        <c:forEach var="supplier" items="${listSupplier}">
-                                                            <li>${supplier.supplierName}</li>
-                                                            </c:forEach>
-                                                    </ul>
-                                                </div>
+                    <!--
+                    MODAL supplier 
+                    -->
+                    <form action="supplier" method="post" id="addSupplierForm">
+                        <input type="hidden" name="action" value="createSupplierName">
+
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                             data-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group  col-md-12">
+                                                <span class="thong-tin-thanh-toan">
+                                                    <h5>Thêm mới nhà cung cấp</h5>
+                                                </span>
                                             </div>
-                                            <BR>
-                                            <button class="btn btn-save" type="submit">Lưu lại</button>
-                                            <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                            <BR>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Nhập tên Supplier</label>
+                                                <input class="form-control" type="text" name="supplierName" required>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Danh mục Supplier hiện đang có</label>
+                                                <ul style="padding-left: 20px;">
+                                                    <!-- Lặp qua danh sách category -->
+                                                    <c:forEach var="supplier" items="${listSupplier}">
+                                                        <li>${supplier.supplierName}</li>
+                                                        </c:forEach>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="modal-footer">
-                                        </div>
+                                        <BR>
+                                        <button class="btn btn-save" type="submit">Lưu lại</button>
+                                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                        <BR>
+                                    </div>
+                                    <div class="modal-footer">
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                        <!--
-                      MODAL
-                        -->
+                        </div>
+                    </form>
+                    <!--
+                  MODAL
+                    -->
 
 
 
-                        <!--
-                        MODAL category
-                        -->
-                        <form action="category" method="post" id="addCategoryForm">
-                            <input type="hidden" name="action" value="createCategoryName">
-                            <div class="modal fade" id="adddanhmuc" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                                 data-backdrop="static" data-keyboard="false">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
+                    <!--
+                    MODAL category
+                    -->
+                    <form action="category" method="post" id="addCategoryForm">
+                        <input type="hidden" name="action" value="createCategoryName">
+                        <div class="modal fade" id="adddanhmuc" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                             data-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
 
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="form-group  col-md-12">
-                                                    <span class="thong-tin-thanh-toan">
-                                                        <h5>Thêm mới danh mục </h5>
-                                                    </span>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    <label class="control-label">Nhập tên Category</label>
-                                                    <input class="form-control" type="text" name="categoryName" required>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    <label class="control-label">Danh mục sản phẩm hiện đang có</label>
-                                                    <ul style="padding-left: 20px;">
-                                                        <!-- Lặp qua danh sách category -->
-                                                        <c:forEach var="category" items="${listCategory}">
-                                                            <li>${category.categoryName}</li>
-                                                            </c:forEach>
-                                                    </ul>
-                                                </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group  col-md-12">
+                                                <span class="thong-tin-thanh-toan">
+                                                    <h5>Thêm mới danh mục </h5>
+                                                </span>
                                             </div>
-                                            <BR>
-                                            <button class="btn btn-save" type="submit">Lưu lại</button>
-                                            <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                            <BR>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Nhập tên Category</label>
+                                                <input class="form-control" type="text" name="categoryName" required>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Danh mục sản phẩm hiện đang có</label>
+                                                <ul style="padding-left: 20px;">
+                                                    <!-- Lặp qua danh sách category -->
+                                                    <c:forEach var="category" items="${listCategory}">
+                                                        <li>${category.categoryName}</li>
+                                                        </c:forEach>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="modal-footer">
-                                        </div>
+                                        <BR>
+                                        <button class="btn btn-save" type="submit">Lưu lại</button>
+                                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                        <BR>
+                                    </div>
+                                    <div class="modal-footer">
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                        <!--
-                      MODAL
-                        -->
+                        </div>
+                    </form>
+                    <!--
+                  MODAL
+                    -->
 
 
 
 
-                        <!--
-                        MODAL TÌNH TRẠNG
-                        -->
-                        <form action="unit" method="post" id="addUnitForm">
-                            <input type="hidden" name="action" value="createUnitName">
-                            <div class="modal fade" id="addtinhtrang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                                 data-backdrop="static" data-keyboard="false">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
+                    <!--
+                    MODAL TÌNH TRẠNG
+                    -->
+                    <form action="unit" method="post" id="addUnitForm">
+                        <input type="hidden" name="action" value="createUnitName">
+                        <div class="modal fade" id="addtinhtrang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                             data-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
 
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="form-group  col-md-12">
-                                                    <span class="thong-tin-thanh-toan">
-                                                        <h5>Thêm mới đơn vị </h5>
-                                                    </span>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    <label class="control-label">Nhập tên Unit</label>
-                                                    <input class="form-control" type="text" name="unitName" required>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    <label class="control-label">Danh mục Unit hiện đang có</label>
-                                                    <ul style="padding-left: 20px;">
-                                                        <!-- Lặp qua danh sách category -->
-                                                        <c:forEach var="unit" items="${listUnit}">
-                                                            <li>${unit.unitName}</li>
-                                                            </c:forEach>
-                                                    </ul>
-                                                </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group  col-md-12">
+                                                <span class="thong-tin-thanh-toan">
+                                                    <h5>Thêm mới đơn vị </h5>
+                                                </span>
                                             </div>
-                                            <BR>
-                                            <button class="btn btn-save" type="submit">Lưu lại</button>
-                                            <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                            <BR>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Nhập tên Unit</label>
+                                                <input class="form-control" type="text" name="unitName" required>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Danh mục Unit hiện đang có</label>
+                                                <ul style="padding-left: 20px;">
+                                                    <!-- Lặp qua danh sách category -->
+                                                    <c:forEach var="unit" items="${listUnit}">
+                                                        <li>${unit.unitName}</li>
+                                                        </c:forEach>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="modal-footer">
-                                        </div>
+                                        <BR>
+                                        <button class="btn btn-save" type="submit">Lưu lại</button>
+                                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                        <BR>
+                                    </div>
+                                    <div class="modal-footer">
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                        <!--
-                      MODAL
-                        -->
+                        </div>
+                    </form>
+                    <!--
+                  MODAL
+                    -->
 
 
 
-                        <script src="js/jquery-3.2.1.min.js"></script>
-                        <script src="js/popper.min.js"></script>
-                        <script src="js/bootstrap.min.js"></script>
-                        <script src="js/main.js"></script>
-                        <script src="js/plugins/pace.min.js"></script>
+                    <script src="js/jquery-3.2.1.min.js"></script>
+                    <script src="js/popper.min.js"></script>
+                    <script src="js/bootstrap.min.js"></script>
+                    <script src="js/main.js"></script>
+                    <script src="js/plugins/pace.min.js"></script>
 
 
-                        <script>
-                                        const regexText = /^[A-Za-zÀ-ỹ0-9\s]{3,50}$/; // Chữ cái và số, có dấu, từ 3-50 ký tự
-                                        const regexPriceQuantity = /^[1-9]\d*$/; // Giá trị nguyên dương
+                    <script>
+                                    const regexText = /^[A-Za-zÀ-ỹ0-9\s]{3,50}$/; // Chữ cái và số, có dấu, từ 3-50 ký tự
+                                    const regexPriceQuantity = /^[1-9]\d*$/; // Giá trị nguyên dương
 
-                                        function validateProductCode() {
-                                            const productCode = document.getElementById('productCode');
-                                            const errorMessageCode = document.getElementById('error-message-code');
-                                            if (!regexText.test(productCode.value.trim())) {
-                                                errorMessageCode.textContent = 'Mã sản phẩm phải có 3-50 ký tự.';
-                                                return false;
-                                            } else {
-                                                errorMessageCode.textContent = '';
-                                                return true;
-                                            }
+                                    function validateProductCode() {
+                                        const productCode = document.getElementById('productCode');
+                                        const errorMessageCode = document.getElementById('error-message-code');
+                                        if (!regexText.test(productCode.value.trim())) {
+                                            errorMessageCode.textContent = 'Mã sản phẩm phải có 3-50 ký tự.';
+                                            return false;
+                                        } else {
+                                            errorMessageCode.textContent = '';
+                                            return true;
                                         }
+                                    }
 
-                                        function validateProductName() {
-                                            const productName = document.getElementById('productName');
-                                            const errorMessageName = document.getElementById('error-message-name');
-                                            if (!regexText.test(productName.value.trim())) {
-                                                errorMessageName.textContent = 'Tên sản phẩm phải có 3-50 ký tự.';
-                                                return false;
-                                            } else {
-                                                errorMessageName.textContent = '';
-                                                return true;
-                                            }
+                                    function validateProductName() {
+                                        const productName = document.getElementById('productName');
+                                        const errorMessageName = document.getElementById('error-message-name');
+                                        if (!regexText.test(productName.value.trim())) {
+                                            errorMessageName.textContent = 'Tên sản phẩm phải có 3-50 ký tự.';
+                                            return false;
+                                        } else {
+                                            errorMessageName.textContent = '';
+                                            return true;
                                         }
+                                    }
 
-                                        function validatePrice() {
-                                            const price = document.getElementById('price');
-                                            const errorMessagePrice = document.getElementById('error-message-price');
-                                            if (!regexPriceQuantity.test(price.value.trim())) {
-                                                errorMessagePrice.textContent = 'Giá phải là số nguyên dương.';
-                                                return false;
-                                            } else {
-                                                errorMessagePrice.textContent = '';
-                                                return true;
-                                            }
+                                    function validatePrice() {
+                                        const price = document.getElementById('price');
+                                        const errorMessagePrice = document.getElementById('error-message-price');
+                                        if (!regexPriceQuantity.test(price.value.trim())) {
+                                            errorMessagePrice.textContent = 'Giá phải là số nguyên dương.';
+                                            return false;
+                                        } else {
+                                            errorMessagePrice.textContent = '';
+                                            return true;
                                         }
+                                    }
 
-                                        function validateQuantity() {
-                                            const quantity = document.getElementById('quantity');
-                                            const errorMessageQuantity = document.getElementById('error-message-quantity');
-                                            if (!regexPriceQuantity.test(quantity.value.trim())) {
-                                                errorMessageQuantity.textContent = 'Số lượng phải là số nguyên dương.';
-                                                return false;
-                                            } else {
-                                                errorMessageQuantity.textContent = '';
-                                                return true;
-                                            }
+                                    function validateQuantity() {
+                                        const quantity = document.getElementById('quantity');
+                                        const errorMessageQuantity = document.getElementById('error-message-quantity');
+                                        if (!regexPriceQuantity.test(quantity.value.trim())) {
+                                            errorMessageQuantity.textContent = 'Số lượng phải là số nguyên dương.';
+                                            return false;
+                                        } else {
+                                            errorMessageQuantity.textContent = '';
+                                            return true;
                                         }
+                                    }
 
-                                        function validateImage() {
-                                            const imageInput = document.getElementById('uploadfile');
-                                            const errorMessageImage = document.getElementById('error-message-image');
-                                            const file = imageInput.files[0];
-                                            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                                    function validateImage() {
+                                        const imageInput = document.getElementById('uploadfile');
+                                        const errorMessageImage = document.getElementById('error-message-image');
+                                        const file = imageInput.files[0];
+                                        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
-                                            if (file && !allowedTypes.includes(file.type)) {
-                                                errorMessageImage.textContent = 'Chỉ chấp nhận tệp hình ảnh (JPEG, PNG, GIF).';
-                                                imageInput.value = ''; // Reset file input nếu không đúng định dạng
-                                                return false;
-                                            } else {
-                                                errorMessageImage.textContent = '';
-                                                return true;
-                                            }
+                                        if (file && !allowedTypes.includes(file.type)) {
+                                            errorMessageImage.textContent = 'Chỉ chấp nhận tệp hình ảnh (JPEG, PNG, GIF).';
+                                            imageInput.value = ''; // Reset file input nếu không đúng định dạng
+                                            return false;
+                                        } else {
+                                            errorMessageImage.textContent = '';
+                                            return true;
                                         }
+                                    }
 
-                                        function validateForm() {
-                                            return validateProductCode() && validateProductName() && validatePrice() && validateQuantity() && validateImage();
-                                        }
-                        </script>
-
-
-
+                                    function validateForm() {
+                                        return validateProductCode() && validateProductName() && validatePrice() && validateQuantity() && validateImage();
+                                    }
+                    </script>
 
 
 
 
-                        </body>
 
-                        </html>
+
+
+                    </body>
+
+                    </html>

@@ -225,7 +225,7 @@
                             <form action="unit" method="post" class="row" onsubmit="return validateForm();">
                                 <input type="hidden" name="action" value="create">
 
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-12">
                                     <label class="control-label">Tên Đơn vị</label>
                                     <input class="form-control" type="text" name="unitName" id="unitName" required oninput="validateUnitName();">
                                     <small id="error-message-name" style="color: red;"></small>
