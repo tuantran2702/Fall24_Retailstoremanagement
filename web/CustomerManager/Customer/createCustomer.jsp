@@ -12,6 +12,82 @@
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/doc/css/main.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <script>
+            function validateForm() {
+                // Lấy các trường từ biểu mẫu
+                const firstName = document.getElementById('firstName').value.trim();
+                const lastName = document.getElementById('lastName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const phoneNumber = document.getElementById('phoneNumber').value.trim();
+                const address = document.getElementById('address').value.trim();
+
+                // Kiểm tra First Name
+                if (firstName === '') {
+                    alert("Vui lòng nhập tên.");
+                    return false;
+                }
+                if (!/^[a-zA-Z\s]+$/.test(firstName)) {
+                    alert("Tên không được chứa số.");
+                    return false;
+                }
+                if (firstName.length > 50) {
+                    alert("Tên không được vượt quá 50 ký tự.");
+                    return false;
+                }
+
+                // Kiểm tra Last Name
+                if (lastName === '') {
+                    alert("Vui lòng nhập họ.");
+                    return false;
+                }
+                if (!/^[a-zA-Z\s]+$/.test(lastName)) {
+                    alert("Họ không được chứa số.");
+                    return false;
+                }
+                if (lastName.length > 50) {
+                    alert("Họ không được vượt quá 50 ký tự.");
+                    return false;
+                }
+
+                // Kiểm tra Email
+                if (email !== '' && !validateEmail(email)) {
+                    alert("Vui lòng nhập địa chỉ email hợp lệ.");
+                    return false;
+                }
+
+                // Kiểm tra Phone Number
+                if (phoneNumber === '') {
+                    alert("Vui lòng nhập số điện thoại.");
+                    return false;
+                }
+                if (!validatePhoneNumber(phoneNumber)) {
+                    alert("Số điện thoại không hợp lệ..");
+                    return false;
+                }
+
+                // Kiểm tra Address
+                if (address === '') {
+                    alert("Vui lòng nhập địa chỉ.");
+                    return false;
+                }
+
+                // Nếu tất cả các trường hợp lệ, cho phép gửi biểu mẫu
+                return true;
+            }
+
+            function validateEmail(email) {
+                // Biểu thức chính quy để kiểm tra định dạng email
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            function validatePhoneNumber(phoneNumber) {
+                // Kiểm tra số điện thoại Việt Nam: bắt đầu bằng 0 và có độ dài từ 10 đến 11 ký tự
+                const re = /^(0[1-9][0-9]{8,9})$/;
+                return re.test(phoneNumber);
+            }
+        </script>
     </head>
 
     <body class="app sidebar-mini rtl">
@@ -26,7 +102,7 @@
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
         <aside class="app-sidebar">
             <div class="app-sidebar__user">
-                <img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px" alt="User Image">
+                <img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px" alt="User  Image">
                 <div>
                     <p class="app-sidebar__user-name"><b>${sessionScope.User.getEmail()}</b></p>
                     <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
@@ -51,7 +127,7 @@
                     <div class="tile">
                         <h3 class="tile-title">Thêm khách hàng mới</h3>
                         <div class="tile-body">
-                            <form action="${pageContext.request.contextPath}/customer?action=create" method="post">
+                            <form action="${pageContext.request.contextPath}/customer?action=create" method="post" onsubmit="return validateForm()">
                                 <!-- First Name -->
                                 <div class="form-group">
                                     <label for="firstName">Tên (First Name)</label>
@@ -59,7 +135,8 @@
                                 </div>
 
                                 <!-- Last Name -->
-                                <div class="form-group">
+                                <div ```html
+                                     <div class="form-group">
                                     <label for="lastName">Họ (Last Name)</label>
                                     <input type="text" class="form-control" id="lastName" name="lastName" required>
                                 </div>
