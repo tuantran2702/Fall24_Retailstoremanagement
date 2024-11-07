@@ -64,20 +64,20 @@
             <div class="row">
                 <div class="col-md-12">
                     <form action="${pageContext.request.contextPath}/customer" method="GET">
-                        <div class="form-group">
+<!--                        <div class="form-group">
                             <label for="firstName">Họ:</label>
                             <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Nhập firstName">
+                        </div>-->
+
+                        <div class="form-group">
+                            <label for="lastName">Tên khách hàng:</label>
+                            <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Tên khách hàng:">
                         </div>
 
                         <div class="form-group">
-                            <label for="lastName">Tên:</label>
-                            <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Nhập lastName">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="rankID">Hạng (Rank):</label>
+                            <label for="rankID">Thứ hạng:</label>
                             <select id="rankID" name="rankID" class="form-control">
-                                <option value="">-- Chọn hạng --</option>
+                                <option value="">Tất cả thứ hạng</option>
                                 <c:forEach var="rank" items="${ranks}">
                                     <option value="${rank.rankID}">${rank.rankName}</option>
                                 </c:forEach>

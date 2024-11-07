@@ -96,24 +96,24 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Loyalty Point ID</th>
-                                        <th>Customer Name</th>
-                                        <th>Points Earned</th>
-                                        <th>Points Redeemed</th>
-                                        <th>Transaction Date</th>
-                                        <th>Description</th>
+<!--                                        <th>Loyalty Point ID</th>-->
+                                        <th>Tên khách hàng</th>
+                                        <th>Điểm đã nhận được</th>
+                                        <th>Điểm đã dùng</th>
+                                        <th>Ngày cập nhật</th>
+<!--                                        <th>Description</th>-->
                                         <!--                                        <th>Actions</th>-->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <c:forEach var="loyaltyPoint" items="${data}">
                                         <tr>
-                                            <td>${loyaltyPoint.loyaltyPointID}</td>
+<!--                                            <td>${loyaltyPoint.loyaltyPointID}</td>-->
                                             <td>${loyaltyPoint.customerName}</td>
                                             <td>${loyaltyPoint.pointsEarned}</td>
                                             <td>${loyaltyPoint.pointsRedeemed}</td>
                                             <td>${loyaltyPoint.transactionDate}</td>
-                                            <td>${loyaltyPoint.description}</td>
+<!--                                            <td>${loyaltyPoint.description}</td>-->
                                             <!--                                            <td>
                                                                                             <a href="${pageContext.request.contextPath}/loyalty?action=edit&id=${loyaltyPoint.loyaltyPointID}" class="btn btn-primary btn-sm edit" title="Sửa"><i class="fas fa-edit"></i></a>
                                                                                             <a href="${pageContext.request.contextPath}/loyalty?action=delete&id=${loyaltyPoint.loyaltyPointID}" class="btn btn-primary btn-sm trash" title="Xóa"><i class="fas fa-trash-alt"></i></a>
