@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.Permissions;
+import model.User;
 
 /**
  *
@@ -59,6 +60,20 @@ public class AddRoleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Xử lí Phân Quyền
+        String END_POINT = "ROLE-MANAGE";
+        if (request.getSession().getAttribute("User") != null) {
+            PermissionsDAO pd = new PermissionsDAO();
+            User u = (User) request.getSession().getAttribute("User");
+            if (!pd.isAccess(u, END_POINT)) {
+                response.sendRedirect("404.jsp");
+                return;
+            }
+        } else {
+            response.sendRedirect("404.jsp");
+            return;
+        }
+        
         // Sử dụng DAO để lấy danh sách quyền
         PermissionsDAO permissionsDAO = new PermissionsDAO();
         List<Permissions> permissions = permissionsDAO.getAllPermissions();

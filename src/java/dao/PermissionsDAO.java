@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Permissions;
 import model.Role;
+import model.User;
 
 /**
  *
@@ -171,5 +172,18 @@ public class PermissionsDAO extends DBContext {
         System.out.println(pd.getPermissionById(3));
         
 
+    }
+
+    public boolean isAccess(User user, String endpoint) {
+        // Assuming user has a list of permissions/roles in their object
+        // Replace this with actual database retrieval logic if necessary
+        List<String> userPermissions = getAssignedPermissionsForRole(user.getRoleID());
+        
+        // Check if the endpoint is within the user's permissions
+        if (userPermissions != null && userPermissions.contains(endpoint)) {
+            return true;
+        }
+        
+        return false;
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import model.Role;
 import dao.*;
 import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
@@ -28,7 +29,7 @@ import java.sql.SQLException;
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50)   // 50MB
 public class AddUserController extends HttpServlet {
-
+private PermissionsDAO pd = new PermissionsDAO();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -67,6 +68,20 @@ public class AddUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Xử lí Phân Quyền
+        String END_POINT = "EMPLOYEE-MANAGE";
+        if (request.getSession().getAttribute("User") != null) {
+            PermissionsDAO pd = new PermissionsDAO();
+            User u = (User) request.getSession().getAttribute("User");
+            if (!pd.isAccess(u, END_POINT)) {
+                response.sendRedirect("404.jsp");
+                return;
+            }
+        } else {
+            response.sendRedirect("404.jsp");
+            return;
+        }
+        
         RoleDAO rd = new RoleDAO();
         List<Role> roles = rd.getAllRole();
         User user = new User(); // Khởi tạo một đối tượng User mới
@@ -178,7 +193,6 @@ public class AddUserController extends HttpServlet {
         user.setImg(addedUser.getImg()); // Set the image path
 
         // Insert user into the database
-        ;
         try {
             ud.addUser(user);
             se.sendEmailWelcome(email, password);
