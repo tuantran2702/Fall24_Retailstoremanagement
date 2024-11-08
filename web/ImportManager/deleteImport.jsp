@@ -17,25 +17,13 @@
     <header class="app-header">
         <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
         <ul class="app-nav">
-            <li><a class="app-nav__item" href="/index.html"><i class='bx bx-log-out bx-rotate-180'></i></a></li>
+            <li><a class="app-nav__item" href="${pageContext.request.contextPath}/login"><i class='bx bx-log-out bx-rotate-180'></i></a></li>
         </ul>
     </header>
+
     <!-- Sidebar menu -->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-    <aside class="app-sidebar">
-        <div class="app-sidebar__user">
-            <img class="app-sidebar__user-avatar" src="${pageContext.request.contextPath}/doc/images/hay.jpg" width="50px" alt="User Image">
-            <div>
-                <p class="app-sidebar__user-name"><b>Võ Trường</b></p>
-                <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
-            </div>
-        </div>
-        <hr>
-        <ul class="app-menu">
-            <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>POS Bán Hàng</a></li>
-            <li><a class="app-menu__item active" href="${pageContext.request.contextPath}/warehouse"><i class='app-menu__icon bx bx-task'></i>Quản lý kho</a></li>
-        </ul>
-    </aside>
+    <jsp:include page="/menu.jsp" />
     <main class="app-content">
         <div class="app-title">
             <ul class="app-breadcrumb breadcrumb">

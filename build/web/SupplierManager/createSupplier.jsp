@@ -158,36 +158,36 @@
         <aside class="app-sidebar">
             <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
                                                 alt="User Image">      <div>
-        <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
-        <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
-      </div>
+                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
+                    <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
+                </div>
             </div>
 
             <hr>
-    <ul class="app-menu">
+            <ul class="app-menu">
                 <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
                         <span class="app-menu__label">POS Bán Hàng</span></a></li>
                 <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
                             class="app-menu__label">Bảng điều khiển</span></a></li>
-                              <li><a class="app-menu__item " href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
-                              
-                                    <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
-            class="app-menu__label">Quản lý nhân viên</span></a></li>
-                            
-                            
-                               <li><a class="app-menu__item active" href="product"><i
+                <li><a class="app-menu__item " href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
+
+                <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
+                            class="app-menu__label">Quản lý nhân viên</span></a></li>
+
+
+                <li><a class="app-menu__item active" href="product"><i
                             class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
                 </li>
 
                 <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-id-card'></i> <span
                             class="app-menu__label">Quản lý khách hàng </span></a></li>
-                            
-                            
-                            
-                            
-                   
 
-              
+
+
+
+
+
+
 
 
 
@@ -195,12 +195,12 @@
                 <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Quản lý   kho</span></a></li>
 
-   <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
+                <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
                             class="app-menu__label">Thay đổi mật khẩu </span></a></li>
 
 
-            
-            
+
+
             </ul>
 
 
@@ -208,126 +208,198 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item">Danh sách sản phẩm</li>
-                    <li class="breadcrumb-item"><a href="#">Thêm sản phẩm</a></li>
+                    <li class="breadcrumb-item"><a href="supplier">Danh sách Nhà cung cấp</a></li>
+                    <li class="breadcrumb-item"><a href="#">Thêm Nhà cung cấp</a></li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="tile">
-                        <h3 class="tile-title">Tạo mới sản phẩm</h3>
+                        <h3 class="tile-title">Tạo mới Nhà cung cấp</h3>
                         <div class="tile-body">
                             <div class="row element-button">
-                                <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i
-                                            class="fas fa-folder-plus"></i> Thêm nhà cung cấp</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc"><i
-                                            class="fas fa-folder-plus"></i> Thêm danh mục</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang"><i
-                                            class="fas fa-folder-plus"></i> Thêm tình trạng</a>
-                                </div>
                             </div>
-                            <form action="supplier" method="post" class="row">
+                            <c:if test="${not empty errorMessage}">
+                                <div style="color: red;">${errorMessage}</div>
+                            </c:if>
+                            <form action="supplier" method="post" class="row" onsubmit="return validateForm();">
                                 <input type="hidden" name="action" value="create">
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Supplier Name</label>
-                                    <input class="form-control" type="text" name="supplierName">
+                                    <label class="control-label">Tên nhà cung cấp</label>
+                                    <input class="form-control" type="text" name="supplierName" id="supplierName" required oninput="validateSupplierName();">
+                                    <small id="error-message-supplier" style="color: red;"></small>
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Contact Name</label>
-                                    <input class="form-control" type="text" name="contactName">
+                                    <label class="control-label">Tên liên lạc</label>
+                                    <input class="form-control" type="text" name="contactName" id="contactName" required oninput="validateContactName();">
+                                    <small id="error-message-contact" style="color: red;"></small>
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Phone Number</label>
-                                    <input class="form-control" type="number" name="phoneNumber">
+                                    <label class="control-label">Số điện thoại</label>
+                                    <input class="form-control" type="text" name="phoneNumber" id="phoneNumber" required oninput="validatePhoneNumber();">
+                                    <small id="error-message-phone" style="color: red;"></small>
                                 </div>
 
                                 <div class="form-group col-md-3">
                                     <label class="control-label">Email</label>
-                                    <input class="form-control" type="email" name="email">
+                                    <input class="form-control" type="email" name="email" id="email" required oninput="validateEmail();">
+                                    <small id="error-message-email" style="color: red;"></small>
                                 </div>
 
-                                <div class="form-group col-md-3">
-                                    <label class="control-label">Address</label>
-                                    <input class="form-control" type="text" name="address">
+                                <div class="form-group col-md-12">
+                                    <label class="control-label">Địa chỉ</label>
+                                    <input class="form-control" type="text" name="address" id="address" required oninput="validateAddress();">
+                                    <small id="error-message-address" style="color: red;"></small>
                                 </div>
+
+                                <button class="btn btn-save" type="submit">Lưu lại</button>
+                                <a class="btn btn-cancel" href="${pageContext.request.contextPath}/supplier">Hủy bỏ</a>
+                            </form>
+
 
                         </div>
-                        <button class="btn btn-save" type="submit">Lưu lại</button>
-                        <a class="btn btn-cancel" href="table-data-product.html">Hủy bỏ</a>
-                        </form>
+                        </main>
 
 
-                    </div>
-                    </main>
+                        <!--
+                        MODAL CHỨC VỤ 
+                        -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                             data-backdrop="static" data-keyboard="false">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
 
-
-                    <!--
-                    MODAL CHỨC VỤ 
-                    -->
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                         data-backdrop="static" data-keyboard="false">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="form-group  col-md-12">
-                                            <span class="thong-tin-thanh-toan">
-                                                <h5>Thêm mới nhà cung cấp</h5>
-                                            </span>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="form-group  col-md-12">
+                                                <span class="thong-tin-thanh-toan">
+                                                    <h5>Thêm mới nhà cung cấp</h5>
+                                                </span>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label">Nhập tên chức vụ mới</label>
+                                                <input class="form-control" type="text" required>
+                                            </div>
                                         </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Nhập tên chức vụ mới</label>
-                                            <input class="form-control" type="text" required>
-                                        </div>
+                                        <BR>
+                                        <button class="btn btn-save" type="button">Lưu lại</button>
+                                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                        <BR>
                                     </div>
-                                    <BR>
-                                    <button class="btn btn-save" type="button">Lưu lại</button>
-                                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                    <BR>
-                                </div>
-                                <div class="modal-footer">
+                                    <div class="modal-footer">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
 
 
-                    <script src="js/jquery-3.2.1.min.js"></script>
-                    <script src="js/popper.min.js"></script>
-                    <script src="js/bootstrap.min.js"></script>
-                    <script src="js/main.js"></script>
-                    <script src="js/plugins/pace.min.js"></script>
-                    <script>
-            const inpFile = document.getElementById("inpFile");
-            const loadFile = document.getElementById("loadFile");
-            const previewContainer = document.getElementById("imagePreview");
-            const previewContainer = document.getElementById("imagePreview");
-            const previewImage = previewContainer.querySelector(".image-preview__image");
-            const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
-            inpFile.addEventListener("change", function () {
-                const file = this.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    previewDefaultText.style.display = "none";
-                    previewImage.style.display = "block";
-                    reader.addEventListener("load", function () {
-                        previewImage.setAttribute("src", this.result);
-                    });
-                    reader.readAsDataURL(file);
-                }
-            });
+                        <script src="js/jquery-3.2.1.min.js"></script>
+                        <script src="js/popper.min.js"></script>
+                        <script src="js/bootstrap.min.js"></script>
+                        <script src="js/main.js"></script>
+                        <script src="js/plugins/pace.min.js"></script>
+                        <script>
+                                // Biểu thức chính quy
+                                const regexName = /^[A-Za-zÀ-ỹ\s]{3,50}$/;
+                                const regexPhone = /^[0-9]{10,15}$/;
+                                const regexAddress = /^.{5,100}$/;
 
-                    </script>
-                    </body>
+                                function validateSupplierName() {
+                                    const supplierName = document.getElementById('supplierName');
+                                    const errorMessageSupplier = document.getElementById('error-message-supplier');
 
-                    </html>
+                                    if (!regexName.test(supplierName.value.trim())) {
+                                        errorMessageSupplier.textContent = 'Tên nhà cung cấp phải là chữ cái (có dấu) và từ 3-50 ký tự.';
+                                        return false;
+                                    } else {
+                                        errorMessageSupplier.textContent = '';
+                                        return true;
+                                    }
+                                }
+
+                                function validateContactName() {
+                                    const contactName = document.getElementById('contactName');
+                                    const errorMessageContact = document.getElementById('error-message-contact');
+
+                                    if (!regexName.test(contactName.value.trim())) {
+                                        errorMessageContact.textContent = 'Tên liên hệ phải là chữ cái (có dấu) và từ 3-50 ký tự.';
+                                        return false;
+                                    } else {
+                                        errorMessageContact.textContent = '';
+                                        return true;
+                                    }
+                                }
+
+                                function validatePhoneNumber() {
+                                    const phoneNumber = document.getElementById('phoneNumber');
+                                    const errorMessagePhone = document.getElementById('error-message-phone');
+
+                                    if (!regexPhone.test(phoneNumber.value.trim())) {
+                                        errorMessagePhone.textContent = 'Số điện thoại phải từ 10-15 chữ số.';
+                                        return false;
+                                    } else {
+                                        errorMessagePhone.textContent = '';
+                                        return true;
+                                    }
+                                }
+
+                                function validateEmail() {
+                                    const email = document.getElementById('email');
+                                    const errorMessageEmail = document.getElementById('error-message-email');
+
+                                    if (!email.checkValidity()) {
+                                        errorMessageEmail.textContent = 'Email không hợp lệ.';
+                                        return false;
+                                    } else {
+                                        errorMessageEmail.textContent = '';
+                                        return true;
+                                    }
+                                }
+
+                                function validateAddress() {
+                                    const address = document.getElementById('address');
+                                    const errorMessageAddress = document.getElementById('error-message-address');
+
+                                    if (!regexAddress.test(address.value.trim())) {
+                                        errorMessageAddress.textContent = 'Địa chỉ phải từ 5-100 ký tự.';
+                                        return false;
+                                    } else {
+                                        errorMessageAddress.textContent = '';
+                                        return true;
+                                    }
+                                }
+
+                                function validateForm() {
+                                    // Kiểm tra tất cả các trường
+                                    return validateSupplierName() && validateContactName() && validatePhoneNumber() && validateEmail() && validateAddress();
+                                }
+                        </script>
+
+                        <script>
+                            const inpFile = document.getElementById("inpFile");
+                            const loadFile = document.getElementById("loadFile");
+                            const previewContainer = document.getElementById("imagePreview");
+                            const previewContainer = document.getElementById("imagePreview");
+                            const previewImage = previewContainer.querySelector(".image-preview__image");
+                            const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
+                            inpFile.addEventListener("change", function () {
+                                const file = this.files[0];
+                                if (file) {
+                                    const reader = new FileReader();
+                                    previewDefaultText.style.display = "none";
+                                    previewImage.style.display = "block";
+                                    reader.addEventListener("load", function () {
+                                        previewImage.setAttribute("src", this.result);
+                                    });
+                                    reader.readAsDataURL(file);
+                                }
+                            });
+
+                        </script>
+                        </body>
+
+                        </html>

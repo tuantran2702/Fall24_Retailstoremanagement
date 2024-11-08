@@ -65,10 +65,6 @@
         <servlet-class>controllers.UserController.AddUserController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>GetUserServlet</servlet-name>
-        <servlet-class>controllers.UserController.GetUserServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>LogOutServlet</servlet-name>
         <servlet-class>controllers.UserController.LogOutServlet</servlet-class>
     </servlet>
@@ -140,6 +136,38 @@
         <servlet-name>GetInventoriesServlet</servlet-name>
         <servlet-class>controllers.GetInventoriesServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ExportCategory</servlet-name>
+        <servlet-class>controllers.ExportCategory</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ExportExcel</servlet-name>
+        <servlet-class>controllers.ExportExcel</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ExportSupplier</servlet-name>
+        <servlet-class>controllers.ExportSupplier</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ExportUnit</servlet-name>
+        <servlet-class>controllers.ExportUnit</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomerReportController</servlet-name>
+        <servlet-class>controllers.CustomerReportController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdatePermissionServlet</servlet-name>
+        <servlet-class>controllers.RoleControllers.UpdatePermissionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReportInventoryController</servlet-name>
+        <servlet-class>controllers.ReportInventoryController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ExportReportInventory</servlet-name>
+        <servlet-class>controllers.ExportReportInventory</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
         <url-pattern>/homepage</url-pattern>
@@ -207,10 +235,6 @@
     <servlet-mapping>
         <servlet-name>AddUserController</servlet-name>
         <url-pattern>/addUser</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GetUserServlet</servlet-name>
-        <url-pattern>/getUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogOutServlet</servlet-name>
@@ -283,6 +307,38 @@
     <servlet-mapping>
         <servlet-name>GetInventoriesServlet</servlet-name>
         <url-pattern>/getInventories</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportCategory</servlet-name>
+        <url-pattern>/exportCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportExcel</servlet-name>
+        <url-pattern>/exportExcel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportSupplier</servlet-name>
+        <url-pattern>/exportSupplier</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportUnit</servlet-name>
+        <url-pattern>/exportUnit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerReportController</servlet-name>
+        <url-pattern>/customerReport</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdatePermissionServlet</servlet-name>
+        <url-pattern>/updatePermission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReportInventoryController</servlet-name>
+        <url-pattern>/reportInventory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportReportInventory</servlet-name>
+        <url-pattern>/exportReportInventory</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

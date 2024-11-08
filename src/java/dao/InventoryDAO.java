@@ -114,18 +114,16 @@ public class InventoryDAO extends DBContext {
     }
 
     
-    
-   public void deleteInventory(int id) {
+public int deleteInventory(int id) {
     String sql = "DELETE FROM Inventory WHERE InventoryID = ?";
     try (PreparedStatement st = connection.prepareStatement(sql)) {
         st.setInt(1, id);
-        // Xóa mà không cần kiểm tra ảnh hưởng hay thông báo
-        st.executeUpdate();
+        return st.executeUpdate(); // Trả về số dòng bị ảnh hưởng
     } catch (SQLException e) {
+        System.out.println("Lỗi khi xóa inventory: " + e.getMessage());
         e.printStackTrace();
-    }
-}
-
+        throw new RuntimeException("Lỗi khi xóa inventory", e);
+    }}
     private Inventory createInventoryFromResultSet(ResultSet rs) throws SQLException {
         int inventoryID = rs.getInt("InventoryID");
         int productID = rs.getInt("ProductID");
@@ -160,16 +158,15 @@ public class InventoryDAO extends DBContext {
     return data;
 
     }
-   public void deleteAllInventories() {
+public void deleteAllInventories() {
     String sql = "DELETE FROM Inventory";
     try (PreparedStatement st = connection.prepareStatement(sql)) {
-        // Thực hiện câu lệnh xóa
-        st.executeUpdate();
+        st.executeUpdate(); // Xóa tất cả các dòng
     } catch (SQLException e) {
+        System.out.println("Lỗi khi xóa tất cả inventory: " + e.getMessage());
         e.printStackTrace();
     }
 }
-
     
   public boolean isProductAndWarehouseExist(int productID, int warehouseID) {
     String sql = "SELECT COUNT(*) FROM Inventory WHERE ProductID = ? AND WarehouseID = ?";

@@ -4,6 +4,7 @@
  */
 package controllers;
 
+import dao.PermissionsDAO;
 import dao.UnitDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,7 +12,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import model.Unit;
+import model.User;
 
 /**
  *
@@ -57,15 +60,62 @@ public class UnitController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                String action = request.getParameter("action");
+        
+        
+          String END_POINT = "PRODUCT-MANAGE";
+        if (request.getSession().getAttribute("User") != null) {
+            PermissionsDAO pd = new PermissionsDAO();
+            User u = (User) request.getSession().getAttribute("User");
+            if (!pd.isAccess(u, END_POINT)) {
+                response.sendRedirect("404.jsp");
+                return;
+            }
+        } else {
+            response.sendRedirect("404.jsp");
+            return;
+        }
+        String action = request.getParameter("action");
         String idStr = request.getParameter("id");
-        if (action == null) {
-            UnitDAO unit = new UnitDAO();
-            request.setAttribute("data", unit.getListunit());
-            request.getRequestDispatcher("/UnitManager/listUnit.jsp").forward(request, response);
+        String keyword = request.getParameter("keyword");
+        String unitIDStr = request.getParameter("unitID");
+        Integer unitID = null;
 
+        // Chuyển đổi unitID từ String sang Integer
+        if (unitIDStr != null && !unitIDStr.isEmpty()) {
+            try {
+                unitID = Integer.parseInt(unitIDStr);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                // Xử lý lỗi nếu cần, có thể đặt unitID về null hoặc thông báo lỗi
+            }
         }
 
+        UnitDAO unitDAO = new UnitDAO();
+
+        // Lấy danh sách đơn vị để hiển thị trong dropdown
+        List<Unit> listUnit = unitDAO.getListunit();
+        request.setAttribute("listUnit", listUnit);
+
+        if (action == null) {
+            // Hiển thị danh sách đơn vị với chức năng tìm kiếm
+            List<Unit> units = unitDAO.searchUnits(keyword, unitID);
+            request.setAttribute("data", units);
+            request.getRequestDispatcher("/UnitManager/listUnit.jsp").forward(request, response);
+        } else if (action.equals("update") && idStr != null) {
+            // Chỉnh sửa đơn vị
+            int id = Integer.parseInt(idStr);
+            Unit u = unitDAO.getUnitById(id);
+            request.setAttribute("unit", u);
+            request.getRequestDispatcher("/UnitManager/updateUnit.jsp").forward(request, response);
+        } else if (action.equals("create")) {
+            // Tạo đơn vị mới
+            request.getRequestDispatcher("/UnitManager/createUnit.jsp").forward(request, response);
+        } else if (action.equals("delete") && idStr != null) {
+            // Xóa đơn vị
+            int id = Integer.parseInt(request.getParameter("id"));
+            unitDAO.deleteUnit(id);
+            response.sendRedirect("unit");
+        }
     }
 
     /**
@@ -79,8 +129,36 @@ public class UnitController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
         String action = request.getParameter("action");
-        if ("createUnitName".equals(action)) {
+        if (action.equals("create")) {
+            String unitName = request.getParameter("unitName");
+            
+            UnitDAO unitDAO = new UnitDAO();
+            // Kiểm tra xem tên đơn vị đã tồn tại chưa
+        if (unitDAO.isUnitNameExists(unitName)) {
+            request.setAttribute("errorMessage", "Tên đơn vị đã tồn tại. Vui lòng nhập tên khác.");
+            request.getRequestDispatcher("/UnitManager/createUnit.jsp").forward(request, response);
+            return;
+        }
+
+            Unit unit = new Unit(0, unitName);
+            UnitDAO u = new UnitDAO();
+            u.createUnit(unit);
+            response.sendRedirect("unit");
+
+        } else if (action.equals("update")) {
+
+            int id = Integer.parseInt(request.getParameter("id"));
+            String unitName = request.getParameter("unitName");
+
+            Unit unit = new Unit(id, unitName);
+            UnitDAO u = new UnitDAO();
+
+            u.updateUnit(unit);
+            response.sendRedirect("unit");
+
+        } else if ("createUnitName".equals(action)) {
             // Lấy giá trị của categoryName từ form
             String unitName = request.getParameter("unitName");
 

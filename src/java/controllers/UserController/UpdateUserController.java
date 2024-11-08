@@ -110,20 +110,21 @@ public class UpdateUserController extends HttpServlet {
 
         User u = ud.getUserById(userID);  // Lấy thông tin người dùng từ DB
 
-        String uploadFilePath = "E:\\Fall24\\SWP391\\Clone-Git\\Fall24_Retailstoremanagement-Clone\\web\\img-anhthe";
+        // Lấy thư mục gốc của ứng dụng từ ServletContext
+        String rootDirectory = getServletContext().getRealPath("/");
         String imgPath = null;
 
         // Lấy phần file tải lên
         Part filePart = request.getPart("ImageUpload");
 
-        if (filePart != null) {
+        if (filePart != null && filePart.getSize() > 0) {
             // Hàm lưu ảnh
-            imgPath = ih.luuAnh(filePart, uploadFilePath);
+            imgPath = ih.luuAnh(filePart, rootDirectory);
         }
 
-        // Nếu không có file được tải lên, giữ nguyên đường dẫn ảnh hiện tại
-        if (imgPath == null) {
-            imgPath = u.getImg();
+        // Nếu không có file được tải lên, giữ nguyên đường dẫn ảnh hiện tại từ đối tượng 'u'
+        if (imgPath == null || imgPath.isEmpty()) {
+            imgPath = u.getImg(); // u.getImg() trả về đường dẫn ảnh hiện tại
         }
 
         //Kiem tra Email
@@ -161,28 +162,8 @@ public class UpdateUserController extends HttpServlet {
             // Lưu danh sách roles vào request attribute
             request.setAttribute("roles", roles);
             // Chuyển tiếp yêu cầu về lại trang thêm người dùng
-            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
+            request.getRequestDispatcher("User/EditEmployee.jsp").forward(request, response);
             return; // Dừng việc xử lý thêm người dùng
-        }
-
-        // Kiểm tra số điện thoại có hợp lệ hay không (10 số và bắt đầu bằng 0)
-        String phonePattern = "^0\\d{9}$";
-        if (!phone.matches(phonePattern)) {
-            // Nếu số điện thoại không hợp lệ, thiết lập thông báo lỗi
-            request.setAttribute("errorMessage", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại 10 số bắt đầu bằng 0.");
-
-            u.setPhoneNumber("");
-            request.setAttribute("user", u);
-
-            // Truy vấn dữ liệu từ database
-            RoleDAO roleDAO = new RoleDAO();
-            List<Role> roles = roleDAO.getAllRole();
-
-            // Lưu danh sách roles vào request attribute
-            request.setAttribute("roles", roles);
-            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
-            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
-            return;  // Dừng xử lý tiếp
         }
 
 // Proceed with further logic (e.g., update user data with imgPath)

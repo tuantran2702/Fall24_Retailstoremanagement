@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
 import com.google.gson.Gson;
+import dao.PermissionsDAO;
+import model.User;
 
 public class ImportController extends HttpServlet {
     private final ImportDAO importDAO = new ImportDAO();
@@ -19,6 +21,20 @@ public class ImportController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+            //Xử lí Phân Quyền
+        String END_POINT = "INVENTORY-MANAGE";
+        if (request.getSession().getAttribute("User") != null) {
+            PermissionsDAO pd = new PermissionsDAO();
+            User u = (User) request.getSession().getAttribute("User");
+            if (!pd.isAccess(u, END_POINT)) {
+                response.sendRedirect("404.jsp");
+                return;
+            }
+        } else {
+            response.sendRedirect("404.jsp");
+            return;
+        }
         String action = request.getParameter("action");
         
         if ("getInventories".equals(request.getServletPath())) {
@@ -52,7 +68,7 @@ public class ImportController extends HttpServlet {
         }
     }
 
-    @Override
+     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -68,6 +84,9 @@ public class ImportController extends HttpServlet {
                 case "delete":
                     deleteImport(request, response);
                     break;
+                case "deleteAll":
+                    deleteAllImports(request, response);
+                    break;
                 default:
                     response.sendRedirect(request.getContextPath() + "/import");
                     break;
@@ -77,6 +96,19 @@ public class ImportController extends HttpServlet {
             e.printStackTrace();
             request.setAttribute("error", "Có lỗi xảy ra: " + e.getMessage());
             request.getRequestDispatcher("/ImportManager/importList.jsp").forward(request, response);
+        }
+    }
+    
+    private void deleteAllImports(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        try {
+            importDAO.deleteAllImports();
+            request.setAttribute("success", "Đã xóa tất cả đơn nhập hàng thành công");
+            response.sendRedirect(request.getContextPath() + "/import");
+        } catch (Exception e) {
+            System.out.println("Error deleting all imports: " + e.getMessage());
+            request.setAttribute("error", "Lỗi khi xóa tất cả đơn nhập hàng: " + e.getMessage());
+            listImports(request, response);
         }
     }
 

@@ -259,6 +259,24 @@ public class ImportDAO extends DBContext {
     }
     return inventories;
 }
+    
+     public void deleteAllImports() throws SQLException {
+        connection.setAutoCommit(false);
+        String sql = "DELETE FROM Import";
+        
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            int rowsAffected = st.executeUpdate();
+            connection.commit();
+            System.out.println("Successfully deleted " + rowsAffected + " imports");
+        } catch (SQLException e) {
+            connection.rollback();
+            System.out.println("Error deleting all imports: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        } finally {
+            connection.setAutoCommit(true);
+        }
+    }
     public boolean isProductInInventory(int productID, int inventoryID) {
         String sql = "SELECT COUNT(*) FROM Inventory WHERE ProductID = ? AND InventoryID = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {

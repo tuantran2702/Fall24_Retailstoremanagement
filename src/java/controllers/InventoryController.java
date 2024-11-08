@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.InventoryDAO;
+import dao.PermissionsDAO;
 import model.Inventory;
 import model.Product;
 import model.Warehouse;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import model.User;
 
 public class InventoryController extends HttpServlet {
     private final InventoryDAO inventoryDAO = new InventoryDAO();
@@ -19,6 +21,23 @@ public class InventoryController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            //Xử lí Phân Quyền
+        String END_POINT = "INVENTORY-MANAGE";
+        if (request.getSession().getAttribute("User") != null) {
+            PermissionsDAO pd = new PermissionsDAO();
+            User u = (User) request.getSession().getAttribute("User");
+            if (!pd.isAccess(u, END_POINT)) {
+                response.sendRedirect("404.jsp");
+                return;
+            }
+        } else {
+            response.sendRedirect("404.jsp");
+            return;
+        }
+        
+        
+        
+        
         String action = request.getParameter("action");
         String idStr = request.getParameter("id");
         String searchTerm = request.getParameter("search");
@@ -36,8 +55,8 @@ public class InventoryController extends HttpServlet {
                     handleShowEdit(request, response, idStr);
                     break;
                 case "delete":
-                    handleShowDelete(request, response, idStr);
-                    break;
+                     handleDelete(request, response); // Xóa trực tiếp không cần xác nhận
+                break;
                 default:
                     response.sendRedirect(request.getContextPath() + "/inventory");
                     break;
@@ -81,12 +100,11 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
 
 private void handleDeleteAll(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException {
-    inventoryDAO.deleteAllInventories(); // Gọi phương thức xóa tất cả
+    inventoryDAO.deleteAllInventories();
     HttpSession session = request.getSession();
     session.setAttribute("successMessage", "Đã xóa tất cả các mục trong kho!");
     response.sendRedirect(request.getContextPath() + "/inventory");
-}
-    private void handleList(HttpServletRequest request, HttpServletResponse response, String searchTerm) 
+} private void handleList(HttpServletRequest request, HttpServletResponse response, String searchTerm) 
             throws ServletException, IOException {
         if (searchTerm != null && !searchTerm.trim().isEmpty()) {
             request.setAttribute("data", inventoryDAO.searchInventories(searchTerm.trim()));
@@ -184,19 +202,22 @@ private void handleDeleteAll(HttpServletRequest request, HttpServletResponse res
         }
         response.sendRedirect(request.getContextPath() + "/inventory");
     }
-
- private void handleDelete(HttpServletRequest request, HttpServletResponse response) 
+private void handleDelete(HttpServletRequest request, HttpServletResponse response) 
         throws ServletException, IOException {
-    String idStr = request.getParameter("id");
-    if (idStr != null && !idStr.trim().isEmpty()) {
-        int id = Integer.parseInt(idStr);
-        // Gọi phương thức xóa mà không cần kiểm tra
-        inventoryDAO.deleteInventory(id);
+    HttpSession session = request.getSession();
+    try {
+        int id = Integer.parseInt(request.getParameter("id"));
+        int rowsDeleted = inventoryDAO.deleteInventory(id);
+        if (rowsDeleted > 0) {
+            session.setAttribute("successMessage", "Đã xóa inventory có ID = " + id);
+        } else {
+            session.setAttribute("errorMessage", "Không thể xóa inventory có ID = " + id);
+        }
+    } catch (Exception e) {
+        session.setAttribute("errorMessage", "Lỗi khi xóa inventory: " + e.getMessage());
     }
-    // Sau khi xóa, điều hướng về danh sách
     response.sendRedirect(request.getContextPath() + "/inventory");
 }
-
 
     @Override
     public String getServletInfo() {

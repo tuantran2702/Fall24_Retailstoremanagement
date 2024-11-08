@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Permissions;
 import model.Role;
+import model.User;
 
 /**
  *
@@ -69,6 +70,39 @@ public class PermissionsDAO extends DBContext {
         }
     }
 
+    public boolean updatePermission(Permissions permission) {
+        String query = "UPDATE [dbo].[Permissions] SET PermissionName = ? WHERE PermissionID = ?";
+        boolean rowUpdated = false;
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            // Thiết lập giá trị cho câu lệnh PreparedStatement
+            statement.setString(1, permission.getPermissionName());
+            statement.setInt(2, permission.getId());
+
+            // Thực thi câu lệnh cập nhật và kiểm tra số hàng bị ảnh hưởng
+            rowUpdated = statement.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rowUpdated;
+    }
+
+    public boolean deletePermission(int permissionID) {
+        String query = "DELETE FROM [dbo].[Permissions] WHERE PermissionID = ?";
+        boolean rowDeleted = false;
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            // Thiết lập giá trị cho câu lệnh PreparedStatement
+            statement.setInt(1, permissionID);
+
+            // Thực thi câu lệnh xóa và kiểm tra số hàng bị ảnh hưởng
+            rowDeleted = statement.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rowDeleted;
+    }
+
     // Lấy các quyền hạn đã gán cho vai trò
     public List<String> getAssignedPermissionsForRole(int roleID) {
         List<String> assignedPermissions = new ArrayList<>();
@@ -112,15 +146,36 @@ public class PermissionsDAO extends DBContext {
         }
     }
 
-    public static void main(String[] args) {
-        PermissionsDAO pd = new PermissionsDAO();
-        List<Permissions> lst = pd.getAllPermissions();
+    public Permissions getPermissionById(int permissionID) {
+        Permissions permission = null;
+        String query = "SELECT * FROM [dbo].[Permissions] WHERE PermissionID = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, permissionID);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                String permissionName = resultSet.getString(2);
+
+                permission = new Permissions(id, permissionName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return permission;
+    }
+
+   public boolean isAccess(User user, String endpoint) {
+        // Assuming user has a list of permissions/roles in their object
+        // Replace this with actual database retrieval logic if necessary
+        List<String> userPermissions = getAssignedPermissionsForRole(user.getRoleID());
         
-        List<String> lstlst = pd.getAssignedPermissionsForRole(1);
-        for (Permissions p : lst){
-            System.out.println(p);
+        // Check if the endpoint is within the user's permissions
+        if (userPermissions != null && userPermissions.contains(endpoint)) {
+            return true;
         }
         
-
+        return false;
     }
 }

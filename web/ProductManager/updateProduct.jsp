@@ -33,84 +33,29 @@
 
     </head>
 
-    <body onload="time()" class="app sidebar-mini rtl">
-        <!-- Navbar-->
-        <header class="app-header">
-            <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
-                                            aria-label="Hide Sidebar"></a>
-            <!-- Navbar Right Menu-->
-            <ul class="app-nav">
+<body class="app sidebar-mini rtl">
+    <!-- Navbar -->
+    <header class="app-header">
+        <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+        <ul class="app-nav">
+            <li><a class="app-nav__item" href="${pageContext.request.contextPath}/login"><i class='bx bx-log-out bx-rotate-180'></i></a></li>
+        </ul>
+    </header>
 
-
-                <!-- User Menu-->
-                <li><a class="app-nav__item" href="/index.html"><i class='bx bx-log-out bx-rotate-180'></i> </a>
-
-                </li>
-            </ul>
-        </header>
-        <!-- Sidebar menu-->
-        <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-         <aside class="app-sidebar">
-            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
-                                                alt="User Image">      <div>
-        <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
-        <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
-      </div>
-            </div>
-
-            <hr>
-    <ul class="app-menu">
-                <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
-                        <span class="app-menu__label">POS Bán Hàng</span></a></li>
-                <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
-                            class="app-menu__label">Bảng điều khiển</span></a></li>
-                              <li><a class="app-menu__item " href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
-                              
-                                    <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
-            class="app-menu__label">Quản lý nhân viên</span></a></li>
-                            
-                            
-                               <li><a class="app-menu__item active" href="product"><i
-                            class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
-                </li>
-
-                <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-id-card'></i> <span
-                            class="app-menu__label">Quản lý khách hàng </span></a></li>
-                            
-                            
-                            
-                            
-                   
-
-              
-
-
-
-
-                <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Quản lý   kho</span></a></li>
-
-   <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Thay đổi mật khẩu </span></a></li>
-
-
-            
-            
-            </ul>
-
-
-        </aside>
+    <!-- Sidebar menu -->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <jsp:include page="/menu.jsp" />
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item"><a href="warehouse">Danh sách kho hàng</a></li>
-                    <li class="breadcrumb-item active">Cập nhật kho hàng</li>
+                    <li class="breadcrumb-item"><a href="product">Danh sách sản phẩm</a></li>
+                    <li class="breadcrumb-item active">Cập nhật sản phẩm</li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="tile">
-                        <h3 class="tile-title">Cập nhật kho hàng</h3>
+                        <h3 class="tile-title">Cập nhật sản phẩm</h3>
                         <div class="tile-body">
                             <!-- Hiển thị thông báo lỗi nếu có -->
                             <form action="product" method="post" >
@@ -122,163 +67,139 @@
                                                 <h5>Chỉnh sửa thông tin sản phẩm cơ bản</h5>
                                             </span>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <input type="hidden" name="id" value="${product.productID}">
-
-                                        <div class="form-group col-md-6">
-                                            <label class="control-label">Product Code</label>
-                                            <input class="form-control" type="text" required name="productCode" value="${product.productCode}"><br>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="control-label">Product Name</label>
-                                            <input class="form-control" type="text" required name="productName" value="${product.productName}"><br>
-                                        </div>
-                                        <div class="form-group  col-md-6">
-                                            <label class="control-label">Price</label>
-                                            <input class="form-control" type="number" required name="price" value="${product.price}"><br>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="categorySelect" class="control-label">Category</label>
-                                            <select class="form-control" id="categorySelect" name="categoryID" required>
-                                                <c:forEach var="c" items="${listCategory}">
-                                                    <option value="${c.categoryID}" 
-                                                            <c:if test="${c.categoryID == product.categoryID}">
-                                                                selected
-                                                            </c:if>>
-                                                        ${c.categoryName}
-                                                    </option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                        <!--                                        <div class="form-group col-md-6 ">
-                                                                                    <label for="exampleSelect1" class="control-label">Category</label>
-                                            <input class="form-control" type="text" required name="categoryID" value="${product.categoryID}"><br>
-                                        </div>-->
-                                        <div class="form-group col-md-6">
-                                            <label class="control-label">Quantity</label>
-                                            <input class="form-control" type="text" name="quantity" value="${product.quantity}"><br>
-                                            <c:if test="${not empty error}">
-    <div style="color: red;">
-        ${error}
+                                    </div<div class="row">
+    <input type="hidden" name="id" value="${product.productID}">
+    <div class="form-group col-md-6">
+        <label for="warehouseSelect" class="control-label">Kho hàng</label>
+        <select class="form-control" id="warehouseSelect" name="warehouseID" required>
+            <c:forEach var="w" items="${listWarehouse}">
+                <option value="${w.warehouseID}" 
+                        <c:if test="${w.warehouseID == product.warehouseID}">
+                            selected
+                        </c:if>>
+                    ${w.warehouseName}
+                </option>
+            </c:forEach>
+        </select>
     </div>
-</c:if>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="control-label">Created Date</label>
-                                            <input class="form-control" type="date" name="createdDate" value="${product.createdDate}"><br>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="control-label">Expired Date</label>
-                                            <input class="form-control" type="date" name="expiredDate" value="${product.expiredDate}"><br>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="control-label">Update Date</label>
-                                            <input class="form-control" type="date" name="updateDate" value="${product.updateDate}"><br>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            
-                                                                                        <label for="userSelect" class="control-label">User</label>
-                                            <select class="form-control" id="userSelect" name="userID" required>
-                                                <c:forEach var="s" items="${listUser}">
-                                                    <option value="${s.userID}" 
-                                                            <c:if test="${s.userID == product.userID}">
-                                                                selected
-                                                            </c:if>>
-                                                        ${s.firstName} ${s.lastName}
-                                                    </option>
-                                                </c:forEach>
-                                            </select>
-                                            
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            
-                                                        <label for="unitSelect" class="control-label">Unit</label>
-                                            <select class="form-control" id="unitSelect" name="unitID" required>
-                                                <c:forEach var="u" items="${listUnit}">
-                                                    <option value="${u.unitID}" 
-                                                            <c:if test="${u.unitID == product.unitID}">
-                                                                selected
-                                                            </c:if>>
-                                                        ${u.unitName} 
-                                                    </option>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            
-                                                                                                    <label for="supplierSelect" class="control-label">Supplier</label>
-                                            <select class="form-control" id="supplierSelect" name="supplierID" required>
-                                                <c:forEach var="s" items="${listSupplier}">
-                                                    <option value="${s.supplierID}" 
-                                                            <c:if test="${s.supplierID == product.supplierID}">
-                                                                selected
-                                                            </c:if>>
-                                                        ${s.supplierName} 
-                                                    </option>
-                                                </c:forEach>
-                                            </select>
 
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Image</label>
-                                            <div id="myfileupload">
-                                                <!-- Input to upload a new image -->
-                                                <input type="file" name="image" id="uploadfile" onchange="readURL(this);" value="${product.image}">
-                                                <br>
-                                            </div>
+    <div class="form-group col-md-6">
+        <label class="control-label">Mã sản phẩm</label>
+        <input class="form-control" type="text" required name="productCode" value="${product.productCode}"><br>
+    </div>
+    <div class="form-group col-md-6">
+        <label class="control-label">Tên sản phẩm</label>
+        <input class="form-control" type="text" required name="productName" value="${product.productName}"><br>
+    </div>
+    <div class="form-group  col-md-6">
+        <label class="control-label">Giá</label>
+        <input class="form-control" type="number" required name="price" value="${product.price}"><br>
+    </div>
 
-                                            <!-- Display the current image if available -->
-                                            <div id="thumbbox">
-                                                <c:if test="${not empty product.image}">
-                                                    <img height="450" width="400" alt="Thumb image" id="thumbimage" src="${pageContext.request.contextPath}/img-sanpham/${product.image}" />
-                                                </c:if>
-                                                <a class="removeimg" href="javascript:void(0);"></a>
-                                            </div>
+    <div class="form-group col-md-6">
+        <label for="categorySelect" class="control-label">Danh mục</label>
+        <select class="form-control" id="categorySelect" name="categoryID" required>
+            <c:forEach var="c" items="${listCategory}">
+                <option value="${c.categoryID}" 
+                        <c:if test="${c.categoryID == product.categoryID}">
+                            selected
+                        </c:if>>
+                    ${c.categoryName}
+                </option>
+            </c:forEach>
+        </select>
+    </div>
 
-                                            <div id="boxchoice">
-                                                <a href="javascript:void(0);" class="Choicefile">
-                                                    <i class="fas fa-cloud-upload-alt"></i> Chọn ảnh
-                                                </a>
-                                                <p style="clear:both"></p>
-                                            </div>
-                                        </div>
+    <div class="form-group col-md-6">
+        <label class="control-label">Số lượng</label>
+        <input class="form-control" type="text" name="quantity" value="${product.quantity}"><br>
+        <c:if test="${not empty error}">
+            <div style="color: red;">
+                ${error}
+            </div>
+        </c:if>
+    </div>
+    <div class="form-group col-md-6">
+        <label class="control-label">Ngày tạo</label>
+        <input class="form-control" type="date" name="createdDate" value="${product.createdDate}"><br>
+    </div>
+    <div class="form-group col-md-6">
+        <label class="control-label">Ngày hết hạn</label>
+        <input class="form-control" type="date" name="expiredDate" value="${product.expiredDate}"><br>
+    </div>
+    <div class="form-group col-md-6">
+        <label class="control-label">Ngày cập nhật</label>
+        <input class="form-control" type="date" name="updateDate" value="${product.updateDate}"><br>
+    </div>
+    <div class="form-group col-md-6">
+        <label for="userSelect" class="control-label">Người sử dụng</label>
+        <select class="form-control" id="userSelect" name="userID" required>
+            <c:forEach var="s" items="${listUser}">
+                <option value="${s.userID}" 
+                        <c:if test="${s.userID == product.userID}">
+                            selected
+                        </c:if>>
+                    ${s.firstName} ${s.lastName}
+                </option>
+            </c:forEach>
+        </select>
+    </div>
+    <div class="form-group col-md-6">
+        <label for="unitSelect" class="control-label">Đơn vị</label>
+        <select class="form-control" id="unitSelect" name="unitID" required>
+            <c:forEach var="u" items="${listUnit}">
+                <option value="${u.unitID}" 
+                        <c:if test="${u.unitID == product.unitID}">
+                            selected
+                        </c:if>>
+                    ${u.unitName} 
+                </option>
+            </c:forEach>
+        </select>
+    </div>
+    <div class="form-group col-md-6">
+        <label for="supplierSelect" class="control-label">Nhà cung cấp</label>
+        <select class="form-control" id="supplierSelect" name="supplierID" required>
+            <c:forEach var="s" items="${listSupplier}">
+                <option value="${s.supplierID}" 
+                        <c:if test="${s.supplierID == product.supplierID}">
+                            selected
+                        </c:if>>
+                    ${s.supplierName} 
+                </option>
+            </c:forEach>
+        </select>
+    </div>
+    <div class="form-group col-md-12">
+        <label class="control-label">Hình ảnh</label>
+        <div id="myfileupload">
+            <input type="file" name="image" id="uploadfile" onchange="readURL(this);" value="${product.image}">
+            <br>
+        </div>
+        <div id="thumbbox">
+            <c:if test="${not empty product.image}">
+                <img height="450" width="400" alt="Thumb image" id="thumbimage" src="${pageContext.request.contextPath}/img-sanpham/${product.image}" />
+            </c:if>
+            <a class="removeimg" href="javascript:void(0);"></a>
+        </div>
+        <div id="boxchoice">
+            <a href="javascript:void(0);" class="Choicefile">
+                <i class="fas fa-cloud-upload-alt"></i> Chọn ảnh
+            </a>
+            <p style="clear:both"></p>
+        </div>
+    </div>
 
-                                        <!--                                        <div class="form-group col-md-12">
-                                                                                    <label class="control-label">Image</label>
-                                                                                    <div id="myfileupload">
-                                                                                         Input to upload a new image 
-                                                                                        <input type="file" name="image" id="uploadfile" onchange="readURL(this);" value="${product.image}">
-                                                                                        <br>
-                                                                                    </div>
-                                        
-                                                                                     Display the current image if available 
-                                                                                    <div id="thumbbox">
-                                        <c:if test="${not empty product.image}">
-                                            <img height="450" width="400" alt="Thumb image" id="thumbimage" src="${pageContext.request.contextPath}/img-sanpham/${product.image}" />
-                                        </c:if>
-                                        <a class="removeimg" href="javascript:void(0);"></a>
-                                    </div>
-
-                                    <div id="boxchoice">
-                                        <a href="javascript:void(0);" class="Choicefile">
-                                            <i class="fas fa-cloud-upload-alt"></i> Chọn ảnh
-                                        </a>
-                                        <p style="clear:both"></p>
-                                    </div>
-                                </div>-->
-
-                                        <div class="form-group col-md-12">
-                                            <label class="control-label">Description</label>
-                                            <textarea class="form-control" name="description" id="description">${product.description}</textarea>
-                                            <script>CKEDITOR.replace('description');</script>
-                                        </div>
-                                    </div>
-                                    <br>
+    <div class="form-group col-md-12">
+        <label class="control-label">Mô tả</label>
+        <textarea class="form-control" name="description" id="description">${product.description}</textarea>
+        <script>CKEDITOR.replace('description');</script>
+    </div>
+</div>                                    <br>
                                     <a href="#" style="float: right; font-weight: 600; color: #ea0000;">Chỉnh sửa sản phẩm nâng cao</a>
                                     <br><br>
                                     <button class="btn btn-save" type="submit">Lưu lại</button>
-                                    <a class="btn btn-cancel" href="#">Hủy bỏ</a>
+                                    <a class="btn btn-cancel" href="${pageContext.request.contextPath}/product">Hủy bỏ</a>
                                     <br>
                                 </div>
                             </form>

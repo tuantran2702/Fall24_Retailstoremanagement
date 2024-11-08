@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.Date;
 
 public class Product extends DBContext {
-
     private int productID;
     private String productCode;
     private String productName;
@@ -24,11 +23,13 @@ public class Product extends DBContext {
     private int userID;
     private int unitID;
     private int supplierID;
+    private int warehouseID;
+    private String warehouseName;
 
-    Connection cnn;//ket noi
-    Statement stm;//thuc thi cau lenh sql
-    ResultSet rs;//luu tru du lieu va xu li
-    PreparedStatement pstm;//thuc thi cau lenh sql
+    Connection cnn;
+    Statement stm;
+    ResultSet rs;
+    PreparedStatement pstm;
 
     private void connect() {
         cnn = connection;
@@ -41,8 +42,7 @@ public class Product extends DBContext {
 
     public Product() {
     }
-
-    public Product(int productID, String productCode, String productName, int categoryID, double price, int quantity, String description, Date createdDate, Date expiredDate, Date updateDate, String image, int userID, int unitID, int supplierID) {
+        public Product(int productID, String productCode, String productName, int categoryID, double price, int quantity, String description, Date createdDate, Date expiredDate, Date updateDate, String image, int userID, int unitID, int supplierID) {
         this.productID = productID;
         this.productCode = productCode;
         this.productName = productName;
@@ -78,8 +78,44 @@ public class Product extends DBContext {
         this.categoryName = categoryName;
         connect();
     }
-    
-    
+
+    public Product(int productID, String productCode, String productName, int categoryID, double price, int quantity,
+                   String description, Date createdDate, Date expiredDate, Date updateDate, String image, int userID,
+                   int unitID, int supplierID, int warehouseID, String warehouseName) {
+        this.productID = productID;
+        this.productCode = productCode;
+        this.productName = productName;
+        this.categoryID = categoryID;
+        this.price = price;
+        this.quantity = quantity;
+        this.description = description;
+        this.createdDate = createdDate;
+        this.expiredDate = expiredDate;
+        this.updateDate = updateDate;
+        this.image = image;
+        this.userID = userID;
+        this.unitID = unitID;
+        this.supplierID = supplierID;
+        this.warehouseID = warehouseID;
+        this.warehouseName = warehouseName;
+        connect();
+    }
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
+    }
+
+    public int getWarehouseID() {
+        return warehouseID;
+    }
+
+    public void setWarehouseID(int warehouseID) {  // Fix parameter name
+    this.warehouseID = warehouseID;  // Fix assignment
+}
     
 
     public String getCategoryName() {

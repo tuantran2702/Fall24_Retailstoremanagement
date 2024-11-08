@@ -24,22 +24,19 @@
         </ul>
     </header>
 
+<body class="app sidebar-mini rtl">
+    <!-- Navbar -->
+    <header class="app-header">
+        <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+        <ul class="app-nav">
+            <li><a class="app-nav__item" href="${pageContext.request.contextPath}/login"><i class='bx bx-log-out bx-rotate-180'></i></a></li>
+        </ul>
+    </header>
+
     <!-- Sidebar menu -->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-    <aside class="app-sidebar">
-         <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
-                                                alt="User Image">      <div>
-                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
-                    <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
-                </div>
-            </div>
-        <hr>
-        <ul class="app-menu">
-            <li><a class="app-menu__item" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>POS Bán Hàng</a></li>
-            <li><a class="app-menu__item active" href="${pageContext.request.contextPath}/warehouse"><i class='app-menu__icon bx bx-task'></i>Danh mục kho</a></li>
+    <jsp:include page="/menu.jsp" />
 
-        </ul>
-    </aside>
 
     <main class="app-content">
         <div class="app-title">
@@ -53,31 +50,66 @@
                 <div class="tile">
                     <h3 class="tile-title">Thêm kho hàng</h3>
                     <div class="tile-body">
-                        <form action="warehouse" method="post">
-                            <input type="hidden" name="action" value="create">
-                            <div class="form-group">
-                                <label for="name">Tên kho hàng:</label>
-                                <input type="text" class="form-control" id="name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="location">Vị trí:</label>
-                                <input type="text" class="form-control" id="location" name="location" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="manager">Tên quản lý:</label>
-                                <input type="text" class="form-control" id="manager" name="manager" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="contact">Số liên lạc:</label>
-                                <input type="text" class="form-control" id="contact" name="contact" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Lưu</button>
-                        </form>
+                      <form action="warehouse" method="post" onsubmit="return validateForm();">
+    <input type="hidden" name="action" value="create">
+    <div class="form-group">
+        <label for="name">Tên kho hàng:</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="form-group">
+        <label for="location">Vị trí:</label>
+        <input type="text" class="form-control" id="location" name="location" required>
+    </div>
+    <div class="form-group">
+        <label for="manager">Tên quản lý:</label>
+        <input type="text" class="form-control" id="manager" name="manager" required>
+    </div>
+    <div class="form-group">
+        <label for="contact">Số liên lạc:</label>
+        <input type="text" class="form-control" id="contact" name="contact" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu</button>
+</form>
+
                     </div>
                 </div>
             </div>
         </div>
     </main>
+<script>
+    function validateForm() {
+        // Kiểm tra tên kho hàng (bắt buộc, ít nhất 3 ký tự)
+        const name = document.getElementById("name").value;
+        if (name.trim().length < 3) {
+            alert("Tên kho hàng phải có ít nhất 3 ký tự.");
+            return false;
+        }
+
+      // Kiểm tra vị trí (bắt buộc, ít nhất 3 ký tự, không chứa ký tự đặc biệt)
+const location = document.getElementById("location").value;
+if (location.trim().length < 3 || !/^[a-zA-Z0-9\s]+$/.test(location.trim())) {
+    alert("Vị trí phải có ít nhất 3 ký tự và không được chứa ký tự đặc biệt.");
+    return false;
+}
+
+
+        // Kiểm tra tên quản lý (bắt buộc, ít nhất 3 ký tự)
+        const manager = document.getElementById("manager").value;
+        if (manager.trim().length < 3) {
+            alert("Tên quản lý phải có ít nhất 3 ký tự.");
+            return false;
+        }
+
+      const contact = document.getElementById("contact").value;
+if (!/^0\d{9,10}$/.test(contact.trim())) {
+    alert("Số liên lạc phải bắt đầu bằng số 0 và có độ dài 10-11 chữ số.");
+    return false;
+}
+
+
+        return true; // Nếu tất cả các kiểm tra đều hợp lệ
+    }
+</script>
 
     <!-- Essential javascripts for application to work -->
     <script src="${pageContext.request.contextPath}/doc/js/jquery-3.2.1.min.js"></script>

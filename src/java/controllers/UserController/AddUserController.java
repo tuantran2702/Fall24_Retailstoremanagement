@@ -84,7 +84,7 @@ public class AddUserController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private static final String UPLOAD_DIRECTORY = "img-anhthe";  // Folder where images will be stored
+      // Folder where images will be stored
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -98,17 +98,18 @@ public class AddUserController extends HttpServlet {
         SendEmail se = new SendEmail();
         String password = se.generateRandomCode(6);
 
-        //Img
+         // Lấy thư mục gốc của ứng dụng từ ServletContext
+        String rootDirectory = getServletContext().getRealPath("/");
+        
         ImageHandler ih = new ImageHandler();
-        String uploadFilePath = "E:\\Fall24\\SWP391\\Clone-Git\\Fall24_Retailstoremanagement-Clone\\web\\img-anhthe";
-        String imgPath = "img-anhthe\\default.png";
+        String imgPath = ImageHandler.UPLOAD_DIRECTORY + "/default.png";
 
         // Lấy phần file tải lên
         Part filePart = request.getPart("ImageUpload");
 
         if (filePart != null && filePart.getSize() > 0) {
             // Lưu ảnh vào thư mục và lấy đường dẫn ảnh
-            imgPath = ih.luuAnh(filePart, uploadFilePath);
+            imgPath = ih.luuAnh(filePart, rootDirectory);
         }
 
         //Tao 1 User de kiem tra
@@ -128,7 +129,7 @@ public class AddUserController extends HttpServlet {
             addedUser.setRoleID(roleId);
         } catch (Exception e) {
             // Gửi thông báo lỗi khi người dùng không chọn chức vụ hợp lệ
-            request.setAttribute("errorMessage", "Vui lòng chọn chức vụ.");
+            request.setAttribute("errorMessage", "Please Select Role!");
 
             request.setAttribute("user", addedUser);
 
@@ -163,24 +164,7 @@ public class AddUserController extends HttpServlet {
             return;  // Dừng xử lý tiếp
         }
 
-        // Kiểm tra số điện thoại có hợp lệ hay không (10 số và bắt đầu bằng 0)
-        String phonePattern = "^0\\d{9}$";
-        if (!phone.matches(phonePattern)) {
-            // Nếu số điện thoại không hợp lệ, thiết lập thông báo lỗi
-            request.setAttribute("errorMessage", "Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại 10 số bắt đầu bằng 0.");
-
-            request.setAttribute("user", addedUser);
-
-            // Truy vấn dữ liệu từ database
-            RoleDAO roleDAO = new RoleDAO();
-            List<Role> roles = roleDAO.getAllRole();
-
-            // Lưu danh sách roles vào request attribute
-            request.setAttribute("roles", roles);
-            // Chuyển tiếp yêu cầu về lại trang thêm người dùng
-            request.getRequestDispatcher("User/AddEmployee.jsp").forward(request, response);
-            return;  // Dừng xử lý tiếp
-        }
+        
 //      
         // Create a user object
         User user = new User();

@@ -29,42 +29,42 @@
         <script src="http://code.jquery.com/jquery.min.js" type="text/javascript"></script>
         <script>
 
-            function readURL(input, thumbimage) {
-                if (input.files && input.files[0]) { //Sử dụng  cho Firefox - chrome
+            function readURL(input) {
+                if (input.files && input.files[0]) { // Sử dụng cho Firefox - chrome
                     var reader = new FileReader();
                     reader.onload = function (e) {
-                        $("#thumbimage").attr('src', e.target.result);
+                        $("#thumbimage").attr('src', e.target.result).show(); // Hiển thị hình ảnh
                     }
                     reader.readAsDataURL(input.files[0]);
+                    $('.filename').text(input.files[0].name); // Hiển thị tên tệp
+                    $(".removeimg").show(); // Hiện nút xóa
                 } else { // Sử dụng cho IE
-                    $("#thumbimage").attr('src', input.value);
-
+                    $("#thumbimage").attr('src', input.value).show();
                 }
-                $("#thumbimage").show();
-                $('.filename').text($("#uploadfile").val());
-                $('.Choicefile').css('background', '#14142B');
-                $('.Choicefile').css('cursor', 'default');
-                $(".removeimg").show();
-                $(".Choicefile").unbind('click');
-
             }
             $(document).ready(function () {
-                $(".Choicefile").bind('click', function () {
-                    $("#uploadfile").click();
+                $(".Choicefile").on('click', function () {
+                    $("#uploadfile").click(); // Kích hoạt sự kiện click trên input file
+                });
 
+                $("#uploadfile").on('change', function () {
+                    if (validateImage()) { // Gọi hàm validate hình ảnh
+                        readURL(this); // Gọi hàm readURL khi tệp được chọn
+                    } else {
+                        $("#thumbimage").hide(); // Ẩn hình ảnh nếu không hợp lệ
+                    }
                 });
-                $(".removeimg").click(function () {
-                    $("#thumbimage").attr('src', '').hide();
-                    $("#myfileupload").html('<input type="file" id="uploadfile"  onchange="readURL(this);" />');
-                    $(".removeimg").hide();
-                    $(".Choicefile").bind('click', function () {
-                        $("#uploadfile").click();
-                    });
-                    $('.Choicefile').css('background', '#14142B');
-                    $('.Choicefile').css('cursor', 'pointer');
-                    $(".filename").text("");
+
+                $(".removeimg").on('click', function () {
+                    removeImage(); // Gọi hàm removeImage khi nhấp vào nút xóa
                 });
-            })
+            });
+            function removeImage() {
+                $("#thumbimage").attr('src', '').hide(); // Ẩn hình ảnh
+                $("#uploadfile").val(''); // Đặt lại tệp hình ảnh
+                $(".removeimg").hide(); // Ẩn nút xóa
+                $('.filename').text(''); // Xóa tên tệp
+            }
         </script>
     </head>
 
@@ -140,75 +140,23 @@
             }
         </style>
         <!-- Navbar-->
-        <header class="app-header">
-            <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
-                                            aria-label="Hide Sidebar"></a>
-            <!-- Navbar Right Menu-->
-            <ul class="app-nav">
 
+<body class="app sidebar-mini rtl">
+    <!-- Navbar -->
+    <header class="app-header">
+        <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+        <ul class="app-nav">
+            <li><a class="app-nav__item" href="${pageContext.request.contextPath}/login"><i class='bx bx-log-out bx-rotate-180'></i></a></li>
+        </ul>
+    </header>
 
-                <!-- User Menu-->
-                <li><a class="app-nav__item" href="/index.html"><i class='bx bx-log-out bx-rotate-180'></i> </a>
-
-                </li>
-            </ul>
-        </header>
-        <!-- Sidebar menu-->
-        <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-        <aside class="app-sidebar">
-            <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/images/hay.jpg" width="50px"
-                                                alt="User Image">      <div>
-                    <p class="app-sidebar__user-name"><b>${sessionScope.User.getFirstName()} ${sessionScope.User.getLastName()}</b></p>
-                    <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
-                </div>
-            </div>
-
-            <hr>
-            <ul class="app-menu">
-                <li><a class="app-menu__item haha" href="homepage"><i class='app-menu__icon bx bx-cart-alt'></i>
-                        <span class="app-menu__label">POS Bán Hàng</span></a></li>
-                <li><a class="app-menu__item " href="homepage"><i class='app-menu__icon bx bx-tachometer'></i><span
-                            class="app-menu__label">Bảng điều khiển</span></a></li>
-                <li><a class="app-menu__item " href="order"><i class='app-menu__icon bx bx-task'></i>Order</a></li>
-
-                <li><a class="app-menu__item " href="userManage"><i class='app-menu__icon bx bx-id-card'></i> <span
-                            class="app-menu__label">Quản lý nhân viên</span></a></li>
-
-
-                <li><a class="app-menu__item active" href="product"><i
-                            class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
-                </li>
-
-                <li><a class="app-menu__item " href="customer"><i class='app-menu__icon bx bx-id-card'></i> <span
-                            class="app-menu__label">Quản lý khách hàng </span></a></li>
-
-
-
-
-
-
-
-
-
-
-
-                <li><a class="app-menu__item" href="inventory"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Quản lý   kho</span></a></li>
-
-                <li><a class="app-menu__item" href="settingController"><i class='app-menu__icon bx bx-task'></i><span
-                            class="app-menu__label">Thay đổi mật khẩu </span></a></li>
-
-
-
-
-            </ul>
-
-
-        </aside>
+    <!-- Sidebar menu -->
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <jsp:include page="/menu.jsp" />
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item">Danh sách sản phẩm</li>
+                    <li class="breadcrumb-item"><a href="product">Danh sách sản phẩm</a></li>
                     <li class="breadcrumb-item"><a href="#">Thêm sản phẩm</a></li>
                 </ul>
             </div>
@@ -220,35 +168,41 @@
                             <div class="row element-button">
                                 <div class="col-sm-2">
                                     <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><i
-                                            class="fas fa-folder-plus"></i> Thêm supplier</a>
+                                            class="fas fa-folder-plus"></i> Thêm Nhà cung cấp</a>
                                 </div>
                                 <div class="col-sm-2">
                                     <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc"><i
-                                            class="fas fa-folder-plus"></i> Thêm Category</a>
+                                            class="fas fa-folder-plus"></i> Thêm Danh mục</a>
                                 </div>
                                 <div class="col-sm-2">
                                     <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addtinhtrang"><i
-                                            class="fas fa-folder-plus"></i> Thêm Unit</a>
+                                            class="fas fa-folder-plus"></i> Thêm Đơn vị</a>
                                 </div>
                             </div>
-                            <form action="product" method="post" class="row">
+                            <c:if test="${not empty error}">
+                                <div style="color: red;">
+                                    ${error}
+                                </div>
+                            </c:if>
+
+                            <form action="product" method="post" class="row" onsubmit="return validateForm();">
                                 <input type="hidden" name="action" value="create">
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Product Code</label>
-                                    <input class="form-control" type="text" name="productCode" id="productCode" oninput="validateProductCode();">
+                                    <label class="control-label">Mã sản phẩm</label>
+                                    <input class="form-control" type="text" name="productCode" id="productCode" required oninput="validateProductCode();">
                                     <small id="error-message-code" style="color: red;"></small>
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Product Name</label>
-                                    <input class="form-control" type="text" name="productName" id="productName" oninput="validateProductName();">
+                                    <label class="control-label">Tên sản phẩm</label>
+                                    <input class="form-control" type="text" name="productName" id="productName" required oninput="validateProductName();">
                                     <small id="error-message-name" style="color: red;"></small>
                                 </div>
 
 
 
                                 <div class="form-group col-md-3 ">
-                                    <label for="exampleSelect1" class="control-label">Category </label>
+                                    <label for="exampleSelect1" class="control-label">Loại </label>
                                     <select class="form-control" id="exampleSelect1" name="categoryID">
                                         <c:forEach var="c" items="${listCategory}">
                                             <option value="${c.getCategoryID()}">${c.getCategoryName()}</option>
@@ -258,32 +212,32 @@
 
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Price</label>
-                                    <input class="form-control" type="number" name="price" id="price" oninput="validatePrice();">
+                                    <label class="control-label">Giá</label>
+                                    <input class="form-control" type="number" name="price" id="price" required oninput="validatePrice();">
                                     <small id="error-message-price" style="color: red;"></small> <!-- Thêm thông báo lỗi cho giá -->
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Quantity</label>
-                                    <input class="form-control" type="number" name="quantity" id="quantity" oninput="validateQuantity();">
+                                    <label class="control-label">Số lượng</label>
+                                    <input class="form-control" type="number" name="quantity" id="quantity" required oninput="validateQuantity();">
                                     <small id="error-message-quantity" style="color: red;"></small> <!-- Thay đổi ID thông báo lỗi -->
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Created Date</label>
-                                    <input class="form-control" type="date" name="createdDate">
+                                    <label class="control-label">Ngày tạo</label>
+                                    <input class="form-control" type="date"  name="createdDate">
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Expired Date</label>
-                                    <input class="form-control" type="date" name="expiredDate">
+                                    <label class="control-label">Ngày hết hạn</label>
+                                    <input class="form-control" type="date"  name="expiredDate">
                                 </div>
 
                                 <div class="form-group col-md-3">
-                                    <label class="control-label">Update Date</label>
-                                    <input class="form-control" type="date" name="updateDate">
+                                    <label class="control-label">Ngày cập nhật</label>
+                                    <input class="form-control" type="date"  name="updateDate">
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label for="exampleSelect1" class="control-label">User </label>
+                                    <label for="exampleSelect1" class="control-label">Người sử dụng </label>
                                     <select class="form-control" id="exampleSelect1" name="userID">
                                         <c:forEach var="u" items="${listUser}">
                                             <option value="${u.getUserID()}">${u.getFirstName()} ${u.getLastName()}</option>
@@ -294,7 +248,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3 ">
-                                    <label for="exampleSelect1" class="control-label">Unit </label>
+                                    <label for="exampleSelect1" class="control-label">Đơn vị </label>
                                     <select class="form-control" id="exampleSelect1" name="unitID">
                                         <c:forEach var="c" items="${listUnit}">
                                             <option value="${c.getUnitID()}">${c.getUnitName()}</option>
@@ -302,7 +256,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3 ">
-                                    <label for="exampleSelect1" class="control-label">Supplier </label>
+                                    <label for="exampleSelect1" class="control-label">Nhà cung cấp </label>
                                     <select class="form-control" id="exampleSelect1" name="supplierID">
                                         <c:forEach var="s" items="${listSupplier}">
                                             <option value="${s.getSupplierID()}">${s.getSupplierName()}</option>
@@ -312,9 +266,9 @@
 
 
                                 <div class="form-group col-md-12">
-                                    <label class="control-label">Image</label>
+                                    <label class="control-label">Hình ảnh</label>
                                     <div id="myfileupload">
-                                        <input type="file" name="image" id="uploadfile" accept="image/*" onchange="readURL(this);" />
+                                        <input type="file" name="image" id="uploadfile" accept="image/*" onchange="readURL(this);"required />
                                         <small id="error-message-image" style="color: red;"></small> <!-- Thêm thông báo lỗi cho hình ảnh -->
                                     </div>
                                     <div id="thumbbox">
@@ -328,7 +282,7 @@
                                 </div>
 
                                 <div class="form-group col-md-12">
-                                    <label class="control-label">Description</label>
+                                    <label class="control-label">Sự miêu tả</label>
                                     <textarea class="form-control" name="description" id="description"></textarea>
                                     <script>CKEDITOR.replace('description');</script>
                                 </div>
@@ -336,8 +290,9 @@
 
                         </div>
                         <button class="btn btn-save" type="submit">Lưu lại</button>
-                        <a class="btn btn-cancel" href="table-data-product.html">Hủy bỏ</a>
+                        <a class="btn btn-cancel" href="${pageContext.request.contextPath}/product">Hủy bỏ</a>
                         </form>
+
 
                     </div>
                     </main>
@@ -497,124 +452,96 @@
 
 
                     <script>
+                                        const regexText = /^[A-Za-zÀ-ỹ0-9\s]{3,50}$/; // Chữ cái và số, có dấu, từ 3-50 ký tự
+                                        const regexPriceQuantity = /^[0-9]\d*$/; // Giá trị nguyên dương
+
                                         function validateProductCode() {
-                                            const productCodeInput = document.getElementById('productCode');
+                                            const productCode = document.getElementById('productCode');
                                             const errorMessageCode = document.getElementById('error-message-code');
-                                            const productCodeValue = productCodeInput.value;
-
-                                            const regex = /^[A-Z0-9]{3,10}$/;
-
-                                            if (!regex.test(productCodeValue)) {
-                                                errorMessageCode.textContent = 'Please enter a valid product code (3-10 uppercase letters and numbers).';
+                                            if (!regexText.test(productCode.value.trim())) {
+                                                errorMessageCode.textContent = 'Mã sản phẩm phải có 3-50 ký tự.';
+                                                return false;
                                             } else {
                                                 errorMessageCode.textContent = '';
+                                                return true;
                                             }
                                         }
 
                                         function validateProductName() {
-                                            const productNameInput = document.getElementById('productName');
+                                            const productName = document.getElementById('productName');
                                             const errorMessageName = document.getElementById('error-message-name');
-                                            const productNameValue = productNameInput.value.trim();
-
-                                            if (productNameValue.length < 3 || productNameValue.length > 50) {
-                                                errorMessageName.textContent = 'Please enter a valid product name (3-50 characters).';
-                                            } else if (!/^[a-zA-Z0-9\s]+$/.test(productNameValue)) {
-                                                errorMessageName.textContent = 'Product name can only contain letters, numbers, and spaces.';
+                                            if (!regexText.test(productName.value.trim())) {
+                                                errorMessageName.textContent = 'Tên sản phẩm phải có 3-50 ký tự.';
+                                                return false;
                                             } else {
                                                 errorMessageName.textContent = '';
+                                                return true;
                                             }
                                         }
 
                                         function validatePrice() {
-                                            const priceInput = document.getElementById('price');
+                                            const price = document.getElementById('price');
                                             const errorMessagePrice = document.getElementById('error-message-price');
-                                            const priceValue = priceInput.value;
-
-                                            if (priceValue <= 0) {
-                                                errorMessagePrice.textContent = 'Please enter a valid price (greater than 0).';
+                                            if (!regexPriceQuantity.test(price.value.trim())) {
+                                                errorMessagePrice.textContent = 'Giá phải là số nguyên dương.';
+                                                return false;
                                             } else {
                                                 errorMessagePrice.textContent = '';
+                                                return true;
                                             }
                                         }
 
                                         function validateQuantity() {
-                                            const quantityInput = document.getElementById('quantity');
+                                            const quantity = document.getElementById('quantity');
                                             const errorMessageQuantity = document.getElementById('error-message-quantity');
-                                            const quantityValue = quantityInput.value;
-
-                                            if (quantityValue < 1) {
-                                                errorMessageQuantity.textContent = 'Please enter a valid quantity (1 or more).';
+                                            if (!regexPriceQuantity.test(quantity.value.trim())) {
+                                                errorMessageQuantity.textContent = 'Số lượng phải là số nguyên dương.';
+                                                return false;
                                             } else {
                                                 errorMessageQuantity.textContent = '';
-                                            }
-                                        }
-                                        function readURL(input) {
-                                            const errorMessageImage = document.getElementById('error-message-image');
-                                            const thumbImage = document.getElementById('thumbimage');
-
-                                            // Kiểm tra nếu có tệp được chọn
-                                            if (input.files && input.files[0]) {
-                                                const file = input.files[0];
-                                                const fileType = file.type;
-                                                const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"]; // Các định dạng hình ảnh hợp lệ
-
-                                                // Kiểm tra loại tệp
-                                                if (!validImageTypes.includes(fileType)) {
-                                                    errorMessageImage.textContent = 'Please select a valid image file (JPEG, PNG, GIF, WEBP).';
-                                                    thumbImage.style.display = 'none'; // Ẩn ảnh thumbnail
-                                                    return;
-                                                } else {
-                                                    errorMessageImage.textContent = ''; // Xóa thông báo lỗi nếu hợp lệ
-                                                }
-
-                                                // Hiển thị ảnh thumbnail
-                                                const reader = new FileReader();
-                                                reader.onload = function (e) {
-                                                    thumbImage.src = e.target.result;
-                                                    thumbImage.style.display = 'block'; // Hiển thị ảnh thumbnail
-                                                };
-                                                reader.readAsDataURL(file);
+                                                return true;
                                             }
                                         }
 
-                                        function removeImage() {
-                                            const thumbImage = document.getElementById('thumbimage');
-                                            const uploadfile = document.getElementById('uploadfile');
+                                        function validateImage() {
+                                            const imageInput = document.getElementById('uploadfile');
                                             const errorMessageImage = document.getElementById('error-message-image');
+                                            const file = imageInput.files[0];
+                                            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
-                                            uploadfile.value = ''; // Đặt lại giá trị của input file
-                                            thumbImage.src = ''; // Đặt lại src của ảnh thumbnail
-                                            thumbImage.style.display = 'none'; // Ẩn ảnh thumbnail
+                                            if (!file) {
+                                                errorMessageImage.textContent = 'Vui lòng chọn một tệp hình ảnh.';
+                                                return false;
+                                            }
+
+                                            if (!allowedTypes.includes(file.type)) {
+                                                errorMessageImage.textContent = 'Chỉ chấp nhận tệp hình ảnh (JPEG, PNG, GIF).';
+                                                imageInput.value = ''; // Reset file input nếu không đúng định dạng
+                                                return false;
+                                            }
+
+                                            // Kiểm tra kích thước tệp (nếu cần)
+                                            if (file.size > 2 * 1024 * 1024) { // Ví dụ: 2MB
+                                                errorMessageImage.textContent = 'Kích thước tệp phải nhỏ hơn 2MB.';
+                                                imageInput.value = ''; // Reset file input nếu quá kích thước
+                                                return false;
+                                            }
+
                                             errorMessageImage.textContent = ''; // Xóa thông báo lỗi
+                                            return true;
                                         }
 
-
-
-
-
+                                        function validateForm() {
+                                            return validateProductCode() && validateProductName() && validatePrice() && validateQuantity() && validateImage();
+                                        }
                     </script>
 
-                    <!--                    <script>
-                                            const inpFile = document.getElementById("inpFile");
-                                            const loadFile = document.getElementById("loadFile");
-                                            const previewContainer = document.getElementById("imagePreview");
-                                            const previewContainer = document.getElementById("imagePreview");
-                                            const previewImage = previewContainer.querySelector(".image-preview__image");
-                                            const previewDefaultText = previewContainer.querySelector(".image-preview__default-text");
-                                            inpFile.addEventListener("change", function () {
-                                                const file = this.files[0];
-                                                if (file) {
-                                                    const reader = new FileReader();
-                                                    previewDefaultText.style.display = "none";
-                                                    previewImage.style.display = "block";
-                                                    reader.addEventListener("load", function () {
-                                                        previewImage.setAttribute("src", this.result);
-                                                    });
-                                                    reader.readAsDataURL(file);
-                                                }
-                                            });
-                    
-                                        </script>-->
+
+
+
+
+
+
                     </body>
 
                     </html>

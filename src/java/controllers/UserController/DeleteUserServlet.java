@@ -35,7 +35,7 @@ public class DeleteUserServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DeleteUserServlet</title>");            
+            out.println("<title>Servlet DeleteUserServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet DeleteUserServlet at " + request.getContextPath() + "</h1>");
@@ -70,22 +70,37 @@ public class DeleteUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        response.setContentType("application/json");
+
         String userID = request.getParameter("id");
-        int id = 0;
-        try {
-            id = Integer.parseInt(userID);
-        } catch (Exception e) {
+
+        if (userID == null || userID.isEmpty()) {
+            sendJsonResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid user ID");
+            return;
         }
-        UserDAO userDao = new UserDAO();
-        boolean success = userDao.deleteUser(id);
-        
-        if (success) {
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+
+        try {
+            int id = Integer.parseInt(userID);
+
+            UserDAO userDao = new UserDAO();
+            boolean success = userDao.deleteUser(id);
+
+            if (success) {
+                sendJsonResponse(response, HttpServletResponse.SC_OK, "User deleted successfully");
+            } else {
+                sendJsonResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Failed to delete user");
+            }
+        } catch (NumberFormatException e) {
+            sendJsonResponse(response, HttpServletResponse.SC_BAD_REQUEST, "Invalid user ID format");
         }
     }
 
+// Hàm phụ trợ để gửi phản hồi JSON
+    private void sendJsonResponse(HttpServletResponse response, int status, String message) throws IOException {
+        response.setStatus(status);
+        response.getWriter().write("{\"message\": \"" + message + "\"}");
+    }
 
     /**
      * Returns a short description of the servlet.

@@ -94,6 +94,18 @@ public class WarehouseDAO extends DBContext {
         }
     }
 
+    
+    // Thêm method mới để xóa tất cả warehouse
+    public void deleteAllWarehouses() {
+        String sql = "DELETE FROM Warehouse";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            int affectedRows = st.executeUpdate();
+            System.out.println("Đã xóa " + affectedRows + " kho hàng");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public ArrayList<Warehouse> searchWarehouses(String searchTerm) {
         ArrayList<Warehouse> data = new ArrayList<>();
         String sql = "SELECT * FROM Warehouse WHERE WarehouseName LIKE ? OR Location LIKE ? OR ManagerName LIKE ?";

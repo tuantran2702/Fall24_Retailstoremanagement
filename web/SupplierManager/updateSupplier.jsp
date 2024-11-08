@@ -103,14 +103,14 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item"><a href="warehouse">Danh sách kho hàng</a></li>
-                    <li class="breadcrumb-item active">Cập nhật supplier</li>
+                    <li class="breadcrumb-item"><a href="supplier">Danh sách Nhà cung cấp</a></li>
+                    <li class="breadcrumb-item active">Cập nhật Nhà cung cấp</li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="tile">
-                        <h3 class="tile-title">Cập nhật supplier</h3>
+                        <h3 class="tile-title">Cập nhật Nhà cung cấp</h3>
                         <div class="tile-body">
                             <form action="supplier" method="post">
                                 <input type="hidden" name="action" value="update">
@@ -125,13 +125,13 @@
                                 <div class="row">
                                     <!-- Supplier Name -->
                                     <div class="form-group col-md-6">
-                                        <label class="control-label">Supplier Name</label>
+                                        <label class="control-label">Tên nhà cung cấp</label>
                                         <input class="form-control" type="text" required name="supplierName" value="${supplier.supplierName}">
                                     </div>
 
                                     <!-- Contact Name -->
                                     <div class="form-group col-md-6">
-                                        <label class="control-label">Contact Name</label>
+                                        <label class="control-label">Tên liên lạc</label>
                                         <input class="form-control" type="text" required name="contactName" value="${supplier.contactName}">
                                     </div>
                                 </div>
@@ -139,7 +139,7 @@
                                 <div class="row">
                                     <!-- Phone Number -->
                                     <div class="form-group col-md-6">
-                                        <label class="control-label">Phone Number</label>
+                                        <label class="control-label">Số điện thoại</label>
                                         <input class="form-control" type="number" required name="phoneNumber" value="${supplier.phoneNumber}">
                                     </div>
 
@@ -153,7 +153,7 @@
                                 <div class="row">
                                     <!-- Address -->
                                     <div class="form-group col-md-12">
-                                        <label class="control-label">Address</label>
+                                        <label class="control-label">Địa chỉ</label>
                                         <textarea class="form-control" name="address" id="address">${supplier.address}</textarea>
                                         <script>CKEDITOR.replace('address');</script>
                                     </div>
@@ -169,7 +169,7 @@
                                     <!-- Buttons -->
                                     <div class="col-md-12 text-right">
                                         <button class="btn btn-save" type="submit">Lưu lại</button>
-                                        <a class="btn btn-cancel" href="#">Hủy bỏ</a>
+                                        <a class="btn btn-cancel" href="${pageContext.request.contextPath}/supplier">Hủy bỏ</a>
                                     </div>
                                 </div>
                             </form>

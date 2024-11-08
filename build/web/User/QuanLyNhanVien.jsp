@@ -13,7 +13,7 @@
 <html lang="en">
 
     <head>
-        <title>Danh sách nhân viên | Quản trị Admin</title>
+        <title>Danh sách nhân viên | GROUP1</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -49,12 +49,12 @@
         <!-- Sidebar menu-->
         <!-- Include menu -->
         <jsp:include page="/menu.jsp" />
-        
-        
+
+
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><a href="#"><b>Danh sách nhân viên</b></a></li>
+                    <li class="breadcrumb-item active"><a href="userManage"><b>Danh sách nhân viên</b></a></li>
                 </ul>
                 <div id="clock"></div>
             </div>
@@ -68,71 +68,65 @@
                                 <div class="col-sm-2">
 
                                     <a class="btn btn-add btn-sm" href="addUser" title="Thêm"><i class="fas fa-plus"></i>
-                                        Tạo mới nhân viên</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập" onclick="myFunction(this)"><i
-                                            class="fas fa-file-upload"></i> Tải từ file</a>
+                                        Thêm nhân viên</a>
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()"><i
-                                            class="fas fa-print"></i> In dữ liệu</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
-                                            class="fas fa-copy"></i> Sao chép</a>
-                                </div>
-
-                                <div class="col-sm-2">
-                                    <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất Excel</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="xuatPDF()">
-                                        <i class="fas fa-file-pdf"></i> Xuất PDF
+                                    <a class="btn btn-sm btn-delete print-file" type="button" title="In" onclick="printTable()">
+                                        <i class="fas fa-print"></i> In dữ liệu
                                     </a>
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm" type="button" title="Xóa" onclick="myFunction(this)"><i
-                                            class="fas fa-trash-alt"></i> Xóa tất cả </a>
+                                    <a class="btn btn-sm btn-excel" type="button" title="Xuất Excel" onclick="exportToExcel()">
+                                        <i class="fas fa-file-excel"></i> Xuất Excel
+                                    </a>
                                 </div>
+
+                                <div class="col-sm-2">
+                                    <a class="btn btn-sm btn-delete pdf-file" type="button" title="Xuất PDF" onclick="exportToPDF()">
+                                        <i class="fas fa-file-pdf"></i> Xuất PDF
+                                    </a>
+                                </div>
+
+
+                                
                             </div>
 
                             <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
                                    id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th width="10"><input type="checkbox" id="all"></th>
-                                        <th>Img</th>
-                                        <th>ID nhân viên</th>
-                                        <th width="150">Họ và tên</th>
+
+                                        <th class="no-export" width="150">Img</th>
+                                        <th>Employee ID</th>
+                                        <th width="150">Employee Name</th>
                                         <th width="170">Email</th>
-                                        <th width="170">Địa chỉ</th>
-                                        <th>Số điện thoại</th>
-                                        <th>Chức vụ</th>
-                                        <th width="100">Tính năng</th>
+                                        <th width="170">Address</th>
+                                        <th>Phone Number</th>
+                                        <th>Role</th>
+                                        <th width="100" class="no-export">Features</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     <c:forEach var="user" items="${requestScope.userList}">
                                         <tr>
-                                            <td width="10"><input type="checkbox"></td>
-                                            <td><img src="${user.img}" alt="User Image" style="width:100px;height:100px;"></td>
+
+                                            <td class="no-export"><img src="${user.img}" alt="User Image" style="width:100px;height:100px;"></td>
                                             <td>${user.userID}</td>
                                             <td>${user.firstName} ${user.lastName}</td>
                                             <td>${user.email}</td>
                                             <td>${user.address}</td>
                                             <td>${user.phoneNumber}</td>
                                             <td>${roleMap[user.roleID]}</td>
-                                            <td>
+                                            <td class="no-export"> 
                                                 <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" 
                                                         onclick="window.location.href = 'updateUser?userID=${user.userID}'">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
                                                 <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                                        onclick="deleteUser(${user.userID})"><i class="fas fa-trash-alt"></i></button>
+                                                        onclick="deleteUser('${user.userID}')"><i class="fas fa-trash-alt"></i></button>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -160,178 +154,146 @@
         <!-- Data table plugin-->
         <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-        <!-- Thêm jsPDF -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-        <!-- Thêm autoTable -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.10/jspdf.plugin.autotable.min.js"></script>
+
+
         <!-- Font Awesome cho biểu tượng -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <!-- SheetJS for Excel export -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+
+        <!-- jsPDF for PDF export -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+
+
+
         <script type="text/javascript">$('#sampleTable').DataTable();</script>
 
         <script>
-            function xuatPDF() {
-                const {jsPDF} = window.jspdf;
-                const doc = new jsPDF();
+            $(document).ready(function () {
+                $('#sampleTable').DataTable();
+            });
+// Function to export table to Excel (without the "Tính năng" column)
+            function exportToExcel() {
+                var table = document.getElementById('sampleTable').cloneNode(true);
+                removeNoExportColumns(table);
+                var wb = XLSX.utils.table_to_book(table, {sheet: "Sheet1"});
+                XLSX.writeFile(wb, 'employee_list.xlsx');
+            }
 
-                // Tiêu đề PDF
-                doc.setFontSize(18);
-                doc.text("Danh sách nhân viên", 14, 20);
+// Function to export table to PDF (without the "Tính năng" column)
+            function exportToPDF() {
+                // Tạo đối tượng jsPDF
+                var {jsPDF} = window.jspdf;
+                var doc = new jsPDF();
 
-                // Tạo dữ liệu cho bảng
-                const rows = [];
-                const tableHeader = ['ID', 'Tên', 'Email', 'Địa chỉ', 'Số điện thoại', 'Vai trò'];
+                // Clone bảng và xóa các cột không cần xuất
+                var table = document.getElementById('sampleTable').cloneNode(true);
+                removeNoExportColumns(table);
 
-                const tableRows = document.querySelectorAll("tbody tr");
-                tableRows.forEach((row) => {
-                    const userID = row.cells[2].innerText; // userID
-                    const fullName = row.cells[3].innerText; // Tên đầy đủ
-                    const email = row.cells[4].innerText; // Email
-                    const address = row.cells[5].innerText; // Địa chỉ
-                    const phoneNumber = row.cells[6].innerText; // Số điện thoại
-                    const roleID = row.cells[7].innerText; // Vai trò
-
-                    // Thêm thông tin vào hàng bảng
-                    rows.push([userID, fullName, email, address, phoneNumber, roleID]);
-                });
-
-                // Sử dụng autoTable để tạo bảng
+                // Sử dụng autoTable với font hỗ trợ tiếng Việt
                 doc.autoTable({
-                    head: [tableHeader],
-                    body: rows,
-                    startY: 30, // Vị trí bắt đầu
-                    theme: 'grid', // Chủ đề của bảng
-                    headStyles: {fillColor: [22, 160, 133]}, // Màu nền tiêu đề
-                    styles: {cellWidth: 'auto', halign: 'left'}, // Định dạng các ô
-                    margin: {top: 30}
+                    html: table,
+                    columnStyles: {
+                        0: {cellWidth: 20},
+                        1: {cellWidth: 20},
+                        2: {cellWidth: 40},
+                        3: {cellWidth: 40}
+                    },
+                    margin: {top: 10}
                 });
 
-                // Tải xuống tệp PDF
-                doc.save('danh_sach_nhan_vien.pdf');
+                doc.save('employee_list.pdf');
+            }
+
+
+
+// Function to print the table (without the "Tính năng" column)
+            function printTable() {
+                var printContent = document.getElementById('sampleTable').cloneNode(true);
+                removeNoExportColumns(printContent);
+                var originalContent = document.body.innerHTML;
+
+                document.body.innerHTML = "<html><head><title>Print</title></head><body>" + printContent.outerHTML + "</body></html>";
+                window.print();
+                document.body.innerHTML = originalContent;
+            }
+
+// Function to remove columns with class 'no-export'
+            function removeNoExportColumns(table) {
+                // Remove header columns
+                var headers = table.querySelectorAll('th.no-export');
+                headers.forEach(function (header) {
+                    header.parentNode.removeChild(header);
+                });
+
+                // Remove data columns
+                var rows = table.querySelectorAll('tr');
+                rows.forEach(function (row) {
+                    var cells = row.querySelectorAll('td.no-export');
+                    cells.forEach(function (cell) {
+                        cell.parentNode.removeChild(cell);
+                    });
+                });
             }
         </script>
 
 
-        <script>
-            $('#saveChangesBtn').on('click', function () {
-                var user = {
-                    userID: $('#ModalUP input[name="userID"]').val(),
-                    firstName: $('#ModalUP input[name="firstName"]').val(),
-                    lastName: $('#ModalUP input[name="lastName"]').val(),
-                    phoneNumber: $('#ModalUP input[name="phoneNumber"]').val(),
-                    email: $('#ModalUP input[name="email"]').val(),
-                    roleID: $('#ModalUP select[name="roleID"]').val()
-                };
 
-                $.ajax({
-                    url: 'updateUser', // URL của servlet để cập nhật thông tin
-                    type: 'POST',
-                    data: user,
-                    success: function (response) {
-                        swal("Đã cập nhật thành công!", {
-                            icon: "success"
-                        }).then(() => {
-                            location.reload(); // Reload trang sau khi cập nhật
-                        });
-                    },
-                    error: function () {
-                        swal("Cập nhật thất bại!", {
-                            icon: "error"
-                        });
-                    }
-                });
-            });
-
-        </script>
         <script>
-            function loadUserData(userID) {
-                $.ajax({
-                    url: 'getUser', // URL của servlet lấy thông tin người dùng
-                    type: 'GET',
-                    data: {id: userID},
-                    success: function (user) {
-                        // Hiển thị dữ liệu vào modal
-                        $('#ModalUP input[name="userID"]').val(user.userID);
-                        $('#ModalUP input[name="firstName"]').val(user.firstName);
-                        $('#ModalUP input[name="lastName"]').val(user.lastName);
-                        $('#ModalUP input[name="phoneNumber"]').val(user.phoneNumber);
-                        $('#ModalUP input[name="email"]').val(user.email);
-                        $('#ModalUP select[name="roleID"]').val(user.roleID);
-                    },
-                    error: function () {
-                        swal("Không thể tải dữ liệu người dùng!", {
-                            icon: "error"
-                        });
-                    }
-                });
-            }
-        </script>
-        <script>
-            function deleteUser(userID) {
+            // Hàm hiển thị cảnh báo xóa
+            function showDeleteWarning(message, onConfirm) {
                 swal({
-                    title: "Cảnh báo",
-                    text: "Bạn có chắc chắn muốn xóa nhân viên này?",
-                    buttons: ["Hủy bỏ", "Đồng ý"]
-                }).then((willDelete) => {
+                    title: "Thông báo",
+                    text: message,
+                    buttons: ["Hủy bỏ", "Đồng ý"],
+                    dangerMode: true
+                }).then(onConfirm);
+            }
+
+// Hàm xóa người dùng
+            function deleteUser(userID) {
+                if (!userID) {
+                    swal("Error", "Không tồn tại ID", {icon: "error"});
+                    return;
+                }
+
+                showDeleteWarning("Bạn chắc chắn muốn xóa nhân viên này?", (willDelete) => {
                     if (willDelete) {
-                        $.ajax({
-                            url: 'deleteUser', // URL của servlet xử lý xóa người dùng
-                            type: 'POST',
-                            data: {id: userID},
-                            success: function (response) {
-                                swal("Đã xóa thành công!", {
-                                    icon: "success"
-                                }).then(() => {
-                                    location.reload(); // Reload trang để cập nhật danh sách
+                        $.post('deleteUser', {id: userID})
+                                .done(() => {
+                                    swal("Xóa nhân viên thành công!", {icon: "success"})
+                                            .then(() => location.reload());
+                                })
+                                .fail(() => {
+                                    swal("Xóa thất bại!", {icon: "error"});
                                 });
-                            },
-                            error: function () {
-                                swal("Xóa thất bại!", {
-                                    icon: "error"
-                                });
-                            }
-                        });
                     }
                 });
             }
-        </script>
-        <script>
-            function deleteRow(r) {
-                var i = r.parentNode.parentNode.rowIndex;
-                document.getElementById("myTable").deleteRow(i);
+
+// Hàm xóa hàng khỏi bảng mà không cần reload
+            function deleteRow(row) {
+                row.closest('tr').remove();
             }
-            jQuery(function () {
-                jQuery(".trash").click(function () {
-                    swal({
-                        title: "Cảnh báo",
 
-                        text: "Bạn có chắc chắn là muốn xóa nhân viên này?",
-                        buttons: ["Hủy bỏ", "Đồng ý"],
-                    })
-                            .then((willDelete) => {
-                                if (willDelete) {
-                                    swal("Đã xóa thành công.!", {
-
-                                    });
-                                }
-                            });
+// Thiết lập sự kiện cho nút xóa dòng
+            $(document).ready(function () {
+                // Sử dụng 'on' để bắt sự kiện cho các phần tử sinh ra sau khi DataTable load lại
+                $('#sampleTable').on('click', '.trash', function () {
+                    const userID = $(this).closest('tr').find('td:nth-child(2)').text().trim(); // Lấy ID từ cột tương ứng
+                    deleteUser(userID);
                 });
-            });
-            oTable = $('#sampleTable').dataTable();
-            $('#all').click(function (e) {
-                $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
-                e.stopImmediatePropagation();
+
+                // Khởi tạo DataTable
+                $('#sampleTable').DataTable();
             });
 
-            //EXCEL
-            // $(document).ready(function () {
-            //   $('#').DataTable({
+        </script>
 
-            //     dom: 'Bfrtip',
-            //     "buttons": [
-            //       'excel'
-            //     ]
-            //   });
-            // });
+
+        <script>
+            
 
 
             //Thời Gian
@@ -374,32 +336,7 @@
                     return i;
                 }
             }
-            //In dữ liệu
-            var myApp = new function () {
-                this.printTable = function () {
-                    var tab = document.getElementById('sampleTable');
-                    var win = window.open('', '', 'height=700,width=700');
-                    win.document.write(tab.outerHTML);
-                    win.document.close();
-                    win.print();
-                }
-            }
-            //     //Sao chép dữ liệu
-            //     var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
-
-            // copyTextareaBtn.addEventListener('click', function(event) {
-            //   var copyTextarea = document.querySelector('.js-copytextarea');
-            //   copyTextarea.focus();
-            //   copyTextarea.select();
-
-            //   try {
-            //     var successful = document.execCommand('copy');
-            //     var msg = successful ? 'successful' : 'unsuccessful';
-            //     console.log('Copying text command was ' + msg);
-            //   } catch (err) {
-            //     console.log('Oops, unable to copy');
-            //   }
-            // });
+            
 
 
 

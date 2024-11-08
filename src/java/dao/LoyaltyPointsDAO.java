@@ -14,15 +14,13 @@ public class LoyaltyPointsDAO extends DBContext {
     public ArrayList<LoyaltyPoints> getListLoyaltyPoints() {
         ArrayList<LoyaltyPoints> data = new ArrayList<>();
 
-        String sql = "SELECT lp.LoyaltyPointID, lp.CustomerID, " +
-                     "CONCAT(c.FirstName, ' ', c.LastName) AS CustomerName, " +
-                     "lp.PointsEarned, lp.PointsRedeemed, lp.TransactionDate, lp.Description " +
-                     "FROM LoyaltyPoints lp " +
-                     "JOIN Customer c ON lp.CustomerID = c.CustomerID";
+        String sql = "SELECT lp.LoyaltyPointID, lp.CustomerID, "
+                + "CONCAT(c.FirstName, ' ', c.LastName) AS CustomerName, "
+                + "lp.PointsEarned, lp.PointsRedeemed, lp.TransactionDate, lp.Description "
+                + "FROM LoyaltyPoints lp "
+                + "JOIN Customer c ON lp.CustomerID = c.CustomerID";
 
-        try (Connection conn = connection;
-             PreparedStatement st = conn.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()) {
+        try ( Connection conn = connection;  PreparedStatement st = conn.prepareStatement(sql);  ResultSet rs = st.executeQuery()) {
 
             while (rs.next()) {
                 int loyaltyPointID = rs.getInt("LoyaltyPointID");
@@ -60,8 +58,8 @@ public class LoyaltyPointsDAO extends DBContext {
                 String description = rs.getString("Description");
 
                 return new LoyaltyPoints(
-                    loyaltyPointID, customerID, pointsEarned, 
-                    pointsRedeemed, transactionDate, description
+                        loyaltyPointID, customerID, pointsEarned,
+                        pointsRedeemed, transactionDate, description
                 );
             }
         } catch (SQLException e) {
@@ -113,5 +111,47 @@ public class LoyaltyPointsDAO extends DBContext {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    // Get filtered loyalty points by customer name
+
+    public ArrayList<LoyaltyPoints> getFilteredLoyaltyPoints(String customerName) {
+        ArrayList<LoyaltyPoints> data = new ArrayList<>();
+        String sql = "SELECT lp.LoyaltyPointID, lp.CustomerID, "
+                + "CONCAT(c.FirstName, ' ', c.LastName) AS CustomerName, "
+                + "lp.PointsEarned, lp.PointsRedeemed, lp.TransactionDate, lp.Description "
+                + "FROM LoyaltyPoints lp "
+                + "JOIN Customer c ON lp.CustomerID = c.CustomerID WHERE 1=1";
+
+        if (customerName != null && !customerName.isEmpty()) {
+            sql += " AND CONCAT(c.FirstName, ' ', c.LastName) LIKE ?";
+        }
+
+        try ( Connection conn = connection;  PreparedStatement st = conn.prepareStatement(sql)) {
+
+            int paramIndex = 1;
+
+            if (customerName != null && !customerName.isEmpty()) {
+                st.setString(paramIndex++, "%" + customerName + "%");
+            }
+
+            try ( ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    int loyaltyPointID = rs.getInt("LoyaltyPointID");
+                    int customerID = rs.getInt("CustomerID");
+                    String name = rs.getString("CustomerName");
+                    int pointsEarned = rs.getInt("PointsEarned");
+                    int pointsRedeemed = rs.getInt("PointsRedeemed");
+                    Date transactionDate = rs.getDate("TransactionDate");
+                    String description = rs.getString("Description");
+
+                    LoyaltyPoints lp = new LoyaltyPoints(loyaltyPointID, customerID, pointsEarned, pointsRedeemed, transactionDate, description);
+                    lp.setCustomerName(name);
+                    data.add(lp);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 }

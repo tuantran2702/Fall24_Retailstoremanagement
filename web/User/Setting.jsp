@@ -7,7 +7,7 @@
 <html lang="en">
 
     <head>
-        <title>Thêm nhân viên | Quản trị Admin</title>
+        <title>Cài đặt mật khẩu | GROUP1</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -83,7 +83,7 @@
                             </c:if>
                             <form class="row" action="settingController" method="POST">
                                 <div class="form-group col-md-12">
-                                    <label class="control-label">Old Password</label>
+                                    <label class="control-label">Mật khẩu cũ</label>
                                     <div class="input-group">
                                         <input class="form-control" id="oldPassword" type="password" name="oldPassword" required>
                                         <div class="input-group-append">
@@ -95,7 +95,7 @@
                                 </div>
 
                                 <div class="form-group col-md-12">
-                                    <label class="control-label">New Password</label>
+                                    <label class="control-label">Mật khẩu mới</label>
                                     <div class="input-group">
                                         <input class="form-control" id="newPassword" type="password" name="newPassword" required>
                                         <div class="input-group-append">
@@ -107,7 +107,7 @@
                                 </div>
 
                                 <div class="form-group col-md-12">
-                                    <label class="control-label">Confirm New Password</label>
+                                    <label class="control-label">Nhập lại mật khẩu mới</label>
                                     <div class="input-group">
                                         <input class="form-control" id="confirmNewPassword" type="password" name="confirmNewPassword" required>
                                         <div class="input-group-append">

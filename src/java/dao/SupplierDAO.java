@@ -48,16 +48,16 @@ public class SupplierDAO extends DBContext {
 //    }
 
     public void createSupplier(Supplier supplier) {
-        String sql = "INSERT INTO [dbo].[Supplier]\n" +
-"           ([SupplierName]\n" +
-"           ,[ContactName]\n" +
-"           ,[PhoneNumber]\n" +
-"           ,[Email]\n" +
-"           ,[Address])\n" +
-"     VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO [dbo].[Supplier]\n"
+                + "           ([SupplierName]\n"
+                + "           ,[ContactName]\n"
+                + "           ,[PhoneNumber]\n"
+                + "           ,[Email]\n"
+                + "           ,[Address])\n"
+                + "     VALUES(?, ?, ?, ?, ?)";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
-                        stmt.setString(1, supplier.getSupplierName());
+            stmt.setString(1, supplier.getSupplierName());
             stmt.setString(2, supplier.getContactName());
             stmt.setString(3, supplier.getPhoneNumber());
             stmt.setString(4, supplier.getEmail());
@@ -68,12 +68,12 @@ public class SupplierDAO extends DBContext {
             System.out.println("insertFail:" + e.getMessage());
 //            e.printStackTrace();
         }
-        
+
     }
-   public ArrayList<Product> setsupplier(int id)
-   {
-       
-       ArrayList<Product> data = new ArrayList<>();
+
+    public ArrayList<Product> setsupplier(int id) {
+
+        ArrayList<Product> data = new ArrayList<>();
         String sql = "select * from Product p where p.SupplierID =?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
@@ -102,37 +102,37 @@ public class SupplierDAO extends DBContext {
             e.printStackTrace();
         }
         return data;
-       
-   }
-   
+
+    }
+
 //       public static void main(String[] args) {
 //        System.out.println();
 //        SupplierDAO p =new SupplierDAO();
 //        System.out.println(p.setsupplier(1));
 //    }
-public void deletesupplier(int id) {
-    // Cập nhật bảng Product, đặt SupplierID về NULL cho các sản phẩm có SupplierID là nhà cung cấp đang bị xóa
-    String updateProductSql = "UPDATE [dbo].[Product] SET SupplierID = NULL WHERE SupplierID = ?";
+    public void deletesupplier(int id) {
+        // Cập nhật bảng Product, đặt SupplierID về NULL cho các sản phẩm có SupplierID là nhà cung cấp đang bị xóa
+        String updateProductSql = "UPDATE [dbo].[Product] SET SupplierID = NULL WHERE SupplierID = ?";
 
-    // Xóa nhà cung cấp khỏi bảng Supplier
-    String deleteSupplierSql = "DELETE FROM [dbo].[Supplier] WHERE SupplierID = ?";
+        // Xóa nhà cung cấp khỏi bảng Supplier
+        String deleteSupplierSql = "DELETE FROM [dbo].[Supplier] WHERE SupplierID = ?";
 
-    try {
-        // Bắt đầu cập nhật bảng Product
-        PreparedStatement updateProductSt = connection.prepareStatement(updateProductSql);
-        updateProductSt.setInt(1, id);
-        updateProductSt.executeUpdate();
+        try {
+            // Bắt đầu cập nhật bảng Product
+            PreparedStatement updateProductSt = connection.prepareStatement(updateProductSql);
+            updateProductSt.setInt(1, id);
+            updateProductSt.executeUpdate();
 
-        // Sau đó xóa nhà cung cấp
-        PreparedStatement deleteSupplierSt = connection.prepareStatement(deleteSupplierSql);
-        deleteSupplierSt.setInt(1, id);
-        deleteSupplierSt.executeUpdate();
+            // Sau đó xóa nhà cung cấp
+            PreparedStatement deleteSupplierSt = connection.prepareStatement(deleteSupplierSql);
+            deleteSupplierSt.setInt(1, id);
+            deleteSupplierSt.executeUpdate();
 
-    } catch (Exception e) {
-        System.out.println("DeleteFail:" + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("DeleteFail:" + e.getMessage());
+        }
     }
-}
-   
+
 //    public void deletesupplier(int id) {
 //
 //        String sql = "DELETE FROM [dbo].[Supplier]\n" +
@@ -147,9 +147,8 @@ public void deletesupplier(int id) {
 //        }
 //
 //    }
-
     public Supplier getSupplierById(int id) {
-                String sql = "select *from Supplier where SupplierID = ?";
+        String sql = "select *from Supplier where SupplierID = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -170,13 +169,13 @@ public void deletesupplier(int id) {
     }
 
     public void updateSupplier(Supplier supplier) {
-        
+
         String sql = "UPDATE Supplier SET"
                 + " SupplierName = ?,"
-                        + " ContactName = ?,"
-                        + " PhoneNumber = ?,"
-                        + " Email = ?,"
-                        + " Address = ? WHERE SupplierID = ?";
+                + " ContactName = ?,"
+                + " PhoneNumber = ?,"
+                + " Email = ?,"
+                + " Address = ? WHERE SupplierID = ?";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, supplier.getSupplierName());
@@ -185,7 +184,6 @@ public void deletesupplier(int id) {
             stmt.setString(4, supplier.getEmail());
             stmt.setString(5, supplier.getAddress());
             stmt.setInt(6, supplier.getSupplierID());
-
 
             stmt.executeUpdate();
 
@@ -209,5 +207,76 @@ public void deletesupplier(int id) {
 
     }
 
+    // Phương thức tìm kiếm nhà cung cấp
+    public ArrayList<Supplier> searchSuppliers(String keyword, String supplierID) {
+        ArrayList<Supplier> filteredSuppliers = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM Supplier WHERE 1=1"); // Mặc định là true để dễ dàng thêm điều kiện
+
+        // Kiểm tra nếu keyword không rỗng
+        if (keyword != null && !keyword.isEmpty()) {
+            query.append(" AND (");
+            query.append(" supplierName LIKE ? OR");
+            query.append(" contactName LIKE ? OR");
+            query.append(" phoneNumber LIKE ? OR");
+            query.append(" email LIKE ? OR");
+            query.append(" address LIKE ?");
+            query.append(")");
+        }
+
+        // Kiểm tra nếu supplierID không rỗng
+        if (supplierID != null && !supplierID.isEmpty()) {
+            query.append(" AND supplierID = ?");
+        }
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(query.toString());
+            int index = 1;
+
+            // Nếu keyword không rỗng, thêm vào PreparedStatement
+            if (keyword != null && !keyword.isEmpty()) {
+                String likeKeyword = "%" + keyword + "%";
+                pstmt.setString(index++, likeKeyword);
+                pstmt.setString(index++, likeKeyword);
+                pstmt.setString(index++, likeKeyword);
+                pstmt.setString(index++, likeKeyword);
+                pstmt.setString(index++, likeKeyword);
+            }
+
+            // Nếu supplierID không rỗng, thêm vào PreparedStatement
+            if (supplierID != null && !supplierID.isEmpty()) {
+                pstmt.setInt(index++, Integer.parseInt(supplierID));
+            }
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt(1);
+                String supplierName = rs.getString(2);
+                String contactName = rs.getString(3);
+                String phoneNumber = rs.getString(4);
+                String email = rs.getString(5);
+                String address = rs.getString(6);
+
+                filteredSuppliers.add(new Supplier(id, supplierName, contactName, phoneNumber, email, address));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return filteredSuppliers;
+    }
+
+    public boolean isSupplierExists(String supplierName, String contactName) {
+        String sql = "SELECT COUNT(*) FROM Supplier WHERE SupplierName = ? AND ContactName = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, supplierName);
+            st.setString(2, contactName);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Nếu có ít nhất 1 bản ghi, trả về true
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Nếu không có bản ghi nào, trả về false
+    }
 
 }

@@ -4,7 +4,6 @@
  */
 package controllers.RoleControllers;
 
-
 import dao.PermissionsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,6 +19,8 @@ import model.Permissions;
  * @author ptrung
  */
 public class PermissionsServlet extends HttpServlet {
+
+    PermissionsDAO permissionsDAO = new PermissionsDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,7 +39,7 @@ public class PermissionsServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PermissionsServlet</title>");            
+            out.println("<title>Servlet PermissionsServlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet PermissionsServlet at " + request.getContextPath() + "</h1>");
@@ -61,12 +62,11 @@ public class PermissionsServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // Sử dụng DAO để lấy danh sách quyền hạn từ cơ sở dữ liệu
-        PermissionsDAO permissionsDAO = new PermissionsDAO();
         List<Permissions> permissionList = permissionsDAO.getAllPermissions();
 
         // Gửi danh sách quyền đến trang JSP
         request.setAttribute("permissionList", permissionList);
-        
+
         // Chuyển hướng đến trang JSP hiển thị bảng quyền hạn
         request.getRequestDispatcher("Role/Permissions.jsp").forward(request, response);
     }
@@ -80,9 +80,19 @@ public class PermissionsServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String permissionName = request.getParameter("permissionName");
+
+        // Kiểm tra và xử lý thêm quyền mới vào cơ sở dữ liệu
+        // Giả sử bạn có một phương thức addPermission để thêm quyền vào DB
+        if (permissionName != null) {
+            boolean addSuccess = permissionsDAO.addPermission(permissionName);
+            if (addSuccess) {
+                response.sendRedirect("permissions"); // Điều hướng đến trang quyền
+            }
+        }else{
+            
+        }
     }
 
     /**

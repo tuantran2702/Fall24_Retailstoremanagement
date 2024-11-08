@@ -11,13 +11,12 @@
 <html lang="en">
 
     <head>
-        <title>Danh sách nhân viên | Quản trị Admin</title>
+        <title>Danh sách chức vụ | GROUP1</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Main CSS-->
         <link rel="stylesheet" type="text/css" href="doc/css/main.css">
-        <link rel="stylesheet" type="text/css" href="css/main_2.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
         <!-- or -->
         <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
@@ -106,7 +105,7 @@
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><a href="roles"><b>Danh sách Phân Quyền</b></a></li>
+                    <li class="breadcrumb-item active"><a href="roles"><b>Danh sách chức vụ</b></a></li>
                 </ul>
                 <div id="clock"></div>
             </div>
@@ -120,7 +119,7 @@
                                 <div class="col-sm-2">
 
                                     <a class="btn btn-add btn-sm" href="addRole" title="Thêm"><i class="fas fa-plus"></i>
-                                        Tạo mới Phân Quyền</a>
+                                        Tạo mới chức vụ</a>
                                 </div>
                             </div>
 
@@ -128,9 +127,9 @@
                                    id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th width="10">RoleID</th>
-                                        <th width="180">Role Name</th>
-                                        <th>Description</th>
+                                        <th width="80">ID chức vụ</th>
+                                        <th width="180">Tên chức vụ</th>
+                                        <th>Mô tả</th>
                                         <th width="100">Tính năng</th>
                                     </tr>
                                 </thead>
@@ -170,7 +169,7 @@
         <div class="modal fade" id="updateRoleModal" tabindex="-1" role="dialog" aria-labelledby="updateRoleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <h3 class="tile-title">Update Role</h3>
+                    <h3 class="tile-title">Cập nhật chức vụ</h3>
 
                     <!-- Form cập nhật role -->
                     <form id="updateRoleForm" method="POST">
@@ -178,19 +177,19 @@
                             <!-- Tên vai trò -->
                             <input name="roleID" value="" style="display: none"> <!-- Hidden field để giữ roleID -->
                             <div class="form-group">
-                                <label for="roleName">Role Name</label>
+                                <label for="roleName">Tên chức vụ</label>
                                 <input type="text" class="form-control" id="roleName" name="roleName" value="" required>
                             </div>
 
                             <!-- Mô tả vai trò -->
                             <div class="form-group">
-                                <label for="description">Description</label>
+                                <label for="description">Mô tả</label>
                                 <input type="text" class="form-control" id="description" name="description" value="" required>
                             </div>
 
                             <!-- Danh sách quyền (permissions) -->
                             <div class="form-group">
-                                <label for="permissions">Permissions</label>
+                                <label for="permissions">Phân quyền</label>
                                 <div class="checkbox-group">
                                     <!-- Danh sách checkbox sẽ được thêm qua JavaScript -->
                                 </div>
@@ -198,8 +197,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btnn btn-cancel" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btnn btn-save">Update</button>
+                            <button type="button" class="btnn btn-cancel" data-dismiss="modal">Hủy bỏ</button>
+                            <button type="submit" class="btnn btn-save">Lưu lại</button>
                         </div>
                     </form>
                 </div>
@@ -233,47 +232,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <script type="text/javascript">$('#sampleTable').DataTable();</script>
 
-        <script>
-            function xuatPDF() {
-                const {jsPDF} = window.jspdf;
-                const doc = new jsPDF();
-
-                // Tiêu đề PDF
-                doc.setFontSize(18);
-                doc.text("Danh sách nhân viên", 14, 20);
-
-                // Tạo dữ liệu cho bảng
-                const rows = [];
-                const tableHeader = ['ID', 'Tên', 'Email', 'Địa chỉ', 'Số điện thoại', 'Vai trò'];
-
-                const tableRows = document.querySelectorAll("tbody tr");
-                tableRows.forEach((row) => {
-                    const userID = row.cells[2].innerText; // userID
-                    const fullName = row.cells[3].innerText; // Tên đầy đủ
-                    const email = row.cells[4].innerText; // Email
-                    const address = row.cells[5].innerText; // Địa chỉ
-                    const phoneNumber = row.cells[6].innerText; // Số điện thoại
-                    const roleID = row.cells[7].innerText; // Vai trò
-
-                    // Thêm thông tin vào hàng bảng
-                    rows.push([userID, fullName, email, address, phoneNumber, roleID]);
-                });
-
-                // Sử dụng autoTable để tạo bảng
-                doc.autoTable({
-                    head: [tableHeader],
-                    body: rows,
-                    startY: 30, // Vị trí bắt đầu
-                    theme: 'grid', // Chủ đề của bảng
-                    headStyles: {fillColor: [22, 160, 133]}, // Màu nền tiêu đề
-                    styles: {cellWidth: 'auto', halign: 'left'}, // Định dạng các ô
-                    margin: {top: 30}
-                });
-
-                // Tải xuống tệp PDF
-                doc.save('danh_sach_nhan_vien.pdf');
-            }
-        </script>
+        
 
         <script>
             // Hàm tải dữ liệu vai trò vào modal
@@ -382,20 +341,6 @@
 
         </script>
         <script>
-
-
-
-            //EXCEL
-            // $(document).ready(function () {
-            //   $('#').DataTable({
-
-            //     dom: 'Bfrtip',
-            //     "buttons": [
-            //       'excel'
-            //     ]
-            //   });
-            // });
-
 
             //Thời Gian
             function time() {

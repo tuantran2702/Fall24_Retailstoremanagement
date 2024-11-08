@@ -151,23 +151,9 @@
 
         <!-- Sidebar menu-->
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-       <jsp:include page="/menu.jsp" />
+        <jsp:include page="/menu.jsp" />
 
         <main class="app-content">
-            <c:if test="${not empty sessionScope.successMessage}">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    ${sessionScope.successMessage}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    <% session.removeAttribute("successMessage"); %>
-                </div>
-            </c:if>
-            <c:if test="${not empty sessionScope.errorMessage}">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ${sessionScope.errorMessage}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    <% session.removeAttribute("errorMessage"); %>
-                </div>
-            </c:if>
 
             <div class="row mb-4">
                 <div class="col-md-12 d-flex justify-content-between align-items-center">
@@ -268,24 +254,25 @@
                                 <th>Mô tả</th>
                                 <th>Loại</th>
                                 <th>Số tiền (VNĐ)</th>
-                                
+
                             </tr>
                         </thead>
                         <tbody>
                             <c:forEach items="${transactions}" var="trans">
-                                <tr>
-                                    <td><fmt:formatDate value="${trans.transactionDate}" pattern="dd/MM/yyyy HH:mm"/></td>
-                                    <td>${trans.description}</td>
-                                    <td>
-                                        <span class="badge ${trans.transactionType == 'Thu' ? 'bg-success' : 'bg-danger'}">
-                                            ${trans.transactionType}
-                                        </span>
-                                    </td>
-                                    <td class="text-end">
-                                        <fmt:formatNumber value="${trans.amount}" type="currency" currencySymbol=""/> VNĐ
-                                    </td>
-                                  
-                                </tr>
+                                <c:if test="${trans.description ne 'Initial Balance'}">
+                                    <tr>
+                                        <td><fmt:formatDate value="${trans.transactionDate}" pattern="dd/MM/yyyy HH:mm"/></td>
+                                        <td>${trans.description}</td>
+                                        <td>
+                                            <span class="badge ${trans.transactionType == 'Thu' ? 'bg-success' : 'bg-danger'}">
+                                                ${trans.transactionType}
+                                            </span>
+                                        </td>
+                                        <td class="text-end">
+                                            <fmt:formatNumber value="${trans.amount}" type="currency" currencySymbol=""/> VNĐ
+                                        </td>
+                                    </tr>
+                                </c:if>
                             </c:forEach>
                         </tbody>
                     </table>
@@ -303,33 +290,33 @@
         <script src="${pageContext.request.contextPath}/doc/js/plugins/dataTables.bootstrap.min.js"></script>
 
         <script>
-            $(document).ready(function () {
-                // DataTable initialization
-                $('#sampleTable').DataTable({
-                    "order": [[0, "desc"]],
-                    "pageLength": 10,
-                    "language": {
-                        "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
-                        "zeroRecords": "Không tìm thấy dữ liệu",
-                        "info": "Trang _PAGE_ trên _PAGES_",
-                        "infoEmpty": "Không có dữ liệu",
-                        "infoFiltered": "(lọc từ _MAX_ dòng)",
-                        "search": "Tìm kiếm:",
-                        "paginate": {
-                            "first": "Đầu",
-                            "last": "Cuối",
-                            "next": "Sau",
-                            "previous": "Trước"
-                        }
-                    }
-                });
+                        $(document).ready(function () {
+                            // DataTable initialization
+                            $('#sampleTable').DataTable({
+                                "order": [[0, "desc"]],
+                                "pageLength": 10,
+                                "language": {
+                                    "lengthMenu": "Hiển thị _MENU_ dòng mỗi trang",
+                                    "zeroRecords": "Không tìm thấy dữ liệu",
+                                    "info": "Trang _PAGE_ trên _PAGES_",
+                                    "infoEmpty": "Không có dữ liệu",
+                                    "infoFiltered": "(lọc từ _MAX_ dòng)",
+                                    "search": "Tìm kiếm:",
+                                    "paginate": {
+                                        "first": "Đầu",
+                                        "last": "Cuối",
+                                        "next": "Sau",
+                                        "previous": "Trước"
+                                    }
+                                }
+                            });
 
-                // Transaction type button styling
-                $('.transaction-type-btn').click(function () {
-                    $('.transaction-type-btn').removeClass('active');
-                    $(this).addClass('active');
-                });
-            });
+                            // Transaction type button styling
+                            $('.transaction-type-btn').click(function () {
+                                $('.transaction-type-btn').removeClass('active');
+                                $(this).addClass('active');
+                            });
+                        });
         </script>
     </body>
 </html>

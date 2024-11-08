@@ -4,6 +4,7 @@
  */
 package controllers.UserController;
 
+import dao.RoleDAO;
 import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +13,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.*;
+import model.Role;
 import model.User;
 
 /**
@@ -58,9 +61,23 @@ public class UserManageController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        UserDAO ud = new UserDAO();
-        List<User> users = ud.getAllUsers();
-        request.setAttribute("userList", users);
+        // Tạo đối tượng DAO và lấy danh sách vai trò
+        RoleDAO roleDAO = new RoleDAO();
+        List<Role> roles = roleDAO.getAllRole();
+        
+        // Chuyển đổi danh sách roles thành roleMap
+        Map<Integer, String> roleMap = new HashMap<>();
+        for (Role role : roles) {
+            roleMap.put(role.getRoleID(), role.getRoleName());
+        }
+
+        // Lấy danh sách người dùng từ cơ sở dữ liệu (giả sử bạn có một hàm getUserList())
+        UserDAO userDAO = new UserDAO();
+        List<User> userList = userDAO.getAllUsers();
+        
+        // Đặt userList và roleMap vào request scope để truyền sang JSP
+        request.setAttribute("userList", userList);
+        request.setAttribute("roleMap", roleMap);
         request.getRequestDispatcher("User/QuanLyNhanVien.jsp").forward(request, response);
     }
 

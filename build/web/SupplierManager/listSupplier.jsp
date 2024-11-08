@@ -50,11 +50,11 @@
         </header>
         <!-- Sidebar menu-->
         <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
-  <jsp:include page="/menu.jsp" />
+        <jsp:include page="/menu.jsp" />
         <main class="app-content">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb side">
-                    <li class="breadcrumb-item active"><a href="#"><b>Product</b></a></li>  
+                    <li class="breadcrumb-item active"><a href="#"><b>Danh sách Nhà cung cấp</b></a></li>  
                 </ul>
                 <div id="clock"></div>
             </div>
@@ -66,43 +66,66 @@
                                 <div class="col-sm-2">
 
                                     <a href="${pageContext.request.contextPath}/supplier?action=create" class="btn btn-add btn-sm"  title="Thêm"><i class="fas fa-plus"></i>
-                                        Create new Supplier</a>
+                                        Thêm Nhà cung cấp</a>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập" onclick="myFunction(this)"><i
-                                            class="fas fa-file-upload"></i> Tải từ file</a>
-                                </div>
-
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()"><i
-                                            class="fas fa-print"></i> In dữ liệu</a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
-                                            class="fas fa-copy"></i> Sao chép</a>
+                                    <a class="btn btn-delete btn-sm pdf-file" type="button" href="${pageContext.request.contextPath}/product"><i
+                                            class="fas fa-file-pdf"></i> Sản Phẩm</a>
                                 </div>
 
                                 <div class="col-sm-2">
-                                    <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất Excel</a>
+                                    <a href="${pageContext.request.contextPath}/category" class="btn btn-delete btn-sm print-file" type="button" title="In" onclick="myApp.printTable()"><i
+                                            class="fas fa-print"></i> Danh mục</a>
                                 </div>
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)"><i
-                                            class="fas fa-file-pdf"></i> Xuất PDF</a>
+                                    <a href="${pageContext.request.contextPath}/unit" class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i
+                                            class="fas fa-copy"></i> Đơn vị</a>
                                 </div>
+
                                 <div class="col-sm-2">
-                                    <a class="btn btn-delete btn-sm" type="button" title="Xóa" onclick="myFunction(this)"><i
-                                            class="fas fa-trash-alt"></i> Xóa tất cả </a>
+                                    <a href="${pageContext.request.contextPath}/reportInventory" class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button" title="Sao chép"><i class="fas fa-chart-line"></i>
+                                        Báo cáo Tồn kho</a>
+                                </div>
+
+
+                                <div class="col-sm-2">
+                                    <a class="btn btn-excel btn-sm" href="${pageContext.request.contextPath}/exportSupplier" title="Xuất Excel">
+                                        <i class="fas fa-file-excel"></i> Xuất Excel
+                                    </a>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form action="${pageContext.request.contextPath}/supplier" method="GET">
+                                        <div class="form-group">
+                                            <label for="keyword">Từ Khóa:</label>
+                                            <input type="text" id="keyword" name="keyword" class="form-control" placeholder="Nhập từ khóa tìm kiếm">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="supplierID">Nhà cung cấp:</label>
+                                            <select id="supplierID" name="supplierID" class="form-control">
+                                                <option value="">-- Chọn Nhà cung cấp --</option>
+                                                <c:forEach var="supplier" items="${data}">
+                                                    <option value="${supplier.supplierID}">${supplier.supplierName}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                                    </form>
+                                </div>
+                            </div>
+
                             <table class="table table-hover table-bordered" id="sampleTable">
                                 <thead>
                                     <tr>
-                                        <th>Supplier Name</th>
-                                        <th>Contact Name</th>
-                                        <th>Phone Number</th>
+                                        <th>Tên Nhà Cung Cấp</th>
+                                        <th>Tên Người Liên Hệ</th>
+                                        <th>Số Điện Thoại</th>
                                         <th>Email</th>
-                                        <th>Address</th>
-                                        <th>Action</th>
+                                        <th>Địa Chỉ</th>
+                                        <th>Hành Động</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -117,11 +140,11 @@
                                                 <a href="${pageContext.request.contextPath}/supplier?action=update&id=${s.getSupplierID()}" class="btn btn-primary btn-sm edit" title="Sửa">
                                                     <i class="fas fa-edit"></i></a>
                                                 <a href="${pageContext.request.contextPath}/supplier?action=delete&id=${s.getSupplierID()}" onclick="if (confirm('Are you sure you want to delete product with Name: ${s.getSupplierName()}?')) {
-                                                                doDelete('${s.getSupplierID()}');
-                                                                return true;
-                                                            } else {
-                                                                return false;
-                                                            }" class="btn btn-primary btn-sm trash" title="Xóa">
+                                                            doDelete('${s.getSupplierID()}');
+                                                            return true;
+                                                        } else {
+                                                            return false;
+                                                        }" class="btn btn-primary btn-sm trash" title="Xóa">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </a>
 
@@ -148,77 +171,50 @@
         <!-- Page specific javascripts-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
         <!-- Data table plugin-->
-        <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
+        <!--        <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>-->
         <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
         <script type="text/javascript">
-                                    $('#sampleTable').DataTable();
-                                    //Thời Gian
-                                    function time() {
-                                        var today = new Date();
-                                        var weekday = new Array(7);
-                                        weekday[0] = "Chủ Nhật";
-                                        weekday[1] = "Thứ Hai";
-                                        weekday[2] = "Thứ Ba";
-                                        weekday[3] = "Thứ Tư";
-                                        weekday[4] = "Thứ Năm";
-                                        weekday[5] = "Thứ Sáu";
-                                        weekday[6] = "Thứ Bảy";
-                                        var day = weekday[today.getDay()];
-                                        var dd = today.getDate();
-                                        var mm = today.getMonth() + 1;
-                                        var yyyy = today.getFullYear();
-                                        var h = today.getHours();
-                                        var m = today.getMinutes();
-                                        var s = today.getSeconds();
-                                        m = checkTime(m);
-                                        s = checkTime(s);
-                                        nowTime = h + " giờ " + m + " phút " + s + " giây";
-                                        if (dd < 10) {
-                                            dd = '0' + dd
-                                        }
-                                        if (mm < 10) {
-                                            mm = '0' + mm
-                                        }
-                                        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
-                                        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
-                                                '</span>';
-                                        document.getElementById("clock").innerHTML = tmp;
-                                        clocktime = setTimeout("time()", "1000", "Javascript");
+                                                    $('#sampleTable').DataTable();
+                                                    //Thời Gian
+                                                    function time() {
+                                                        var today = new Date();
+                                                        var weekday = new Array(7);
+                                                        weekday[0] = "Chủ Nhật";
+                                                        weekday[1] = "Thứ Hai";
+                                                        weekday[2] = "Thứ Ba";
+                                                        weekday[3] = "Thứ Tư";
+                                                        weekday[4] = "Thứ Năm";
+                                                        weekday[5] = "Thứ Sáu";
+                                                        weekday[6] = "Thứ Bảy";
+                                                        var day = weekday[today.getDay()];
+                                                        var dd = today.getDate();
+                                                        var mm = today.getMonth() + 1;
+                                                        var yyyy = today.getFullYear();
+                                                        var h = today.getHours();
+                                                        var m = today.getMinutes();
+                                                        var s = today.getSeconds();
+                                                        m = checkTime(m);
+                                                        s = checkTime(s);
+                                                        nowTime = h + " giờ " + m + " phút " + s + " giây";
+                                                        if (dd < 10) {
+                                                            dd = '0' + dd
+                                                        }
+                                                        if (mm < 10) {
+                                                            mm = '0' + mm
+                                                        }
+                                                        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+                                                        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+                                                                '</span>';
+                                                        document.getElementById("clock").innerHTML = tmp;
+                                                        clocktime = setTimeout("time()", "1000", "Javascript");
 
-                                        function checkTime(i) {
-                                            if (i < 10) {
-                                                i = "0" + i;
-                                            }
-                                            return i;
-                                        }
-                                    }
-        </script>
-        <script>
-//            function deleteRow(r) {
-//                var i = r.parentNode.parentNode.rowIndex;
-//                document.getElementById("myTable").deleteRow(i);
-//            }
-//            jQuery(function () {
-//                jQuery(".trash").click(function () {
-//                    swal({
-//                        title: "Cảnh báo",
-//                        text: "Bạn có chắc chắn là muốn xóa sản phẩm này?",
-//                        buttons: ["Hủy bỏ", "Đồng ý"],
-//                    })
-//                            .then((willDelete) => {
-//                                if (willDelete) {
-//                                    swal("Đã xóa thành công.!", {
-//
-//                                    });
-//                                }
-//                            });
-//                });
-//            });
-//            oTable = $('#sampleTable').dataTable();
-//            $('#all').click(function (e) {
-//                $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
-//                e.stopImmediatePropagation();
-//            });
+                                                        function checkTime(i) {
+                                                            if (i < 10) {
+                                                                i = "0" + i;
+                                                            }
+                                                            return i;
+                                                        }
+                                                    }
         </script>
     </body>
 
