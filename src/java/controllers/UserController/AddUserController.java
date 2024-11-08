@@ -67,6 +67,20 @@ public class AddUserController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         //Xử lí Phân Quyền
+        String END_POINT = "USER-MANAGE";
+        if (request.getSession().getAttribute("User") != null) {
+            PermissionsDAO pd = new PermissionsDAO();
+            User u = (User) request.getSession().getAttribute("User");
+            if (!pd.isAccess(u, END_POINT)) {
+                response.sendRedirect("404.jsp");
+                return;
+            }
+        } else {
+            response.sendRedirect("404.jsp");
+            return;
+        }
+        
         RoleDAO rd = new RoleDAO();
         List<Role> roles = rd.getAllRole();
         User user = new User(); // Khởi tạo một đối tượng User mới

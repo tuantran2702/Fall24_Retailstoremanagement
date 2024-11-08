@@ -95,10 +95,10 @@ public class DeleteRoleServlet extends HttpServlet {
         // Kiểm tra kết quả và trả về phản hồi
         if (success) {
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().write("Role deleted successfully");
+            
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("Failed to delete role");
+            
         }
     }
 

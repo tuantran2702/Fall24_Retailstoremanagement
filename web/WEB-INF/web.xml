@@ -97,6 +97,10 @@
         <servlet-class>controllers.UserController.UpdateUserController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <servlet-class>controllers.UserController.DeleteUserServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>SalesController</servlet-name>
         <servlet-class>controllers.SalesController</servlet-class>
     </servlet>
@@ -118,7 +122,7 @@
     </servlet>
     <servlet>
         <servlet-name>DeleteRoleServlet</servlet-name>
-        <servlet-class>DeleteRoleServlet</servlet-class>
+        <servlet-class>controllers.RoleControllers.DeleteRoleServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>GetRoleServlet</servlet-name>
@@ -267,6 +271,10 @@
     <servlet-mapping>
         <servlet-name>UpdateUserController</servlet-name>
         <url-pattern>/updateUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <url-pattern>/deleteUser</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SalesController</servlet-name>

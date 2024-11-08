@@ -253,7 +253,7 @@ public class UserDAO extends DBContext {
     public static void main(String[] args) {
         UserDAO ud = new UserDAO();
 
-        ud.deleteUser(9);
+        ud.deleteUser(27);
     }
 
     public User getUserById(int id) {
