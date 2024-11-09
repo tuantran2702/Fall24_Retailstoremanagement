@@ -110,11 +110,7 @@ public class SettingController extends HttpServlet {
 
         if (!mh.md5Hash(oldPassword).equals(user.getPassword())) {
             errorMessage = "Mật khẩu cũ không đúng!";
-        } else if (!newPassword.equals(confirmNewPassword)) {
-            errorMessage = "Mật khẩu mới không khớp!";
-        } else if (newPassword.equals(oldPassword)) {
-            errorMessage = "Mật khẩu mới phải khác mật khẩu cũ!";
-        }
+        } 
 
         if (errorMessage != null) {
             request.setAttribute("errorMessage", errorMessage);
