@@ -98,14 +98,14 @@
                                 <thead>
                                     <tr>
 
-                                        <th class="no-export" width="150">Img</th>
-                                        <th>Employee ID</th>
-                                        <th width="150">Employee Name</th>
+                                        <th class="no-export" width="150">Ảnh</th>
+                                        <th width="100">ID Nhân viên</th>
+                                        <th width="150">Tên Nhân viên</th>
                                         <th width="170">Email</th>
-                                        <th width="170">Address</th>
-                                        <th>Phone Number</th>
-                                        <th>Role</th>
-                                        <th width="100" class="no-export">Features</th>
+                                        <th width="170">Địa chỉ</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Chức vụ</th>
+                                        <th width="100" class="no-export">Tính năng</th>
                                     </tr>
                                 </thead>
 
@@ -173,7 +173,7 @@
             $(document).ready(function () {
                 $('#sampleTable').DataTable();
             });
-// Function to export table to Excel (without the "Tính năng" column)
+            // Function to export table to Excel (without the "Tính năng" column)
             function exportToExcel() {
                 var table = document.getElementById('sampleTable').cloneNode(true);
                 removeNoExportColumns(table);
@@ -181,7 +181,7 @@
                 XLSX.writeFile(wb, 'employee_list.xlsx');
             }
 
-// Function to export table to PDF (without the "Tính năng" column)
+            // Function to export table to PDF (without the "Tính năng" column)
             function exportToPDF() {
                 // Tạo đối tượng jsPDF
                 var {jsPDF} = window.jspdf;
@@ -208,7 +208,7 @@
 
 
 
-// Function to print the table (without the "Tính năng" column)
+            // Function to print the table (without the "Tính năng" column)
             function printTable() {
                 var printContent = document.getElementById('sampleTable').cloneNode(true);
                 removeNoExportColumns(printContent);
@@ -219,7 +219,7 @@
                 document.body.innerHTML = originalContent;
             }
 
-// Function to remove columns with class 'no-export'
+            // Function to remove columns with class 'no-export'
             function removeNoExportColumns(table) {
                 // Remove header columns
                 var headers = table.querySelectorAll('th.no-export');

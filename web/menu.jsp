@@ -34,7 +34,7 @@
             <c:if test="${sessionScope.assignedPermissions.contains('HOMEPAGE')}">
                 <li><a class="app-menu__item " href="homepage">
                     <i class="app-menu__icon bx bx-grid-alt"></i>
-                    <span class="app-menu__label">Bảng điều khiển</span>
+                    <span class="app-menu__label">Trang chủ</span>
                 </a></li>
             </c:if>
 
