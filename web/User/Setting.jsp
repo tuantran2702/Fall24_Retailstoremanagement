@@ -30,7 +30,7 @@
         <style>
             .input-group {
                 width: 50%; /* Đặt chiều rộng của input group thành 50% */
-
+                
             }
 
             .input-group-text {
@@ -66,8 +66,8 @@
         <!-- Sidebar menu-->
         <!-- Include menu -->
         <jsp:include page="/menu.jsp" />
-
-
+        
+        
         <main class="app-content">
 
             <div class="row">
@@ -77,11 +77,12 @@
 
                         <h3 class="tile-title">Cài đặt mật khẩu</h3>
                         <div class="tile-body">
+
+                            <c:if test="${not empty errorMessage}">
+                                <p style="color:red">${errorMessage}</p>
+                            </c:if>
                             <form class="row" action="settingController" method="POST">
                                 <div class="form-group col-md-12">
-                                    <c:if test="${not empty errorMessage}">
-                                        <p style="color:red">${errorMessage}</p>
-                                    </c:if>
                                     <label class="control-label">Mật khẩu cũ</label>
                                     <div class="input-group">
                                         <input class="form-control" id="oldPassword" type="password" name="oldPassword" required>
@@ -91,7 +92,6 @@
                                             </span>
                                         </div>
                                     </div>
-
                                 </div>
 
                                 <div class="form-group col-md-12">
@@ -104,8 +104,6 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <p id="passwordError" style="color:red; display:none;">Mật khẩu mới phải có ít nhất 6 ký tự.</p>
-                                    <p id="samePasswordError" style="color:red; display:none;">Mật khẩu mới phải khác mật khẩu cũ.</p>
                                 </div>
 
                                 <div class="form-group col-md-12">
@@ -118,12 +116,11 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <p id="confirmPasswordError" style="color:red; display:none;">Mật khẩu nhập lại không khớp.</p>
                                 </div>
 
                                 <div class="form-group col-md-12">
                                     <button class="btn btn-save" type="submit">Lưu lại</button>
-                                    <a class="btn btn-cancel" href="homepage">Hủy bỏ</a>
+                                    <a class="btn btn-cancel" href="userManage">Hủy bỏ</a>
                                 </div>
                             </form>
 
@@ -153,44 +150,6 @@
                 this.querySelector('i').classList.toggle('fa-eye-slash'); // Đổi icon
             });
         });
-
-        document.querySelector('form').addEventListener('submit', function (event) {
-            // Lấy giá trị của các mật khẩu
-            const oldPassword = document.getElementById('oldPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
-
-            // Lấy các phần tử hiển thị lỗi
-            const passwordError = document.getElementById('passwordError');
-            const confirmPasswordError = document.getElementById('confirmPasswordError');
-            const samePasswordError = document.getElementById('samePasswordError');
-
-            // Kiểm tra độ dài mật khẩu mới
-            if (newPassword.length < 6) {
-                event.preventDefault(); // Ngăn gửi form
-                passwordError.style.display = 'block'; // Hiển thị thông báo lỗi
-            } else {
-                passwordError.style.display = 'none';
-            }
-
-            // Kiểm tra mật khẩu nhập lại có khớp không
-            if (newPassword !== confirmNewPassword) {
-                event.preventDefault();
-                confirmPasswordError.style.display = 'block';
-            } else {
-                confirmPasswordError.style.display = 'none';
-            }
-
-            // Kiểm tra mật khẩu mới có khác mật khẩu cũ không
-            if (newPassword === oldPassword) {
-                event.preventDefault();
-                samePasswordError.style.display = 'block';
-            } else {
-                samePasswordError.style.display = 'none';
-            }
-        });
-
-
 
     </script>
 
